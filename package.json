@@ -2,6 +2,13 @@
   "name": "mastersteelhouse",
   "version": "0.1.0",
   "private": true,
+<<<<<<< Updated upstream
+=======
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+>>>>>>> Stashed changes
   "scripts": {
     "dev": "next dev",
     "build": "next build",
