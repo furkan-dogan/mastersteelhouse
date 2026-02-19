@@ -1,0 +1,13 @@
+{
+  "hero": {
+    "title": "Kataloglar",
+    "description": "Urun kataloglarimizi inceleyin ve indirin"
+  },
+  "items": [
+    {
+      "id": "cat-1",
+      "title": "Güncel Kataloğumuz",
+      "pdfUrl": "/uploads/media/master-steel-house-hafif-celik-sistemleri-katalog-1771338462283-dbf97d.pdf"
+    }
+  ]
+}

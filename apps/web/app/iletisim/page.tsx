@@ -1,14 +1,20 @@
-import WebPageTemplate from "@/components/web-page-template"
-import { readWebPage } from "@/lib/web-pages"
+import { Header } from '@/components/header'
+import { ContactSection } from '@/components/contact-section'
+import { Footer } from '@/components/footer'
 
-export async function generateMetadata() {
-  const content = await readWebPage("iletisim")
-  return {
-    title: `${content.hero.title} | Master Steel House`,
-    description: content.hero.description,
-  }
+export const metadata = {
+  title: 'İletişim | Çelik Yapı',
+  description: 'Bizimle iletişime geçin. Projeleriniz için profesyonel çelik yapı çözümleri.',
 }
 
 export default function IletisimPage() {
-  return <WebPageTemplate slug="iletisim" />
+  return (
+    <main className="min-h-screen">
+      <Header />
+      <div className="pt-32">
+        <ContactSection />
+      </div>
+      <Footer />
+    </main>
+  )
 }

@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "slides": [
+      {
+        "id": 1,
+        "image": "/images/carousel/celik-iskelet.png",
+        "imagePosition": "50% 50%",
+        "badge": "Master Steel House",
+        "title": ["Modern", "Celik Yapi", "Cozumleri"],
+        "description": "Depreme dayanikli, hizli uretim ve estetik tasarimla projelerinizi guvenle hayata gecirin.",
+        "cta": "Teklif Al",
+        "highlight": "20+ Yil Tecrube",
+        "features": ["Depreme Dayanikli", "Hizli Teslim", "Yuksek Kalite"]
+      }
+    ],
+    "controls": {
+      "primaryCtaHref": "#contact",
+      "secondaryCtaLabel": "Projeler",
+      "secondaryCtaHref": "#about",
+      "followLabel": "Bizi Takip Et",
+      "followTooltip": "Sosyal Medya",
+      "followLinks": [
+        { "name": "Instagram", "href": "https://www.instagram.com/mastersteelhouse", "icon": "Instagram", "color": "instagram" },
+        { "name": "Facebook", "href": "https://www.facebook.com/mastersteelhous/", "icon": "Facebook", "color": "facebook" },
+        { "name": "X", "href": "https://x.com/mastersteelhous", "icon": "Twitter", "color": "twitter" },
+        { "name": "YouTube", "href": "https://www.youtube.com/@mastersteelhouse", "icon": "Youtube", "color": "youtube" }
+      ]
+    }
+  },
+  "about": {
+    "badge": "Hakkimizda",
+    "title": "Celik Yapi",
+    "titleAccent": "Uzmanligi",
+    "description": "Projeye ozel tasarim ve uretim gucuyle anahtar teslim cozumler sunuyoruz.",
+    "videoUrl": "",
+    "features": [
+      {
+        "icon": "CheckCircle2",
+        "title": "Muhendislik",
+        "description": "Sahaya ve ihtiyaca uygun teknik cozumler.",
+        "image": "/images/hakkimizda-555-370.webp"
+      }
+    ],
+    "stats": [
+      { "value": "20+", "label": "Yil" },
+      { "value": "1000+", "label": "Proje" }
+    ],
+    "timelineBadge": "Surec",
+    "timelineTitle": "Planlama",
+    "timelineTitleAccent": "Teslim",
+    "timelineDescription": "Tum asamalari kontrollu sekilde yonetiyoruz.",
+    "timelineStepLabel": "Adim",
+    "timelineCompletionLabel": "Tamamlandi",
+    "timeline": [
+      {
+        "step": "01",
+        "title": "Kesif",
+        "description": "Ihtiyac analizi ve saha degerlendirmesi.",
+        "image": "/images/services/villa-hero.webp",
+        "icon": "1"
+      }
+    ],
+    "ctaText": "Projeniz icin hemen iletisime gecin.",
+    "ctaButton": "Bize Ulasin",
+    "ctaHref": "#contact"
+  },
+  "projects": {
+    "eyebrow": "Projeler",
+    "title": "Tamamlanan",
+    "titleAccent": "Projeler",
+    "description": "Farkli olcekte celik yapi uygulamalarimiz.",
+    "areaLabel": "Alan",
+    "yearLabel": "Yil",
+    "ctaNote": "Daha fazlasi icin bizimle iletisime gecin.",
+    "ctaLabel": "Tum Projeler",
+    "ctaHref": "/referanslar",
+    "items": []
+  },
+  "faq": {
+    "eyebrow": "SSS",
+    "title": "Sik Sorulan",
+    "titleAccent": "Sorular",
+    "description": "Merak edilen basliklari derledik.",
+    "ctaNote": "Farkli sorulariniz varsa bize ulasin.",
+    "ctaLabel": "Iletisim",
+    "ctaHref": "/iletisim",
+    "items": []
+  },
+  "references": {
+    "eyebrow": "Referanslar",
+    "title": "Guvenilen",
+    "titleAccent": "Marka",
+    "description": "Birlikte calistigimiz kurum ve markalar.",
+    "clients": [],
+    "stats": []
+  }
+}

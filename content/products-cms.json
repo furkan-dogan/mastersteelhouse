@@ -1,0 +1,468 @@
+{
+  "categories": [
+    {
+      "slug": "tek-katli-celik-villalar",
+      "title": "Tek Katlı Villa Çözümleri",
+      "description": "Modern, ekonomik ve hızlı yapım avantajı ile tek katlı villa çözümleri."
+    },
+    {
+      "slug": "cok-katli-celik-villalar",
+      "title": "Çok Katlı Villa Çözümleri",
+      "description": "Genis aileler icin cok katli villa cozumleri."
+    },
+    {
+      "slug": "teony-house",
+      "title": "Loft Konsept Villalar",
+      "description": "Yuksek tavanli ve modern loft konsept villa cozumleri."
+    },
+    {
+      "slug": "ofis-yapilari",
+      "title": "Ofis ve Yönetim Binaları",
+      "description": "Profesyonel is alanlari icin modern ofis yapilari."
+    },
+    {
+      "slug": "ticari-yapilar",
+      "title": "Mağaza ve Ticari Alanlar",
+      "description": "Magaza, showroom ve isyeri icin ticari yapi cozumleri."
+    },
+    {
+      "slug": "egitim-yapilari",
+      "title": "Eğitim ve Sosyal Tesisler",
+      "description": "Okul ve egitim tesisleri icin moduler yapi cozumleri."
+    }
+  ],
+  "products": [
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "kugu-villa",
+      "name": "Kuğu Villa",
+      "area": "100 m2",
+      "image": "/villa-kugu.jpg",
+      "description": "Modern ve şık tasarımıyla öne çıkan Kuğu Villa, 100 m2 kullanım alanı ile konforu maksimuma çıkarır.",
+      "features": {
+        "rooms": "2+1",
+        "bathrooms": "1",
+        "parking": "1 Araçlık",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      },
+      "highlights": [
+        "Highlights",
+        "Highlights2",
+        "Highlights3",
+        "Highlights4"
+      ],
+      "technicalDetails": {
+        "Kat Yüksekliği": "Kumsuz Metal Kiremit",
+        "Çatı": "2.80",
+        "Dış Duvar İskeleti": "14 cm Çelik Karkas İçerisinde Taşyünü İzolasyonu",
+        "İç Duvar İskeleti": "9 cm Çelik Karkas İçerisi Taş Yünü İzolasyonu",
+        "Dış Cephe": "Nem Bariyeri + Boardex + Mineral Sıva + Çift Kat Silikonlu Boya",
+        "İç Cephe": "OSB Üzeri Alçıpan + Çift Kat Silikonlu Boya"
+      }
+    },
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "atlas-villa",
+      "name": "Atlas Villa",
+      "area": "100 m2",
+      "image": "/villa-atlas.jpg",
+      "description": "Minimal cizgileri ve ahsap detaylariyla modern yasam icin tasarlanmis tek katli villa modeli.",
+      "features": {
+        "rooms": "2+1",
+        "bathrooms": "1",
+        "parking": "1 Araclik",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "kuzey-villa",
+      "name": "Kuzey Villa",
+      "area": "100 m2",
+      "image": "/villa-kuzey.jpg",
+      "description": "Fonksiyonel plani ve ferah yasam alanlari ile one cikan tek katli villa cozumu.",
+      "features": {
+        "rooms": "2+1",
+        "bathrooms": "1",
+        "parking": "1 Araclik",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "evren-villa",
+      "name": "Evren Villa",
+      "area": "150 m2",
+      "image": "/villa-evren.jpg",
+      "description": "Genis aile kullanimi icin optimize edilmis, modern cephe detaylarina sahip villa modeli.",
+      "features": {
+        "rooms": "3+1",
+        "bathrooms": "2",
+        "parking": "1 Araclik",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "uzay-villa",
+      "name": "Uzay Villa",
+      "area": "170 m2",
+      "image": "/villa-uzay.jpg",
+      "description": "Buyuk hacimli yasam alani ve yuksek konfor seviyesi sunan tek katli proje.",
+      "features": {
+        "rooms": "4+1",
+        "bathrooms": "2",
+        "parking": "1 Araclik",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "neva-villa",
+      "name": "Neva Villa",
+      "area": "128 m2",
+      "image": "/villa-neva.jpg",
+      "description": "Dengeli plan kurgusu ve guncel mimari yaklasimiyla tasarlanmis cagdas villa secenegi.",
+      "features": {
+        "rooms": "3+1",
+        "bathrooms": "2",
+        "parking": "1 Araclik",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "cok-katli-celik-villalar",
+      "slug": "alfa-villa",
+      "name": "Alfa Villa",
+      "area": "180 m2",
+      "image": "/multi-villa-1.jpg",
+      "description": "Cok katli planiyla genis aileler icin gelistirilmis modern villa modeli.",
+      "features": {
+        "rooms": "3+1",
+        "bathrooms": "2",
+        "parking": "2 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "cok-katli-celik-villalar",
+      "slug": "beta-villa",
+      "name": "Beta Villa",
+      "area": "200 m2",
+      "image": "/multi-villa-2.jpg",
+      "description": "Konfor, estetik ve islevselligi bir araya getiren cok katli celik villa cozumu.",
+      "features": {
+        "rooms": "4+1",
+        "bathrooms": "2",
+        "parking": "2 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "cok-katli-celik-villalar",
+      "slug": "gamma-villa",
+      "name": "Gamma Villa",
+      "area": "220 m2",
+      "image": "/project-3.jpg",
+      "description": "Genis ic hacmi ve guclu cephe diliyle one cikan ust segment cok katli proje.",
+      "features": {
+        "rooms": "4+2",
+        "bathrooms": "3",
+        "parking": "2 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "cok-katli-celik-villalar",
+      "slug": "delta-villa",
+      "name": "Delta Villa",
+      "area": "250 m2",
+      "image": "/project-5.jpg",
+      "description": "Kalabalik aile yasamina uygun, yuksek metrekareli ve prestijli villa tasarimi.",
+      "features": {
+        "rooms": "5+2",
+        "bathrooms": "3",
+        "parking": "3 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "teony-house",
+      "slug": "loft-140",
+      "name": "Loft 140 Villa",
+      "area": "140 m2",
+      "image": "/loft-villa-1.jpg",
+      "description": "Loft kurgusuyla ferah ve yuksek tavanli yasam alani sunan villa modeli.",
+      "features": {
+        "rooms": "3+1",
+        "bathrooms": "2",
+        "parking": "1 Araclik",
+        "height": "3.20m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "teony-house",
+      "slug": "loft-170",
+      "name": "Loft 170 Villa",
+      "area": "170 m2",
+      "image": "/loft-villa-1.jpg",
+      "description": "Genis sosyal alanlar ve cagdas mimari detaylarla tasarlanmis loft villa.",
+      "features": {
+        "rooms": "3+1",
+        "bathrooms": "2",
+        "parking": "1 Araclik",
+        "height": "3.20m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "teony-house",
+      "slug": "loft-200",
+      "name": "Loft 200 Villa",
+      "area": "200 m2",
+      "image": "/loft-villa-1.jpg",
+      "description": "Yuksek tavan, genis hacim ve premium yasam deneyimini bir arada sunar.",
+      "features": {
+        "rooms": "4+1",
+        "bathrooms": "3",
+        "parking": "2 Araclik",
+        "height": "3.20m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "ofis-yapilari",
+      "slug": "ofis-300",
+      "name": "Ofis Yapisi 300",
+      "area": "300 m2",
+      "image": "/office-1.jpg",
+      "description": "Orta olcekli ekipler icin hizli kurulumlu, modern ofis yapisi.",
+      "features": {
+        "rooms": "Acik Ofis",
+        "bathrooms": "2",
+        "parking": "3 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "ofis-yapilari",
+      "slug": "ofis-500",
+      "name": "Ofis Yapisi 500",
+      "area": "500 m2",
+      "image": "/office-1.jpg",
+      "description": "Buyuyen ekipler icin toplanti, calisma ve sosyal alan dengesine sahip ofis cozumu.",
+      "features": {
+        "rooms": "Hibrit Plan",
+        "bathrooms": "3",
+        "parking": "5 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "ofis-yapilari",
+      "slug": "ofis-800",
+      "name": "Ofis Yapisi 800",
+      "area": "800 m2",
+      "image": "/office-1.jpg",
+      "description": "Kurumsal olcekli operasyonlar icin yuksek kapasiteli ofis yapisi.",
+      "features": {
+        "rooms": "Kurumsal Plan",
+        "bathrooms": "4",
+        "parking": "8 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "ticari-yapilar",
+      "slug": "ticari-250",
+      "name": "Ticari Yapi 250",
+      "area": "250 m2",
+      "image": "/commercial-1.jpg",
+      "description": "Magaza ve showroom ihtiyaclari icin hizli teslim ticari yapi cozumu.",
+      "features": {
+        "rooms": "Acik Alan",
+        "bathrooms": "2",
+        "parking": "4 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "ticari-yapilar",
+      "slug": "ticari-400",
+      "name": "Ticari Yapi 400",
+      "area": "400 m2",
+      "image": "/commercial-1.jpg",
+      "description": "Restoran ve kafe operasyonlarina uygun fonksiyonel ticari plan.",
+      "features": {
+        "rooms": "Moduler Plan",
+        "bathrooms": "2",
+        "parking": "6 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "ticari-yapilar",
+      "slug": "ticari-600",
+      "name": "Ticari Yapi 600",
+      "area": "600 m2",
+      "image": "/commercial-1.jpg",
+      "description": "Yuksek ziyaretci kapasitesi hedefleyen projeler icin genis ticari hacim.",
+      "features": {
+        "rooms": "Cok Amacli",
+        "bathrooms": "4",
+        "parking": "10 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "egitim-yapilari",
+      "slug": "egitim-400",
+      "name": "Egitim Yapisi 400",
+      "area": "400 m2",
+      "image": "/education-1.jpg",
+      "description": "Anaokulu ve kres projeleri icin guvenli ve moduler egitim yapisi.",
+      "features": {
+        "rooms": "6 Sinif",
+        "bathrooms": "4",
+        "parking": "3 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "egitim-yapilari",
+      "slug": "egitim-800",
+      "name": "Egitim Yapisi 800",
+      "area": "800 m2",
+      "image": "/education-1.jpg",
+      "description": "Ilkokul ve ortaokul olceginde hizli kurulabilir egitim kampusu cozumu.",
+      "features": {
+        "rooms": "12 Sinif",
+        "bathrooms": "6",
+        "parking": "6 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "egitim-yapilari",
+      "slug": "egitim-1200",
+      "name": "Egitim Yapisi 1200",
+      "area": "1200 m2",
+      "image": "/education-1.jpg",
+      "description": "Lise ve kurs merkezleri icin yuksek kapasiteli modern egitim yapisi.",
+      "features": {
+        "rooms": "18 Sinif",
+        "bathrooms": "8",
+        "parking": "10 Araclik",
+        "height": "3.00m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      }
+    },
+    {
+      "categorySlug": "tek-katli-celik-villalar",
+      "slug": "yeni-urun-1",
+      "name": "denemesss",
+      "area": "100 m2",
+      "image": "/placeholder.jpg",
+      "description": "Urun aciklamasi",
+      "features": {
+        "rooms": "2+1",
+        "bathrooms": "1",
+        "parking": "1 Araclik",
+        "height": "2.80m",
+        "deliveryTime": "6-8 Hafta",
+        "earthquakeResistance": "Yuksek Dayanim",
+        "energyClass": "A+",
+        "warranty": "20 Yil"
+      },
+      "highlights": [],
+      "gallery": [],
+      "technicalDetails": {},
+      "floorPlans": []
+    }
+  ]
+}

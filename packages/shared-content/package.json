@@ -1,0 +1,11 @@
+{
+  "name": "@mastersteelhouse/shared-content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./home-content": "./home-content.ts",
+    "./profil": "./profil.ts",
+    "./web-pages": "./web-pages.ts"
+  }
+}

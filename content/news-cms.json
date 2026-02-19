@@ -1,0 +1,180 @@
+{
+  "posts": [
+    {
+      "slug": "yeni-fabrika-acilisi",
+      "title": "Master Steel House Yeni Üretim Tesisi Hizmete Girdi",
+      "date": "25 Ocak 2024",
+      "location": "Gebze, Kocaeli",
+      "author": "Ahmet Yılmaz",
+      "category": "Kurumsal",
+      "readTime": "8 dk okuma",
+      "excerpt": "Toplam 15.000 m² kapalı alana sahip modern üretim tesisimiz, son teknoloji CNC makineleri ve otomasyon sistemleri ile üretim kapasitemizi 3 katına çıkardı.",
+      "image": "/news-1.jpg",
+      "featured": true,
+      "sections": [
+        {
+          "title": "15.000 m² Modern Üretim Tesisi Açıldı",
+          "content": "Master Steel House olarak, sektördeki 20 yıllık deneyimimizi taçlandıran yeni üretim tesisimizi Gebze Organize Sanayi Bölgesi'nde hizmete açtık.",
+          "image": "/uploads/media/5766688-1771257558635-339409.png",
+          "imagePlacement": {
+            "fit": "cover",
+            "x": 49.76736334140356,
+            "y": 79.02578236902643,
+            "zoom": 100
+          },
+          "imagePosition": "49.76736334140356% 79.02578236902643%"
+        },
+        {
+          "title": "Tesisin Özellikleri",
+          "content": "Toplam 15.000 m² kapalı alana sahip tesisimiz, 5.000 m² CNC üretim alanı, 3.000 m² boyama ve kaplama ünitesi, 2.000 m² kalite kontrol laboratuvarı ile tam donanımlı bir yapıya sahiptir.",
+          "imagePlacement": {
+            "fit": "cover",
+            "x": 50,
+            "y": 50,
+            "zoom": 100
+          },
+          "imagePosition": "50% 50%"
+        },
+        {
+          "title": "Üretim Kapasitesi",
+          "content": "Yeni tesisimizle birlikte üretim kapasitemizi 3 katına çıkararak, yıllık 500 proje üretim kapasitesine ulaştık. Bu sayede müşterilerimize daha hızlı teslimat yapabilecek ve daha fazla projeye imza atabileceğiz.",
+          "imagePlacement": {
+            "fit": "cover",
+            "x": 50,
+            "y": 50,
+            "zoom": 100
+          },
+          "imagePosition": "50% 50%"
+        }
+      ],
+      "gallery": [
+        "/news-1.jpg",
+        "/production-software.jpg",
+        "/quality-assurance.jpg",
+        "/uploads/media/5766688-1771257558635-339409.png"
+      ],
+      "imagePlacementHero": {
+        "fit": "cover",
+        "x": 50,
+        "y": 50,
+        "zoom": 100
+      },
+      "imagePosition": "57.01110839843751% 84.56380208333333%",
+      "imagePlacementCard": {
+        "fit": "cover",
+        "x": 57.01110839843751,
+        "y": 84.56380208333333,
+        "zoom": 100
+      }
+    },
+    {
+      "slug": "uluslararasi-odul",
+      "title": "Uluslararası Mimarlık Ödülünü Kazandık",
+      "date": "18 Ocak 2024",
+      "location": "Paris, Fransa",
+      "author": "Kurumsal İletişim",
+      "category": "Başarı",
+      "readTime": "5 dk okuma",
+      "excerpt": "Antalya Belek'teki lüks villa projemiz, Avrupa Çelik Yapı Derneği tarafından Yılın En İyi Konut Projesi seçildi.",
+      "image": "/news-2.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Ödül Töreni",
+          "content": "Paris'te düzenlenen törende, yenilikçi yaklaşımımız ve sürdürülebilir malzeme kullanımımız jüri tarafından öne çıkarıldı."
+        },
+        {
+          "title": "Proje Detayı",
+          "content": "Ödül alan projede enerji verimliliği, dayanıklılık ve modern tasarım kriterleri birlikte ele alındı."
+        }
+      ],
+      "gallery": [
+        "/news-2.jpg"
+      ]
+    },
+    {
+      "slug": "yeni-showroom",
+      "title": "İstanbul Maslak'ta Yeni Showroom Açıldı",
+      "date": "12 Ocak 2024",
+      "location": "Maslak, İstanbul",
+      "author": "Pazarlama Ekibi",
+      "category": "Duyuru",
+      "readTime": "4 dk okuma",
+      "excerpt": "500 m²'lik showroom alanımızda, çelik yapı modellerimizi, malzeme örneklerini ve 3D görselleri ziyaretçilerimizle buluşturuyoruz.",
+      "image": "/steel-structure.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Ziyaret Bilgisi",
+          "content": "Yeni showroomumuz hafta içi ve cumartesi günleri ziyaretçilere açıktır. Uzman ekiplerimiz proje danışmanlığı sunmaktadır."
+        }
+      ],
+      "gallery": [
+        "/steel-structure.jpg"
+      ]
+    },
+    {
+      "slug": "iso-sertifika-yenileme",
+      "title": "ISO 9001:2015 ve ISO 14001 Sertifikalarımız Yenilendi",
+      "date": "5 Ocak 2024",
+      "location": "Ankara, Türkiye",
+      "author": "Kalite Birimi",
+      "category": "Kurumsal",
+      "readTime": "4 dk okuma",
+      "excerpt": "Kalite ve çevre yönetim sistemlerimiz uluslararası standartlara uygunluğunu bir kez daha kanıtladı.",
+      "image": "/quality-assurance.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Denetim Süreci",
+          "content": "Bağımsız denetim kuruluşu tarafından gerçekleştirilen denetim sonucunda tüm süreçlerimizin standartlara uygunluğu onaylandı."
+        }
+      ],
+      "gallery": [
+        "/quality-assurance.jpg"
+      ]
+    },
+    {
+      "slug": "500-proje-barajini-gecti",
+      "title": "Türkiye Genelinde 500. Projeyi Tamamladık",
+      "date": "28 Aralık 2023",
+      "location": "İzmir, Türkiye",
+      "author": "Yönetim",
+      "category": "Başarı",
+      "readTime": "6 dk okuma",
+      "excerpt": "20 yıllık serüvenimizde, 81 ilin 65'inde toplam 500'den fazla projeye imza attık ve binlerce aileye ev sahibi olduk.",
+      "image": "/project-1.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Kilometre Taşı",
+          "content": "500. proje ile birlikte üretim, montaj ve satış sonrası süreçlerde geliştirdiğimiz standartlarımızı daha da güçlendirdik."
+        }
+      ],
+      "gallery": [
+        "/project-1.jpg"
+      ]
+    },
+    {
+      "slug": "yeni-teknoloji-yatirim",
+      "title": "Robotik Üretim Hattına 10 Milyon TL Yatırım",
+      "date": "20 Aralık 2023",
+      "location": "Gebze, Kocaeli",
+      "author": "Ar-Ge ve Üretim",
+      "category": "Yatırım",
+      "readTime": "5 dk okuma",
+      "excerpt": "Üretim süreçlerimizde robotik sistemlere geçiş ile hata oranını %0.1'e düşürdük ve kalite standartlarımızı artırdık.",
+      "image": "/production-software.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Yeni Hat Özellikleri",
+          "content": "Robotik üretim hattı ile birlikte süreç tekrarlanabilirliği ve hassasiyet önemli ölçüde iyileştirildi."
+        }
+      ],
+      "gallery": [
+        "/production-software.jpg"
+      ]
+    }
+  ]
+}

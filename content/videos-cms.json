@@ -1,0 +1,43 @@
+{
+  "hero": {
+    "title": "Videolar",
+    "description": "Master Steel House projelerinden videolar"
+  },
+  "items": [
+    {
+      "id": "video-1",
+      "title": "Fabrika Tanıtım Videosu",
+      "description": "Üretim yerimiz | Master Steel House Hafif Çelik Profil Üretim Tesisi",
+      "format": "landscape",
+      "youtubeUrl": "https://youtu.be/UAaaWYoi38Y?si=ZsSVBeNdk1yLSeuj"
+    },
+    {
+      "id": "video-2",
+      "title": "Üretim yerimizden görüntüler",
+      "description": "Sahadaki montaj adımlarını izleyin.",
+      "format": "landscape",
+      "youtubeUrl": "https://youtu.be/c0x_SkODvq0?si=g-Yl7sUUKKKrQB9H"
+    },
+    {
+      "id": "video-3",
+      "title": "Müşteri Deneyimleri",
+      "description": "Teslim sonrası müşteri görüşlerinden derleme.",
+      "format": "portrait",
+      "youtubeUrl": "https://youtube.com/shorts/vOdqB5eXYlw?si=EGomMYNIN3HHA3z1"
+    },
+    {
+      "id": "video-4",
+      "title": "Üretim Tesisi Turu",
+      "description": "Tesis içinde üretim hattı turu.",
+      "format": "portrait",
+      "youtubeUrl": "https://youtube.com/shorts/1vpgC9Ah0x8?si=QyEns2falzi8pWxU"
+    },
+    {
+      "id": "video-1771408314073-c1605d",
+      "title": "Nakliye",
+      "description": "Açıklama örnek",
+      "format": "portrait",
+      "youtubeUrl": "https://youtube.com/shorts/KITe6RljB1o?si=sUK7mpjuJyFyuXcU"
+    }
+  ]
+}

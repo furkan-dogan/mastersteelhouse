@@ -1,0 +1,26 @@
+{
+  "hero": {
+    "badge": "Belgelerimiz",
+    "title": "Kalite ve",
+    "titleAccent": "Guven",
+    "description": "Sahip oldugumuz uluslararasi sertifikalar ve kalite belgelerimiz ile musterilerimize guven veriyoruz."
+  },
+  "items": [
+    {
+      "id": "doc-1",
+      "title": "ISO 9001:2015",
+      "subtitle": "Kalite Yonetim Sistemi",
+      "description": "Urun ve hizmet kalitesinin surekli iyilestirilmesi icin uluslararasi standartlara uygunluk belgesi.",
+      "pdfUrl": "/uploads/media/sqr-certification-iso-9001-1771514224414-238005.jpeg"
+    }
+  ],
+  "features": [
+    "Uluslararasi kalite standartlarina tam uyum",
+    "Duzenli denetim ve sertifika yenilemeleri",
+    "Cevre dostu ve surdurulebilir uretim",
+    "Is guvenligi oncelikli calisma ortami",
+    "Avrupa pazarina ihracat yetkisi",
+    "Deprem yonetmeligine tam uygunluk"
+  ],
+  "footerNote": "Tum belgelerimiz duzenli olarak denetleniyor ve yenileniyor. Kalite standartlarimizdan asla odun vermiyoruz."
+}

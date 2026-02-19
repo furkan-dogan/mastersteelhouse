@@ -3,28 +3,80 @@
 import { CheckCircle2, TrendingUp, Users2, Lightbulb, Play, Pause } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import type { AboutContent } from '@mastersteelhouse/shared-content/home-content'
 
-const iconMap = {
-  CheckCircle2,
-  TrendingUp,
-  Users2,
-  Lightbulb,
-} as const
+const features = [
+  {
+    icon: CheckCircle2,
+    title: 'Kalite Garantisi',
+    description: 'Avrupa standartlarında malzeme ve işçilik garantisi sunuyoruz.',
+    image: '/quality-assurance.jpg'
+  },
+  {
+    icon: TrendingUp,
+    title: 'Sürekli Gelişim',
+    description: 'Sektördeki yenilikleri takip ediyor, teknolojiye yatırım yapıyoruz.',
+    image: '/development.jpg'
+  },
+  {
+    icon: Users2,
+    title: 'Uzman Ekip',
+    description: 'Alanında uzman mühendis ve teknik ekibimizle hizmetinizdeyiz.',
+    image: '/expert-team.jpg'
+  },
+  {
+    icon: Lightbulb,
+    title: 'Yenilikçi Çözümler',
+    description: 'Her projeye özel, yaratıcı ve modern çözümler üretiyoruz.',
+    image: '/innovation.jpg'
+  },
+]
 
-type AboutSectionProps = {
-  content: AboutContent
-}
+const stats = [
+  { value: '20+', label: 'Yıllık Deneyim' },
+  { value: '500+', label: 'Tamamlanan Proje' },
+  { value: '50+', label: 'Uzman Personel' },
+  { value: '%100', label: 'Müşteri Memnuniyeti' },
+]
 
-export function AboutSection({ content }: AboutSectionProps) {
-  const features = content.features
-  const stats = content.stats
-  const timeline = content.timeline
+const timeline = [
+  { 
+    step: '01', 
+    title: 'Danışmanlık', 
+    description: 'Projenizi dinliyor, ihtiyaçlarınızı analiz ediyor ve size en uygun çözümü sunuyoruz.',
+    image: '/process-consulting.jpg',
+    icon: '🎯'
+  },
+  { 
+    step: '02', 
+    title: 'Tasarım Süreci', 
+    description: '3D modelleme ile mimari tasarım ve statik hesaplamalarınızı yapıyoruz.',
+    image: '/process-design.jpg',
+    icon: '📐'
+  },
+  { 
+    step: '03', 
+    title: 'Üretim Süreci', 
+    description: 'Modern fabrikamızda CNC teknolojisi ile hassas üretim gerçekleştiriyoruz.',
+    image: '/process-production.jpg',
+    icon: '⚙️'
+  },
+  { 
+    step: '04', 
+    title: 'Şantiye Ve Montaj Aşaması', 
+    description: 'Deneyimli montaj ekibimiz ile sahada hızlı ve güvenli kurulum yapıyoruz.',
+    image: '/process-assembly.jpg',
+    icon: '🏗️'
+  },
+  { 
+    step: '05', 
+    title: 'Lojistik Ve Sevkiyat Süreci', 
+    description: 'Özel araçlarımızla güvenli taşıma ve zamanında teslimat garantisi veriyoruz.',
+    image: '/process-logistics.jpg',
+    icon: '🚚'
+  },
+]
 
-  if (features.length === 0) {
-    return null
-  }
-
+export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false)
   const [countedStats, setCountedStats] = useState<number[]>([])
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
@@ -85,15 +137,16 @@ export function AboutSection({ content }: AboutSectionProps) {
         <div className="max-w-3xl mx-auto text-center mb-20">
           <div className="inline-block mb-4">
             <span className="px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium border border-accent/20 animate-pulse">
-              {content.badge}
+              Hakkımızda
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-            {content.title}{' '}
-            <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">{content.titleAccent}</span>
+            Çelik Yapıda{' '}
+            <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">20 Yılın Tecrübesi</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-balance">
-            {content.description}
+            2004 yılından bu yana çelik yapı sektöründe lider konumdayız. Modern teknoloji ve uzman ekibimizle
+            projelerinizi hayata geçiriyoruz.
           </p>
         </div>
 
@@ -111,7 +164,7 @@ export function AboutSection({ content }: AboutSectionProps) {
                 muted
                 playsInline
               >
-                <source src={content.videoUrl} type="video/mp4" />
+                <source src="https://cdn.coverr.co/videos/coverr-steel-construction-site-9893/1080p.mp4" type="video/mp4" />
               </video>
 
               {/* Image Overlay that changes based on hovered or active feature */}
@@ -172,7 +225,7 @@ export function AboutSection({ content }: AboutSectionProps) {
           <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
             <div className="space-y-6">
               {features.map((feature, index) => {
-                const Icon = iconMap[feature.icon] ?? CheckCircle2
+                const Icon = feature.icon
                 const isHovered = hoveredFeature === index
                 
                 return (
@@ -344,13 +397,13 @@ export function AboutSection({ content }: AboutSectionProps) {
           <div className="mt-20 text-center">
             <div className="inline-flex flex-col items-center gap-4 p-8 rounded-3xl bg-gradient-to-br from-accent/5 to-accent/10 border border-accent/20">
               <p className="text-lg font-semibold text-foreground">
-                {content.ctaText}
+                Projeniz için detaylı bilgi almak ister misiniz?
               </p>
               <a 
                 href="#contact"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/80 text-accent-foreground font-semibold hover:shadow-xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105"
               >
-                {content.ctaButton}
+                Hemen İletişime Geçin
               </a>
             </div>
           </div>

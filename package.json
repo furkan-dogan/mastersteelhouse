@@ -2,44 +2,15 @@
   "name": "mastersteelhouse",
   "version": "0.1.0",
   "private": true,
-<<<<<<< Updated upstream
-=======
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
->>>>>>> Stashed changes
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "watch-export": "watch 'next build' src public",
-    "serve": "http-server ./out"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.5.1",
-    "@fortawesome/free-brands-svg-icons": "^6.5.1",
-    "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@next/third-parties": "14.1.1",
-    "@sentry/nextjs": "^7.106.0",
-    "bootstrap": "^5.3.2",
-    "next": "14.1.1",
-    "react": "^18",
-    "react-bootstrap": "^2.10.1",
-    "react-dom": "^18",
-    "react-floating-whatsapp": "^5.0.8",
-    "react-lazyload-youtube": "^1.0.8",
-    "react-responsive": "^9.0.2",
-    "react-scroll-up": "^1.4.0",
-    "yet-another-react-lightbox": "^3.22.0"
-  },
-  "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0",
-    "http-server": "^14.1.1",
-    "sass": "^1.70.0",
-    "watch": "^1.0.2"
+    "dev:web": "pnpm --filter mastersteelhouse-web dev",
+    "dev:admin": "pnpm --filter mastersteelhouse-admin dev",
+    "build:web": "pnpm --filter mastersteelhouse-web build",
+    "build:admin": "pnpm --filter mastersteelhouse-admin build",
+    "lint": "pnpm -r --if-present lint"
   }
 }

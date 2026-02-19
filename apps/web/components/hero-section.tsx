@@ -1,42 +1,60 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ArrowRight, ChevronLeft, ChevronRight, Play, Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react'
-import { useEffect, useState, useCallback } from 'react'
+import { ArrowRight, Shield, Zap, Award, ChevronLeft, ChevronRight, Play, Facebook, Instagram, Twitter, Youtube } from 'lucide-react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import Image from 'next/image'
-import type { HeroControls, HeroSlide } from '@mastersteelhouse/shared-content/home-content'
 
-type HeroSectionProps = {
-  slides: HeroSlide[]
-  controls: HeroControls
-}
+const slides = [
+  {
+    id: 1,
+    image: '/hero-slide-1.jpg',
+    badge: '20+ Yıllık Deneyim',
+    title: ['Gücü ve Estetiği', 'Buluşturan', 'Çelik Yapılar'],
+    description: 'Modern mimari ve çelik konstrüksiyonun mükemmel birleşimi. Hayalinizdeki lüks villayı depreme dayanıklı çelik yapı ile inşa edin.',
+    cta: 'Villa Projelerimiz',
+    highlight: 'Konut Projeleri',
+    features: ['Lüks Tasarım', 'Deprem Güvenli', 'Hızlı Teslim'],
+  },
+  {
+    id: 2,
+    image: '/hero-slide-2.jpg',
+    badge: 'Profesyonel Montaj',
+    title: ['Güvenilir ve Hızlı', 'Çelik Yapı', 'Çözümleri'],
+    description: 'ISO standartlarında üretim ve profesyonel montaj hizmetleri. Projelerinizi zamanında ve kaliteli şekilde teslim ediyoruz.',
+    cta: 'Hizmetlerimizi Keşfedin',
+    highlight: 'Kurumsal Çözümler',
+    features: ['ISO 9001', 'Uzman Ekip', '7/24 Destek'],
+  },
+  {
+    id: 3,
+    image: '/hero-slide-3.jpg',
+    badge: 'Ticari Yapılar',
+    title: ['Modern ve Fonksiyonel', 'Ticari', 'Binalar'],
+    description: 'Ofis binaları, showroom ve ticari tesisler için özel çelik konstrüksiyon çözümleri. Enerji verimliliği ve estetik bir arada.',
+    cta: 'Ticari Projeler',
+    highlight: 'İş Dünyasına Özel',
+    features: ['Enerji Tasarrufu', 'Geniş Açıklık', 'Esnek Tasarım'],
+  },
+  {
+    id: 4,
+    image: '/hero-slide-4.jpg',
+    badge: 'Kalite ve Güvenilirlik',
+    title: ['Mükemmel İşçilik', 'En Kaliteli', 'Malzemeler'],
+    description: 'Her detayda mükemmellik. Galvanizli çelik, sertifikalı malzemeler ve uzman işçilikle 50 yıl garanti veriyoruz.',
+    cta: 'Kalitemizi Görün',
+    highlight: '50 Yıl Garanti',
+    features: ['TSE Belgeli', 'CE Sertifikalı', 'Kalite Kontrol'],
+  },
+]
 
-const socialIconMap = {
-  Instagram,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Youtube,
-} as const
-
-const socialColorMap: Record<string, string> = {
-  instagram: 'from-pink-500 to-purple-600',
-  facebook: 'from-blue-600 to-blue-700',
-  twitter: 'from-sky-400 to-sky-600',
-  linkedin: 'from-blue-700 to-blue-800',
-  youtube: 'from-red-600 to-red-700',
-  accent: 'from-accent to-accent/80',
-}
-
-export function HeroSection({ slides, controls }: HeroSectionProps) {
-  if (!slides || slides.length === 0) {
-    return null
-  }
-
+export function HeroSection() {
+  const heroRef = useRef<HTMLElement | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [direction, setDirection] = useState<'next' | 'prev'>('next')
   const [progress, setProgress] = useState(0)
+  const [isPastHero, setIsPastHero] = useState(false)
 
   const nextSlide = useCallback(() => {
     if (isAnimating) return
@@ -80,10 +98,37 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
     return () => clearInterval(interval)
   }, [nextSlide])
 
+  useEffect(() => {
+    const target = heroRef.current
+    if (!target) return
+
+    let ticking = false
+    const handleWindowScroll = () => {
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(() => {
+        const rect = target.getBoundingClientRect()
+        // Slider bölgesi neredeyse tamamen çıkınca ikonları koyu moda al.
+        const switchPoint = Math.max(120, window.innerHeight * 0.18)
+        setIsPastHero(rect.bottom <= switchPoint)
+        ticking = false
+      })
+    }
+
+    handleWindowScroll()
+    window.addEventListener('scroll', handleWindowScroll, { passive: true })
+    window.addEventListener('resize', handleWindowScroll)
+    return () => {
+      window.removeEventListener('scroll', handleWindowScroll)
+      window.removeEventListener('resize', handleWindowScroll)
+    }
+  }, [])
+
+  const currentSlideData = slides[currentSlide]
   const nextSlideIndex = (currentSlide + 1) % slides.length
 
   return (
-    <section className="relative h-screen overflow-hidden bg-black">
+    <section ref={heroRef} className="relative h-screen overflow-hidden bg-black">
       {/* Main Slides Container */}
       <div className="relative h-full">
         {slides.map((slide, index) => {
@@ -110,7 +155,6 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
                     alt={slide.title.join(' ')}
                     fill
                     className="object-cover"
-                    style={{ objectPosition: slide.imagePosition ?? "50% 50%" }}
                     priority={index === 0}
                   />
                 </div>
@@ -147,10 +191,10 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
 
               {/* Content Container */}
               <div className="relative h-full flex items-center z-20">
-                <div className="container mx-auto px-4">
+                <div className="container mx-auto px-4 pl-20 sm:pl-24 md:pl-28 lg:pl-32">
                   <div className="max-w-4xl">
                     {/* Title with Split Text Animation */}
-                    <h1 className="text-5xl md:text-6xl lg:text-8xl font-bold mb-6 leading-[1.1]">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.1]">
                       {slide.title.map((line, i) => (
                         <div
                           key={i}
@@ -231,24 +275,22 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
                         size="lg"
                         className="bg-accent hover:bg-accent/90 text-accent-foreground group h-14 px-8 text-base shadow-2xl shadow-accent/50 hover:shadow-accent/70 transition-all hover:scale-105"
                       >
-                        <a href={controls.primaryCtaHref} className="flex items-center gap-2">
+                        <a href="#contact" className="flex items-center gap-2">
                           {slide.cta}
                           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </a>
                       </Button>
-                      {controls.secondaryCtaLabel && (
-                        <Button
-                          asChild
-                          size="lg"
-                          variant="outline"
-                          className="border-2 border-white/40 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 h-14 px-8 text-base group"
-                        >
-                          <a href={controls.secondaryCtaHref} className="flex items-center gap-2">
-                            <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                            {controls.secondaryCtaLabel}
-                          </a>
-                        </Button>
-                      )}
+                      <Button
+                        asChild
+                        size="lg"
+                        variant="outline"
+                        className="border-2 border-white/40 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 h-14 px-8 text-base group"
+                      >
+                        <a href="#about" className="flex items-center gap-2">
+                          <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                          Daha Fazla Bilgi
+                        </a>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -267,11 +309,11 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
       </div>
 
       {/* Navigation Controls */}
-      <div className="absolute left-8 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-4">
+      <div className="absolute left-4 bottom-28 z-30 flex flex-row gap-3 xl:left-8 xl:bottom-auto xl:top-1/2 xl:-translate-y-1/2 xl:flex-col xl:gap-4">
         <button
           onClick={prevSlide}
           disabled={isAnimating}
-          className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-accent/50 transition-all duration-300 disabled:opacity-50 hover:scale-110 group"
+          className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-accent/50 transition-all duration-300 disabled:opacity-50 hover:scale-110 group md:w-14 md:h-14"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
@@ -279,7 +321,7 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
         <button
           onClick={nextSlide}
           disabled={isAnimating}
-          className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-accent/50 transition-all duration-300 disabled:opacity-50 hover:scale-110 group"
+          className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-accent/50 transition-all duration-300 disabled:opacity-50 hover:scale-110 group md:w-14 md:h-14"
           aria-label="Next slide"
         >
           <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
@@ -343,29 +385,42 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
       <div className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-30 flex-col gap-3">
         {/* Follow Label */}
         <div className="relative group">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/90 to-accent backdrop-blur-xl border border-accent-foreground/20 flex items-center justify-center shadow-2xl shadow-accent/50 cursor-pointer transition-all duration-500 hover:scale-110 hover:rotate-6">
+          <div
+            className={`w-14 h-14 rounded-2xl border flex items-center justify-center cursor-pointer transition-all duration-500 hover:scale-110 hover:rotate-6 ${
+              isPastHero
+                ? 'bg-gradient-to-br from-accent to-accent/80 border-accent/40 shadow-xl shadow-accent/30'
+                : 'bg-gradient-to-br from-accent/90 to-accent backdrop-blur-xl border-accent-foreground/20 shadow-2xl shadow-accent/50'
+            }`}
+          >
             <span className="text-[10px] font-bold text-primary tracking-wider [writing-mode:vertical-lr] rotate-180">
-              {controls.followLabel}
+              TAKİP
             </span>
           </div>
           <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
             <div className="bg-accent text-primary px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-xl">
-              {controls.followTooltip}
+              Bizi Takip Edin!
             </div>
           </div>
         </div>
 
         {/* Separator Line */}
-        <div className="w-0.5 h-6 bg-gradient-to-b from-accent/60 via-accent/30 to-transparent mx-auto" />
+        <div className={`w-0.5 h-6 mx-auto transition-colors duration-300 ${
+          isPastHero
+            ? 'bg-gradient-to-b from-black/40 via-black/20 to-transparent'
+            : 'bg-gradient-to-b from-accent/60 via-accent/30 to-transparent'
+        }`} />
 
         {/* Social Media Buttons */}
-        {controls.followLinks.map((social, index) => {
-          const Icon = socialIconMap[social.icon]
-          const tone = socialColorMap[social.color] ?? socialColorMap.accent
-          if (!Icon) return null
+        {[
+          { icon: Instagram, href: 'https://www.instagram.com/mastersteelhouse', label: 'Instagram', color: 'from-pink-500 to-purple-600' },
+          { icon: Facebook, href: 'https://www.facebook.com/mastersteelhous/', label: 'Facebook', color: 'from-blue-600 to-blue-700' },
+          { icon: Twitter, href: 'https://x.com/mastersteelhous', label: 'X', color: 'from-sky-400 to-sky-600' },
+          { icon: Youtube, href: 'https://www.youtube.com/@mastersteelhouse', label: 'YouTube', color: 'from-red-600 to-red-700' },
+        ].map((social, index) => {
+          const Icon = social.icon
           return (
             <a
-              key={`${social.name}-${social.href}`}
+              key={social.label}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
@@ -373,15 +428,27 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div
-                className={`w-12 h-12 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center transition-all duration-500 hover:scale-125 hover:rotate-12 hover:shadow-2xl group-hover:bg-gradient-to-br ${tone} group-hover:border-transparent`}
+                className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 hover:scale-125 hover:rotate-12 hover:shadow-2xl group-hover:bg-gradient-to-br group-hover:${social.color} group-hover:border-transparent ${
+                  isPastHero
+                    ? 'bg-black/10 border border-black/20'
+                    : 'bg-white/10 backdrop-blur-xl border border-white/20'
+                }`}
               >
-                <Icon className="w-5 h-5 text-white transition-all duration-300 group-hover:scale-110" />
+                <Icon
+                  className={`w-5 h-5 transition-all duration-300 group-hover:scale-110 ${
+                    isPastHero ? 'text-black/75 group-hover:text-white' : 'text-white'
+                  }`}
+                />
               </div>
-
+              
               {/* Tooltip */}
               <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                <div className="bg-background text-foreground px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-xl border border-border">
-                  {social.name}
+                <div
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-xl border ${
+                    isPastHero ? 'bg-card text-foreground border-border' : 'bg-background text-foreground border-border'
+                  }`}
+                >
+                  {social.label}
                 </div>
               </div>
 
@@ -392,14 +459,20 @@ export function HeroSection({ slides, controls }: HeroSectionProps) {
         })}
 
         {/* Bottom Separator */}
-        <div className="w-0.5 h-6 bg-gradient-to-t from-accent/60 via-accent/30 to-transparent mx-auto" />
+        <div className={`w-0.5 h-6 mx-auto transition-colors duration-300 ${
+          isPastHero
+            ? 'bg-gradient-to-t from-black/40 via-black/20 to-transparent'
+            : 'bg-gradient-to-t from-accent/60 via-accent/30 to-transparent'
+        }`} />
 
         {/* Animated Dots */}
         <div className="flex flex-col gap-1.5 items-center">
           {[0, 1, 2].map((_, i) => (
             <div
               key={i}
-              className="w-1.5 h-1.5 rounded-full bg-accent/40 animate-pulse"
+              className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-300 ${
+                isPastHero ? 'bg-black/35' : 'bg-accent/40'
+              }`}
               style={{ animationDelay: `${i * 200}ms` }}
             />
           ))}

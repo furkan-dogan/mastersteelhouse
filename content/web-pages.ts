@@ -93,7 +93,7 @@ const DEFAULT_REFERENCES: WebPageContent = {
     "Çok Katlı Çelik Villalar",
     "Loftlu Çelik Villalar",
     "İkiz Villalar",
-    "Teony House",
+    "Tiny House",
   ],
   items: [
     {

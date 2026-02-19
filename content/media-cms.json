@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "id": "media-1771514224415-3acdc0ec",
+      "name": "sqr_certification_iso_9001.jpeg",
+      "type": "image",
+      "mimeType": "image/jpeg",
+      "size": 86018,
+      "url": "/uploads/media/sqr-certification-iso-9001-1771514224414-238005.jpeg",
+      "createdAt": "2026-02-19T15:17:04.415Z"
+    },
+    {
+      "id": "media-1771338462321-9126c13d",
+      "name": "Master Steel House Hafif Çelik Sistemleri Katalog.pdf",
+      "type": "document",
+      "mimeType": "application/pdf",
+      "size": 17716475,
+      "url": "/uploads/media/master-steel-house-hafif-celik-sistemleri-katalog-1771338462283-dbf97d.pdf",
+      "createdAt": "2026-02-17T14:27:42.321Z"
+    },
+    {
+      "id": "media-1771257558636-a57e401c",
+      "name": "5766688.png",
+      "type": "image",
+      "mimeType": "image/png",
+      "size": 19370,
+      "url": "/uploads/media/5766688-1771257558635-339409.png",
+      "createdAt": "2026-02-16T15:59:18.636Z"
+    }
+  ]
+}

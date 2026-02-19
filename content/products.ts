@@ -13,13 +13,16 @@ export type ProductSeed = {
   name: string
   size?: string
   image: string
+  /** Proje goruntuleri galerisi - bos ise ana goruntu kullanilir */
+  gallery?: string[]
+  /** Kroki / kat plani goruntuleri - bagimsiz bolum */
+  blueprints?: string[]
   rooms?: string
   bathrooms?: string
   capacity?: string
   usageType?: string
   description: string
   highlights: string[]
-  specs?: { label: string; value: string }[]
 }
 
 export const DEFAULT_CATEGORIES: ProductCategorySeed[] = [
@@ -58,9 +61,9 @@ export const DEFAULT_CATEGORIES: ProductCategorySeed[] = [
   },
   {
     slug: "teony-house",
-    name: "Teony House",
+    name: "Tiny House",
     eyebrow: "Tiny House",
-    title: "Teony",
+    title: "Tiny",
     titleAccent: "House",
     description: "Kompakt, fonksiyonel ve modern mini evler.",
   },
@@ -96,7 +99,15 @@ export const DEFAULT_PRODUCTS: ProductSeed[] = [
     slug: "kugu-villa",
     name: "Kugu Villa",
     size: "100 m²",
-    image: "/villa-kugu.jpg",
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+    gallery: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200",
+      "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=1200",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200",
+    ],
+    blueprints: ["/blueprint-villa-100.svg", "/blueprint-villa-2.svg"],
     rooms: "2+1",
     bathrooms: "1",
     description:
@@ -107,21 +118,21 @@ export const DEFAULT_PRODUCTS: ProductSeed[] = [
       "Enerji verimli tasarim",
       "Ses ve isi yalitimi",
     ],
-    specs: [
-      { label: "Kat Yuksekligi", value: "2.80 m" },
-      { label: "Cati", value: "Kumsuz Metal Kiremit" },
-      { label: "Dis Duvar Iskeleti", value: "14 cm celik karkas icinde tas yunu izolasyon" },
-      { label: "Ic Duvar Iskeleti", value: "9 cm celik karkas icinde tas yunu izolasyon" },
-      { label: "Dis Cephe", value: "Nem bariyeri + boardex + mineral siva + cift kat silikonlu boya" },
-      { label: "Ic Cephe", value: "OSB uzeri alcipan + cift kat silikonlu boya" },
-    ],
   },
   {
     categorySlug: "tek-katli-celik-villalar",
     slug: "atlas-villa",
     name: "Atlas Villa",
     size: "100 m²",
-    image: "/villa-atlas.jpg",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
+    gallery: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200",
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200",
+      "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=1200",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200",
+    ],
+    blueprints: ["/blueprint-villa-100.svg", "/blueprint-villa-2.svg"],
     rooms: "2+1",
     bathrooms: "1",
     description:
@@ -285,7 +296,7 @@ export const DEFAULT_PRODUCTS: ProductSeed[] = [
   {
     categorySlug: "teony-house",
     slug: "teony-35",
-    name: "Teony 35",
+    name: "Tiny 35",
     size: "35 m²",
     image: "/tiny-house-1.jpg",
     rooms: "1",
@@ -296,7 +307,7 @@ export const DEFAULT_PRODUCTS: ProductSeed[] = [
   {
     categorySlug: "teony-house",
     slug: "teony-45",
-    name: "Teony 45",
+    name: "Tiny 45",
     size: "45 m²",
     image: "/tiny-house-1.jpg",
     rooms: "2",
@@ -307,7 +318,7 @@ export const DEFAULT_PRODUCTS: ProductSeed[] = [
   {
     categorySlug: "teony-house",
     slug: "teony-55",
-    name: "Teony 55",
+    name: "Tiny 55",
     size: "55 m²",
     image: "/tiny-house-1.jpg",
     rooms: "2",

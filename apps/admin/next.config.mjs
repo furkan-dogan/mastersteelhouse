@@ -1,9 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  transpilePackages: ["@mastersteelhouse/shared-content"],
-}
+const nextConfig = {}
 
 export default nextConfig

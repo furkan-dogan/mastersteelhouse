@@ -1,0 +1,152 @@
+{
+  "posts": [
+    {
+      "slug": "celik-yapi-avantajlari",
+      "title": "Çelik Yapıların Avantajları ve Modern İnşaattaki Yeri",
+      "date": "25 Ocak 2024",
+      "author": "Mühendislik Ekibi",
+      "category": "Teknik",
+      "readTime": "8 dk",
+      "excerpt": "Çelik yapılar, modern inşaat sektöründe hızla öne çıkan bir yapı sistemi haline geldi. Deprem dayanıklılığı, hızlı montaj süreleri ve ekonomik avantajları ile öne çıkan çelik yapıların tüm detaylarını inceleyelim.",
+      "image": "/blog-1.jpg",
+      "sections": [
+        {
+          "title": "Çelik Yapı Nedir?",
+          "content": "Çelik yapılar, taşıyıcı sistem elemanlarının çelikten oluştuğu modern yapı sistemleridir. Geleneksel yöntemlere göre daha hafif, daha hızlı kurulabilen ve yüksek mukavemet sunan bir çözümdür.",
+          "image": "/uploads/media/5766688-1771257558635-339409.png",
+          "imagePosition": "50% 20%"
+        },
+        {
+          "title": "Neden Tercih Ediliyor?",
+          "content": "Deprem dayanımı, hızlı montaj, kalite kontrolünün fabrikada yapılabilmesi ve uzun ömürlü kullanım, çelik yapıların öne çıkmasının ana nedenleridir. Proje süresi kısalırken maliyet yönetimi de daha öngörülebilir olur.",
+          "imagePosition": "50% 50%"
+        },
+        {
+          "title": "Hangi Projelerde Kullanılır?",
+          "content": "Tek katlı ve çok katlı villalar, ticari yapılar, eğitim yapıları ve ofisler dahil olmak üzere geniş bir kullanım alanına sahiptir. Esnek planlama ile farklı ihtiyaçlara kolayca uyarlanabilir.",
+          "imagePosition": "50% 50%"
+        }
+      ]
+    },
+    {
+      "slug": "enerji-verimli-yapi",
+      "title": "Enerji Verimli Çelik Ev Yapımı: Sürdürülebilir Mimari",
+      "date": "20 Ocak 2024",
+      "author": "Ar-Ge Departmanı",
+      "category": "Sürdürülebilirlik",
+      "readTime": "6 dk",
+      "excerpt": "Çelik yapılarda enerji verimliliği nasıl sağlanır? Yalıtım teknikleri, akıllı sistemler ve yeşil bina yaklaşımlarını ele alıyoruz.",
+      "image": "/blog-2.jpg",
+      "sections": [
+        {
+          "title": "Isı Yalıtım Katmanları",
+          "content": "Doğru duvar ve çatı katmanları, çelik yapılarda enerji veriminin temelidir. Taşyünü ve buhar dengeleyici katmanlarla mevsimsel kayıplar azaltılır."
+        },
+        {
+          "title": "Mekanik Sistem Seçimi",
+          "content": "Isı pompası, verimli iklimlendirme cihazları ve akıllı termostatlar enerji tüketimini azaltır. Sistem seçimi bina kabuğu performansı ile birlikte ele alınmalıdır."
+        },
+        {
+          "title": "Uzun Vadeli Kazanç",
+          "content": "İlk yatırım maliyeti dışında işletme giderlerini de dikkate almak gerekir. Enerji verimli tasarım, kullanıcıya uzun vadede düşük fatura ve yüksek konfor sağlar."
+        }
+      ]
+    },
+    {
+      "slug": "deprem-dayanikli-yapi",
+      "title": "Deprem Dayanıklı Yapı Tasarımı: Güvenlik Öncelikli Yaklaşım",
+      "date": "15 Ocak 2024",
+      "author": "Dr. Mehmet Demir",
+      "category": "Güvenlik",
+      "readTime": "10 dk",
+      "excerpt": "Deprem kuşağında güvenli yapı için hangi kriterler önemlidir? Çelik sistemlerin davranışını temel başlıklarda özetliyoruz.",
+      "image": "/blog-3.jpg",
+      "sections": [
+        {
+          "title": "Statik Tasarım İlkeleri",
+          "content": "Deprem yönetmeliğine uygun mühendislik hesapları, sistemin davranışını belirleyen ana etkendir. Taşıyıcı sistem kararları proje başında netleşmelidir."
+        },
+        {
+          "title": "Malzeme ve Birleşim Kalitesi",
+          "content": "Yüksek kalite çelik profiller, doğru birleşim detayları ve kontrollü montaj deprem performansını doğrudan artırır. Uygulama kalitesi tasarım kadar kritiktir."
+        },
+        {
+          "title": "Saha Uygulama Kontrolü",
+          "content": "Üretimden montaja kadar düzenli kalite kontrol süreçleri ile hata riski azaltılır. Proje boyunca kayıtlı denetim yapılması önerilir."
+        }
+      ]
+    },
+    {
+      "slug": "celik-villa-bakim",
+      "title": "Çelik Villa Bakımı ve Uzun Ömürlü Kullanım İpuçları",
+      "date": "10 Ocak 2024",
+      "author": "Teknik Servis Ekibi",
+      "category": "Bakım",
+      "readTime": "5 dk",
+      "excerpt": "Çelik villada uzun ömürlü kullanım için periyodik kontrol ve doğru bakım adımlarını derledik.",
+      "image": "/steel-structure.jpg",
+      "sections": [
+        {
+          "title": "Yıllık Kontrol Listesi",
+          "content": "Cephe, çatı, su tahliyesi ve bağlantı elemanları yılda en az bir kez kontrol edilmelidir. Erken tespit edilen küçük sorunlar büyük maliyetleri önler."
+        },
+        {
+          "title": "Nem ve Korozyon Önlemi",
+          "content": "Dış yüzeylerde su birikimini önleyen detaylar düzenli gözden geçirilmelidir. Uygun kaplama bakımı ile yapının performansı korunur."
+        },
+        {
+          "title": "İç Mekan Koruma",
+          "content": "İç ortam nem seviyesinin dengeli tutulması, yapı elemanlarının uzun süre sağlıklı kalmasına yardımcı olur. Havalandırma düzeni bu noktada önemlidir."
+        }
+      ]
+    },
+    {
+      "slug": "prefabrik-vs-geleneksel",
+      "title": "Prefabrik Çelik Yapı mı, Geleneksel İnşaat mı? Karşılaştırma",
+      "date": "5 Ocak 2024",
+      "author": "Proje Yönetimi",
+      "category": "Karşılaştırma",
+      "readTime": "7 dk",
+      "excerpt": "Maliyet, süre ve kalite parametrelerinde iki farklı yaklaşımı net bir şekilde karşılaştırıyoruz.",
+      "image": "/project-2.jpg",
+      "sections": [
+        {
+          "title": "Süre Avantajı",
+          "content": "Fabrika üretimi sayesinde sahadaki uygulama süresi belirgin şekilde kısalır. Hava koşullarına bağlı gecikmeler daha az yaşanır."
+        },
+        {
+          "title": "Maliyet ve Planlama",
+          "content": "Öngörülebilir üretim planı, bütçe kontrolünü kolaylaştırır. Proje başlangıcında net keşif yapılması mali sürprizleri azaltır."
+        },
+        {
+          "title": "Kalite Standardizasyonu",
+          "content": "Üretim süreçlerinin standart olması kalite sürekliliği sağlar. Saha uygulaması ise bu kaliteyi koruyacak şekilde organize edilmelidir."
+        }
+      ]
+    },
+    {
+      "slug": "celik-yapi-maliyetleri",
+      "title": "Çelik Yapı Maliyetleri: 2024 Fiyat Analizi ve Bütçe Planlaması",
+      "date": "1 Ocak 2024",
+      "author": "Finans Departmanı",
+      "category": "Ekonomi",
+      "readTime": "9 dk",
+      "excerpt": "Çelik yapı bütçesini etkileyen temel kalemleri ve doğru planlama yaklaşımını adım adım ele alıyoruz.",
+      "image": "/project-4.jpg",
+      "sections": [
+        {
+          "title": "Maliyeti Etkileyen Ana Kalemler",
+          "content": "Metrekare, kat sayısı, mimari detay seviyesi, teknik altyapı ve malzeme seçimi toplam maliyeti belirler."
+        },
+        {
+          "title": "Proje Başında Net Keşif",
+          "content": "İyi bir keşif ve ihtiyaç analizi, uygulama sırasında maliyet artışını azaltır. Teknik detayların baştan netleşmesi kritik önem taşır."
+        },
+        {
+          "title": "Uzun Vadeli İşletme Gideri",
+          "content": "Sadece ilk kurulum maliyeti değil, enerji tüketimi ve bakım giderleri de değerlendirilmelidir. Toplam sahip olma maliyeti bu şekilde daha doğru hesaplanır."
+        }
+      ]
+    }
+  ]
+}
