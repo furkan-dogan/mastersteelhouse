@@ -2,20 +2,19 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Eye,
   FileVideo,
-  Pencil,
   Plus,
   RefreshCw,
   Save,
   Search,
   Trash2,
-  X,
 } from 'lucide-react'
 import { AdminLayout } from '@/components/admin-layout'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { CmsRowActions } from '@/components/ui/cms-row-actions'
+import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { createEditorRowId } from '@/lib/editor-utils'
 import type { VideoItem, VideosStore } from '@/lib/videos-store'
 
@@ -309,29 +308,11 @@ export function VideosCmsEditor() {
                           <span className="line-clamp-2 break-all">{item.youtubeUrl || '-'}</span>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="flex justify-end gap-1.5">
-                            <button
-                              onClick={() => openEditor(item.id)}
-                              className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:h-8 md:w-8"
-                              title="Önizle"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => openEditor(item.id)}
-                              className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:h-8 md:w-8"
-                              title="Düzenle"
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => requestDelete(item.id, item.title)}
-                              className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-300/60 bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300 md:h-8 md:w-8"
-                              title="Sil"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
+                          <CmsRowActions
+                            onPreview={() => openEditor(item.id)}
+                            onEdit={() => openEditor(item.id)}
+                            onDelete={() => requestDelete(item.id, item.title)}
+                          />
                         </td>
                       </tr>
                     )
@@ -344,33 +325,15 @@ export function VideosCmsEditor() {
       </AdminLayout>
 
       {editorOpen && selectedItem && (
-        <>
-          <button
-            type="button"
-            aria-label="Editörü kapat"
-            className="fixed inset-0 z-40 bg-black/40"
-            onClick={() => setEditorOpen(false)}
-          />
-          <aside className="fixed inset-y-0 right-0 z-50 w-full max-w-3xl border-l bg-background shadow-2xl">
-            <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between border-b px-5 py-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Video Düzenle</p>
-                  <h2 className="text-base font-semibold text-foreground">{selectedItem.title}</h2>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => void saveStore()} disabled={saving} className="cms-btn-primary h-9 px-3 py-1.5 text-sm disabled:opacity-60">
-                    <Save className="h-4 w-4" />
-                    {saving ? 'Kaydediliyor...' : 'Kaydet'}
-                  </button>
-                  <button onClick={() => setEditorOpen(false)} className="cms-btn-ghost h-9 w-9 p-0" aria-label="Kapat">
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="cms-scroll flex-1 overflow-y-auto p-5">
-                <div className="space-y-6">
+        <CmsEditorDrawer
+          open={editorOpen}
+          title={selectedItem.title}
+          subtitle="Video Düzenle"
+          saving={saving}
+          onSave={() => void saveStore()}
+          onClose={() => setEditorOpen(false)}
+        >
+          <div className="space-y-6">
                   <div className="space-y-3">
                     <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Üst Alan</h3>
                     <input
@@ -449,11 +412,8 @@ export function VideosCmsEditor() {
                       Bu Videoyu Sil
                     </button>
                   </div>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </>
+          </div>
+        </CmsEditorDrawer>
       )}
 
       <ConfirmDialog

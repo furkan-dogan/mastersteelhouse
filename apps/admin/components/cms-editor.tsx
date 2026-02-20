@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   Save,
@@ -8,9 +8,6 @@ import {
   Plus,
   Trash2,
   Search,
-  Eye,
-  Pencil,
-  X,
 } from 'lucide-react'
 import type { ProductStore, ProductItem } from '@/lib/products-store'
 import { AdminLayout } from '@/components/admin-layout'
@@ -20,6 +17,8 @@ import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { createEditorRowId } from '@/lib/editor-utils'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { CmsRowActions } from '@/components/ui/cms-row-actions'
+import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 
 function splitLines(value: string) {
   return value
@@ -77,10 +76,6 @@ export function CmsEditor() {
 
   const selectedCategoryFromQuery = searchParams.get('category') ?? ''
 
-  useEffect(() => {
-    void loadStore()
-  }, [])
-
   const categoryProducts = useMemo(() => {
     if (!store) return []
     return store.products.filter((item) => item.categorySlug === selectedCategorySlug)
@@ -119,7 +114,7 @@ export function CmsEditor() {
     setTechnicalDetailRows(rows.length > 0 ? rows : [createTechnicalDetailRow()])
   }, [store, selectedCategorySlug, selectedProductSlug])
 
-  async function loadStore() {
+  const loadStore = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -154,7 +149,11 @@ export function CmsEditor() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedCategoryFromQuery])
+
+  useEffect(() => {
+    void loadStore()
+  }, [loadStore])
 
   useEffect(() => {
     if (!store) return
@@ -473,29 +472,13 @@ export function CmsEditor() {
                       </td>
                       <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{product.area || '-'}</td>
                       <td className="px-4 py-3">
-                        <div className="flex justify-end gap-1.5">
-                          <button
-                            onClick={() => openEditor(product.slug)}
-                            className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:h-8 md:w-8"
-                            title="Onizle"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => openEditor(product.slug)}
-                            className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:h-8 md:w-8"
-                            title="Duzenle"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => requestDelete(product.slug, product.name)}
-                            className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-300/60 bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300 md:h-8 md:w-8"
-                            title="Sil"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
+                        <CmsRowActions
+                          onPreview={() => openEditor(product.slug)}
+                          onEdit={() => openEditor(product.slug)}
+                          onDelete={() => requestDelete(product.slug, product.name)}
+                          previewTitle="Onizle"
+                          editTitle="Duzenle"
+                        />
                       </td>
                     </tr>
                   ))
@@ -507,33 +490,16 @@ export function CmsEditor() {
       </AdminLayout>
 
       {editorOpen && selectedProduct && (
-        <>
-          <button
-            type="button"
-            aria-label="Editoru kapat"
-            className="fixed inset-0 z-40 bg-black/40"
-            onClick={() => setEditorOpen(false)}
-          />
-          <aside className="fixed inset-y-0 right-0 z-50 w-full max-w-4xl border-l bg-background shadow-2xl">
-            <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between border-b px-5 py-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Urun Duzenle</p>
-                  <h2 className="text-base font-semibold text-foreground">{selectedProduct.name}</h2>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => void saveStore()} disabled={saving} className="cms-btn-primary h-9 px-3 py-1.5 text-sm disabled:opacity-60">
-                    <Save className="h-4 w-4" />
-                    {saving ? 'Kaydediliyor...' : 'Kaydet'}
-                  </button>
-                  <button onClick={() => setEditorOpen(false)} className="cms-btn-ghost h-9 w-9 p-0" aria-label="Kapat">
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="cms-scroll flex-1 overflow-y-auto p-5">
-                <div className="space-y-6">
+        <CmsEditorDrawer
+          open={editorOpen}
+          title={selectedProduct.name}
+          subtitle="Urun Duzenle"
+          widthClassName="max-w-4xl"
+          saving={saving}
+          onSave={() => void saveStore()}
+          onClose={() => setEditorOpen(false)}
+        >
+          <div className="space-y-6">
                   <div className="space-y-4">
                     <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Temel Bilgiler</h3>
                     <div className="grid gap-4 sm:grid-cols-2">
@@ -747,11 +713,8 @@ export function CmsEditor() {
                       Bu Urunu Sil
                     </button>
                   </div>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </>
+          </div>
+        </CmsEditorDrawer>
       )}
 
       <MediaPickerModal
