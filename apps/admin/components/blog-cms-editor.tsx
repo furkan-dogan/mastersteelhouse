@@ -6,21 +6,19 @@ import {
   RefreshCw,
   Save,
   Search,
-  Trash2,
 } from 'lucide-react'
 import type { BlogPost, BlogStore } from '@/lib/blog-store'
 import { MediaPickerModal } from '@/components/media-picker-modal'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
-import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
-import { MediaPlacementEditor } from '@/components/media-placement-editor'
 import { AdminLayout } from '@/components/admin-layout'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
+import { BlogPostEditorForm } from '@/components/blog-post-editor-form'
 import { usePostsCms } from '@/lib/use-posts-cms'
-import { normalizeMediaPlacement, placementToObjectPosition } from '@/lib/media-placement'
+import { normalizeMediaPlacement } from '@/lib/media-placement'
 
 const EMPTY_POST: BlogPost = {
   slug: 'yeni-blog-yazisi',
@@ -281,179 +279,19 @@ export function BlogCmsEditor() {
           onSave={() => void saveStore()}
           onClose={() => setEditorOpen(false)}
         >
-          <div className="space-y-6">
-                  <div className="space-y-4">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Temel Bilgiler</h3>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-muted-foreground">Başlık</label>
-                        <input value={selectedPost.title} onChange={(event) => patchPost({ title: event.target.value })} className="cms-input" />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-muted-foreground">Slug</label>
-                        <input value={selectedPost.slug} onChange={(event) => renameSelectedPostSlug(event.target.value)} className="cms-input" />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-muted-foreground">Tarih</label>
-                        <input value={selectedPost.date} onChange={(event) => patchPost({ date: event.target.value })} className="cms-input" />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-muted-foreground">Yazar</label>
-                        <input value={selectedPost.author} onChange={(event) => patchPost({ author: event.target.value })} className="cms-input" />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-muted-foreground">Kategori</label>
-                        <input value={selectedPost.category} onChange={(event) => patchPost({ category: event.target.value })} className="cms-input" />
-                      </div>
-                      <div>
-                        <label className="mb-1 block text-xs font-medium text-muted-foreground">Okuma Süresi</label>
-                        <input value={selectedPost.readTime} onChange={(event) => patchPost({ readTime: event.target.value })} className="cms-input" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="mb-1 flex items-center justify-between">
-                        <label className="block text-xs font-medium text-muted-foreground">Kapak Görseli</label>
-                        {selectedPost.image && (
-                          <button onClick={() => patchPost({ image: '' })} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">
-                            Kaldır
-                          </button>
-                        )}
-                      </div>
-                      <MediaUploadDropzone
-                        onUploaded={(urls) => {
-                          const nextUrl = urls[0]
-                          if (!nextUrl) return
-                          patchPost({
-                            image: nextUrl,
-                            imagePlacement: normalizeMediaPlacement(selectedPost.imagePlacement, selectedPost.imagePosition),
-                          })
-                        }}
-                        onPickFromMedia={() => openMediaPicker({ type: 'cover' })}
-                        onError={(nextMessage) => setError(nextMessage)}
-                      />
-                      {selectedPost.image && (
-                        <div className="mt-3">
-                          <MediaPlacementEditor
-                            src={selectedPost.image}
-                            value={normalizeMediaPlacement(selectedPost.imagePlacement, selectedPost.imagePosition)}
-                            onChange={(nextPlacement) =>
-                              patchPost({
-                                imagePlacement: nextPlacement,
-                                imagePosition: placementToObjectPosition(nextPlacement),
-                              })
-                            }
-                            variants={[
-                              { label: 'Blog Kartı (16:9)', aspect: '16 / 9' },
-                              { label: 'Blog Detay Hero (16:7)', aspect: '16 / 7' },
-                            ]}
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-muted-foreground">Özet</label>
-                      <textarea
-                        rows={3}
-                        value={selectedPost.excerpt}
-                        onChange={(event) => patchPost({ excerpt: event.target.value })}
-                        className="cms-textarea"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 border-t pt-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">İçerikler (Section)</h3>
-                      <button onClick={addSection} className="cms-btn-ghost h-8 px-2 py-1 text-xs">
-                        <Plus className="h-3.5 w-3.5" />
-                        Bölüm Ekle
-                      </button>
-                    </div>
-
-                    <div className="space-y-3">
-                      {sections.map((section, index) => (
-                        <div key={section.id} className="space-y-2 rounded-lg border p-3">
-                          <div className="flex items-center justify-between">
-                            <p className="text-xs font-semibold text-muted-foreground">Bölüm {index + 1}</p>
-                            <button onClick={() => removeSection(section.id)} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">
-                              <Trash2 className="h-3.5 w-3.5" />
-                              Sil
-                            </button>
-                          </div>
-                          <input
-                            value={section.title}
-                            onChange={(event) => updateSection(section.id, { title: event.target.value })}
-                            className="cms-input"
-                            placeholder="Başlık"
-                          />
-                          <textarea
-                            rows={5}
-                            value={section.content}
-                            onChange={(event) => updateSection(section.id, { content: event.target.value })}
-                            className="cms-textarea"
-                            placeholder="İçerik metni"
-                          />
-                          {section.image && (
-                            <div className="max-h-[140px] max-w-[320px] overflow-hidden rounded-lg border border-border bg-muted/20">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={adminPreviewUrl(section.image)}
-                                alt={`Bölüm ${index + 1} görsel önizleme`}
-                                className="h-full w-full object-cover"
-                                style={{
-                                  objectPosition: `${section.imagePlacement.x}% ${section.imagePlacement.y}%`,
-                                  objectFit: section.imagePlacement.fit,
-                                  transform: `scale(${section.imagePlacement.zoom / 100})`,
-                                  transformOrigin: `${section.imagePlacement.x}% ${section.imagePlacement.y}%`,
-                                }}
-                              />
-                            </div>
-                          )}
-                          <div className="space-y-2">
-                            <MediaUploadDropzone
-                              compact
-                              onUploaded={(urls) => {
-                                const nextUrl = urls[0]
-                                if (!nextUrl) return
-                                updateSection(section.id, {
-                                  image: nextUrl,
-                                  imagePlacement: normalizeMediaPlacement(undefined),
-                                })
-                              }}
-                              onPickFromMedia={() => openMediaPicker({ type: 'section', rowId: section.id })}
-                              onError={(nextMessage) => setError(nextMessage)}
-                            />
-                            {section.image && (
-                              <button
-                                onClick={() => updateSection(section.id, { image: '' })}
-                                className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error"
-                              >
-                                Görseli Kaldır
-                              </button>
-                            )}
-                          </div>
-                          {section.image && (
-                            <MediaPlacementEditor
-                              src={section.image}
-                              value={section.imagePlacement}
-                              onChange={(nextPlacement) => updateSection(section.id, { imagePlacement: nextPlacement })}
-                              variants={[{ label: 'Bölüm Görseli (896/340)', aspect: '896 / 340' }]}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <button onClick={() => requestDelete(selectedPost.slug, selectedPost.title)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
-                      <Trash2 className="h-4 w-4" />
-                      Bu Yazıyı Sil
-                    </button>
-                  </div>
-          </div>
+          <BlogPostEditorForm
+            selectedPost={selectedPost}
+            sections={sections}
+            onPatchPost={patchPost}
+            onRenameSlug={renameSelectedPostSlug}
+            onAddSection={addSection}
+            onRemoveSection={removeSection}
+            onUpdateSection={updateSection}
+            onOpenCoverPicker={() => openMediaPicker({ type: 'cover' })}
+            onOpenSectionPicker={(sectionId) => openMediaPicker({ type: 'section', rowId: sectionId })}
+            onRequestDelete={() => requestDelete(selectedPost.slug, selectedPost.title)}
+            onError={setError}
+          />
         </CmsEditorDrawer>
       )}
 
