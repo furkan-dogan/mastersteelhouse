@@ -1,14 +1,12 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import { getBlogPosts } from '@/lib/blog-catalog'
+import { SitePageShell } from '@/components/site-page-shell'
 import { BlogListClient } from './blog-list-client'
 
 export default async function Blog() {
   const posts = await getBlogPosts()
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32 bg-gradient-to-b from-background via-muted/20 to-background">
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent" />
@@ -29,7 +27,6 @@ export default async function Blog() {
 
         <BlogListClient posts={posts} />
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

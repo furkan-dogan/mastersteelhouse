@@ -1,7 +1,7 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import Image from 'next/image'
 import { Laptop, Box, Ruler, FileCode } from 'lucide-react'
+import { SitePageShell } from '@/components/site-page-shell'
+import { IconFeatureList } from '@/components/icon-feature-list'
 
 export default function DizaynYazilimi() {
   const tools = [
@@ -12,8 +12,7 @@ export default function DizaynYazilimi() {
   ]
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32">
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
@@ -33,26 +32,12 @@ export default function DizaynYazilimi() {
                   Endüstri standardı yazılımlar ile projelerinizi 3D olarak tasarlıyor ve her detayı hesaplıyoruz.
                 </p>
 
-                <div className="space-y-4">
-                  {tools.map((tool) => {
-                    const Icon = tool.icon
-                    return (
-                      <div key={tool.title} className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-accent/50 transition-all">
-                        <Icon className="w-8 h-8 text-accent flex-shrink-0 mt-1" />
-                        <div>
-                          <h3 className="font-semibold mb-1">{tool.title}</h3>
-                          <p className="text-sm text-muted-foreground">{tool.description}</p>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
+                <IconFeatureList items={tools} iconWrapClassName="bg-transparent p-0 h-auto w-auto" iconClassName="h-8 w-8 mt-1" />
               </div>
             </div>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

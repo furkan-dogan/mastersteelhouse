@@ -1,16 +1,13 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import { getReferenceItems } from '@/lib/references-catalog'
+import { SitePageShell } from '@/components/site-page-shell'
 import { ReferencesClient } from './references-client'
 
 export default async function ReferencesPage() {
   const references = await getReferenceItems()
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <ReferencesClient references={references} />
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

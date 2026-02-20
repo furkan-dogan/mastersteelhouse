@@ -1,8 +1,7 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import { FileText, Download, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { getCatalogsContent } from '@/lib/catalogs-catalog'
+import { SitePageShell } from '@/components/site-page-shell'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,8 +9,7 @@ export default async function Kataloglar() {
   const content = await getCatalogsContent()
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32">
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
@@ -75,7 +73,6 @@ export default async function Kataloglar() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

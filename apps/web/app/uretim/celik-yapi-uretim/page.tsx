@@ -1,7 +1,7 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import Image from 'next/image'
 import { Cog, Zap, Shield, Award } from 'lucide-react'
+import { SitePageShell } from '@/components/site-page-shell'
+import { IconFeatureList } from '@/components/icon-feature-list'
 
 export default function CelikYapiUretim() {
   const features = [
@@ -12,8 +12,7 @@ export default function CelikYapiUretim() {
   ]
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32">
         <section className="py-20 bg-gradient-to-br from-primary/5 to-background">
           <div className="container mx-auto px-4">
@@ -29,22 +28,7 @@ export default function CelikYapiUretim() {
                   Modern teknoloji ile donatılmış fabrikamızda, yüksek kalite standartlarında çelik yapı üretimi gerçekleştiriyoruz.
                 </p>
 
-                <div className="space-y-4">
-                  {features.map((feature) => {
-                    const Icon = feature.icon
-                    return (
-                      <div key={feature.title} className="flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-accent/50 transition-all">
-                        <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                          <Icon className="w-6 h-6 text-accent" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold mb-1">{feature.title}</h3>
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
+                <IconFeatureList items={features} />
               </div>
 
               <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl">
@@ -54,7 +38,6 @@ export default function CelikYapiUretim() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

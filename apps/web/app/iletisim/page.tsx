@@ -1,6 +1,5 @@
-import { Header } from '@/components/header'
 import { ContactSection } from '@/components/contact-section'
-import { Footer } from '@/components/footer'
+import { SitePageShell } from '@/components/site-page-shell'
 
 export const metadata = {
   title: 'İletişim | Çelik Yapı',
@@ -9,12 +8,12 @@ export const metadata = {
 
 export default function IletisimPage() {
   return (
-    <main className="min-h-screen">
-      <Header />
-      <div className="pt-32">
-        <ContactSection />
-      </div>
-      <Footer />
-    </main>
+    <SitePageShell>
+      <main className="min-h-screen">
+        <div className="pt-32">
+          <ContactSection />
+        </div>
+      </main>
+    </SitePageShell>
   )
 }

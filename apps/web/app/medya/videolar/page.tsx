@@ -1,14 +1,12 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import { getVideosContent } from '@/lib/videos-catalog'
+import { SitePageShell } from '@/components/site-page-shell'
 import { VideosGridClient } from './videos-grid-client'
 
 export default async function Videolar() {
   const content = await getVideosContent()
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32">
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
@@ -27,7 +25,6 @@ export default async function Videolar() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

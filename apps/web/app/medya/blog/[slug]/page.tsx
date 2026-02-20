@@ -1,5 +1,4 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
+import { SitePageShell } from '@/components/site-page-shell'
 import { Calendar, User, Clock, ArrowLeft, Share2, ChevronDown, List } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -20,22 +19,18 @@ export default async function BlogDetail({ params }: Props) {
 
   if (!blog) {
     return (
-      <>
-        <Header />
+      <SitePageShell>
         <main className="min-h-screen pt-32">
           <div className="container mx-auto px-4">
             <p className="text-lg text-muted-foreground">Blog yazısı bulunamadı.</p>
           </div>
         </main>
-        <Footer />
-      </>
+      </SitePageShell>
     )
   }
 
   return (
-    <>
-      <Header />
-
+    <SitePageShell>
       <main className="min-h-screen bg-background">
         <section className="relative h-[70vh] min-h-[560px] flex items-end overflow-hidden">
           <div className="absolute inset-0">
@@ -206,8 +201,6 @@ export default async function BlogDetail({ params }: Props) {
           </div>
         </section>
       </main>
-
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

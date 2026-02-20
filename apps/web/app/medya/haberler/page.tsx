@@ -1,17 +1,15 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
 import { Calendar, ArrowRight, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getNewsPosts } from '@/lib/news-catalog'
 import { mediaPlacementImageStyle } from '@/lib/media-placement'
+import { SitePageShell } from '@/components/site-page-shell'
 
 export default async function Haberler() {
   const news = await getNewsPosts()
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32 bg-gradient-to-b from-background via-muted/20 to-background">
         <section className="py-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent" />
@@ -134,7 +132,6 @@ export default async function Haberler() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

@@ -1,7 +1,5 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
-import Image from 'next/image'
 import { Pencil, Box, Users, FileCheck } from 'lucide-react'
+import { SitePageShell } from '@/components/site-page-shell'
 
 export default function TasarimSureci() {
   const steps = [
@@ -12,8 +10,7 @@ export default function TasarimSureci() {
   ]
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen pt-32">
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
@@ -51,7 +48,6 @@ export default function TasarimSureci() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }

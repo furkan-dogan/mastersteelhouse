@@ -1,5 +1,4 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
+import { SitePageShell } from '@/components/site-page-shell'
 import { Calendar, MapPin, ArrowLeft, Share2, Clock, User, List, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -21,21 +20,18 @@ export default async function HaberDetay({ params }: Props) {
 
   if (!haber) {
     return (
-      <>
-        <Header />
+      <SitePageShell>
         <main className="min-h-screen pt-32">
           <div className="container mx-auto px-4">
             <p className="text-lg text-muted-foreground">Haber bulunamadı.</p>
           </div>
         </main>
-        <Footer />
-      </>
+      </SitePageShell>
     )
   }
 
   return (
-    <>
-      <Header />
+    <SitePageShell>
       <main className="min-h-screen bg-background">
         <div className="relative h-[70vh] min-h-[500px]">
           <div className="absolute inset-0">
@@ -210,7 +206,6 @@ export default async function HaberDetay({ params }: Props) {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+    </SitePageShell>
   )
 }
