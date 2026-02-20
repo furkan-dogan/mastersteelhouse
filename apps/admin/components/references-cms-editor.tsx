@@ -6,25 +6,17 @@ import {
   RefreshCw,
   Save,
   Search,
-  Trash2,
 } from 'lucide-react'
 import { AdminLayout } from '@/components/admin-layout'
 import type { ReferenceItem, ReferenceStore } from '@/lib/references-store'
 import { MediaPickerModal } from '@/components/media-picker-modal'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
-import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
-
-function splitByComma(value: string) {
-  return value
-    .split(',')
-    .map((item) => item.trim())
-    .filter(Boolean)
-}
+import { ReferencesEditorForm } from '@/components/references-editor-form'
 
 const EMPTY_REFERENCE: ReferenceItem = {
   id: 'ref-yeni',
@@ -303,60 +295,13 @@ export function ReferencesCmsEditor() {
           onSave={() => void saveStore()}
           onClose={() => setEditorOpen(false)}
         >
-          <div className="space-y-4">
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-muted-foreground">Başlık</label>
-                    <input value={selectedItem.title} onChange={(e) => patchItem({ title: e.target.value })} className="cms-input" />
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-muted-foreground">Konum</label>
-                      <input value={selectedItem.location} onChange={(e) => patchItem({ location: e.target.value })} className="cms-input" />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-muted-foreground">Alan / Ölçek</label>
-                      <input value={selectedItem.area ?? ''} onChange={(e) => patchItem({ area: e.target.value })} className="cms-input" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="mb-1 block text-xs font-medium text-muted-foreground">Kategoriler (virgülle)</label>
-                    <input
-                      value={selectedItem.categories.join(', ')}
-                      onChange={(e) => patchItem({ categories: splitByComma(e.target.value) })}
-                      className="cms-input"
-                    />
-                  </div>
-                  <div>
-                    <div className="mb-1 flex items-center justify-between">
-                      <label className="block text-xs font-medium text-muted-foreground">Görsel</label>
-                      {selectedItem.image && (
-                        <button onClick={() => patchItem({ image: '' })} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">Kaldır</button>
-                      )}
-                    </div>
-                    <MediaUploadDropzone
-                      onUploaded={(urls) => {
-                        const nextUrl = urls[0]
-                        if (!nextUrl) return
-                        patchItem({ image: nextUrl })
-                      }}
-                      onPickFromMedia={() => setShowMediaPicker(true)}
-                      onError={(nextMessage) => setError(nextMessage)}
-                    />
-                    {selectedItem.image && (
-                      <div className="mt-3 max-w-[560px] overflow-hidden rounded-2xl border bg-muted">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={adminPreviewUrl(selectedItem.image)} alt="Referans görsel" className="aspect-[4/3] w-full object-cover" />
-                      </div>
-                    )}
-                  </div>
-
-            <div className="border-t pt-4">
-              <button onClick={() => requestDelete(selectedItem.id, selectedItem.title)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
-                <Trash2 className="h-4 w-4" />
-                Bu Referansı Sil
-              </button>
-            </div>
-          </div>
+          <ReferencesEditorForm
+            selectedItem={selectedItem}
+            onPatchItem={patchItem}
+            onOpenMediaPicker={() => setShowMediaPicker(true)}
+            onRequestDelete={() => requestDelete(selectedItem.id, selectedItem.title)}
+            onError={setError}
+          />
         </CmsEditorDrawer>
       )}
 

@@ -7,7 +7,6 @@ import {
   RefreshCw,
   Save,
   Search,
-  Trash2,
 } from 'lucide-react'
 import { AdminLayout } from '@/components/admin-layout'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
@@ -15,6 +14,7 @@ import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
+import { VideosEditorForm } from '@/components/videos-editor-form'
 import { createEditorRowId } from '@/lib/editor-utils'
 import type { VideoItem, VideosStore } from '@/lib/videos-store'
 
@@ -54,12 +54,6 @@ function extractYouTubeId(input: string) {
   }
 
   return ''
-}
-
-function toYouTubeEmbedUrl(input: string) {
-  const id = extractYouTubeId(input)
-  if (!id) return ''
-  return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`
 }
 
 function toYouTubeThumbnailUrl(input: string) {
@@ -333,86 +327,13 @@ export function VideosCmsEditor() {
           onSave={() => void saveStore()}
           onClose={() => setEditorOpen(false)}
         >
-          <div className="space-y-6">
-                  <div className="space-y-3">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Üst Alan</h3>
-                    <input
-                      value={store.hero.title}
-                      onChange={(e) => setStore((prev) => ({ ...prev, hero: { ...prev.hero, title: e.target.value } }))}
-                      className="cms-input"
-                      placeholder="Sayfa başlığı"
-                    />
-                    <textarea
-                      value={store.hero.description}
-                      onChange={(e) =>
-                        setStore((prev) => ({
-                          ...prev,
-                          hero: { ...prev.hero, description: e.target.value },
-                        }))
-                      }
-                      rows={2}
-                      className="cms-textarea"
-                      placeholder="Sayfa açıklaması"
-                    />
-                  </div>
-
-                  <div className="space-y-4 border-t pt-4">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Video Detayı</h3>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <input
-                        value={selectedItem.title}
-                        onChange={(e) => patchItem({ title: e.target.value })}
-                        className="cms-input"
-                        placeholder="Başlık"
-                      />
-                      <input
-                        value={selectedItem.youtubeUrl}
-                        onChange={(e) => patchItem({ youtubeUrl: e.target.value })}
-                        className="cms-input"
-                        placeholder="YouTube Linki"
-                      />
-                    </div>
-
-                    <textarea
-                      value={selectedItem.description}
-                      onChange={(e) => patchItem({ description: e.target.value })}
-                      rows={3}
-                      className="cms-textarea"
-                      placeholder="Açıklama"
-                    />
-
-                    <div className="space-y-2">
-                      <label className="text-xs font-medium text-muted-foreground">YouTube Önizleme</label>
-                      <div className="rounded-xl border bg-card p-3">
-                        {toYouTubeEmbedUrl(selectedItem.youtubeUrl) ? (
-                          <iframe
-                            src={toYouTubeEmbedUrl(selectedItem.youtubeUrl)}
-                            title={`${selectedItem.title} YouTube önizleme`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                            className={`${
-                              isYouTubeShortUrl(selectedItem.youtubeUrl)
-                                ? 'mx-auto w-full max-w-[320px] aspect-[9/16]'
-                                : 'w-full aspect-video'
-                            } rounded-lg border bg-black`}
-                          />
-                        ) : (
-                          <div className="flex aspect-video w-full items-center justify-center rounded-lg border border-dashed text-xs text-muted-foreground">
-                            Geçerli YouTube linki girin
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <button onClick={() => requestDelete(selectedItem.id, selectedItem.title)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
-                      <Trash2 className="h-4 w-4" />
-                      Bu Videoyu Sil
-                    </button>
-                  </div>
-          </div>
+          <VideosEditorForm
+            store={store}
+            selectedItem={selectedItem}
+            onPatchStore={(updater) => setStore((prev) => updater(prev))}
+            onPatchItem={patchItem}
+            onRequestDelete={() => requestDelete(selectedItem.id, selectedItem.title)}
+          />
         </CmsEditorDrawer>
       )}
 
