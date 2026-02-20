@@ -12,8 +12,10 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
+import { TablePagination } from '@/components/ui/table'
 import { ReferencesEditorForm } from '@/components/references-editor-form'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
+import { usePagination } from '@/lib/use-pagination'
 
 const EMPTY_REFERENCE: ReferenceItem = {
   id: 'ref-yeni',
@@ -65,6 +67,8 @@ export function ReferencesCmsEditor() {
       )
     })
   }, [store, search, categoryFilter])
+
+  const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
   async function loadStore() {
     try {
@@ -186,9 +190,15 @@ export function ReferencesCmsEditor() {
           <CmsListToolbar
             searchValue={search}
             searchPlaceholder="Referans ara..."
-            onSearchChange={setSearch}
+            onSearchChange={(value) => {
+              setSearch(value)
+              resetPage()
+            }}
             filterValue={categoryFilter}
-            onFilterChange={setCategoryFilter}
+            onFilterChange={(value) => {
+              setCategoryFilter(value)
+              resetPage()
+            }}
             filterOptions={[
               { value: 'all', label: 'Tüm Kategoriler' },
               ...availableCategories.map((category) => ({ value: category, label: category })),
@@ -213,7 +223,7 @@ export function ReferencesCmsEditor() {
                     </td>
                   </tr>
                 ) : (
-                  filteredItems.map((item) => (
+                  pagedItems.map((item) => (
                     <tr key={item.id} className="border-t align-middle hover:bg-muted/30">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
@@ -250,6 +260,13 @@ export function ReferencesCmsEditor() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={filteredItems.length}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
         </section>
       </AdminLayout>
 

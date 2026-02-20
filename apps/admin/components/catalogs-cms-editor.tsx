@@ -12,9 +12,11 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
+import { TablePagination } from '@/components/ui/table'
 import { CatalogsEditorForm } from '@/components/catalogs-editor-form'
 import type { CatalogsStore, CatalogItem } from '@/lib/catalogs-store'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
+import { usePagination } from '@/lib/use-pagination'
 
 const EMPTY_STORE: CatalogsStore = {
   hero: {
@@ -57,6 +59,8 @@ export function CatalogsCmsEditor() {
       return item.title.toLowerCase().includes(q)
     })
   }, [store.items, search])
+
+  const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
   useEffect(() => {
     void loadStore()
@@ -191,7 +195,10 @@ export function CatalogsCmsEditor() {
           <CmsListToolbar
             searchValue={search}
             searchPlaceholder="Katalog ara..."
-            onSearchChange={setSearch}
+            onSearchChange={(value) => {
+              setSearch(value)
+              resetPage()
+            }}
           />
 
           <div className="cms-scroll overflow-x-auto">
@@ -212,7 +219,7 @@ export function CatalogsCmsEditor() {
                     </td>
                   </tr>
                 ) : (
-                  filteredItems.map((item) => (
+                  pagedItems.map((item) => (
                     <tr key={item.id} className="border-t align-middle hover:bg-muted/30">
                       <td className="hidden px-4 py-3 md:table-cell">
                         <div className="h-16 w-24 overflow-hidden rounded-md border bg-card">
@@ -250,6 +257,13 @@ export function CatalogsCmsEditor() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={filteredItems.length}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
         </section>
       </AdminLayout>
 

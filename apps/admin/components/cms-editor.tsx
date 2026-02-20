@@ -13,8 +13,10 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
+import { TablePagination } from '@/components/ui/table'
 import { ProductEditorForm, type TechnicalDetailRow } from '@/components/product-editor-form'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
+import { usePagination } from '@/lib/use-pagination'
 
 type MediaTarget =
   | { type: 'cover' }
@@ -75,6 +77,8 @@ export function CmsEditor() {
       )
     })
   }, [categoryProducts, search])
+
+  const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredProducts, 10)
 
   useEffect(() => {
     if (!store || !selectedCategorySlug || !selectedProductSlug) {
@@ -386,7 +390,10 @@ export function CmsEditor() {
             className="space-y-3"
             searchValue={search}
             searchPlaceholder="Urun ara..."
-            onSearchChange={setSearch}
+            onSearchChange={(value) => {
+              setSearch(value)
+              resetPage()
+            }}
           >
             {selectedCategory ? (
               <div className="rounded-lg border border-border bg-muted/20 p-3">
@@ -415,7 +422,7 @@ export function CmsEditor() {
                     </td>
                   </tr>
                 ) : (
-                  filteredProducts.map((product) => (
+                  pagedItems.map((product) => (
                     <tr key={`${product.categorySlug}-${product.slug}`} className="border-t align-middle hover:bg-muted/30">
                       <td className="hidden px-4 py-3 md:table-cell">
                         <div className="h-16 w-24 overflow-hidden rounded-md border bg-muted/30">
@@ -449,6 +456,13 @@ export function CmsEditor() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={filteredProducts.length}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
         </section>
       </AdminLayout>
 

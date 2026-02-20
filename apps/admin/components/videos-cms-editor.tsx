@@ -10,10 +10,12 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
+import { TablePagination } from '@/components/ui/table'
 import { VideosEditorForm } from '@/components/videos-editor-form'
 import { createEditorRowId } from '@/lib/editor-utils'
 import type { VideoItem, VideosStore } from '@/lib/videos-store'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
+import { usePagination } from '@/lib/use-pagination'
 
 const EMPTY_STORE: VideosStore = {
   hero: {
@@ -100,6 +102,8 @@ export function VideosCmsEditor() {
       )
     })
   }, [store.items, search, formatFilter])
+
+  const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
   useEffect(() => {
     void loadStore()
@@ -213,9 +217,15 @@ export function VideosCmsEditor() {
           <CmsListToolbar
             searchValue={search}
             searchPlaceholder="Video ara..."
-            onSearchChange={setSearch}
+            onSearchChange={(value) => {
+              setSearch(value)
+              resetPage()
+            }}
             filterValue={formatFilter}
-            onFilterChange={(value) => setFormatFilter(value as 'all' | 'landscape' | 'portrait')}
+            onFilterChange={(value) => {
+              setFormatFilter(value as 'all' | 'landscape' | 'portrait')
+              resetPage()
+            }}
             filterOptions={[
               { value: 'all', label: 'Tüm Formatlar' },
               { value: 'landscape', label: 'Yatay Video' },
@@ -241,7 +251,7 @@ export function VideosCmsEditor() {
                     </td>
                   </tr>
                 ) : (
-                  filteredItems.map((item) => {
+                  pagedItems.map((item) => {
                     const thumbUrl = toYouTubeThumbnailUrl(item.youtubeUrl)
                     const isPortrait = isYouTubeShortUrl(item.youtubeUrl)
                     return (
@@ -286,6 +296,13 @@ export function VideosCmsEditor() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={filteredItems.length}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
         </section>
       </AdminLayout>
 

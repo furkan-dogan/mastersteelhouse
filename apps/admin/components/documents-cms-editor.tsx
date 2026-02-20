@@ -12,9 +12,11 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
+import { TablePagination } from '@/components/ui/table'
 import { DocumentsEditorForm } from '@/components/documents-editor-form'
 import type { DocumentsStore, DocumentItem } from '@/lib/documents-store'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
+import { usePagination } from '@/lib/use-pagination'
 
 const EMPTY_STORE: DocumentsStore = {
   hero: {
@@ -73,6 +75,8 @@ export function DocumentsCmsEditor() {
       )
     })
   }, [store.items, search])
+
+  const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
   useEffect(() => {
     void loadStore()
@@ -210,7 +214,10 @@ export function DocumentsCmsEditor() {
           <CmsListToolbar
             searchValue={search}
             searchPlaceholder="Belge ara..."
-            onSearchChange={setSearch}
+            onSearchChange={(value) => {
+              setSearch(value)
+              resetPage()
+            }}
           />
 
           <div className="cms-scroll overflow-x-auto">
@@ -232,7 +239,7 @@ export function DocumentsCmsEditor() {
                     </td>
                   </tr>
                 ) : (
-                  filteredItems.map((item) => (
+                  pagedItems.map((item) => (
                     <tr key={item.id} className="border-t align-middle hover:bg-muted/30">
                       <td className="hidden px-4 py-3 md:table-cell">
                         <div className="h-16 w-24 overflow-hidden rounded-md border bg-card">
@@ -279,6 +286,13 @@ export function DocumentsCmsEditor() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={filteredItems.length}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
         </section>
       </AdminLayout>
 

@@ -13,10 +13,12 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
+import { TablePagination } from '@/components/ui/table'
 import { NewsPostEditorForm } from '@/components/news-post-editor-form'
 import { usePostsCms } from '@/lib/use-posts-cms'
 import { normalizeMediaPlacement } from '@/lib/media-placement'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
+import { usePagination } from '@/lib/use-pagination'
 
 const EMPTY_POST: NewsPost = {
   slug: 'yeni-haber',
@@ -101,6 +103,8 @@ export function NewsCmsEditor() {
       )
     })
   }, [store, search, categoryFilter])
+
+  const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredPosts, 10)
 
   function openMediaPicker(target: { type: 'cover' } | { type: 'section'; rowId: string } | { type: 'gallery' }) {
     setMediaTarget(target)
@@ -189,9 +193,15 @@ export function NewsCmsEditor() {
           <CmsListToolbar
             searchValue={search}
             searchPlaceholder="Haber ara..."
-            onSearchChange={setSearch}
+            onSearchChange={(value) => {
+              setSearch(value)
+              resetPage()
+            }}
             filterValue={categoryFilter}
-            onFilterChange={setCategoryFilter}
+            onFilterChange={(value) => {
+              setCategoryFilter(value)
+              resetPage()
+            }}
             filterOptions={[
               { value: 'all', label: 'Tüm Kategoriler' },
               ...categories.map((category) => ({ value: category, label: category })),
@@ -217,7 +227,7 @@ export function NewsCmsEditor() {
                     </td>
                   </tr>
                 ) : (
-                  filteredPosts.map((post) => (
+                  pagedItems.map((post) => (
                     <tr key={post.slug} className="border-t align-middle hover:bg-muted/30">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
@@ -282,6 +292,13 @@ export function NewsCmsEditor() {
               </tbody>
             </table>
           </div>
+          <TablePagination
+            page={page}
+            totalPages={totalPages}
+            totalItems={filteredPosts.length}
+            pageSize={pageSize}
+            onPageChange={setPage}
+          />
         </section>
       </AdminLayout>
 

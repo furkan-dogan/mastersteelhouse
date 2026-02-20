@@ -131,8 +131,9 @@ export function TablePagination({
   totalItems?: number
   pageSize?: number
 }) {
-  const start = (page - 1) * pageSize + 1
-  const end = Math.min(page * pageSize, totalItems ?? page * pageSize)
+  const hasItems = totalItems == null ? true : totalItems > 0
+  const start = hasItems ? (page - 1) * pageSize + 1 : 0
+  const end = hasItems ? Math.min(page * pageSize, totalItems ?? page * pageSize) : 0
 
   return (
     <div className="flex items-center justify-between border-t border-border px-4 py-3">
