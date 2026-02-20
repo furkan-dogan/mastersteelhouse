@@ -18,6 +18,7 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CatalogsEditorForm } from '@/components/catalogs-editor-form'
 import type { CatalogsStore, CatalogItem } from '@/lib/catalogs-store'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 const EMPTY_STORE: CatalogsStore = {
   hero: {
@@ -46,7 +47,6 @@ export function CatalogsCmsEditor() {
   const [uploadingPdf, setUploadingPdf] = useState(false)
   const [search, setSearch] = useState('')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const selectedItem = useMemo(
@@ -117,15 +117,7 @@ export function CatalogsCmsEditor() {
     })
   }
 
-  function requestDelete(id: string, title: string) {
-    setDeleteTarget({ id, title })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteById(deleteTarget.id)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
 
   async function uploadPdf(files: FileList | File[]) {
     const file = Array.from(files)[0]
@@ -317,12 +309,12 @@ export function CatalogsCmsEditor() {
         title="Katalog Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı kataloğu kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı kataloğu kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Kataloğu Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 

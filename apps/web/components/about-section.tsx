@@ -216,8 +216,7 @@ export function AboutSection() {
               </div>
             </div>
 
-            {/* Decorative Elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 border-4 border-accent/30 rounded-full animate-spin" style={{ animationDuration: '10s' }} />
+            {/* Decorative Element */}
             <div className="absolute -bottom-4 -left-4 w-32 h-32 border-4 border-accent/20 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }} />
           </div>
 

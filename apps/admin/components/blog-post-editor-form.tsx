@@ -1,20 +1,21 @@
 'use client'
 
 import { Plus, Trash2 } from 'lucide-react'
-import type { BlogPost, BlogSection } from '@/lib/blog-store'
+import type { BlogPost } from '@/lib/blog-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { MediaPlacementEditor } from '@/components/media-placement-editor'
 import { normalizeMediaPlacement, placementToObjectPosition } from '@/lib/media-placement'
+import type { CmsSectionRow } from '@/lib/use-posts-cms'
 
 type BlogPostEditorFormProps = {
   selectedPost: BlogPost
-  sections: BlogSection[]
+  sections: CmsSectionRow[]
   onPatchPost: (update: Partial<BlogPost>) => void
   onRenameSlug: (value: string) => void
   onAddSection: () => void
   onRemoveSection: (sectionId: string) => void
-  onUpdateSection: (sectionId: string, patch: Partial<BlogSection>) => void
+  onUpdateSection: (sectionId: string, patch: Partial<CmsSectionRow>) => void
   onOpenCoverPicker: () => void
   onOpenSectionPicker: (sectionId: string) => void
   onRequestDelete: () => void

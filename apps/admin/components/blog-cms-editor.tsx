@@ -19,6 +19,7 @@ import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { BlogPostEditorForm } from '@/components/blog-post-editor-form'
 import { usePostsCms } from '@/lib/use-posts-cms'
 import { normalizeMediaPlacement } from '@/lib/media-placement'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 const EMPTY_POST: BlogPost = {
   slug: 'yeni-blog-yazisi',
@@ -46,7 +47,6 @@ export function BlogCmsEditor() {
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ slug: string; title: string } | null>(null)
   const [mediaTarget, setMediaTarget] = useState<{ type: 'cover' } | { type: 'section'; rowId: string }>({
     type: 'cover',
   })
@@ -139,15 +139,7 @@ export function BlogCmsEditor() {
     }
   }
 
-  function requestDelete(slug: string, title: string) {
-    setDeleteTarget({ slug, title })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteBySlug(deleteTarget.slug)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteBySlug)
 
   if (loading) {
     return <CmsLoadingState message="Blog CMS yükleniyor..." />
@@ -307,12 +299,12 @@ export function BlogCmsEditor() {
         title="Yazı Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı blog yazısını kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı blog yazısını kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Yazıyı Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 

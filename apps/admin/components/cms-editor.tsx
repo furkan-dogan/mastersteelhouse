@@ -18,6 +18,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { ProductEditorForm, type TechnicalDetailRow } from '@/components/product-editor-form'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 type MediaTarget =
   | { type: 'cover' }
@@ -58,7 +59,6 @@ export function CmsEditor() {
   const [mediaTarget, setMediaTarget] = useState<MediaTarget>({ type: 'cover' })
   const [search, setSearch] = useState('')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ slug: string; name: string } | null>(null)
 
   const selectedCategoryFromQuery = searchParams.get('category') ?? ''
 
@@ -229,15 +229,7 @@ export function CmsEditor() {
     }
   }
 
-  function requestDelete(slug: string, name: string) {
-    setDeleteTarget({ slug, name })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteBySlug(deleteTarget.slug)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteBySlug)
 
   function syncTechnicalDetails(rows: TechnicalDetailRow[]) {
     setTechnicalDetailRows(rows)
@@ -524,12 +516,12 @@ export function CmsEditor() {
         title="Ürün Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.name}</span> adlı ürünü kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı ürünü kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Ürünü Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 

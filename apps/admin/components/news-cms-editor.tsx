@@ -21,6 +21,7 @@ import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { NewsPostEditorForm } from '@/components/news-post-editor-form'
 import { usePostsCms } from '@/lib/use-posts-cms'
 import { normalizeMediaPlacement } from '@/lib/media-placement'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 const EMPTY_POST: NewsPost = {
   slug: 'yeni-haber',
@@ -53,7 +54,6 @@ export function NewsCmsEditor() {
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ slug: string; title: string } | null>(null)
   const [mediaTarget, setMediaTarget] = useState<
     { type: 'cover' } | { type: 'section'; rowId: string } | { type: 'gallery' }
   >({ type: 'cover' })
@@ -134,15 +134,7 @@ export function NewsCmsEditor() {
     }
   }
 
-  function requestDelete(slug: string, title: string) {
-    setDeleteTarget({ slug, title })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteBySlug(deleteTarget.slug)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteBySlug)
 
   function handleMediaPick(url: string) {
     if (!selectedPost) return
@@ -358,12 +350,12 @@ export function NewsCmsEditor() {
         title="Haber Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı haberi kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı haberi kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Haberi Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 

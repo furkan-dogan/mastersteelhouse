@@ -18,6 +18,7 @@ import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { DocumentsEditorForm } from '@/components/documents-editor-form'
 import type { DocumentsStore, DocumentItem } from '@/lib/documents-store'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 const EMPTY_STORE: DocumentsStore = {
   hero: {
@@ -42,6 +43,11 @@ function createDocument(): DocumentItem {
   }
 }
 
+function isPdfUrl(url: string) {
+  const value = url.split('?')[0].toLowerCase()
+  return value.endsWith('.pdf')
+}
+
 export function DocumentsCmsEditor() {
   const [store, setStore] = useState<DocumentsStore>(EMPTY_STORE)
   const [loading, setLoading] = useState(true)
@@ -53,7 +59,6 @@ export function DocumentsCmsEditor() {
   const [uploadingPdf, setUploadingPdf] = useState(false)
   const [search, setSearch] = useState('')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const selectedItem = useMemo(
@@ -128,15 +133,7 @@ export function DocumentsCmsEditor() {
     })
   }
 
-  function requestDelete(id: string, title: string) {
-    setDeleteTarget({ id, title })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteById(deleteTarget.id)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
 
   async function uploadFile(files: FileList | File[]) {
     const file = Array.from(files)[0]
@@ -341,12 +338,12 @@ export function DocumentsCmsEditor() {
         title="Belge Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı belgeyi kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı belgeyi kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Belgeyi Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 

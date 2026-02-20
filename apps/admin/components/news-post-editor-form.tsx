@@ -2,20 +2,21 @@
 
 import { useState } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
-import type { NewsPost, NewsSection } from '@/lib/news-store'
+import type { NewsPost } from '@/lib/news-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { MediaPlacementEditor } from '@/components/media-placement-editor'
 import { normalizeMediaPlacement, placementToObjectPosition } from '@/lib/media-placement'
+import type { CmsSectionRow } from '@/lib/use-posts-cms'
 
 type NewsPostEditorFormProps = {
   selectedPost: NewsPost
-  sections: NewsSection[]
+  sections: CmsSectionRow[]
   onPatchPost: (update: Partial<NewsPost>) => void
   onRenameSlug: (value: string) => void
   onAddSection: () => void
   onRemoveSection: (sectionId: string) => void
-  onUpdateSection: (sectionId: string, patch: Partial<NewsSection>) => void
+  onUpdateSection: (sectionId: string, patch: Partial<CmsSectionRow>) => void
   onOpenCoverPicker: () => void
   onOpenGalleryPicker: () => void
   onOpenSectionPicker: (sectionId: string) => void

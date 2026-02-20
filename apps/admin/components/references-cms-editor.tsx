@@ -17,6 +17,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { ReferencesEditorForm } from '@/components/references-editor-form'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 const EMPTY_REFERENCE: ReferenceItem = {
   id: 'ref-yeni',
@@ -39,7 +40,6 @@ export function ReferencesCmsEditor() {
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
 
   useEffect(() => {
     void loadStore()
@@ -136,15 +136,7 @@ export function ReferencesCmsEditor() {
     }
   }
 
-  function requestDelete(id: string, title: string) {
-    setDeleteTarget({ id, title })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteById(deleteTarget.id)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
 
   async function saveStore() {
     if (!store) return
@@ -320,12 +312,12 @@ export function ReferencesCmsEditor() {
         title="Referans Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı referansı kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı referansı kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Referansı Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 

@@ -17,6 +17,7 @@ import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { VideosEditorForm } from '@/components/videos-editor-form'
 import { createEditorRowId } from '@/lib/editor-utils'
 import type { VideoItem, VideosStore } from '@/lib/videos-store'
+import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
 const EMPTY_STORE: VideosStore = {
   hero: {
@@ -83,7 +84,6 @@ export function VideosCmsEditor() {
   const [search, setSearch] = useState('')
   const [formatFilter, setFormatFilter] = useState<'all' | 'landscape' | 'portrait'>('all')
   const [editorOpen, setEditorOpen] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
 
   const selectedItem = useMemo(
     () => store.items.find((item) => item.id === selectedId) ?? null,
@@ -168,15 +168,7 @@ export function VideosCmsEditor() {
     })
   }
 
-  function requestDelete(id: string, title: string) {
-    setDeleteTarget({ id, title })
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget) return
-    deleteById(deleteTarget.id)
-    setDeleteTarget(null)
-  }
+  const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
 
   async function saveStore() {
     try {
@@ -342,12 +334,12 @@ export function VideosCmsEditor() {
         title="Video Silinsin mi?"
         description={
           <>
-            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı videoyu kalıcı olarak silmek istediğinize emin misiniz?
+            <span className="font-medium text-foreground">{deleteTarget?.label}</span> adlı videoyu kalıcı olarak silmek istediğinize emin misiniz?
           </>
         }
         confirmLabel="Videoyu Sil"
         cancelLabel="Vazgeç"
-        onCancel={() => setDeleteTarget(null)}
+        onCancel={closeDeleteDialog}
         onConfirm={confirmDelete}
       />
 
