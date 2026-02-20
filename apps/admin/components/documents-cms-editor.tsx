@@ -1,12 +1,6 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  Plus,
-  RefreshCw,
-  Save,
-  Search,
-} from 'lucide-react'
 import { AdminLayout } from '@/components/admin-layout'
 import { MediaPickerModal } from '@/components/media-picker-modal'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
@@ -16,6 +10,8 @@ import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
+import { CmsPageActions } from '@/components/ui/cms-page-actions'
+import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
 import { DocumentsEditorForm } from '@/components/documents-editor-form'
 import type { DocumentsStore, DocumentItem } from '@/lib/documents-store'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
@@ -201,34 +197,21 @@ export function DocumentsCmsEditor() {
         title="Belgeler"
         subtitle={`${filteredItems.length} belge bulundu`}
         actions={
-          <>
-            <button onClick={() => void loadStore()} className="cms-btn-secondary h-9 px-3 py-1.5 text-sm">
-              <RefreshCw className="h-4 w-4" />
-              Yenile
-            </button>
-            <button onClick={() => void saveStore()} disabled={saving} className="cms-btn-primary h-9 px-3 py-1.5 text-sm disabled:opacity-60">
-              <Save className="h-4 w-4" />
-              {saving ? 'Kaydediliyor...' : 'Kaydet'}
-            </button>
-            <button onClick={addItem} className="cms-btn-primary h-9 px-3 py-1.5 text-sm">
-              <Plus className="h-4 w-4" />
-              Yeni Belge
-            </button>
-          </>
+          <CmsPageActions
+            saving={saving}
+            createLabel="Yeni Belge"
+            onRefresh={() => void loadStore()}
+            onSave={() => void saveStore()}
+            onCreate={addItem}
+          />
         }
       >
         <section className="cms-card overflow-hidden">
-          <div className="border-b px-4 py-3">
-            <label className="relative block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Belge ara..."
-                className="cms-input !pl-10"
-              />
-            </label>
-          </div>
+          <CmsListToolbar
+            searchValue={search}
+            searchPlaceholder="Belge ara..."
+            onSearchChange={setSearch}
+          />
 
           <div className="cms-scroll overflow-x-auto">
             <table className="w-full table-fixed text-sm">

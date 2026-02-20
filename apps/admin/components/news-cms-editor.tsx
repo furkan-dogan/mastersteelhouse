@@ -1,14 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import {
-  Plus,
-  RefreshCw,
-  Save,
-  Search,
-  Star,
-  StarOff,
-} from 'lucide-react'
+import { Star, StarOff } from 'lucide-react'
 import type { NewsPost, NewsStore } from '@/lib/news-store'
 import { MediaPickerModal } from '@/components/media-picker-modal'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
@@ -18,6 +11,8 @@ import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
+import { CmsPageActions } from '@/components/ui/cms-page-actions'
+import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
 import { NewsPostEditorForm } from '@/components/news-post-editor-form'
 import { usePostsCms } from '@/lib/use-posts-cms'
 import { normalizeMediaPlacement } from '@/lib/media-placement'
@@ -181,48 +176,27 @@ export function NewsCmsEditor() {
         title="Haberler"
         subtitle={`${filteredPosts.length} haber bulundu`}
         actions={
-          <>
-            <button onClick={() => void loadStore()} className="cms-btn-secondary h-9 px-3 py-1.5 text-sm">
-              <RefreshCw className="h-4 w-4" />
-              Yenile
-            </button>
-            <button onClick={() => void saveStore()} disabled={saving} className="cms-btn-primary h-9 px-3 py-1.5 text-sm disabled:opacity-60">
-              <Save className="h-4 w-4" />
-              {saving ? 'Kaydediliyor...' : 'Kaydet'}
-            </button>
-            <button onClick={createNews} className="cms-btn-primary h-9 px-3 py-1.5 text-sm">
-              <Plus className="h-4 w-4" />
-              Yeni Haber
-            </button>
-          </>
+          <CmsPageActions
+            saving={saving}
+            createLabel="Yeni Haber"
+            onRefresh={() => void loadStore()}
+            onSave={() => void saveStore()}
+            onCreate={createNews}
+          />
         }
       >
         <section className="cms-card overflow-hidden">
-          <div className="border-b px-4 py-3">
-            <div className="grid gap-3 md:grid-cols-[1fr_220px]">
-              <label className="relative block">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Haber ara..."
-                  className="cms-input !pl-10"
-                />
-              </label>
-              <select
-                value={categoryFilter}
-                onChange={(event) => setCategoryFilter(event.target.value)}
-                className="cms-input"
-              >
-                <option value="all">Tüm Kategoriler</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <CmsListToolbar
+            searchValue={search}
+            searchPlaceholder="Haber ara..."
+            onSearchChange={setSearch}
+            filterValue={categoryFilter}
+            onFilterChange={setCategoryFilter}
+            filterOptions={[
+              { value: 'all', label: 'Tüm Kategoriler' },
+              ...categories.map((category) => ({ value: category, label: category })),
+            ]}
+          />
 
           <div className="cms-scroll overflow-x-auto">
             <table className="w-full table-fixed text-sm">

@@ -2,12 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import {
-  Save,
-  RefreshCw,
-  Plus,
-  Search,
-} from 'lucide-react'
 import type { ProductStore, ProductItem } from '@/lib/products-store'
 import { AdminLayout } from '@/components/admin-layout'
 import { MediaPickerModal } from '@/components/media-picker-modal'
@@ -17,6 +11,8 @@ import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
+import { CmsPageActions } from '@/components/ui/cms-page-actions'
+import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
 import { ProductEditorForm, type TechnicalDetailRow } from '@/components/product-editor-form'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
 
@@ -376,24 +372,22 @@ export function CmsEditor() {
         title="Urun Icerik Yonetimi"
         subtitle={`${selectedCategory ? selectedCategory.title : 'Kategori yok'} · ${filteredProducts.length} urun`}
         actions={
-          <>
-            <button onClick={() => void loadStore()} className="cms-btn-secondary h-9 px-3 py-1.5 text-sm">
-              <RefreshCw className="h-4 w-4" />
-              Yenile
-            </button>
-            <button onClick={() => void saveStore()} disabled={saving} className="cms-btn-primary h-9 px-3 py-1.5 text-sm disabled:opacity-60">
-              <Save className="h-4 w-4" />
-              {saving ? 'Kaydediliyor...' : 'Kaydet'}
-            </button>
-            <button onClick={addProduct} className="cms-btn-primary h-9 px-3 py-1.5 text-sm">
-              <Plus className="h-4 w-4" />
-              Yeni Urun
-            </button>
-          </>
+          <CmsPageActions
+            saving={saving}
+            createLabel="Yeni Urun"
+            onRefresh={() => void loadStore()}
+            onSave={() => void saveStore()}
+            onCreate={addProduct}
+          />
         }
       >
         <section className="cms-card overflow-hidden">
-          <div className="border-b px-4 py-3 space-y-3">
+          <CmsListToolbar
+            className="space-y-3"
+            searchValue={search}
+            searchPlaceholder="Urun ara..."
+            onSearchChange={setSearch}
+          >
             {selectedCategory ? (
               <div className="rounded-lg border border-border bg-muted/20 p-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">Kategori</p>
@@ -401,16 +395,7 @@ export function CmsEditor() {
                 <p className="mt-1 text-xs text-muted-foreground">{selectedCategory.description}</p>
               </div>
             ) : null}
-            <label className="relative block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Urun ara..."
-                className="cms-input !pl-10"
-              />
-            </label>
-          </div>
+          </CmsListToolbar>
 
           <div className="cms-scroll overflow-x-auto">
             <table className="w-full table-fixed text-sm">

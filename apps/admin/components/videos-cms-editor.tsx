@@ -1,19 +1,15 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import {
-  FileVideo,
-  Plus,
-  RefreshCw,
-  Save,
-  Search,
-} from 'lucide-react'
+import { FileVideo } from 'lucide-react'
 import { AdminLayout } from '@/components/admin-layout'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CmsRowActions } from '@/components/ui/cms-row-actions'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
+import { CmsPageActions } from '@/components/ui/cms-page-actions'
+import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
 import { VideosEditorForm } from '@/components/videos-editor-form'
 import { createEditorRowId } from '@/lib/editor-utils'
 import type { VideoItem, VideosStore } from '@/lib/videos-store'
@@ -204,45 +200,28 @@ export function VideosCmsEditor() {
         title="Videolar"
         subtitle={`${filteredItems.length} video bulundu`}
         actions={
-          <>
-            <button onClick={() => void loadStore()} className="cms-btn-secondary h-9 px-3 py-1.5 text-sm">
-              <RefreshCw className="h-4 w-4" />
-              Yenile
-            </button>
-            <button onClick={() => void saveStore()} disabled={saving} className="cms-btn-primary h-9 px-3 py-1.5 text-sm disabled:opacity-60">
-              <Save className="h-4 w-4" />
-              {saving ? 'Kaydediliyor...' : 'Kaydet'}
-            </button>
-            <button onClick={addItem} className="cms-btn-primary h-9 px-3 py-1.5 text-sm">
-              <Plus className="h-4 w-4" />
-              Yeni Video
-            </button>
-          </>
+          <CmsPageActions
+            saving={saving}
+            createLabel="Yeni Video"
+            onRefresh={() => void loadStore()}
+            onSave={() => void saveStore()}
+            onCreate={addItem}
+          />
         }
       >
         <section className="cms-card overflow-hidden">
-          <div className="border-b px-4 py-3">
-            <div className="grid gap-3 md:grid-cols-[1fr_220px]">
-              <label className="relative block">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Video ara..."
-                  className="cms-input !pl-10"
-                />
-              </label>
-              <select
-                value={formatFilter}
-                onChange={(event) => setFormatFilter(event.target.value as 'all' | 'landscape' | 'portrait')}
-                className="cms-input"
-              >
-                <option value="all">Tüm Formatlar</option>
-                <option value="landscape">Yatay Video</option>
-                <option value="portrait">Dikey / Shorts</option>
-              </select>
-            </div>
-          </div>
+          <CmsListToolbar
+            searchValue={search}
+            searchPlaceholder="Video ara..."
+            onSearchChange={setSearch}
+            filterValue={formatFilter}
+            onFilterChange={(value) => setFormatFilter(value as 'all' | 'landscape' | 'portrait')}
+            filterOptions={[
+              { value: 'all', label: 'Tüm Formatlar' },
+              { value: 'landscape', label: 'Yatay Video' },
+              { value: 'portrait', label: 'Dikey / Shorts' },
+            ]}
+          />
 
           <div className="cms-scroll overflow-x-auto">
             <table className="w-full table-fixed text-sm">
