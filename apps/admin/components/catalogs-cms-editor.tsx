@@ -3,20 +3,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AdminLayout } from '@/components/admin-layout'
 import { MediaPickerModal } from '@/components/media-picker-modal'
-import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { createEditorRowId } from '@/lib/editor-utils'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { CmsRowActions } from '@/components/ui/cms-row-actions'
-import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
-import { TablePagination } from '@/components/ui/table'
-import { CatalogsEditorForm } from '@/components/catalogs-editor-form'
 import type { CatalogsStore, CatalogItem } from '@/lib/catalogs-store'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
 import { usePagination } from '@/lib/use-pagination'
+import { CatalogsCmsTable } from '@/components/catalogs-cms-table'
+import { CatalogsEditorDrawer } from '@/components/catalogs-editor-drawer'
 
 const EMPTY_STORE: CatalogsStore = {
   hero: {
@@ -201,94 +198,37 @@ export function CatalogsCmsEditor() {
             }}
           />
 
-          <div className="cms-scroll overflow-x-auto">
-            <table className="w-full table-fixed text-sm">
-              <thead className="bg-muted/40 text-muted-foreground">
-                <tr>
-                  <th className="hidden w-[140px] px-4 py-3 text-left font-medium md:table-cell">Önizleme</th>
-                  <th className="w-[66%] px-4 py-3 text-left font-medium">Katalog</th>
-                  <th className="hidden w-[14%] px-4 py-3 text-left font-medium lg:table-cell">Durum</th>
-                  <th className="w-[120px] px-4 py-3 text-right font-medium">İşlemler</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredItems.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-10 text-center text-sm text-muted-foreground">
-                      Katalog bulunamadı.
-                    </td>
-                  </tr>
-                ) : (
-                  pagedItems.map((item) => (
-                    <tr key={item.id} className="border-t align-middle hover:bg-muted/30">
-                      <td className="hidden px-4 py-3 md:table-cell">
-                        <div className="h-16 w-24 overflow-hidden rounded-md border bg-card">
-                          {item.pdfUrl ? (
-                            <iframe
-                              src={`${adminPreviewUrl(item.pdfUrl)}#toolbar=0&navpanes=0&page=1`}
-                              title={`${item.title} mini önizleme`}
-                              className="h-full w-full"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                              PDF yok
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <p className="truncate font-medium text-foreground">{item.title}</p>
-                      </td>
-                      <td className="hidden px-4 py-3 lg:table-cell">
-                        <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${item.pdfUrl ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300'}`}>
-                          {item.pdfUrl ? 'Hazır' : 'Eksik'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <CmsRowActions
-                          onPreview={() => openEditor(item.id)}
-                          onEdit={() => openEditor(item.id)}
-                          onDelete={() => requestDelete(item.id, item.title)}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-          <TablePagination
+          <CatalogsCmsTable
+            filteredItems={filteredItems}
+            pagedItems={pagedItems}
             page={page}
             totalPages={totalPages}
-            totalItems={filteredItems.length}
             pageSize={pageSize}
             onPageChange={setPage}
+            onOpenEditor={openEditor}
+            onRequestDelete={requestDelete}
           />
         </section>
       </AdminLayout>
 
-      {editorOpen && selectedItem && (
-        <CmsEditorDrawer
-          open={editorOpen}
-          title={selectedItem.title}
-          subtitle="Katalog Düzenle"
-          saving={saving}
-          onSave={() => void saveStore()}
-          onClose={() => setEditorOpen(false)}
-        >
-          <CatalogsEditorForm
-            store={store}
-            selectedItem={selectedItem}
-            uploadingPdf={uploadingPdf}
-            fileInputRef={fileInputRef}
-            onPatchStore={patchStore}
-            onPatchItem={patchItem}
-            onUploadPdf={uploadPdf}
-            onOpenMediaPicker={() => setShowMediaPicker(true)}
-            onRequestDelete={() => requestDelete(selectedItem.id, selectedItem.title)}
-          />
-        </CmsEditorDrawer>
-      )}
+      <CatalogsEditorDrawer
+        open={editorOpen}
+        saving={saving}
+        store={store}
+        selectedItem={selectedItem}
+        uploadingPdf={uploadingPdf}
+        fileInputRef={fileInputRef}
+        onSave={() => void saveStore()}
+        onClose={() => setEditorOpen(false)}
+        onPatchStore={patchStore}
+        onPatchItem={patchItem}
+        onUploadPdf={uploadPdf}
+        onOpenMediaPicker={() => setShowMediaPicker(true)}
+        onRequestDelete={() => {
+          if (!selectedItem) return
+          requestDelete(selectedItem.id, selectedItem.title)
+        }}
+      />
 
       <MediaPickerModal
         open={showMediaPicker}

@@ -4,18 +4,15 @@ import { useEffect, useMemo, useState } from 'react'
 import { AdminLayout } from '@/components/admin-layout'
 import type { ReferenceItem, ReferenceStore } from '@/lib/references-store'
 import { MediaPickerModal } from '@/components/media-picker-modal'
-import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { CmsRowActions } from '@/components/ui/cms-row-actions'
-import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
-import { TablePagination } from '@/components/ui/table'
-import { ReferencesEditorForm } from '@/components/references-editor-form'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
 import { usePagination } from '@/lib/use-pagination'
+import { ReferencesCmsTable } from '@/components/references-cms-table'
+import { ReferencesEditorDrawer } from '@/components/references-editor-drawer'
 
 const EMPTY_REFERENCE: ReferenceItem = {
   id: 'ref-yeni',
@@ -205,89 +202,33 @@ export function ReferencesCmsEditor() {
             ]}
           />
 
-          <div className="cms-scroll overflow-x-auto">
-            <table className="w-full table-fixed text-sm">
-              <thead className="bg-muted/40 text-muted-foreground">
-                <tr>
-                  <th className="w-[58%] px-4 py-3 text-left font-medium">Proje</th>
-                  <th className="hidden w-[16%] px-4 py-3 text-left font-medium md:table-cell">Konum</th>
-                  <th className="hidden w-[16%] px-4 py-3 text-left font-medium lg:table-cell">Kategori</th>
-                  <th className="w-[120px] px-4 py-3 text-right font-medium">İşlemler</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredItems.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-10 text-center text-sm text-muted-foreground">
-                      Referans bulunamadı.
-                    </td>
-                  </tr>
-                ) : (
-                  pagedItems.map((item) => (
-                    <tr key={item.id} className="border-t align-middle hover:bg-muted/30">
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="h-12 w-16 shrink-0 overflow-hidden rounded-md border bg-muted/40">
-                            {item.image ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={adminPreviewUrl(item.image)} alt={item.title} className="h-full w-full object-cover" />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Yok</div>
-                            )}
-                          </div>
-                          <div className="min-w-0">
-                            <p className="truncate font-medium text-foreground">{item.title}</p>
-                            <p className="hidden truncate text-xs text-muted-foreground md:block">{item.area || 'Alan bilgisi yok'}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{item.location}</td>
-                      <td className="hidden px-4 py-3 lg:table-cell">
-                        <span className="inline-flex rounded-md border bg-muted px-2 py-1 text-xs font-medium text-foreground">
-                          {item.categories[0] ?? 'Genel'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <CmsRowActions
-                          onPreview={() => openEditor(item.id)}
-                          onEdit={() => openEditor(item.id)}
-                          onDelete={() => requestDelete(item.id, item.title)}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-          <TablePagination
+          <ReferencesCmsTable
+            filteredItems={filteredItems}
+            pagedItems={pagedItems}
             page={page}
             totalPages={totalPages}
-            totalItems={filteredItems.length}
             pageSize={pageSize}
             onPageChange={setPage}
+            onOpenEditor={openEditor}
+            onRequestDelete={requestDelete}
           />
         </section>
       </AdminLayout>
 
-      {editorOpen && selectedItem && (
-        <CmsEditorDrawer
-          open={editorOpen}
-          title={selectedItem.title}
-          subtitle="Referans Düzenle"
-          saving={saving}
-          onSave={() => void saveStore()}
-          onClose={() => setEditorOpen(false)}
-        >
-          <ReferencesEditorForm
-            selectedItem={selectedItem}
-            onPatchItem={patchItem}
-            onOpenMediaPicker={() => setShowMediaPicker(true)}
-            onRequestDelete={() => requestDelete(selectedItem.id, selectedItem.title)}
-            onError={setError}
-          />
-        </CmsEditorDrawer>
-      )}
+      <ReferencesEditorDrawer
+        open={editorOpen}
+        saving={saving}
+        selectedItem={selectedItem}
+        onSave={() => void saveStore()}
+        onClose={() => setEditorOpen(false)}
+        onPatchItem={patchItem}
+        onOpenMediaPicker={() => setShowMediaPicker(true)}
+        onRequestDelete={() => {
+          if (!selectedItem) return
+          requestDelete(selectedItem.id, selectedItem.title)
+        }}
+        onError={setError}
+      />
 
       <MediaPickerModal
         open={showMediaPicker}

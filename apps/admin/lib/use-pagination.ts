@@ -1,28 +1,32 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 export function usePagination<T>(items: T[], pageSize = 10) {
   const [page, setPage] = useState(1)
 
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize))
-
-  useEffect(() => {
-    setPage((prev) => Math.min(prev, totalPages))
-  }, [totalPages])
+  const safePage = Math.min(page, totalPages)
 
   const pagedItems = useMemo(() => {
-    const start = (page - 1) * pageSize
+    const start = (safePage - 1) * pageSize
     return items.slice(start, start + pageSize)
-  }, [items, page, pageSize])
+  }, [items, safePage, pageSize])
+
+  const setPageWithinBounds = useCallback(
+    (nextPage: number) => {
+      setPage(Math.max(1, Math.min(nextPage, totalPages)))
+    },
+    [totalPages]
+  )
 
   const resetPage = useCallback(() => {
     setPage(1)
   }, [])
 
   return {
-    page,
+    page: safePage,
     totalPages,
     pagedItems,
-    setPage,
+    setPage: setPageWithinBounds,
     resetPage,
     pageSize,
   }

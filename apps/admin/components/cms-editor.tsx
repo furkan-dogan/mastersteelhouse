@@ -5,18 +5,16 @@ import { useSearchParams } from 'next/navigation'
 import type { ProductStore, ProductItem } from '@/lib/products-store'
 import { AdminLayout } from '@/components/admin-layout'
 import { MediaPickerModal } from '@/components/media-picker-modal'
-import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { createEditorRowId } from '@/lib/editor-utils'
 import { CmsStatusToast } from '@/components/cms-shared'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { CmsRowActions } from '@/components/ui/cms-row-actions'
-import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { CmsPageActions } from '@/components/ui/cms-page-actions'
 import { CmsListToolbar } from '@/components/ui/cms-list-toolbar'
-import { TablePagination } from '@/components/ui/table'
-import { ProductEditorForm, type TechnicalDetailRow } from '@/components/product-editor-form'
+import type { TechnicalDetailRow } from '@/components/product-editor-form'
 import { useConfirmDelete } from '@/lib/use-confirm-delete'
 import { usePagination } from '@/lib/use-pagination'
+import { ProductsCmsTable } from '@/components/products-cms-table'
+import { ProductsEditorDrawer } from '@/components/products-editor-drawer'
 
 type MediaTarget =
   | { type: 'cover' }
@@ -404,98 +402,44 @@ export function CmsEditor() {
             ) : null}
           </CmsListToolbar>
 
-          <div className="cms-scroll overflow-x-auto">
-            <table className="w-full table-fixed text-sm">
-              <thead className="bg-muted/40 text-muted-foreground">
-                <tr>
-                  <th className="hidden w-[140px] px-4 py-3 text-left font-medium md:table-cell">Onizleme</th>
-                  <th className="w-[62%] px-4 py-3 text-left font-medium">Urun</th>
-                  <th className="hidden w-[18%] px-4 py-3 text-left font-medium md:table-cell">Alan</th>
-                  <th className="w-[120px] px-4 py-3 text-right font-medium">Islemler</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-10 text-center text-sm text-muted-foreground">
-                      Urun bulunamadi.
-                    </td>
-                  </tr>
-                ) : (
-                  pagedItems.map((product) => (
-                    <tr key={`${product.categorySlug}-${product.slug}`} className="border-t align-middle hover:bg-muted/30">
-                      <td className="hidden px-4 py-3 md:table-cell">
-                        <div className="h-16 w-24 overflow-hidden rounded-md border bg-muted/30">
-                          {product.image ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={adminPreviewUrl(product.image)} alt={product.name} className="h-full w-full object-cover" />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Gorsel yok</div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="min-w-0">
-                          <p className="truncate font-medium text-foreground">{product.name}</p>
-                          <p className="hidden truncate text-xs text-muted-foreground md:block">{product.description || 'Aciklama yok'}</p>
-                        </div>
-                      </td>
-                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{product.area || '-'}</td>
-                      <td className="px-4 py-3">
-                        <CmsRowActions
-                          onPreview={() => openEditor(product.slug)}
-                          onEdit={() => openEditor(product.slug)}
-                          onDelete={() => requestDelete(product.slug, product.name)}
-                          previewTitle="Onizle"
-                          editTitle="Duzenle"
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-          <TablePagination
+          <ProductsCmsTable
+            filteredProducts={filteredProducts}
+            pagedItems={pagedItems}
             page={page}
             totalPages={totalPages}
-            totalItems={filteredProducts.length}
             pageSize={pageSize}
             onPageChange={setPage}
+            onOpenEditor={openEditor}
+            onRequestDelete={requestDelete}
           />
         </section>
       </AdminLayout>
 
-      {editorOpen && selectedProduct && (
-        <CmsEditorDrawer
-          open={editorOpen}
-          title={selectedProduct.name}
-          subtitle="Urun Duzenle"
-          widthClassName="max-w-4xl"
-          saving={saving}
-          onSave={() => void saveStore()}
-          onClose={() => setEditorOpen(false)}
-        >
-          <ProductEditorForm
-            selectedProduct={selectedProduct}
-            technicalDetailRows={technicalDetailRows}
-            onPatchProduct={patchProduct}
-            onSetSelectedProductSlug={setSelectedProductSlug}
-            onOpenCoverPicker={() => openMediaPicker({ type: 'cover' })}
-            onOpenGalleryPicker={() => openMediaPicker({ type: 'gallery' })}
-            onOpenFloorPlanPicker={(index) => openMediaPicker({ type: 'floorPlan', index })}
-            onRemoveGalleryImage={removeGalleryImage}
-            onAddTechnicalDetailRow={addTechnicalDetailRow}
-            onUpdateTechnicalDetailRow={updateTechnicalDetailRow}
-            onRemoveTechnicalDetailRow={removeTechnicalDetailRow}
-            onAddFloorPlan={addFloorPlan}
-            onUpdateFloorPlan={updateFloorPlan}
-            onRemoveFloorPlan={removeFloorPlan}
-            onRequestDelete={() => requestDelete(selectedProduct.slug, selectedProduct.name)}
-            onError={setError}
-          />
-        </CmsEditorDrawer>
-      )}
+      <ProductsEditorDrawer
+        open={editorOpen}
+        saving={saving}
+        selectedProduct={selectedProduct}
+        technicalDetailRows={technicalDetailRows}
+        onSave={() => void saveStore()}
+        onClose={() => setEditorOpen(false)}
+        onPatchProduct={patchProduct}
+        onSetSelectedProductSlug={setSelectedProductSlug}
+        onOpenCoverPicker={() => openMediaPicker({ type: 'cover' })}
+        onOpenGalleryPicker={() => openMediaPicker({ type: 'gallery' })}
+        onOpenFloorPlanPicker={(index) => openMediaPicker({ type: 'floorPlan', index })}
+        onRemoveGalleryImage={removeGalleryImage}
+        onAddTechnicalDetailRow={addTechnicalDetailRow}
+        onUpdateTechnicalDetailRow={updateTechnicalDetailRow}
+        onRemoveTechnicalDetailRow={removeTechnicalDetailRow}
+        onAddFloorPlan={addFloorPlan}
+        onUpdateFloorPlan={updateFloorPlan}
+        onRemoveFloorPlan={removeFloorPlan}
+        onRequestDelete={() => {
+          if (!selectedProduct) return
+          requestDelete(selectedProduct.slug, selectedProduct.name)
+        }}
+        onError={setError}
+      />
 
       <MediaPickerModal
         open={showMediaPicker}
