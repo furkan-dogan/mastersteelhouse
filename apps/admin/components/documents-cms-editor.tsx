@@ -19,6 +19,7 @@ import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { createEditorRowId } from '@/lib/editor-utils'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { DocumentsStore, DocumentItem } from '@/lib/documents-store'
 
 function splitLines(value: string) {
@@ -67,6 +68,7 @@ export function DocumentsCmsEditor() {
   const [uploadingPdf, setUploadingPdf] = useState(false)
   const [search, setSearch] = useState('')
   const [editorOpen, setEditorOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const selectedItem = useMemo(
@@ -130,16 +132,6 @@ export function DocumentsCmsEditor() {
     setEditorOpen(true)
   }
 
-  function removeItem() {
-    if (!selectedItem) return
-    setStore((prev) => {
-      const nextItems = prev.items.filter((item) => item.id !== selectedItem.id)
-      setSelectedId(nextItems[0]?.id ?? '')
-      if (nextItems.length === 0) setEditorOpen(false)
-      return { ...prev, items: nextItems }
-    })
-  }
-
   function deleteById(id: string) {
     setStore((prev) => {
       const nextItems = prev.items.filter((item) => item.id !== id)
@@ -149,6 +141,16 @@ export function DocumentsCmsEditor() {
       }
       return { ...prev, items: nextItems }
     })
+  }
+
+  function requestDelete(id: string, title: string) {
+    setDeleteTarget({ id, title })
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return
+    deleteById(deleteTarget.id)
+    setDeleteTarget(null)
   }
 
   async function uploadFile(files: FileList | File[]) {
@@ -316,7 +318,7 @@ export function DocumentsCmsEditor() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => deleteById(item.id)}
+                            onClick={() => requestDelete(item.id, item.title)}
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-300/60 bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300 md:h-8 md:w-8"
                             title="Sil"
                           >
@@ -423,7 +425,7 @@ export function DocumentsCmsEditor() {
                   </div>
 
                   <div className="border-t pt-4">
-                    <button onClick={removeItem} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
+                    <button onClick={() => requestDelete(selectedItem.id, selectedItem.title)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
                       <Trash2 className="h-4 w-4" />
                       Bu Belgeyi Sil
                     </button>
@@ -444,6 +446,20 @@ export function DocumentsCmsEditor() {
           patchItem({ pdfUrl: url })
           setShowMediaPicker(false)
         }}
+      />
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Belge Silinsin mi?"
+        description={
+          <>
+            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı belgeyi kalıcı olarak silmek istediğinize emin misiniz?
+          </>
+        }
+        confirmLabel="Belgeyi Sil"
+        cancelLabel="Vazgeç"
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
       />
 
       <CmsStatusToast error={error} message={message} />

@@ -14,6 +14,7 @@ import {
 import type { MediaItem } from '@/lib/media-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { AdminLayout } from '@/components/admin-layout'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 function formatSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`
@@ -281,43 +282,23 @@ export function MediaLibrary() {
         </div>
       )}
 
-      {confirmDeleteItem && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4"
-          onClick={() => setConfirmDeleteItem(null)}
-        >
-          <div
-            className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <h3 className="text-base font-semibold text-foreground">Dosyayı Sil</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">{confirmDeleteItem.name}</span> dosyasını kalıcı olarak silmek istediğinize emin misiniz?
-            </p>
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setConfirmDeleteItem(null)}
-                className="cms-btn-secondary h-9 px-3 py-1.5 text-sm"
-              >
-                Vazgeç
-              </button>
-              <button
-                type="button"
-                onClick={async () => {
-                  const id = confirmDeleteItem.id
-                  setConfirmDeleteItem(null)
-                  await removeItem(id)
-                }}
-                className="cms-btn-primary h-9 px-3 py-1.5 text-sm !bg-error !text-white hover:!bg-error/90"
-                disabled={deletingId === confirmDeleteItem.id}
-              >
-                {deletingId === confirmDeleteItem.id ? 'Siliniyor...' : 'Evet, Sil'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDialog
+        open={Boolean(confirmDeleteItem)}
+        title="Dosyayı Sil"
+        description={
+          <>
+            <span className="font-medium text-foreground">{confirmDeleteItem?.name}</span> dosyasını kalıcı olarak silmek istediğinize emin misiniz?
+          </>
+        }
+        loading={Boolean(confirmDeleteItem && deletingId === confirmDeleteItem.id)}
+        onCancel={() => setConfirmDeleteItem(null)}
+        onConfirm={() => {
+          if (!confirmDeleteItem) return
+          const id = confirmDeleteItem.id
+          setConfirmDeleteItem(null)
+          void removeItem(id)
+        }}
+      />
 
       {(error || message) && (
         <div

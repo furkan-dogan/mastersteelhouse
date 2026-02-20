@@ -19,6 +19,7 @@ import { MediaPlacementEditor } from '@/components/media-placement-editor'
 import { AdminLayout } from '@/components/admin-layout'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { usePostsCms } from '@/lib/use-posts-cms'
 import { normalizeMediaPlacement, placementToObjectPosition } from '@/lib/media-placement'
 
@@ -48,6 +49,7 @@ export function BlogCmsEditor() {
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [editorOpen, setEditorOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<{ slug: string; title: string } | null>(null)
   const [mediaTarget, setMediaTarget] = useState<{ type: 'cover' } | { type: 'section'; rowId: string }>({
     type: 'cover',
   })
@@ -69,7 +71,6 @@ export function BlogCmsEditor() {
     patchPost,
     renameSelectedPostSlug,
     addPost,
-    removePost,
     updateSection,
     addSection,
     removeSection,
@@ -139,6 +140,16 @@ export function BlogCmsEditor() {
         setEditorOpen(false)
       }
     }
+  }
+
+  function requestDelete(slug: string, title: string) {
+    setDeleteTarget({ slug, title })
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return
+    deleteBySlug(deleteTarget.slug)
+    setDeleteTarget(null)
   }
 
   if (loading) {
@@ -263,7 +274,7 @@ export function BlogCmsEditor() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => deleteBySlug(post.slug)}
+                            onClick={() => requestDelete(post.slug, post.title)}
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-300/60 bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300 md:h-8 md:w-8"
                             title="Sil"
                           >
@@ -478,7 +489,7 @@ export function BlogCmsEditor() {
                   </div>
 
                   <div className="border-t pt-4">
-                    <button onClick={removePost} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
+                    <button onClick={() => requestDelete(selectedPost.slug, selectedPost.title)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
                       <Trash2 className="h-4 w-4" />
                       Bu Yazıyı Sil
                     </button>
@@ -495,6 +506,20 @@ export function BlogCmsEditor() {
         title={mediaTarget.type === 'cover' ? 'Kapak Görseli Seç' : 'Bölüm Görseli Seç'}
         onClose={() => setShowMediaPicker(false)}
         onSelect={handleMediaPick}
+      />
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Yazı Silinsin mi?"
+        description={
+          <>
+            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı blog yazısını kalıcı olarak silmek istediğinize emin misiniz?
+          </>
+        }
+        confirmLabel="Yazıyı Sil"
+        cancelLabel="Vazgeç"
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
       />
 
       <CmsStatusToast error={error} message={message} />

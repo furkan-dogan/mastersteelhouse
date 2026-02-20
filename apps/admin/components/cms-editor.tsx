@@ -19,6 +19,7 @@ import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { createEditorRowId } from '@/lib/editor-utils'
 import { CmsStatusToast } from '@/components/cms-shared'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 function splitLines(value: string) {
   return value
@@ -72,6 +73,7 @@ export function CmsEditor() {
   const [mediaTarget, setMediaTarget] = useState<MediaTarget>({ type: 'cover' })
   const [search, setSearch] = useState('')
   const [editorOpen, setEditorOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<{ slug: string; name: string } | null>(null)
 
   const selectedCategoryFromQuery = searchParams.get('category') ?? ''
 
@@ -240,6 +242,16 @@ export function CmsEditor() {
       setSelectedProductSlug(nextSelected)
       if (!nextSelected) setEditorOpen(false)
     }
+  }
+
+  function requestDelete(slug: string, name: string) {
+    setDeleteTarget({ slug, name })
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return
+    deleteBySlug(deleteTarget.slug)
+    setDeleteTarget(null)
   }
 
   function syncTechnicalDetails(rows: TechnicalDetailRow[]) {
@@ -477,7 +489,7 @@ export function CmsEditor() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => deleteBySlug(product.slug)}
+                            onClick={() => requestDelete(product.slug, product.name)}
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-300/60 bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300 md:h-8 md:w-8"
                             title="Sil"
                           >
@@ -730,7 +742,7 @@ export function CmsEditor() {
                   </div>
 
                   <div className="border-t pt-4">
-                    <button onClick={() => deleteBySlug(selectedProduct.slug)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
+                    <button onClick={() => requestDelete(selectedProduct.slug, selectedProduct.name)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
                       <Trash2 className="h-4 w-4" />
                       Bu Urunu Sil
                     </button>
@@ -753,6 +765,20 @@ export function CmsEditor() {
         }
         onClose={() => setShowMediaPicker(false)}
         onSelect={handleMediaPick}
+      />
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Ürün Silinsin mi?"
+        description={
+          <>
+            <span className="font-medium text-foreground">{deleteTarget?.name}</span> adlı ürünü kalıcı olarak silmek istediğinize emin misiniz?
+          </>
+        }
+        confirmLabel="Ürünü Sil"
+        cancelLabel="Vazgeç"
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
       />
 
       <CmsStatusToast error={error} message={message} />

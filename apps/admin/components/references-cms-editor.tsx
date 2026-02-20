@@ -18,6 +18,7 @@ import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
 import { CmsStatusToast } from '@/components/cms-shared'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
 function splitByComma(value: string) {
   return value
@@ -47,6 +48,7 @@ export function ReferencesCmsEditor() {
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [editorOpen, setEditorOpen] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null)
 
   useEffect(() => {
     void loadStore()
@@ -131,16 +133,6 @@ export function ReferencesCmsEditor() {
     setEditorOpen(true)
   }
 
-  function removeItem() {
-    if (!store || !selectedItem) return
-    const filtered = store.items.filter((item) => item.id !== selectedItem.id)
-    setStore({ ...store, items: filtered })
-    setSelectedId(filtered[0]?.id ?? '')
-    if (filtered.length === 0) {
-      setEditorOpen(false)
-    }
-  }
-
   function deleteById(id: string) {
     if (!store) return
     const filtered = store.items.filter((item) => item.id !== id)
@@ -151,6 +143,16 @@ export function ReferencesCmsEditor() {
         setEditorOpen(false)
       }
     }
+  }
+
+  function requestDelete(id: string, title: string) {
+    setDeleteTarget({ id, title })
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return
+    deleteById(deleteTarget.id)
+    setDeleteTarget(null)
   }
 
   async function saveStore() {
@@ -294,7 +296,7 @@ export function ReferencesCmsEditor() {
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
-                            onClick={() => deleteById(item.id)}
+                            onClick={() => requestDelete(item.id, item.title)}
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-red-300/60 bg-red-50 text-red-600 transition-colors hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300 md:h-8 md:w-8"
                             title="Sil"
                           >
@@ -386,7 +388,7 @@ export function ReferencesCmsEditor() {
                   </div>
 
                   <div className="border-t pt-4">
-                    <button onClick={removeItem} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
+                    <button onClick={() => requestDelete(selectedItem.id, selectedItem.title)} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
                       <Trash2 className="h-4 w-4" />
                       Bu Referansı Sil
                     </button>
@@ -406,6 +408,20 @@ export function ReferencesCmsEditor() {
           patchItem({ image: url })
           setShowMediaPicker(false)
         }}
+      />
+
+      <ConfirmDialog
+        open={Boolean(deleteTarget)}
+        title="Referans Silinsin mi?"
+        description={
+          <>
+            <span className="font-medium text-foreground">{deleteTarget?.title}</span> adlı referansı kalıcı olarak silmek istediğinize emin misiniz?
+          </>
+        }
+        confirmLabel="Referansı Sil"
+        cancelLabel="Vazgeç"
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
       />
 
       <CmsStatusToast error={error} message={message} />
