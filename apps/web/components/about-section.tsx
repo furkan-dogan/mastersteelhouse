@@ -3,88 +3,22 @@
 import { CheckCircle2, TrendingUp, Users2, Lightbulb, Play, Pause } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { aboutFeatures as features, aboutStats as stats, aboutTimeline as timeline } from '@/lib/content/about-content'
 
-const features = [
-  {
-    icon: CheckCircle2,
-    title: 'Kalite Garantisi',
-    description: 'Avrupa standartlarında malzeme ve işçilik garantisi sunuyoruz.',
-    image: '/quality-assurance.jpg'
-  },
-  {
-    icon: TrendingUp,
-    title: 'Sürekli Gelişim',
-    description: 'Sektördeki yenilikleri takip ediyor, teknolojiye yatırım yapıyoruz.',
-    image: '/development.jpg'
-  },
-  {
-    icon: Users2,
-    title: 'Uzman Ekip',
-    description: 'Alanında uzman mühendis ve teknik ekibimizle hizmetinizdeyiz.',
-    image: '/expert-team.jpg'
-  },
-  {
-    icon: Lightbulb,
-    title: 'Yenilikçi Çözümler',
-    description: 'Her projeye özel, yaratıcı ve modern çözümler üretiyoruz.',
-    image: '/innovation.jpg'
-  },
-]
-
-const stats = [
-  { value: '20+', label: 'Yıllık Deneyim' },
-  { value: '500+', label: 'Tamamlanan Proje' },
-  { value: '50+', label: 'Uzman Personel' },
-  { value: '%100', label: 'Müşteri Memnuniyeti' },
-]
-
-const timeline = [
-  { 
-    step: '01', 
-    title: 'Danışmanlık', 
-    description: 'Projenizi dinliyor, ihtiyaçlarınızı analiz ediyor ve size en uygun çözümü sunuyoruz.',
-    image: '/process-consulting.jpg',
-    icon: '🎯'
-  },
-  { 
-    step: '02', 
-    title: 'Tasarım Süreci', 
-    description: '3D modelleme ile mimari tasarım ve statik hesaplamalarınızı yapıyoruz.',
-    image: '/process-design.jpg',
-    icon: '📐'
-  },
-  { 
-    step: '03', 
-    title: 'Üretim Süreci', 
-    description: 'Modern fabrikamızda CNC teknolojisi ile hassas üretim gerçekleştiriyoruz.',
-    image: '/process-production.jpg',
-    icon: '⚙️'
-  },
-  { 
-    step: '04', 
-    title: 'Şantiye Ve Montaj Aşaması', 
-    description: 'Deneyimli montaj ekibimiz ile sahada hızlı ve güvenli kurulum yapıyoruz.',
-    image: '/process-assembly.jpg',
-    icon: '🏗️'
-  },
-  { 
-    step: '05', 
-    title: 'Lojistik Ve Sevkiyat Süreci', 
-    description: 'Özel araçlarımızla güvenli taşıma ve zamanında teslimat garantisi veriyoruz.',
-    image: '/process-logistics.jpg',
-    icon: '🚚'
-  },
-]
+const featureIconMap = {
+  check: CheckCircle2,
+  trend: TrendingUp,
+  users: Users2,
+  idea: Lightbulb,
+} as const
 
 export function AboutSection() {
   const [isVisible, setIsVisible] = useState(false)
   const [countedStats, setCountedStats] = useState<number[]>([])
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
   const [isVideoPlaying, setIsVideoPlaying] = useState(true)
-  const [activeFeature, setActiveFeature] = useState<number>(0)
   const sectionRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const featuresRef = useRef<HTMLDivElement>(null)
 
   // Display feature: hover or default to first
   const displayedFeature = hoveredFeature !== null ? hoveredFeature : 0
@@ -224,7 +158,7 @@ export function AboutSection() {
           <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
             <div className="space-y-6">
               {features.map((feature, index) => {
-                const Icon = feature.icon
+                const Icon = featureIconMap[feature.icon]
                 const isHovered = hoveredFeature === index
                 
                 return (
