@@ -9,8 +9,10 @@
   "scripts": {
     "dev:web": "pnpm --filter mastersteelhouse-web dev",
     "dev:admin": "pnpm --filter mastersteelhouse-admin dev",
+    "dev:profil": "pnpm --filter mastersteelhouse-profil dev",
     "build:web": "pnpm --filter mastersteelhouse-web build",
     "build:admin": "pnpm --filter mastersteelhouse-admin build",
+    "build:profil": "pnpm --filter mastersteelhouse-profil build",
     "lint": "pnpm -r --if-present lint"
   }
 }
