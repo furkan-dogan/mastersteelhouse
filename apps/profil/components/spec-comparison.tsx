@@ -9,7 +9,7 @@ export function SpecComparison() {
 
         <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-900 text-white">
+            <thead className="bg-slate-100 text-slate-900">
               <tr>
                 <th className="px-4 py-3 font-semibold">Urun</th>
                 <th className="px-4 py-3 font-semibold">Malzeme</th>

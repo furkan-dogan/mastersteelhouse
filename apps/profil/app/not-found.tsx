@@ -7,7 +7,7 @@ export default function NotFound() {
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">404</p>
         <h1 className="mt-2 text-2xl font-bold text-slate-900">Sayfa bulunamadi</h1>
         <p className="mt-2 text-sm text-slate-600">Aradiginiz sayfa tasinmis veya kaldirilmis olabilir.</p>
-        <Link href="/" className="mt-5 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
+        <Link href="/" className="mt-5 inline-flex rounded-lg bg-[#eab308] px-4 py-2 text-sm font-semibold text-black hover:bg-[#facc15] transition">
           Anasayfaya Don
         </Link>
       </div>

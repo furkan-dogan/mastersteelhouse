@@ -18,7 +18,6 @@ export function HeroSlider() {
 
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden">
-      {/* Background slides */}
       <AnimatePresence mode="wait">
         {profileProducts.map((p, i) =>
           i === active ? (
@@ -30,19 +29,14 @@ export function HeroSlider() {
               transition={{ duration: 0.6 }}
               className="absolute inset-0"
             >
-              <img
-                src={p.image}
-                alt={p.name}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0e14] via-[#0a0e14]/90 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e14] via-transparent to-transparent" />
+              <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#f3f4f1]/95 via-[#f3f4f1]/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#f3f4f1]/90 via-transparent to-transparent" />
             </motion.div>
           ) : null
         )}
       </AnimatePresence>
 
-      {/* Content */}
       <div className="relative z-10 flex h-full flex-col justify-center px-6 lg:px-12 xl:px-20">
         <div className="max-w-3xl">
           <AnimatePresence mode="wait">
@@ -53,13 +47,9 @@ export function HeroSlider() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <p className="text-sm font-semibold uppercase tracking-wider text-[#eab308]">
-                {product.shortName}
-              </p>
-              <h1 className="mt-4 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-                {product.name}
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-slate-300">{product.subtitle}</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">{product.shortName}</p>
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">{product.name}</h1>
+              <p className="mt-6 max-w-xl text-lg text-slate-700">{product.subtitle}</p>
               <Link
                 href={`/urunler/${product.slug}`}
                 className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#eab308] px-6 py-3.5 font-semibold text-black transition hover:bg-[#facc15]"
@@ -72,7 +62,6 @@ export function HeroSlider() {
         </div>
       </div>
 
-      {/* Slider controls */}
       <div className="absolute bottom-8 left-6 right-6 flex items-center justify-between lg:left-12 lg:right-20">
         <div className="flex gap-2">
           {profileProducts.map((_, i) => (
@@ -80,9 +69,7 @@ export function HeroSlider() {
               key={i}
               type="button"
               onClick={() => setActive(i)}
-              className={`h-1.5 rounded-full transition-all ${
-                i === active ? 'w-10 bg-[#eab308]' : 'w-1.5 bg-white/30 hover:bg-white/50'
-              }`}
+              className={`h-1.5 rounded-full transition-all ${i === active ? 'w-10 bg-[#eab308]' : 'w-1.5 bg-slate-300 hover:bg-slate-500'}`}
               aria-label={`Slide ${i + 1}`}
             />
           ))}
@@ -91,7 +78,7 @@ export function HeroSlider() {
           <button
             type="button"
             onClick={() => setActive((p) => (p - 1 + profileProducts.length) % profileProducts.length)}
-            className="rounded-lg border border-white/20 p-2.5 text-white transition hover:bg-white/10"
+            className="rounded-lg border border-slate-300 bg-white/80 p-2.5 text-slate-900 transition hover:bg-slate-100"
             aria-label="Önceki"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -99,7 +86,7 @@ export function HeroSlider() {
           <button
             type="button"
             onClick={() => setActive((p) => (p + 1) % profileProducts.length)}
-            className="rounded-lg border border-white/20 p-2.5 text-white transition hover:bg-white/10"
+            className="rounded-lg border border-slate-300 bg-white/80 p-2.5 text-slate-900 transition hover:bg-slate-100"
             aria-label="Sonraki"
           >
             <ChevronRight className="h-5 w-5" />

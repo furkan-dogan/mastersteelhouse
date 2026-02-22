@@ -106,7 +106,7 @@ export function Header() {
             <div className={`relative transition-all duration-500 ${isScrolled ? 'h-10' : 'h-14'}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo.png"
+                src="/logoprofil.png"
                 alt="Master Steel House Logo"
                 className={`relative transition-all duration-500 group-hover:scale-105 drop-shadow-2xl ${
                   isScrolled ? 'h-10' : 'h-14'

@@ -174,7 +174,7 @@ export type ProfilContent = {
 export const DEFAULT_CONTENT: ProfilContent = {
   meta: { title: "Master Profil", description: "Master Profil urun ve cozumleri" },
   header: {
-    logoSrc: "/images/logo.png",
+    logoSrc: "/images/logoprofil.png",
     logoAlt: "Master Profil",
     nav: [
       { label: "Anasayfa", href: "#" },

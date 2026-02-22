@@ -12,12 +12,6 @@ export function ApplicationsSlider() {
   const [active, setActive] = useState(0)
 
   useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      () => {},
-      { root: null, rootMargin: '0px', threshold: 0.5 }
-    )
     const interval = setInterval(() => {
       setActive((p) => (p + 1) % applicationAreas.length)
     }, 4000)
@@ -31,19 +25,12 @@ export function ApplicationsSlider() {
   }, [active])
 
   return (
-    <section id="referanslar" className="scroll-mt-20 bg-[#111820] py-20">
+    <section id="referanslar" className="scroll-mt-20 bg-[#eef1ee] py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-14 text-center"
-        >
-          <p className="text-sm font-semibold uppercase tracking-wider text-[#eab308]">Uygulama Alanları</p>
-          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Her Proje Tipinde</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-            Konut, ticari, endüstriyel ve kamu projelerinde güvenilir profil çözümleri.
-          </p>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14 text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Uygulama Alanları</p>
+          <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">Her Proje Tipinde</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-slate-600">Konut, ticari, endüstriyel ve kamu projelerinde güvenilir profil çözümleri.</p>
         </motion.div>
 
         <div ref={scrollRef} className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
@@ -58,17 +45,15 @@ export function ApplicationsSlider() {
                 transition={{ delay: i * 0.1 }}
                 onClick={() => setActive(i)}
                 className={`flex min-w-[280px] cursor-pointer flex-col rounded-2xl border p-8 transition-all sm:min-w-[320px] ${
-                  active === i
-                    ? 'border-[#eab308]/50 bg-[#eab308]/5'
-                    : 'border-white/10 bg-[#151d28] hover:border-white/20'
+                  active === i ? 'border-[#eab308]/50 bg-[#fff9e8]' : 'border-slate-200 bg-white hover:border-slate-300'
                 }`}
                 style={{ scrollSnapAlign: 'center' }}
               >
-                <div className={`mb-4 rounded-xl p-3 ${active === i ? 'bg-[#eab308]/20' : 'bg-white/5'}`}>
-                  <Icon className={`h-8 w-8 ${active === i ? 'text-[#eab308]' : 'text-slate-400'}`} />
+                <div className={`mb-4 rounded-xl p-3 ${active === i ? 'bg-[#fde68a]/40' : 'bg-slate-100'}`}>
+                  <Icon className={`h-8 w-8 ${active === i ? 'text-[#b88700]' : 'text-slate-600'}`} />
                 </div>
-                <h3 className="text-xl font-semibold text-white">{area.title}</h3>
-                <p className="mt-2 text-sm text-slate-400">{area.desc}</p>
+                <h3 className="text-xl font-semibold text-slate-900">{area.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{area.desc}</p>
               </motion.article>
             )
           })}
@@ -80,7 +65,7 @@ export function ApplicationsSlider() {
               key={i}
               type="button"
               onClick={() => setActive(i)}
-              className={`h-2 rounded-full transition-all ${i === active ? 'w-8 bg-[#eab308]' : 'w-2 bg-white/20 hover:bg-white/40'}`}
+              className={`h-2 rounded-full transition-all ${i === active ? 'w-8 bg-[#eab308]' : 'w-2 bg-slate-300 hover:bg-slate-400'}`}
               aria-label={`Slide ${i + 1}`}
             />
           ))}

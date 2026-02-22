@@ -26,16 +26,16 @@ function Counter({ value, suffix }: { value: string; suffix: string }) {
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-0.5">
-      <span className="tabular-nums text-3xl font-bold text-white sm:text-4xl">{n}</span>
-      <span className="text-base font-medium text-slate-400 sm:text-lg">{suffix}</span>
+      <span className="tabular-nums text-3xl font-bold text-slate-900 sm:text-4xl">{n}</span>
+      <span className="text-base font-medium text-slate-600 sm:text-lg">{suffix}</span>
     </div>
   )
 }
 
 export function StatsStrip() {
   return (
-    <section id="kurumsal" className="scroll-mt-20 relative overflow-hidden border-y border-white/5 bg-[#0a0e14] py-16 sm:py-20">
-      <div className="pattern-dots absolute inset-0 opacity-50" />
+    <section id="kurumsal" className="scroll-mt-20 relative overflow-hidden border-y border-slate-200 bg-[#f3f4f1] py-16 sm:py-20">
+      <div className="pattern-dots absolute inset-0 opacity-40" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -55,7 +55,7 @@ export function StatsStrip() {
               <div className="mb-3">
                 <Counter value={stat.value} suffix={stat.suffix} />
               </div>
-              <p className="text-sm font-medium leading-snug text-slate-500">{stat.label}</p>
+              <p className="text-sm font-medium leading-snug text-slate-700">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>

@@ -1,16 +1,16 @@
 @import 'tailwindcss';
 
 :root {
-  --bg-dark: #0a0e14;
-  --bg-card: #111820;
-  --bg-elevated: #151d28;
-  --steel: #1e293b;
-  --steel-light: #334155;
+  --bg-soft: #f3f4f1;
+  --bg-card: #ffffff;
+  --bg-elevated: #f8fafc;
+  --steel: #334155;
+  --steel-light: #64748b;
   --accent: #eab308;
   --accent-hover: #facc15;
-  --text-primary: #f8fafc;
-  --text-muted: #94a3b8;
-  --border: rgba(255, 255, 255, 0.08);
+  --text-primary: #0f172a;
+  --text-muted: #475569;
+  --border: rgba(15, 23, 42, 0.12);
 }
 
 @theme inline {
@@ -28,21 +28,20 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg-dark);
+  background: var(--bg-soft);
   color: var(--text-primary);
   font-family: var(--font-sans);
 }
 
-/* Construction pattern */
 .pattern-grid {
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 .pattern-dots {
-  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(15, 23, 42, 0.1) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 

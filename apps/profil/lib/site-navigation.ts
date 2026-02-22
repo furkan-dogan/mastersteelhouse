@@ -4,10 +4,9 @@ export type NavLinkItem = {
 }
 
 export const corporateLinks: NavLinkItem[] = [
-  { label: 'Hakkımızda', href: '/#kurumsal' },
-  { label: 'Üretim Yaklaşımı', href: '/#referanslar' },
-  { label: 'Proje Süreci', href: '/#proje-sureci' },
-  { label: 'Teklif', href: '/#teklif' },
+  { label: 'Hakkımızda', href: '/kurumsal/hakkimizda' },
+  { label: 'Misyonumuz', href: '/kurumsal/misyonumuz' },
+  { label: 'Vizyonumuz', href: '/kurumsal/vizyonumuz' },
 ]
 
 export const productLinks: NavLinkItem[] = [
@@ -17,9 +16,9 @@ export const productLinks: NavLinkItem[] = [
 ]
 
 export const mediaLinks: NavLinkItem[] = [
-  { label: 'Uygulama Alanları', href: '/#referanslar' },
-  { label: 'Proje Akışı', href: '/#proje-sureci' },
-  { label: 'Teklif ve İletişim', href: '/#teklif' },
+  { label: 'Haberler', href: '/medya/haberler' },
+  { label: 'Videolar', href: '/medya/videolar' },
+  { label: 'Blog', href: '/medya/blog' },
 ]
 
 export const desktopPrimaryLinks: NavLinkItem[] = [

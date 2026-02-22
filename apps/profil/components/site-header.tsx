@@ -45,7 +45,7 @@ export function SiteHeader() {
 
   const isActive = (href?: string) => {
     if (!href) return false
-    if (href.startsWith('/#')) return pathname === '/'
+    if (href.startsWith('/#')) return false
     if (href === '/urunler') return pathname.startsWith('/urunler')
     return pathname === href
   }
@@ -62,34 +62,30 @@ export function SiteHeader() {
       animate={{ y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-[#0a0e14]/95 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'
+        scrolled ? 'border-b border-slate-200/80 bg-[#f3f4f1]/95 backdrop-blur-xl' : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
+        <Link href="/" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Master Steel House" className="h-10 w-auto" />
-          <span className="hidden text-sm font-semibold uppercase tracking-wide text-[#eab308] sm:block">
-            Profil Sistemleri
-          </span>
+          <img src="/logoprofil.png" alt="Master Steel House" className="block h-11 w-auto" />
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-white/15 bg-white/10 p-1 md:flex">
+        <nav
+          className="hidden items-center gap-1 rounded-full border border-slate-300/80 bg-white/85 p-1 md:flex"
+          onMouseLeave={() => setActiveDropdown(null)}
+        >
           {topNavItems.map((item) => {
             if (item.dropdown) {
               const open = activeDropdown === item.dropdown
               const dropdownLinks = dropdownLinksByKey(item.dropdown)
               return (
-                <div
-                  key={item.key}
-                  className="relative"
-                  onMouseEnter={() => setActiveDropdown(item.dropdown!)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
+                <div key={item.key} className="relative" onMouseEnter={() => setActiveDropdown(item.dropdown!)}>
                   <button
                     type="button"
+                    onClick={() => setActiveDropdown((prev) => (prev === item.dropdown ? null : item.dropdown!))}
                     className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                      open ? 'bg-[#eab308] text-black' : 'text-slate-300 hover:text-white'
+                      open ? 'bg-[#eab308] text-black' : 'text-slate-700 hover:bg-[#eab308] hover:text-black'
                     }`}
                   >
                     {item.label}
@@ -97,17 +93,19 @@ export function SiteHeader() {
                   </button>
 
                   {open ? (
-                    <div className="absolute left-0 top-full mt-2 w-64 rounded-xl border border-white/10 bg-[#0a0e14]/95 p-2 shadow-2xl backdrop-blur-xl">
-                      {dropdownLinks.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          onClick={closeAll}
-                          className="block rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-[#eab308]"
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
+                    <div className="absolute left-0 top-full pt-2">
+                      <div className="w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+                        {dropdownLinks.map((link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            onClick={closeAll}
+                            className="block rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-[#eab308] hover:text-black"
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   ) : null}
                 </div>
@@ -115,10 +113,12 @@ export function SiteHeader() {
             }
 
             return (
-              <Link key={item.key} href={item.href ?? '/'}>
+              <Link key={item.key} href={item.href ?? '/'} onMouseEnter={() => setActiveDropdown(null)}>
                 <span
                   className={`block rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    isActive(item.href) ? 'text-[#eab308]' : 'text-slate-300 hover:text-white'
+                    isActive(item.href)
+                      ? 'bg-[#eab308] text-black'
+                      : 'text-slate-700 hover:bg-[#eab308] hover:text-black'
                   }`}
                 >
                   {item.label}
@@ -130,7 +130,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-white md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-slate-800 md:hidden"
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-label="Menü"
         >
@@ -152,7 +152,7 @@ export function SiteHeader() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-white/5 bg-[#0a0e14]/98 md:hidden"
+            className="border-t border-slate-200 bg-[#f3f4f1]/98 md:hidden"
           >
             <nav className="flex flex-col p-4">
               {topNavItems.map((item) => {
@@ -164,19 +164,19 @@ export function SiteHeader() {
                       <button
                         type="button"
                         onClick={() => setMobileOpenDropdown((prev) => (prev === item.dropdown ? null : item.dropdown!))}
-                        className="flex w-full items-center justify-between py-3 text-left text-sm font-medium text-slate-300 hover:text-white"
+                        className="flex w-full items-center justify-between py-3 text-left text-sm font-medium text-slate-700 hover:text-slate-900"
                       >
                         {item.label}
                         <ChevronDown className={`h-4 w-4 transition ${open ? 'rotate-180' : ''}`} />
                       </button>
                       {open ? (
-                        <div className="mb-2 rounded-lg border border-white/10 bg-white/5 p-2">
+                        <div className="mb-2 rounded-lg border border-slate-200 bg-white p-2">
                           {dropdownLinks.map((link) => (
                             <Link
                               key={link.href}
                               href={link.href}
                               onClick={closeAll}
-                              className="block rounded-md px-2 py-2 text-sm text-slate-300 transition hover:bg-white/10 hover:text-white"
+                              className="block rounded-md px-2 py-2 text-sm text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
                             >
                               {link.label}
                             </Link>
@@ -192,13 +192,12 @@ export function SiteHeader() {
                     key={item.key}
                     href={item.href ?? '/'}
                     onClick={closeAll}
-                    className="py-3 text-sm font-medium text-slate-300 hover:text-white"
+                    className="py-3 text-sm font-medium text-slate-700 hover:text-slate-900"
                   >
                     {item.label}
                   </Link>
                 )
               })}
-
             </nav>
           </motion.div>
         ) : null}

@@ -4,7 +4,7 @@ import { SiteFooter } from '@/components/site-footer'
 
 export default function ProfilProductsPage() {
   return (
-    <div className="min-h-screen bg-[#0a0e14] pt-16">
+    <div className="min-h-screen bg-[#f3f4f1] pt-20">
       <SiteHeader />
       <main>
         <ProductCardGrid />
