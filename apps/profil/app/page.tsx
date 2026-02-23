@@ -1,9 +1,9 @@
 import { SiteHeader } from '@/components/site-header'
 import { HeroSlider } from '@/components/hero-slider'
 import { ProductsSlider } from '@/components/products-slider'
-import { ApplicationsSlider } from '@/components/applications-slider'
 import { ProcessTimeline } from '@/components/process-timeline'
-import { ContactSection } from '@/components/contact-section'
+import { FAQSection } from '@/components/faq-section'
+import { CtaSection } from '@/components/cta-section'
 import { SiteFooter } from '@/components/site-footer'
 
 export default function ProfilHomePage() {
@@ -12,9 +12,9 @@ export default function ProfilHomePage() {
       <SiteHeader />
       <HeroSlider />
       <ProductsSlider />
-      <ApplicationsSlider />
       <ProcessTimeline />
-      <ContactSection />
+      <FAQSection limit={4} showMoreButton />
+      <CtaSection />
       <SiteFooter />
     </div>
   )

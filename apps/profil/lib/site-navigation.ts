@@ -22,6 +22,6 @@ export const mediaLinks: NavLinkItem[] = [
 ]
 
 export const desktopPrimaryLinks: NavLinkItem[] = [
-  { label: 'Referanslar', href: '/#referanslar' },
-  { label: 'İletişim', href: '/#teklif' },
+  { label: 'Referanslar', href: '/referanslar' },
+  { label: 'İletişim', href: '/iletisim' },
 ]
