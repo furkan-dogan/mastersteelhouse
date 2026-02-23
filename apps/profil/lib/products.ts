@@ -2,6 +2,7 @@ export type ProfileProduct = {
   slug: string
   name: string
   shortName: string
+  heroTitle: string
   subtitle: string
   image: string
   description: string
@@ -14,7 +15,9 @@ export const profileProducts: ProfileProduct[] = [
     slug: 'alcikose-profili',
     name: 'Alçıpan Köşe Profili',
     shortName: 'AKP-01',
-    subtitle: 'Köşe dönüşlerinde düzgün bitiş ve darbe direnci.',
+    heroTitle: 'Kusursuz Köşe Hatları',
+    subtitle:
+      'Alçı sıva ve alçıpan uygulamalarında köşe dayanımını artıran alçıköşe profili; düzgün hat, çatlak azaltma ve uzun ömürlü yüzey performansı sağlar.',
     image: '/profil-alcikose.jpg',
     description:
       'Alçıpan köşe profili, alçı levha köşe noktalarında düzgün hat oluşturur, çatlama riskini azaltır ve uzun ömürlü bir bitiş sunar.',
@@ -30,7 +33,9 @@ export const profileProducts: ProfileProduct[] = [
     slug: 'kaba-siva-profili',
     name: 'Kaba Sıva Profili',
     shortName: 'KSP-02',
-    subtitle: 'Sıva kalınlığını sabit tutan hızlı uygulama profili.',
+    heroTitle: 'Profesyonel Sıva Geçiş Çözümü',
+    subtitle:
+      'İç ve dış cephe kaba sıva uygulamalarında düzgün kot ve temiz bitiş için geliştirilmiş profil çözümü; işçilik hızını artırır, yüzey kalitesini standartlaştırır.',
     image: '/profil-kabasiva.jpg',
     description:
       'Kaba sıva profili, duvar yüzeylerinde düzgün kot oluşturur. Uygulama süresini kısaltır, hata payını düşürür ve homojen yüzey kalitesi sağlar.',
@@ -46,7 +51,9 @@ export const profileProducts: ProfileProduct[] = [
     slug: 'tavan-u-c-profili',
     name: 'Tavan U-C Profili',
     shortName: 'TUC-03',
-    subtitle: 'Asma tavan taşıyıcı sistemlerinde güvenli iskelet çözümleri.',
+    heroTitle: 'Stabil İskelet, Güvenli Montaj',
+    subtitle:
+      'Asma tavan sistemlerinde güvenli taşıyıcı iskelet oluşturan Tavan U-C profili; ölçü kararlılığı, montaj kolaylığı ve uzun süreli yapısal performans sunar.',
     image: '/profil-tavan-uc.jpg',
     description:
       'U ve C profil kombinasyonu, asma tavan sistemlerinde rijit ve dengeli taşıyıcı altyapı sunar. Düzenli aks aralıkları ile temiz montaj sağlar.',

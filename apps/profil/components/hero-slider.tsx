@@ -48,7 +48,7 @@ export function HeroSlider() {
               transition={{ duration: 0.5 }}
             >
               <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">{product.shortName}</p>
-              <h1 className="mt-4 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">{product.name}</h1>
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">{product.heroTitle}</h1>
               <p className="mt-6 max-w-xl text-lg text-slate-700">{product.subtitle}</p>
               <Link
                 href={`/urunler/${product.slug}`}
@@ -62,7 +62,7 @@ export function HeroSlider() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-6 right-6 flex items-center justify-between lg:left-12 lg:right-20">
+      <div className="absolute bottom-8 left-6 right-6 z-20 flex items-center justify-between lg:left-12 lg:right-20">
         <div className="flex gap-2">
           {profileProducts.map((_, i) => (
             <button
@@ -74,11 +74,11 @@ export function HeroSlider() {
             />
           ))}
         </div>
-        <div className="hidden gap-2 lg:flex">
+        <div className="hidden gap-2 lg:flex pointer-events-auto">
           <button
             type="button"
             onClick={() => setActive((p) => (p - 1 + profileProducts.length) % profileProducts.length)}
-            className="rounded-lg border border-slate-300 bg-white/80 p-2.5 text-slate-900 transition hover:bg-slate-100"
+            className="rounded-lg border border-slate-300 bg-white/90 p-2.5 text-slate-900 transition hover:bg-slate-100"
             aria-label="Önceki"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -86,7 +86,7 @@ export function HeroSlider() {
           <button
             type="button"
             onClick={() => setActive((p) => (p + 1) % profileProducts.length)}
-            className="rounded-lg border border-slate-300 bg-white/80 p-2.5 text-slate-900 transition hover:bg-slate-100"
+            className="rounded-lg border border-slate-300 bg-white/90 p-2.5 text-slate-900 transition hover:bg-slate-100"
             aria-label="Sonraki"
           >
             <ChevronRight className="h-5 w-5" />
