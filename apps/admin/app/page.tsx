@@ -1,5 +1,5 @@
-import { CmsEditor } from '@/components/cms-editor'
+import { redirect } from 'next/navigation'
 
 export default function AdminPage() {
-  return <CmsEditor />
+  redirect('/panel-secimi')
 }

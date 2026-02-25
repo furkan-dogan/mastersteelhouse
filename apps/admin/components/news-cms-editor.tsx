@@ -42,7 +42,12 @@ const EMPTY_POST: NewsPost = {
   gallery: [],
 }
 
-export function NewsCmsEditor() {
+type NewsCmsEditorProps = {
+  endpoint?: string
+  mediaEndpoint?: string
+}
+
+export function NewsCmsEditor({ endpoint = '/api/news', mediaEndpoint = '/api/media' }: NewsCmsEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
@@ -72,7 +77,7 @@ export function NewsCmsEditor() {
     addSection,
     removeSection,
   } = usePostsCms<NewsPost, NewsStore>({
-    endpoint: '/api/news',
+    endpoint,
     emptyPost: EMPTY_POST,
     slugBase: 'yeni-haber',
     loadErrorMessage: 'Haber verisi alınamadı',
@@ -250,6 +255,7 @@ export function NewsCmsEditor() {
       />
 
       <MediaPickerModal
+        endpoint={mediaEndpoint}
         open={showMediaPicker}
         title={mediaTarget.type === 'cover' ? 'Kapak Görseli Seç' : mediaTarget.type === 'gallery' ? 'Galeriye Medya Ekle' : 'Bölüm Görseli Seç'}
         onClose={() => setShowMediaPicker(false)}

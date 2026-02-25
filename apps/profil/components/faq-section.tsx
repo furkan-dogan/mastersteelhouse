@@ -54,7 +54,7 @@ type FAQSectionProps = {
 }
 
 export function FAQSection({ limit, showMoreButton = false, className }: FAQSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const faqs = useMemo(() => {
     if (!limit || limit >= profileFaqs.length) {

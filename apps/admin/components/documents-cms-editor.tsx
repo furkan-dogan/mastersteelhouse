@@ -38,7 +38,12 @@ function createDocument(): DocumentItem {
   }
 }
 
-export function DocumentsCmsEditor() {
+type DocumentsCmsEditorProps = {
+  endpoint?: string
+  mediaEndpoint?: string
+}
+
+export function DocumentsCmsEditor({ endpoint = '/api/documents', mediaEndpoint = '/api/media' }: DocumentsCmsEditorProps) {
   const [store, setStore] = useState<DocumentsStore>(EMPTY_STORE)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -78,7 +83,7 @@ export function DocumentsCmsEditor() {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('/api/documents', { cache: 'no-store' })
+      const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) throw new Error('Belgeler verisi alınamadı')
       const nextStore = (await response.json()) as DocumentsStore
       setStore(nextStore)
@@ -144,7 +149,7 @@ export function DocumentsCmsEditor() {
     try {
       setUploadingPdf(true)
       setError(null)
-      const response = await fetch('/api/media', {
+      const response = await fetch(mediaEndpoint, {
         method: 'POST',
         body: formData,
       })
@@ -164,7 +169,7 @@ export function DocumentsCmsEditor() {
       setSaving(true)
       setError(null)
       setMessage(null)
-      const response = await fetch('/api/documents', {
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(store),
@@ -245,6 +250,7 @@ export function DocumentsCmsEditor() {
       />
 
       <MediaPickerModal
+        endpoint={mediaEndpoint}
         open={showMediaPicker}
         title="Dosya Seç"
         acceptTypes={['document', 'image']}

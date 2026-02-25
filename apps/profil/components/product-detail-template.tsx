@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, CheckCircle2, FileText } from 'lucide-react'
-import type { ProfileProduct } from '@/lib/products'
+import type { ProfileProduct } from '@/lib/profile-content'
 
 export function ProductDetailTemplate({ product }: { product: ProfileProduct }) {
   return (

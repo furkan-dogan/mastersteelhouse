@@ -1,0 +1,65 @@
+{
+  "posts": [
+    {
+      "slug": "uretim-hatti-kapasite-artisi",
+      "title": "Profil Üretim Hattında Kapasite Artışı",
+      "date": "24 Şubat 2026",
+      "location": "Ankara",
+      "author": "Operasyon",
+      "category": "Duyuru",
+      "readTime": "3 dk",
+      "excerpt": "Yeni planlama düzeni ile profil üretim hattında günlük çıkış kapasitesi artırıldı.",
+      "image": "/profil-kabasiva.jpg",
+      "featured": true,
+      "sections": [
+        {
+          "title": "Yeni Planlama",
+          "content": "Vardiya ve hat dengeleme güncellemesi ile üretim akışı optimize edildi."
+        },
+        {
+          "title": "Teslim Etkisi",
+          "content": "Planlı sevkiyat oranı artırılarak proje teslim sürelerinde iyileşme sağlandı."
+        }
+      ],
+      "gallery": ["/profil-kabasiva.jpg"]
+    },
+    {
+      "slug": "saha-egitim-programi",
+      "title": "Uygulama Ekipleri İçin Saha Eğitim Programı Tamamlandı",
+      "date": "21 Şubat 2026",
+      "location": "İstanbul",
+      "author": "Teknik Eğitim",
+      "category": "Eğitim",
+      "readTime": "4 dk",
+      "excerpt": "Alçı köşe ve tavan U-C profil uygulamalarında doğru montaj adımları için saha eğitimi gerçekleştirildi.",
+      "image": "/profil-alcikose.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Eğitim İçeriği",
+          "content": "Kesim, hizalama, sabitleme ve kalite kontrol adımları uygulamalı olarak işlendi."
+        }
+      ],
+      "gallery": ["/profil-alcikose.jpg"]
+    },
+    {
+      "slug": "sevkiyat-duzeni-guncellemesi",
+      "title": "Paketleme ve Sevkiyat Düzeni Güncellendi",
+      "date": "18 Şubat 2026",
+      "location": "İzmir",
+      "author": "Lojistik",
+      "category": "Operasyon",
+      "readTime": "3 dk",
+      "excerpt": "Proje bazlı paketleme standardı revize edilerek şantiye teslimlerinde düzen iyileştirildi.",
+      "image": "/profil-tavan-uc.jpg",
+      "featured": false,
+      "sections": [
+        {
+          "title": "Yeni Standart",
+          "content": "Paket etiketleme ve yükleme sıralaması güncellenerek sahada zaman kaybı azaltıldı."
+        }
+      ],
+      "gallery": ["/profil-tavan-uc.jpg"]
+    }
+  ]
+}

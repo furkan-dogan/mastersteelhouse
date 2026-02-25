@@ -25,7 +25,12 @@ type RecentItem = {
   date?: string
 }
 
-export function Dashboard() {
+type DashboardProps = {
+  endpointBase?: string
+  hrefBase?: string
+}
+
+export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardProps) {
   const router = useRouter()
   const [kpis, setKpis] = useState<Kpi[]>([])
   const [recent, setRecent] = useState<RecentItem[]>([])
@@ -35,10 +40,10 @@ export function Dashboard() {
   const load = useCallback(async () => {
     try {
       const [productsRes, blogRes, newsRes, mediaRes] = await Promise.all([
-        fetch('/api/products', { cache: 'no-store' }),
-        fetch('/api/blog', { cache: 'no-store' }),
-        fetch('/api/news', { cache: 'no-store' }),
-        fetch('/api/media', { cache: 'no-store' }),
+        fetch(`${endpointBase}/products`, { cache: 'no-store' }),
+        fetch(`${endpointBase}/blog`, { cache: 'no-store' }),
+        fetch(`${endpointBase}/news`, { cache: 'no-store' }),
+        fetch(`${endpointBase}/media`, { cache: 'no-store' }),
       ])
 
       const products = productsRes.ok ? ((await productsRes.json()) as { products?: unknown[] }) : null
@@ -51,25 +56,25 @@ export function Dashboard() {
           label: 'Toplam Ürün',
           value: products?.products?.length ?? 0,
           icon: <Package className="h-5 w-5" />,
-          href: '/',
+          href: `${hrefBase}/`,
         },
         {
           label: 'Blog Yazıları',
           value: blog?.posts?.length ?? 0,
           icon: <BookOpenText className="h-5 w-5" />,
-          href: '/blog',
+          href: `${hrefBase}/blog`,
         },
         {
           label: 'Haberler',
           value: news?.posts?.length ?? 0,
           icon: <Newspaper className="h-5 w-5" />,
-          href: '/news',
+          href: `${hrefBase}/news`,
         },
         {
           label: 'Medya Dosyası',
           value: media?.items?.length ?? 0,
           icon: <ImageIcon className="h-5 w-5" />,
-          href: '/media',
+          href: `${hrefBase}/media`,
         },
       ])
 
@@ -83,15 +88,15 @@ export function Dashboard() {
       setRecent(items.slice(0, 8))
     } catch {
       setKpis([
-        { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: '/' },
-        { label: 'Blog', value: '-', icon: <BookOpenText className="h-5 w-5" />, href: '/blog' },
-        { label: 'Haberler', value: '-', icon: <Newspaper className="h-5 w-5" />, href: '/news' },
-        { label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: '/media' },
+        { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: `${hrefBase}/` },
+        { label: 'Blog', value: '-', icon: <BookOpenText className="h-5 w-5" />, href: `${hrefBase}/blog` },
+        { label: 'Haberler', value: '-', icon: <Newspaper className="h-5 w-5" />, href: `${hrefBase}/news` },
+        { label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: `${hrefBase}/media` },
       ])
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [endpointBase, hrefBase])
 
   useEffect(() => {
     void load()
@@ -116,7 +121,6 @@ export function Dashboard() {
       }
     >
       <div className="space-y-6">
-        {/* KPI Cards */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {kpis.map((kpi) => (
             <Link key={kpi.label} href={kpi.href ?? '#'}>
@@ -135,7 +139,6 @@ export function Dashboard() {
           ))}
         </div>
 
-        {/* Chart placeholder + Recent */}
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader>
@@ -175,7 +178,6 @@ export function Dashboard() {
           </Card>
         </div>
 
-        {/* List with FilterBar + Table */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between gap-4">
             <CardTitle>Son İçerikler</CardTitle>
@@ -211,8 +213,8 @@ export function Dashboard() {
                 <TableRowAction
                   onClick={() => {
                     const item = filteredRecent[index]
-                    if (item?.type === 'Blog') router.push('/blog')
-                    else if (item?.type === 'Haber') router.push('/news')
+                    if (item?.type === 'Blog') router.push(`${hrefBase}/blog`)
+                    else if (item?.type === 'Haber') router.push(`${hrefBase}/news`)
                   }}
                 >
                   Görüntüle

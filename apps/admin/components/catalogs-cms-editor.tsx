@@ -31,7 +31,12 @@ function createCatalog(): CatalogItem {
   }
 }
 
-export function CatalogsCmsEditor() {
+type CatalogsCmsEditorProps = {
+  endpoint?: string
+  mediaEndpoint?: string
+}
+
+export function CatalogsCmsEditor({ endpoint = '/api/catalogs', mediaEndpoint = '/api/media' }: CatalogsCmsEditorProps) {
   const [store, setStore] = useState<CatalogsStore>(EMPTY_STORE)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -67,7 +72,7 @@ export function CatalogsCmsEditor() {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('/api/catalogs', { cache: 'no-store' })
+      const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) throw new Error('Katalog verisi alınamadı')
       const nextStore = (await response.json()) as CatalogsStore
       setStore(nextStore)
@@ -130,7 +135,7 @@ export function CatalogsCmsEditor() {
     try {
       setUploadingPdf(true)
       setError(null)
-      const response = await fetch('/api/media', {
+      const response = await fetch(mediaEndpoint, {
         method: 'POST',
         body: formData,
       })
@@ -150,7 +155,7 @@ export function CatalogsCmsEditor() {
       setSaving(true)
       setError(null)
       setMessage(null)
-      const response = await fetch('/api/catalogs', {
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(store),
@@ -231,6 +236,7 @@ export function CatalogsCmsEditor() {
       />
 
       <MediaPickerModal
+        endpoint={mediaEndpoint}
         open={showMediaPicker}
         title="PDF Seç"
         acceptTypes={['document']}

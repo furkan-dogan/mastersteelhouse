@@ -4,9 +4,13 @@ import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { profileProducts } from '@/lib/products'
+import type { ProfileProduct } from '@/lib/profile-content'
 
-export function ProductsSlider() {
+type ProductsSliderProps = {
+  products: ProfileProduct[]
+}
+
+export function ProductsSlider({ products }: ProductsSliderProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
@@ -22,7 +26,7 @@ export function ProductsSlider() {
     checkScroll()
     window.addEventListener('resize', checkScroll)
     return () => window.removeEventListener('resize', checkScroll)
-  }, [])
+  }, [products.length])
 
   const scroll = (dir: 'left' | 'right') => {
     const el = scrollRef.current
@@ -31,7 +35,7 @@ export function ProductsSlider() {
     setTimeout(checkScroll, 300)
   }
 
-  const ProductCard = ({ product, i }: { product: (typeof profileProducts)[0]; i: number }) => (
+  const ProductCard = ({ product, i }: { product: ProfileProduct; i: number }) => (
     <motion.div
       key={product.slug}
       initial={{ opacity: 0, y: 40 }}
@@ -56,9 +60,10 @@ export function ProductsSlider() {
     </motion.div>
   )
 
+  if (products.length === 0) return null
+
   return (
     <section id="urunler" className="scroll-mt-20 relative overflow-hidden bg-[#f3f4f1] py-20">
-      <div className="pattern-grid absolute inset-0 opacity-40" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Ürün Kataloğu</p>
@@ -69,14 +74,14 @@ export function ProductsSlider() {
         </motion.div>
 
         <div className="hidden grid-cols-1 gap-8 md:grid md:grid-cols-3">
-          {profileProducts.map((product, i) => (
+          {products.map((product, i) => (
             <ProductCard key={product.slug} product={product} i={i} />
           ))}
         </div>
 
         <div className="relative md:hidden">
           <div ref={scrollRef} onScroll={checkScroll} className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
-            {profileProducts.map((product, i) => (
+            {products.map((product, i) => (
               <div key={product.slug} className="min-w-[85vw] shrink-0 snap-center sm:min-w-[340px]">
                 <ProductCard product={product} i={i} />
               </div>

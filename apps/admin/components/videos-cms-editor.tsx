@@ -33,7 +33,11 @@ function createVideoItem(): VideoItem {
   }
 }
 
-export function VideosCmsEditor() {
+type VideosCmsEditorProps = {
+  endpoint?: string
+}
+
+export function VideosCmsEditor({ endpoint = '/api/videos' }: VideosCmsEditorProps) {
   const [store, setStore] = useState<VideosStore>(EMPTY_STORE)
   const [selectedId, setSelectedId] = useState('')
   const [loading, setLoading] = useState(true)
@@ -74,7 +78,7 @@ export function VideosCmsEditor() {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('/api/videos', { cache: 'no-store' })
+      const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) throw new Error('Video verisi alınamadı')
       const rawStore = (await response.json()) as VideosStore
       const nextStore: VideosStore = {
@@ -136,7 +140,7 @@ export function VideosCmsEditor() {
       setSaving(true)
       setError(null)
       setMessage(null)
-      const response = await fetch('/api/videos', {
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(store),

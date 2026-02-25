@@ -3,9 +3,15 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { profileProducts } from '@/lib/products'
+import type { ProfileProduct } from '@/lib/profile-content'
 
-export function ProductCardGrid() {
+type ProductCardGridProps = {
+  products: ProfileProduct[]
+}
+
+export function ProductCardGrid({ products }: ProductCardGridProps) {
+  if (products.length === 0) return null
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14 text-center">
@@ -15,7 +21,7 @@ export function ProductCardGrid() {
       </motion.div>
 
       <div className="grid gap-8 md:grid-cols-3">
-        {profileProducts.map((product, i) => (
+        {products.map((product, i) => (
           <motion.div key={product.slug} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
             <Link href={`/urunler/${product.slug}`}>
               <article className="group h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10">

@@ -40,7 +40,12 @@ function createTechnicalDetailRow(keyText = '', valueText = ''): TechnicalDetail
   }
 }
 
-export function CmsEditor() {
+type CmsEditorProps = {
+  endpoint?: string
+  mediaEndpoint?: string
+}
+
+export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/media' }: CmsEditorProps) {
   const searchParams = useSearchParams()
   const [store, setStore] = useState<ProductStore | null>(null)
   const [loading, setLoading] = useState(true)
@@ -102,7 +107,7 @@ export function CmsEditor() {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('/api/products', { cache: 'no-store' })
+      const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) {
         throw new Error('Veri alinamadi')
       }
@@ -324,7 +329,7 @@ export function CmsEditor() {
       setMessage(null)
       setError(null)
 
-      const response = await fetch('/api/products', {
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(store),
@@ -442,6 +447,7 @@ export function CmsEditor() {
       />
 
       <MediaPickerModal
+        endpoint={mediaEndpoint}
         open={showMediaPicker}
         title={
           mediaTarget.type === 'cover'

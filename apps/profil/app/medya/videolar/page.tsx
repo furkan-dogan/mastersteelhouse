@@ -1,13 +1,28 @@
 import { Play } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
+import { getProfileVideos } from '@/lib/profile-content'
 
-const videos = [
-  { id: 'v1', title: 'Alçıköşe Profil Uygulama', description: 'Sahada hızlı montaj için temel adımlar.', thumb: '/profil-alcikose.jpg' },
-  { id: 'v2', title: 'Kaba Sıva Profil Detayları', description: 'Uygulama öncesi dikkat edilmesi gereken noktalar.', thumb: '/profil-kabasiva.jpg' },
-  { id: 'v3', title: 'Tavan U-C Profil Akışı', description: 'Uygulama düzeni ve teknik özet.', thumb: '/profil-tavan-uc.jpg' },
-]
+function toYoutubeEmbedUrl(input: string) {
+  try {
+    const url = new URL(input)
+    if (url.hostname.includes('youtu.be')) {
+      const id = url.pathname.split('/').filter(Boolean)[0]
+      return id ? `https://www.youtube.com/embed/${id}` : ''
+    }
+    if (url.pathname.startsWith('/shorts/')) {
+      const id = url.pathname.split('/').filter(Boolean)[1]
+      return id ? `https://www.youtube.com/embed/${id}` : ''
+    }
+    const v = url.searchParams.get('v')
+    return v ? `https://www.youtube.com/embed/${v}` : ''
+  } catch {
+    return ''
+  }
+}
 
-export default function VideolarPage() {
+export default async function VideolarPage() {
+  const videos = await getProfileVideos()
+
   return (
     <ProfilePageShell>
       <section className="bg-[#eef1ee] py-20">
@@ -21,23 +36,34 @@ export default function VideolarPage() {
             </p>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {videos.map((video) => (
-                <article key={video.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-[#eab308]/50 hover:shadow-xl hover:shadow-[#eab308]/10">
-                  <div className="relative h-56 overflow-hidden">
-                    <img src={video.thumb} alt={video.title} className="h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
-                    <button type="button" className="absolute inset-0 flex items-center justify-center" aria-label={`${video.title} oynat`}>
-                      <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#eab308] text-black shadow-lg">
-                        <Play className="h-6 w-6" fill="currentColor" />
-                      </span>
-                    </button>
-                  </div>
-                  <div className="p-5">
-                    <h2 className="text-lg font-bold text-slate-900">{video.title}</h2>
-                    <p className="mt-2 text-sm text-slate-600">{video.description}</p>
-                  </div>
-                </article>
-              ))}
+              {videos.map((video) => {
+                const embedUrl = toYoutubeEmbedUrl(video.youtubeUrl)
+                return (
+                  <article key={video.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-[#eab308]/50 hover:shadow-xl hover:shadow-[#eab308]/10">
+                    <div className="relative h-56 overflow-hidden">
+                      {embedUrl ? (
+                        <iframe
+                          src={embedUrl}
+                          title={video.title}
+                          className="h-full w-full"
+                          loading="lazy"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-slate-900 text-slate-200">
+                          <Play className="h-8 w-8" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <h2 className="text-lg font-bold text-slate-900">{video.title}</h2>
+                      <p className="mt-2 text-sm text-slate-600">{video.description}</p>
+                    </div>
+                  </article>
+                )
+              })}
             </div>
           </div>
         </div>

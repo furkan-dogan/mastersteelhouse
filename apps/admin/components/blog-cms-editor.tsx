@@ -37,7 +37,12 @@ const EMPTY_POST: BlogPost = {
   ],
 }
 
-export function BlogCmsEditor() {
+type BlogCmsEditorProps = {
+  endpoint?: string
+  mediaEndpoint?: string
+}
+
+export function BlogCmsEditor({ endpoint = '/api/blog', mediaEndpoint = '/api/media' }: BlogCmsEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
@@ -67,7 +72,7 @@ export function BlogCmsEditor() {
     addSection,
     removeSection,
   } = usePostsCms<BlogPost, BlogStore>({
-    endpoint: '/api/blog',
+    endpoint,
     emptyPost: EMPTY_POST,
     slugBase: 'yeni-blog-yazisi',
     loadErrorMessage: 'Blog verisi alınamadı',
@@ -215,6 +220,7 @@ export function BlogCmsEditor() {
       />
 
       <MediaPickerModal
+        endpoint={mediaEndpoint}
         open={showMediaPicker}
         title={mediaTarget.type === 'cover' ? 'Kapak Görseli Seç' : 'Bölüm Görseli Seç'}
         onClose={() => setShowMediaPicker(false)}

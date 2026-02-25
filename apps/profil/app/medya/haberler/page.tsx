@@ -1,41 +1,11 @@
 import { Calendar, ArrowRight, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { ProfilePageShell } from '@/components/profile-page-shell'
+import { getProfileNewsPosts } from '@/lib/profile-content'
 
-const news = [
-  {
-    slug: 'uretim-hatti-guncellemesi',
-    title: 'Üretim Hattı Güncellemesi Tamamlandı',
-    excerpt: 'Profil üretim sürecinde hız ve kalite kontrolü artıran güncelleme başarıyla devreye alındı.',
-    date: '20 Şubat 2026',
-    location: 'Ankara',
-    category: 'Duyuru',
-    image: '/profil-kabasiva.jpg',
-    featured: true,
-  },
-  {
-    slug: 'saha-uygulama-egitimi',
-    title: 'Saha Uygulama Eğitimi Programı',
-    excerpt: 'Teknik ekiplerle birlikte gerçekleştirilen uygulama eğitimi programı tamamlandı.',
-    date: '18 Şubat 2026',
-    location: 'İstanbul',
-    category: 'Eğitim',
-    image: '/profil-alcikose.jpg',
-    featured: false,
-  },
-  {
-    slug: 'tedarik-sureci-optimizasyonu',
-    title: 'Tedarik Sürecinde Yeni Optimizasyon',
-    excerpt: 'Teslimat planlamasını hızlandıran yeni operasyon düzeni uygulanmaya başladı.',
-    date: '15 Şubat 2026',
-    location: 'İzmir',
-    category: 'Operasyon',
-    image: '/profil-tavan-uc.jpg',
-    featured: false,
-  },
-]
+export default async function HaberlerPage() {
+  const news = await getProfileNewsPosts()
 
-export default function HaberlerPage() {
   return (
     <ProfilePageShell>
       <section className="relative overflow-hidden py-16">

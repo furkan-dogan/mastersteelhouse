@@ -1,0 +1,23 @@
+{
+  "hero": {
+    "badge": "Belgelerimiz",
+    "title": "Profil",
+    "titleAccent": "Belgeleri",
+    "description": "Profil sistemleri için kalite ve uygunluk belgelerimiz."
+  },
+  "items": [
+    {
+      "id": "doc-1",
+      "title": "ISO 9001:2015",
+      "subtitle": "Kalite Yönetim Sistemi",
+      "description": "Profil üretim süreçlerimizde kalite yönetim standardı uygunluk belgesi.",
+      "pdfUrl": "/uploads/media/sqr-certification-iso-9001-1771514224414-238005.jpeg"
+    }
+  ],
+  "features": [
+    "Profil üretiminde standart kalite yaklaşımı",
+    "Düzenli iç ve dış denetim süreçleri",
+    "İzlenebilir üretim ve sevkiyat akışı"
+  ],
+  "footerNote": "Belgelerimiz düzenli aralıklarla güncellenmektedir."
+}

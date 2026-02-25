@@ -22,7 +22,11 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-export function MediaLibrary() {
+type MediaLibraryProps = {
+  endpoint?: string
+}
+
+export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
   const [items, setItems] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
@@ -45,7 +49,7 @@ export function MediaLibrary() {
   const load = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/media', { cache: 'no-store' })
+      const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) throw new Error('Medya listesi alınamadı')
       const data = (await response.json()) as { items: MediaItem[] }
       setItems(data.items)
@@ -54,7 +58,7 @@ export function MediaLibrary() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [endpoint])
 
   useEffect(() => {
     void load()
@@ -72,7 +76,7 @@ export function MediaLibrary() {
     try {
       setUploading(true)
       setError(null)
-      const response = await fetch('/api/media', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: formData,
       })
@@ -94,7 +98,7 @@ export function MediaLibrary() {
     try {
       setDeletingId(id)
       setError(null)
-      const response = await fetch('/api/media', {
+      const response = await fetch(endpoint, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),

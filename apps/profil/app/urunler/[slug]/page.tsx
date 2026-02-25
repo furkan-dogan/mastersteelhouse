@@ -2,19 +2,21 @@ import { notFound } from 'next/navigation'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
-import { profileProducts, profileProductMap } from '@/lib/products'
+import { getProfileProducts } from '@/lib/profile-content'
 
 type Props = {
   params: Promise<{ slug: string }>
 }
 
-export function generateStaticParams() {
-  return profileProducts.map((item) => ({ slug: item.slug }))
+export async function generateStaticParams() {
+  const products = await getProfileProducts()
+  return products.map((item) => ({ slug: item.slug }))
 }
 
 export default async function ProfilProductDetailPage({ params }: Props) {
   const { slug } = await params
-  const product = profileProductMap[slug]
+  const products = await getProfileProducts()
+  const product = products.find((item) => item.slug === slug)
 
   if (!product) {
     notFound()

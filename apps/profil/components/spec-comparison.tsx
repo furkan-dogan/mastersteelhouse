@@ -1,6 +1,12 @@
-import { profileProducts } from '@/lib/products'
+import type { ProfileProduct } from '@/lib/profile-content'
 
-export function SpecComparison() {
+type SpecComparisonProps = {
+  products: ProfileProduct[]
+}
+
+export function SpecComparison({ products }: SpecComparisonProps) {
+  if (products.length === 0) return null
+
   return (
     <section id="uygulama" className="border-y border-slate-200 bg-slate-50">
       <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -18,7 +24,7 @@ export function SpecComparison() {
               </tr>
             </thead>
             <tbody>
-              {profileProducts.map((item) => (
+              {products.map((item) => (
                 <tr key={item.slug} className="border-t border-slate-200">
                   <td className="px-4 py-3 font-semibold text-slate-900">{item.name}</td>
                   <td className="px-4 py-3 text-slate-700">{item.specs[0]?.value}</td>

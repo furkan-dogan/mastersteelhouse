@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { ImageUp } from 'lucide-react'
 
 type UploadResponse = {
@@ -9,6 +10,7 @@ type UploadResponse = {
 }
 
 type Props = {
+  endpoint?: string
   multiple?: boolean
   compact?: boolean
   helperText?: string
@@ -26,7 +28,11 @@ export function MediaUploadDropzone({
   onUploaded,
   onPickFromMedia,
   onError,
+  endpoint,
 }: Props) {
+  const pathname = usePathname()
+  const resolvedEndpoint = endpoint ?? (pathname.startsWith('/profil-cms') ? '/api/profile/media' : '/api/media')
+
   const [dragActive, setDragActive] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -42,7 +48,7 @@ export function MediaUploadDropzone({
 
     try {
       setUploading(true)
-      const response = await fetch('/api/media', {
+      const response = await fetch(resolvedEndpoint, {
         method: 'POST',
         body: formData,
       })

@@ -1,0 +1,29 @@
+{
+  "hero": {
+    "title": "Videolar",
+    "description": "Profil sistemleri uygulama ve üretim videoları"
+  },
+  "items": [
+    {
+      "id": "video-1",
+      "title": "Alçı Köşe Profil Uygulama Adımları",
+      "description": "Sahada hızlı ve doğru montaj için temel uygulama akışı.",
+      "format": "landscape",
+      "youtubeUrl": "https://youtu.be/UAaaWYoi38Y?si=ZsSVBeNdk1yLSeuj"
+    },
+    {
+      "id": "video-2",
+      "title": "Kaba Sıva Profilinde Doğru Hatalama",
+      "description": "Kot kontrolü ve standart yüzey kalitesi için kritik noktalar.",
+      "format": "landscape",
+      "youtubeUrl": "https://youtu.be/c0x_SkODvq0?si=g-Yl7sUUKKKrQB9H"
+    },
+    {
+      "id": "video-3",
+      "title": "Tavan U-C Profil Montajı",
+      "description": "Asma tavanda güvenli taşıyıcı sistem kurulumu.",
+      "format": "portrait",
+      "youtubeUrl": "https://youtube.com/shorts/vOdqB5eXYlw?si=EGomMYNIN3HHA3z1"
+    }
+  ]
+}

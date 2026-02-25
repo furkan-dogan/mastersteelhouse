@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
   Package,
@@ -22,47 +22,24 @@ import {
   ChevronDown,
 } from 'lucide-react'
 
-const navGroups = [
-  {
-    key: 'system',
-    title: 'Sistem',
-    items: [{ href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard }],
-  },
-  {
-    key: 'content',
-    title: 'İçerik Yönetimi',
-    items: [
-      { href: '/', label: 'Ürünler', icon: Package },
-      { href: '/blog', label: 'Blog', icon: BookOpenText },
-      { href: '/news', label: 'Haberler', icon: Newspaper },
-      { href: '/videos', label: 'Videolar', icon: Clapperboard },
-      { href: '/references', label: 'Referanslar', icon: FolderKanban },
-    ],
-  },
-  {
-    key: 'media',
-    title: 'Medya & Doküman',
-    items: [
-      { href: '/media', label: 'Medya', icon: Image },
-      { href: '/documents', label: 'Belgeler', icon: FileBadge },
-      { href: '/catalogs', label: 'Kataloglar', icon: BookMarked },
-    ],
-  },
-] as const
-
-type ProductCategoryNav = {
-  slug: string
-  title: string
-}
-
 type AdminShellProps = {
   children: React.ReactNode
+  basePath?: string
+  productsEndpoint?: string
+  brandSubtitle?: string
 }
 
-export function AdminShell({ children }: AdminShellProps) {
+type NavItem = { href: string; label: string; icon: React.ComponentType<{ className?: string }> }
+type NavGroup = { key: string; title: string; items: NavItem[] }
+
+export function AdminShell({
+  children,
+  basePath = '',
+  brandSubtitle = 'CMS Panel',
+}: AdminShellProps) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const router = useRouter()
+
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     system: true,
@@ -70,38 +47,51 @@ export function AdminShell({ children }: AdminShellProps) {
     media: true,
   })
   const [profileOpen, setProfileOpen] = useState(false)
-  const [productCategories, setProductCategories] = useState<ProductCategoryNav[]>([])
-  const [isProductsSubmenuOpen, setIsProductsSubmenuOpen] = useState(true)
   const [isDark, setIsDark] = useState(() => {
     if (typeof document === 'undefined') return false
     return document.documentElement.getAttribute('data-theme') === 'dark'
   })
 
+  const route = (suffix: string) => {
+    if (suffix === '/') return basePath || '/'
+    return `${basePath}${suffix}`
+  }
+
+  const navGroups = useMemo<NavGroup[]>(
+    () => [
+      {
+        key: 'system',
+        title: 'Sistem',
+        items: [{ href: route('/dashboard'), label: 'Dashboard', icon: LayoutDashboard }],
+      },
+      {
+        key: 'content',
+        title: 'İçerik Yönetimi',
+        items: [
+          { href: route('/'), label: 'Ürünler', icon: Package },
+          { href: route('/blog'), label: 'Blog', icon: BookOpenText },
+          { href: route('/news'), label: 'Haberler', icon: Newspaper },
+          { href: route('/videos'), label: 'Videolar', icon: Clapperboard },
+          { href: route('/references'), label: 'Referanslar', icon: FolderKanban },
+        ],
+      },
+      {
+        key: 'media',
+        title: 'Medya & Doküman',
+        items: [
+          { href: route('/media'), label: 'Medya', icon: Image },
+          { href: route('/documents'), label: 'Belgeler', icon: FileBadge },
+          { href: route('/catalogs'), label: 'Kataloglar', icon: BookMarked },
+        ],
+      },
+    ],
+    [basePath]
+  )
+
   useEffect(() => {
     const handler = () => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')
     window.addEventListener('theme-change', handler)
     return () => window.removeEventListener('theme-change', handler)
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-
-    async function loadProductCategories() {
-      try {
-        const response = await fetch('/api/products', { cache: 'no-store' })
-        if (!response.ok) return
-        const data = (await response.json()) as { categories?: ProductCategoryNav[] }
-        if (cancelled) return
-        setProductCategories(data.categories ?? [])
-      } catch {
-        if (!cancelled) setProductCategories([])
-      }
-    }
-
-    void loadProductCategories()
-    return () => {
-      cancelled = true
-    }
   }, [])
 
   function toggleTheme() {
@@ -117,23 +107,19 @@ export function AdminShell({ children }: AdminShellProps) {
     router.refresh()
   }
 
-  function isItemActive(href: string) {
-    return href === '/' ? pathname === '/' || pathname === '' : pathname.startsWith(href)
-  }
+  const productsRoot = route('/')
 
-  function isActiveCategory(slug: string) {
-    return pathname === '/' && searchParams.get('category') === slug
+  function isItemActive(href: string) {
+    return href === productsRoot ? pathname === productsRoot || pathname === `${productsRoot}/` : pathname.startsWith(href)
   }
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
       <aside
         className={`flex flex-col border-r border-sidebar-border bg-sidebar transition-all duration-200 ease-in-out ${
           sidebarCollapsed ? 'w-[72px]' : 'w-64'
         }`}
       >
-        {/* Logo / Brand */}
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-4">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary">
             <Package className="h-5 w-5 text-primary-foreground" />
@@ -141,12 +127,11 @@ export function AdminShell({ children }: AdminShellProps) {
           {!sidebarCollapsed && (
             <div className="min-w-0">
               <p className="truncate text-xs font-medium text-sidebar-foreground/70">Master Steel House</p>
-              <p className="truncate text-sm font-semibold text-sidebar-foreground">CMS Panel</p>
+              <p className="truncate text-sm font-semibold text-sidebar-foreground">{brandSubtitle}</p>
             </div>
           )}
         </div>
 
-        {/* Nav */}
         <nav className="cms-scroll flex-1 space-y-5 overflow-y-auto p-3">
           {navGroups.map((group) => {
             const isOpen = openGroups[group.key] ?? true
@@ -172,65 +157,20 @@ export function AdminShell({ children }: AdminShellProps) {
                         {group.items.map((item) => {
                           const isActive = isItemActive(item.href)
                           const Icon = item.icon
-                          const isProductsItem = item.href === '/'
+
                           return (
-                            <div key={item.href + item.label} className="space-y-1">
-                              {isProductsItem ? (
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    if (!isActive) {
-                                      router.push('/')
-                                      setIsProductsSubmenuOpen(true)
-                                      return
-                                    }
-                                    setIsProductsSubmenuOpen((prev) => !prev)
-                                  }}
-                                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-                                    isActive
-                                      ? 'bg-sidebar-active/85 text-primary-foreground'
-                                      : 'text-sidebar-foreground/85 hover:bg-sidebar-hover hover:text-sidebar-foreground'
-                                  }`}
-                                >
-                                  <Icon className="h-4 w-4 shrink-0" />
-                                  <span className="flex-1 text-left">{item.label}</span>
-                                  <ChevronDown
-                                    className={`h-3.5 w-3.5 transition-transform ${
-                                      isProductsSubmenuOpen ? 'rotate-180' : ''
-                                    }`}
-                                  />
-                                </button>
-                              ) : (
-                                <Link
-                                  href={item.href}
-                                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-                                    isActive
-                                      ? 'bg-sidebar-active/85 text-primary-foreground'
-                                      : 'text-sidebar-foreground/85 hover:bg-sidebar-hover hover:text-sidebar-foreground'
-                                  }`}
-                                >
-                                  <Icon className="h-4 w-4 shrink-0" />
-                                  <span>{item.label}</span>
-                                </Link>
-                              )}
-                              {isProductsItem && productCategories.length > 0 && isActive && isProductsSubmenuOpen ? (
-                                <div className="ml-8 space-y-0.5 border-l border-sidebar-border/70 pl-3">
-                                  {productCategories.map((category) => (
-                                    <Link
-                                      key={category.slug}
-                                      href={`/?category=${category.slug}`}
-                                      className={`block rounded-lg px-2.5 py-1.5 text-xs transition-colors ${
-                                        isActiveCategory(category.slug)
-                                          ? 'bg-sidebar-active/70 text-primary-foreground'
-                                          : 'text-sidebar-foreground/75 hover:bg-sidebar-hover hover:text-sidebar-foreground'
-                                      }`}
-                                    >
-                                      {category.title}
-                                    </Link>
-                                  ))}
-                                </div>
-                              ) : null}
-                            </div>
+                            <Link
+                              key={item.href + item.label}
+                              href={item.href}
+                              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+                                isActive
+                                  ? 'bg-sidebar-active/85 text-primary-foreground'
+                                  : 'text-sidebar-foreground/85 hover:bg-sidebar-hover hover:text-sidebar-foreground'
+                              }`}
+                            >
+                              <Icon className="h-4 w-4 shrink-0" />
+                              <span>{item.label}</span>
+                            </Link>
                           )
                         })}
                       </div>
@@ -265,15 +205,12 @@ export function AdminShell({ children }: AdminShellProps) {
           })}
         </nav>
 
-        {/* Footer */}
         <div className="border-t border-sidebar-border p-3">
           {!sidebarCollapsed && <p className="text-[11px] text-sidebar-foreground/60">v1.0</p>}
         </div>
       </aside>
 
-      {/* Main content area */}
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Topbar */}
         <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-card/95 px-6 backdrop-blur-sm">
           <button
             type="button"
@@ -284,9 +221,7 @@ export function AdminShell({ children }: AdminShellProps) {
             {sidebarCollapsed ? <Menu className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
           </button>
 
-          {/* Right actions */}
           <div className="ml-auto flex items-center gap-2">
-            {/* Theme toggle */}
             <button
               type="button"
               onClick={toggleTheme}
@@ -297,7 +232,6 @@ export function AdminShell({ children }: AdminShellProps) {
               <span className="hidden text-sm sm:inline">Tema</span>
             </button>
 
-            {/* Profile dropdown */}
             <div className="relative">
               <button
                 type="button"
@@ -311,11 +245,7 @@ export function AdminShell({ children }: AdminShellProps) {
               </button>
               {profileOpen && (
                 <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    aria-hidden
-                    onClick={() => setProfileOpen(false)}
-                  />
+                  <div className="fixed inset-0 z-40" aria-hidden onClick={() => setProfileOpen(false)} />
                   <div className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-card py-1 shadow-lg">
                     <div className="border-b border-border px-3 py-2">
                       <p className="text-sm font-medium text-foreground">Admin</p>
@@ -339,7 +269,6 @@ export function AdminShell({ children }: AdminShellProps) {
           </div>
         </header>
 
-        {/* Page content */}
         <main className="flex-1 overflow-auto p-6">
           <div className="mx-auto max-w-[1600px]">{children}</div>
         </main>

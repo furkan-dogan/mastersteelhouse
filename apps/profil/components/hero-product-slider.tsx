@@ -3,19 +3,26 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
-import { profileProducts } from '@/lib/products'
+import type { ProfileProduct } from '@/lib/profile-content'
 
-export function HeroProductSlider() {
+type HeroProductSliderProps = {
+  products: ProfileProduct[]
+}
+
+export function HeroProductSlider({ products }: HeroProductSliderProps) {
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
+    if (products.length === 0) return
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % profileProducts.length)
+      setIndex((prev) => (prev + 1) % products.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [products.length])
 
-  const active = profileProducts[index]
+  if (products.length === 0) return null
+
+  const active = products[index]
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200 bg-[#f3f4f1]">
@@ -74,7 +81,7 @@ export function HeroProductSlider() {
               <button
                 type="button"
                 aria-label="Önceki"
-                onClick={() => setIndex((prev) => (prev - 1 + profileProducts.length) % profileProducts.length)}
+                onClick={() => setIndex((prev) => (prev - 1 + products.length) % products.length)}
                 className="rounded-lg border border-slate-300 bg-white p-2 text-slate-800 transition hover:bg-slate-100"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -82,7 +89,7 @@ export function HeroProductSlider() {
               <button
                 type="button"
                 aria-label="Sonraki"
-                onClick={() => setIndex((prev) => (prev + 1) % profileProducts.length)}
+                onClick={() => setIndex((prev) => (prev + 1) % products.length)}
                 className="rounded-lg border border-slate-300 bg-white p-2 text-slate-800 transition hover:bg-slate-100"
               >
                 <ChevronRight className="h-4 w-4" />

@@ -1,14 +1,13 @@
 'use client'
 
 import { FormEvent, useMemo, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Lock, User } from 'lucide-react'
 import FloatingLines from '@/components/floating-lines'
 
 export default function LoginPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const nextPath = useMemo(() => searchParams.get('next') || '/', [searchParams])
+  const postLoginPath = '/panel-secimi'
   const enabledWaves = useMemo<Array<'top' | 'middle' | 'bottom'>>(() => ['top', 'middle', 'bottom'], [])
   const linesGradient = useMemo(() => ['#1f4f6b', '#2c6f8c', '#ffc527'], [])
 
@@ -33,7 +32,7 @@ export default function LoginPage() {
         setError(data.message || 'Giriş başarısız.')
         return
       }
-      router.push(nextPath)
+      router.push(postLoginPath)
       router.refresh()
     } catch {
       setError('Giriş sırasında hata oluştu.')

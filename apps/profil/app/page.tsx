@@ -5,13 +5,16 @@ import { ProcessTimeline } from '@/components/process-timeline'
 import { FAQSection } from '@/components/faq-section'
 import { CtaSection } from '@/components/cta-section'
 import { SiteFooter } from '@/components/site-footer'
+import { getProfileProducts } from '@/lib/profile-content'
 
-export default function ProfilHomePage() {
+export default async function ProfilHomePage() {
+  const products = await getProfileProducts()
+
   return (
     <div className="min-h-screen bg-[#f3f4f1]">
       <SiteHeader />
-      <HeroSlider />
-      <ProductsSlider />
+      <HeroSlider products={products} />
+      <ProductsSlider products={products} />
       <ProcessTimeline />
       <FAQSection limit={4} showMoreButton />
       <CtaSection />

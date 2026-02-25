@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "media-1",
+      "name": "profil-alcikose.jpg",
+      "url": "/profil-alcikose.jpg",
+      "type": "image/jpeg",
+      "size": 0,
+      "createdAt": "2026-02-25T10:00:00.000Z"
+    },
+    {
+      "id": "media-2",
+      "name": "profil-kabasiva.jpg",
+      "url": "/profil-kabasiva.jpg",
+      "type": "image/jpeg",
+      "size": 0,
+      "createdAt": "2026-02-25T10:00:00.000Z"
+    },
+    {
+      "id": "media-3",
+      "name": "profil-tavan-uc.jpg",
+      "url": "/profil-tavan-uc.jpg",
+      "type": "image/jpeg",
+      "size": 0,
+      "createdAt": "2026-02-25T10:00:00.000Z"
+    }
+  ]
+}

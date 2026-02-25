@@ -4,22 +4,29 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
-import { profileProducts } from '@/lib/products'
+import type { ProfileProduct } from '@/lib/profile-content'
 
-export function HeroSlider() {
+type HeroSliderProps = {
+  products: ProfileProduct[]
+}
+
+export function HeroSlider({ products }: HeroSliderProps) {
   const [active, setActive] = useState(0)
 
   useEffect(() => {
-    const t = setInterval(() => setActive((p) => (p + 1) % profileProducts.length), 5000)
+    if (products.length === 0) return
+    const t = setInterval(() => setActive((p) => (p + 1) % products.length), 5000)
     return () => clearInterval(t)
-  }, [])
+  }, [products.length])
 
-  const product = profileProducts[active]
+  if (products.length === 0) return null
+
+  const product = products[active]
 
   return (
     <section className="relative h-screen min-h-[600px] overflow-hidden">
       <AnimatePresence mode="wait">
-        {profileProducts.map((p, i) =>
+        {products.map((p, i) =>
           i === active ? (
             <motion.div
               key={p.slug}
@@ -64,7 +71,7 @@ export function HeroSlider() {
 
       <div className="absolute bottom-8 left-6 right-6 z-20 flex items-center justify-between lg:left-12 lg:right-20">
         <div className="flex gap-2">
-          {profileProducts.map((_, i) => (
+          {products.map((_, i) => (
             <button
               key={i}
               type="button"
@@ -74,10 +81,10 @@ export function HeroSlider() {
             />
           ))}
         </div>
-        <div className="hidden gap-2 lg:flex pointer-events-auto">
+        <div className="pointer-events-auto hidden gap-2 lg:flex">
           <button
             type="button"
-            onClick={() => setActive((p) => (p - 1 + profileProducts.length) % profileProducts.length)}
+            onClick={() => setActive((p) => (p - 1 + products.length) % products.length)}
             className="rounded-lg border border-slate-300 bg-white/90 p-2.5 text-slate-900 transition hover:bg-slate-100"
             aria-label="Önceki"
           >
@@ -85,7 +92,7 @@ export function HeroSlider() {
           </button>
           <button
             type="button"
-            onClick={() => setActive((p) => (p + 1) % profileProducts.length)}
+            onClick={() => setActive((p) => (p + 1) % products.length)}
             className="rounded-lg border border-slate-300 bg-white/90 p-2.5 text-slate-900 transition hover:bg-slate-100"
             aria-label="Sonraki"
           >

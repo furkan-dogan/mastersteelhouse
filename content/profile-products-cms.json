@@ -1,0 +1,122 @@
+{
+  "categories": [
+    {
+      "slug": "profil-sistemleri",
+      "title": "Profil Sistemleri",
+      "description": "Alçıköşe, kaba sıva ve tavan U-C profil ürünleri"
+    }
+  ],
+  "products": [
+    {
+      "categorySlug": "profil-sistemleri",
+      "slug": "alcikose-profili",
+      "name": "Alçıpan Köşe Profili",
+      "area": "Standart 3000 mm",
+      "image": "/profil-alcikose.jpg",
+      "description": "Alçı levha köşelerinde düzgün hat, darbe dayanımı ve uzun ömürlü yüzey performansı sağlar.",
+      "features": {
+        "rooms": "Et 0.35-0.50",
+        "bathrooms": "Galvaniz",
+        "parking": "3 m Boy",
+        "height": "Köşe Tipi",
+        "deliveryTime": "Hızlı Teslim",
+        "earthquakeResistance": "Yüksek Dayanım",
+        "energyClass": "A+ Kalite",
+        "warranty": "20 Yıl"
+      },
+      "specs": [
+        { "label": "Malzeme", "value": "Galvanizli Çelik", "icon": "Shield" },
+        { "label": "Kalınlık", "value": "0.35 - 0.50 mm", "icon": "Ruler" },
+        { "label": "Standart Boy", "value": "3000 mm", "icon": "Clock" },
+        { "label": "Sistem", "value": "Alçıpan Köşe", "icon": "Zap" }
+      ],
+      "technicalDetails": {
+        "Malzeme": "Galvanizli Çelik",
+        "Et Kalınlığı": "0.35 - 0.50 mm",
+        "Standart Boy": "3000 mm",
+        "Kaplama": "Korozyona dayanıklı galvaniz"
+      },
+      "highlights": [
+        "Köşe kırılmalarını azaltır",
+        "Düzgün hat ve temiz bitiş",
+        "Hızlı montaj"
+      ],
+      "gallery": ["/profil-alcikose.jpg"],
+      "floorPlans": []
+    },
+    {
+      "categorySlug": "profil-sistemleri",
+      "slug": "kaba-siva-profili",
+      "name": "Kaba Sıva Profili",
+      "area": "Standart 3000 mm",
+      "image": "/profil-kabasiva.jpg",
+      "description": "İç ve dış cephe sıva uygulamalarında düzgün kot ve standart yüzey kalitesi sağlar.",
+      "features": {
+        "rooms": "Et 0.40-0.60",
+        "bathrooms": "Galvaniz",
+        "parking": "3 m Boy",
+        "height": "Sıva Tipi",
+        "deliveryTime": "Hızlı Teslim",
+        "earthquakeResistance": "Yüksek Dayanım",
+        "energyClass": "A+ Kalite",
+        "warranty": "20 Yıl"
+      },
+      "specs": [
+        { "label": "Malzeme", "value": "Galvanizli Çelik", "icon": "Shield" },
+        { "label": "Kalınlık", "value": "0.40 - 0.60 mm", "icon": "Ruler" },
+        { "label": "Standart Boy", "value": "3000 mm", "icon": "Clock" },
+        { "label": "Sistem", "value": "Kaba Sıva", "icon": "Zap" }
+      ],
+      "technicalDetails": {
+        "Malzeme": "Galvanizli Çelik",
+        "Et Kalınlığı": "0.40 - 0.60 mm",
+        "Standart Boy": "3000 mm",
+        "Avantaj": "Sabit kalınlık, hızlı montaj"
+      },
+      "highlights": [
+        "Dengeli sıva kalınlığı",
+        "Uygulamada hız artışı",
+        "Düşük hata oranı"
+      ],
+      "gallery": ["/profil-kabasiva.jpg"],
+      "floorPlans": []
+    },
+    {
+      "categorySlug": "profil-sistemleri",
+      "slug": "tavan-u-c-profili",
+      "name": "Tavan U-C Profili",
+      "area": "3000 / 4000 mm",
+      "image": "/profil-tavan-uc.jpg",
+      "description": "Asma tavan sistemlerinde stabil taşıyıcı iskelet ve güvenli montaj sağlar.",
+      "features": {
+        "rooms": "Et 0.35-0.55",
+        "bathrooms": "Galvaniz",
+        "parking": "3/4 m Boy",
+        "height": "U + C Sistem",
+        "deliveryTime": "Hızlı Teslim",
+        "earthquakeResistance": "Yüksek Dayanım",
+        "energyClass": "A+ Kalite",
+        "warranty": "20 Yıl"
+      },
+      "specs": [
+        { "label": "Malzeme", "value": "Galvanizli Çelik", "icon": "Shield" },
+        { "label": "Kalınlık", "value": "0.35 - 0.55 mm", "icon": "Ruler" },
+        { "label": "Standart Boy", "value": "3000 / 4000 mm", "icon": "Clock" },
+        { "label": "Sistem", "value": "U Kanal + C Taşıyıcı", "icon": "Zap" }
+      ],
+      "technicalDetails": {
+        "Malzeme": "Galvanizli Çelik",
+        "Et Kalınlığı": "0.35 - 0.55 mm",
+        "Standart Boy": "3000 / 4000 mm",
+        "Sistem Tipi": "U kanal + C taşıyıcı profil"
+      },
+      "highlights": [
+        "Asma tavanda stabil taşıyıcı",
+        "Kolay montaj",
+        "Uzun ömürlü kullanım"
+      ],
+      "gallery": ["/profil-tavan-uc.jpg"],
+      "floorPlans": []
+    }
+  ]
+}

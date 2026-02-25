@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === '/login') {
     if (isAuthed) {
-      return NextResponse.redirect(new URL('/', request.url))
+      return NextResponse.redirect(new URL('/panel-secimi', request.url))
     }
     return NextResponse.next()
   }

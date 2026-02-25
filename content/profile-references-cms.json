@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "ref-1",
+      "title": "Ankara Konut Projesi Profil Uygulaması",
+      "location": "Ankara",
+      "categories": ["Konut Projesi", "Alçı Köşe"],
+      "image": "/profil-alcikose.jpg",
+      "area": "8.500 m²"
+    },
+    {
+      "id": "ref-2",
+      "title": "İzmir Ticari Proje Tavan U-C Sistemi",
+      "location": "İzmir",
+      "categories": ["Ticari Yapı", "Tavan U-C"],
+      "image": "/profil-tavan-uc.jpg",
+      "area": "6.200 m²"
+    },
+    {
+      "id": "ref-3",
+      "title": "İstanbul Karma Proje Kaba Sıva Profili",
+      "location": "İstanbul",
+      "categories": ["Karma Proje", "Kaba Sıva"],
+      "image": "/profil-kabasiva.jpg",
+      "area": "11.000 m²"
+    }
+  ]
+}

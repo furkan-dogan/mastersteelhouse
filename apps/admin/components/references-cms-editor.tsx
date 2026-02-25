@@ -23,7 +23,12 @@ const EMPTY_REFERENCE: ReferenceItem = {
   area: '',
 }
 
-export function ReferencesCmsEditor() {
+type ReferencesCmsEditorProps = {
+  endpoint?: string
+  mediaEndpoint?: string
+}
+
+export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoint = '/api/media' }: ReferencesCmsEditorProps) {
   const [store, setStore] = useState<ReferenceStore | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -71,7 +76,7 @@ export function ReferencesCmsEditor() {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('/api/references', { cache: 'no-store' })
+      const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) {
         throw new Error('Referans verisi alınamadı')
       }
@@ -142,7 +147,7 @@ export function ReferencesCmsEditor() {
       setSaving(true)
       setMessage(null)
       setError(null)
-      const response = await fetch('/api/references', {
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(store),
@@ -231,6 +236,7 @@ export function ReferencesCmsEditor() {
       />
 
       <MediaPickerModal
+        endpoint={mediaEndpoint}
         open={showMediaPicker}
         title="Referans Görseli Seç"
         onClose={() => setShowMediaPicker(false)}

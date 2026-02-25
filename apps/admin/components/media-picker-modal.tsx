@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { Image as ImageIcon, Video, FileText, X } from 'lucide-react'
 import type { MediaItem } from '@/lib/media-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
@@ -11,9 +12,20 @@ type Props = {
   onClose: () => void
   onSelect: (url: string) => void
   acceptTypes?: MediaItem['type'][]
+  endpoint?: string
 }
 
-export function MediaPickerModal({ open, title = 'Medyadan Sec', onClose, onSelect, acceptTypes }: Props) {
+export function MediaPickerModal({
+  open,
+  title = 'Medyadan Sec',
+  onClose,
+  onSelect,
+  acceptTypes,
+  endpoint,
+}: Props) {
+  const pathname = usePathname()
+  const resolvedEndpoint = endpoint ?? (pathname.startsWith('/profil-cms') ? '/api/profile/media' : '/api/media')
+
   const [items, setItems] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(false)
   const [query, setQuery] = useState('')
@@ -25,7 +37,7 @@ export function MediaPickerModal({ open, title = 'Medyadan Sec', onClose, onSele
     const load = async () => {
       setLoading(true)
       try {
-        const response = await fetch('/api/media', { cache: 'no-store' })
+        const response = await fetch(resolvedEndpoint, { cache: 'no-store' })
         if (!response.ok) return
         const data = (await response.json()) as { items: MediaItem[] }
         if (active) setItems(data.items)
@@ -38,7 +50,7 @@ export function MediaPickerModal({ open, title = 'Medyadan Sec', onClose, onSele
     return () => {
       active = false
     }
-  }, [open])
+  }, [open, resolvedEndpoint])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()

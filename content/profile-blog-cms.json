@@ -1,0 +1,64 @@
+{
+  "posts": [
+    {
+      "slug": "alcikose-profili-nedir",
+      "title": "Alçı Köşe Profili Nedir ve Nerede Kullanılır?",
+      "date": "25 Şubat 2026",
+      "author": "Teknik Ekip",
+      "category": "Teknik",
+      "readTime": "4 dk",
+      "excerpt": "Alçı köşe profili, duvar köşelerinde düzgün hat ve darbe dayanımı sağlayarak uygulama kalitesini artırır.",
+      "image": "/profil-alcikose.jpg",
+      "sections": [
+        {
+          "title": "Temel Amaç",
+          "content": "Köşe bölgelerinde düzgün geometri oluşturmak ve yüzeyde çatlama riskini azaltmak için kullanılır."
+        },
+        {
+          "title": "Uygulama Avantajı",
+          "content": "Daha hızlı montaj ve standart yüzey kalitesi sağlar; boya öncesi hazırlık sürecini iyileştirir."
+        }
+      ]
+    },
+    {
+      "slug": "kaba-siva-profili-uygulama",
+      "title": "Kaba Sıva Profili ile Uygulama Süresini Kısaltın",
+      "date": "22 Şubat 2026",
+      "author": "Saha Koordinasyon",
+      "category": "Uygulama",
+      "readTime": "5 dk",
+      "excerpt": "Kaba sıva profilleri, özellikle yüksek metrajlı projelerde düzgün kot ve hızlı iş akışı sağlar.",
+      "image": "/profil-kabasiva.jpg",
+      "sections": [
+        {
+          "title": "Kot Kontrolü",
+          "content": "Sabit kalınlık ve doğru hatlar sayesinde işçilik hatalarını azaltır."
+        },
+        {
+          "title": "Projede Hız",
+          "content": "Uygulama ekiplerinin iş planını hızlandırır ve teslim sürelerine katkı sağlar."
+        }
+      ]
+    },
+    {
+      "slug": "tavan-uc-profil-sistem",
+      "title": "Tavan U-C Profili ile Güvenli Asma Tavan Sistemi",
+      "date": "20 Şubat 2026",
+      "author": "Ürün Yönetimi",
+      "category": "Sistem",
+      "readTime": "4 dk",
+      "excerpt": "Tavan U-C profil kombinasyonu, asma tavanda stabil taşıyıcı iskelet oluşturarak güvenli montaj sunar.",
+      "image": "/profil-tavan-uc.jpg",
+      "sections": [
+        {
+          "title": "Sistem Kurgusu",
+          "content": "U kanal ve C taşıyıcı profil birlikte kullanılarak düzgün aks yapısı elde edilir."
+        },
+        {
+          "title": "Uzun Ömür",
+          "content": "Galvanizli yüzey ve doğru montaj detayları ile sistem performansı uzun süre korunur."
+        }
+      ]
+    }
+  ]
+}
