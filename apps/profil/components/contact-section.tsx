@@ -1,14 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import { Phone, Mail, MapPin, Send, Clock, MessageCircle } from 'lucide-react'
+import { useRef, useState } from 'react'
+import Link from 'next/link'
+import { Phone, Mail, MapPin, Send, Clock, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mykdoyzn'
+const MIN_SUBMIT_MS = 3000
 
 const contactInfo = [
   {
     icon: Phone,
     title: 'Telefon',
     description: 'Hızlı Destek',
-    lines: ['+90 500 000 00 00', '+90 500 000 00 01'],
+    lines: ['+90 533 498 15 40', '+90 532 603 34 66'],
     color: 'from-blue-500/20 to-blue-600/20',
     iconColor: 'text-blue-600',
   },
@@ -16,15 +20,15 @@ const contactInfo = [
     icon: Mail,
     title: 'E-posta',
     description: 'Teknik İletişim',
-    lines: ['info@mastersteelhouse.com', 'proje@mastersteelhouse.com'],
+    lines: ['info@mastersteelhouse.com'],
     color: 'from-green-500/20 to-green-600/20',
     iconColor: 'text-green-600',
   },
   {
     icon: MapPin,
     title: 'Adres',
-    description: 'Merkez Ofis',
-    lines: ['Organize Sanayi Bölgesi', '1. Cadde No: 15, Ankara/Türkiye'],
+    description: 'Üretim ve Dağıtım Merkezi',
+    lines: ['Saray mahallesi, Gökkuşağı caddesi 16/B Kahramankazan/Ankara'],
     color: 'from-purple-500/20 to-purple-600/20',
     iconColor: 'text-purple-600',
   },
@@ -38,28 +42,118 @@ const contactInfo = [
   },
 ]
 
+type ContactFormState = {
+  name: string
+  email: string
+  phone: string
+  subject: string
+  message: string
+  kvkk: boolean
+  company: string
+}
+
+type FormErrors = Partial<Record<'name' | 'email' | 'phone' | 'subject' | 'message' | 'kvkk', string>>
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
 export function ContactSection() {
-  const [formData, setFormData] = useState({
+  const mountAtRef = useRef<number>(Date.now())
+  const [formData, setFormData] = useState<ContactFormState>({
     name: '',
     email: '',
     phone: '',
     subject: '',
     message: '',
+    kvkk: false,
+    company: '',
   })
+  const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [resultPopup, setResultPopup] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  const validate = (): FormErrors => {
+    const nextErrors: FormErrors = {}
+
+    if (!formData.name.trim()) nextErrors.name = 'Ad Soyad zorunludur.'
+    if (!formData.phone.trim()) nextErrors.phone = 'Telefon zorunludur.'
+    if (!formData.subject.trim()) nextErrors.subject = 'Konu zorunludur.'
+    if (!formData.message.trim()) nextErrors.message = 'Mesaj zorunludur.'
+    if (formData.email.trim() && !isValidEmail(formData.email.trim())) {
+      nextErrors.email = 'E-posta formatı geçersiz.'
+    }
+    if (!formData.kvkk) nextErrors.kvkk = 'Onay vermeden gönderim yapılamaz.'
+
+    return nextErrors
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const nextErrors = validate()
+    setErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) return
+
+    // Honeypot: botlar gizli alanı doldurursa sessizce başarılı gibi dön.
+    if (formData.company.trim()) {
+      setResultPopup({ type: 'success', text: 'Mesajınız alındı. En kısa sürede size dönüş yapacağız.' })
+      return
+    }
+
+    // Basit hız kontrolü: çok hızlı gönderimler bot adayı.
+    if (Date.now() - mountAtRef.current < MIN_SUBMIT_MS) {
+      setResultPopup({ type: 'error', text: 'Gönderim çok hızlı algılandı. Lütfen birkaç saniye sonra tekrar deneyin.' })
+      return
+    }
+
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 900))
-    alert('Mesajınız alındı. En kısa sürede size dönüş yapacağız.')
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
-    setIsSubmitting(false)
+    try {
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim() || undefined,
+        phone: formData.phone.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+        kvkkAccepted: formData.kvkk ? 'Evet' : 'Hayır',
+        page: typeof window !== 'undefined' ? window.location.href : '/iletisim',
+      }
+
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error('Form gönderimi başarısız')
+      }
+
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '', kvkk: false, company: '' })
+      setErrors({})
+      setResultPopup({ type: 'success', text: 'Mesajınız alındı. En kısa sürede size dönüş yapacağız.' })
+    } catch {
+      setResultPopup({ type: 'error', text: 'Gönderim sırasında bir sorun oluştu. Lütfen tekrar deneyin.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }))
+    }
   }
+
+  const inputClass = (field: keyof FormErrors) =>
+    `h-12 w-full rounded-xl border-2 px-4 text-slate-900 outline-none transition focus:border-[#eab308] ${
+      errors[field] ? 'border-red-400' : 'border-slate-200'
+    }`
 
   return (
     <section id="teklif" className="relative overflow-hidden bg-[#f3f4f1] py-24">
@@ -73,7 +167,7 @@ export function ContactSection() {
             Projeniz İçin <span className="bg-gradient-to-r from-[#b88700] to-[#eab308] bg-clip-text text-transparent">Hemen Başlayalım</span>
           </h2>
           <p className="text-lg leading-relaxed text-slate-600 md:text-xl">
-            Ücretsiz keşif ve teklif almak için formu doldurun, uzman ekibimiz kısa sürede size dönüş yapsın.
+            Teklif almak için formu doldurun, uzman ekibimiz kısa sürede size dönüş yapsın.
           </p>
         </div>
 
@@ -116,7 +210,19 @@ export function ContactSection() {
                 <p className="text-slate-600">Formu doldurun, size özel profil çözümü sunalım</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                <div className="hidden" aria-hidden>
+                  <label htmlFor="company">Şirket</label>
+                  <input
+                    id="company"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-slate-900">
@@ -128,9 +234,9 @@ export function ContactSection() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Adınız ve soyadınız"
-                      required
-                      className="h-12 w-full rounded-xl border-2 border-slate-200 px-4 text-slate-900 outline-none transition focus:border-[#eab308]"
+                      className={inputClass('name')}
                     />
+                    {errors.name ? <p className="text-xs text-red-600">{errors.name}</p> : null}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="phone" className="flex items-center gap-2 text-sm font-medium text-slate-900">
@@ -143,15 +249,15 @@ export function ContactSection() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="0500 000 00 00"
-                      required
-                      className="h-12 w-full rounded-xl border-2 border-slate-200 px-4 text-slate-900 outline-none transition focus:border-[#eab308]"
+                      className={inputClass('phone')}
                     />
+                    {errors.phone ? <p className="text-xs text-red-600">{errors.phone}</p> : null}
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-slate-900">
-                    E-posta <span className="text-[#b88700]">*</span>
+                    E-posta <span className="text-xs text-slate-500">(Opsiyonel)</span>
                   </label>
                   <input
                     id="email"
@@ -160,9 +266,9 @@ export function ContactSection() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="ornek@email.com"
-                    required
-                    className="h-12 w-full rounded-xl border-2 border-slate-200 px-4 text-slate-900 outline-none transition focus:border-[#eab308]"
+                    className={inputClass('email')}
                   />
+                  {errors.email ? <p className="text-xs text-red-600">{errors.email}</p> : null}
                 </div>
 
                 <div className="space-y-2">
@@ -175,9 +281,9 @@ export function ContactSection() {
                     value={formData.subject}
                     onChange={handleChange}
                     placeholder="Örn: Profil Teklifi"
-                    required
-                    className="h-12 w-full rounded-xl border-2 border-slate-200 px-4 text-slate-900 outline-none transition focus:border-[#eab308]"
+                    className={inputClass('subject')}
                   />
+                  {errors.subject ? <p className="text-xs text-red-600">{errors.subject}</p> : null}
                 </div>
 
                 <div className="space-y-2">
@@ -190,16 +296,44 @@ export function ContactSection() {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Proje detaylarınızı ve ihtiyaçlarınızı yazın..."
-                    required
                     rows={6}
-                    className="w-full resize-none rounded-xl border-2 border-slate-200 px-4 py-3 text-slate-900 outline-none transition focus:border-[#eab308]"
+                    className={`w-full resize-none rounded-xl border-2 px-4 py-3 text-slate-900 outline-none transition focus:border-[#eab308] ${
+                      errors.message ? 'border-red-400' : 'border-slate-200'
+                    }`}
                   />
+                  {errors.message ? <p className="text-xs text-red-600">{errors.message}</p> : null}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="flex items-start gap-3 text-sm text-slate-700">
+                    <input
+                      type="checkbox"
+                      checked={formData.kvkk}
+                      onChange={(event) => {
+                        const checked = event.target.checked
+                        setFormData((prev) => ({ ...prev, kvkk: checked }))
+                        if (checked) setErrors((prev) => ({ ...prev, kvkk: undefined }))
+                      }}
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-[#eab308] focus:ring-[#eab308]"
+                    />
+                    <span>
+                      <Link href="/kvkk" className="font-medium text-[#b88700] underline underline-offset-2 hover:text-[#d89f00]">
+                        KVKK
+                      </Link>{' '}
+                      ve{' '}
+                      <Link href="/gizlilik-politikasi" className="font-medium text-[#b88700] underline underline-offset-2 hover:text-[#d89f00]">
+                        gizlilik metni
+                      </Link>{' '}
+                      kapsamında verilerimin işlenmesini kabul ediyorum. <span className="text-[#b88700]">*</span>
+                    </span>
+                  </label>
+                  {errors.kvkk ? <p className="text-xs text-red-600">{errors.kvkk}</p> : null}
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group relative h-14 w-full overflow-hidden rounded-xl bg-gradient-to-r from-[#eab308] to-[#d89f00] text-lg font-semibold text-black transition hover:shadow-lg hover:shadow-[#eab308]/40"
+                  className="group relative h-14 w-full overflow-hidden rounded-xl bg-gradient-to-r from-[#eab308] to-[#d89f00] text-lg font-semibold text-black transition hover:shadow-lg hover:shadow-[#eab308]/40 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <span className="relative z-10 inline-flex items-center gap-2">
                     {isSubmitting ? 'Gönderiliyor...' : 'Gönder'}
@@ -211,6 +345,33 @@ export function ContactSection() {
           </div>
         </div>
       </div>
+
+      {resultPopup ? (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/35 px-4">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="flex items-start gap-3">
+              {resultPopup.type === 'success' ? (
+                <CheckCircle2 className="mt-0.5 h-6 w-6 text-green-600" />
+              ) : (
+                <XCircle className="mt-0.5 h-6 w-6 text-red-600" />
+              )}
+              <div>
+                <h4 className="text-lg font-semibold text-slate-900">
+                  {resultPopup.type === 'success' ? 'Başarılı' : 'Gönderim Hatası'}
+                </h4>
+                <p className="mt-1 text-sm text-slate-600">{resultPopup.text}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setResultPopup(null)}
+              className="mt-5 h-10 w-full rounded-lg bg-slate-900 text-sm font-semibold text-white transition hover:bg-slate-800"
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }
