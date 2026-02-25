@@ -14,6 +14,11 @@ type NewsEditorDrawerProps = {
   onClose: () => void
   onPatchPost: (update: Partial<NewsPost>) => void
   onRenameSlug: (nextSlug: string) => void
+  allowSlugEdit?: boolean
+  showDateField?: boolean
+  showLocationField?: boolean
+  showAuthorField?: boolean
+  showReadTimeField?: boolean
   onAddSection: () => void
   onRemoveSection: (sectionId: string) => void
   onUpdateSection: (sectionId: string, patch: Partial<CmsSectionRow>) => void
@@ -34,6 +39,11 @@ export function NewsEditorDrawer({
   onClose,
   onPatchPost,
   onRenameSlug,
+  allowSlugEdit = true,
+  showDateField = true,
+  showLocationField = true,
+  showAuthorField = true,
+  showReadTimeField = true,
   onAddSection,
   onRemoveSection,
   onUpdateSection,
@@ -60,6 +70,11 @@ export function NewsEditorDrawer({
         sections={sections}
         onPatchPost={onPatchPost}
         onRenameSlug={onRenameSlug}
+        allowSlugEdit={allowSlugEdit}
+        showDateField={showDateField}
+        showLocationField={showLocationField}
+        showAuthorField={showAuthorField}
+        showReadTimeField={showReadTimeField}
         onAddSection={onAddSection}
         onRemoveSection={onRemoveSection}
         onUpdateSection={onUpdateSection}

@@ -1,71 +1,172 @@
 'use client'
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { ArrowLeft, CheckCircle2, FileText } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
 
 export function ProductDetailTemplate({ product }: { product: ProfileProduct }) {
+  const gallery = useMemo(() => {
+    const base = (product.gallery ?? []).filter(Boolean)
+    const unique = base.length > 0 ? Array.from(new Set(base)) : product.image ? [product.image] : []
+    return unique
+  }, [product.gallery, product.image])
+
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeTab, setActiveTab] = useState<'specs' | 'dimensions' | 'advantages'>('specs')
+  const activeImage = gallery[activeIndex] ?? ''
+
+  const dimensionsRows = product.dimensions ?? []
+
+  useEffect(() => {
+    if (gallery.length <= 1) return
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % gallery.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [gallery])
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [gallery])
+
+  function goPrev() {
+    if (gallery.length <= 1) return
+    setActiveIndex((prev) => (prev - 1 + gallery.length) % gallery.length)
+  }
+
+  function goNext() {
+    if (gallery.length <= 1) return
+    setActiveIndex((prev) => (prev + 1) % gallery.length)
+  }
+
   return (
     <main>
-      <section className="relative min-h-[50vh] overflow-hidden border-b border-slate-200 bg-[#f3f4f1]">
-        <div className="absolute inset-0">
-          <img src={product.image} alt={product.name} className="h-full w-full object-cover opacity-15" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#f3f4f1]/95 via-[#f3f4f1]/85 to-[#f3f4f1]/75" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
-          <Link href="/urunler" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-[#b88700]">
-            <ArrowLeft className="h-4 w-4" />
-            Ürünlere Dön
-          </Link>
-          <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-[#b88700]">{product.shortName}</p>
-          <h1 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">{product.name}</h1>
-          <p className="mt-5 max-w-2xl text-lg text-slate-700">{product.description}</p>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-2xl border border-slate-200 bg-white p-8">
-            <h2 className="text-xl font-bold text-slate-900">Teknik Özellikler</h2>
-            <div className="mt-6 divide-y divide-slate-200">
-              {product.specs.map((spec) => (
-                <div key={spec.key} className="flex justify-between py-4">
-                  <span className="text-slate-600">{spec.key}</span>
-                  <span className="font-semibold text-slate-900">{spec.value}</span>
-                </div>
+      {gallery.length > 0 && (
+        <section className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-[92px_minmax(0,1fr)_minmax(0,420px)] lg:items-center">
+            <div className="order-2 flex gap-3 lg:order-1 lg:flex-col">
+              {gallery.map((img, index) => (
+                <button
+                  key={`${img}-${index}`}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  className={`h-[92px] w-[92px] overflow-hidden rounded-2xl border-2 ${activeIndex === index ? 'border-[#f2a900]' : 'border-slate-200'}`}
+                >
+                  <img src={img} alt={`${product.name} ${index + 1}`} className="h-full w-full object-cover" />
+                </button>
               ))}
             </div>
-          </motion.div>
 
-          <div className="space-y-6">
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-2xl border border-slate-200 bg-white p-8">
-              <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900">
-                <CheckCircle2 className="h-6 w-6 text-[#eab308]" />
-                Kullanım Alanları
-              </h2>
-              <ul className="mt-6 space-y-3">
-                {product.useAreas.map((area) => (
-                  <li key={area} className="flex items-center gap-3 rounded-lg bg-slate-100 px-4 py-3 text-slate-700">
-                    <span className="h-2 w-2 rounded-full bg-[#eab308]" />
-                    {area}
-                  </li>
+            <div className="order-1 relative lg:order-2">
+              <div className="overflow-hidden rounded-2xl bg-[#f0f1ef]">
+                <img src={activeImage} alt={product.name} className="aspect-[16/10] w-full object-cover" />
+              </div>
+
+              {gallery.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={goPrev}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/95 p-2 text-[#0b2f57] shadow"
+                    aria-label="Önceki"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/95 p-2 text-[#0b2f57] shadow"
+                    aria-label="Sonraki"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </>
+              )}
+            </div>
+
+            <div className="order-3">
+              <h3 className="mt-3 text-4xl font-black leading-tight text-[#0b2f57]">{product.name}</h3>
+              <p className="mt-3 text-lg leading-8 text-slate-800">{product.description}</p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+        <div>
+          <div className="grid grid-cols-3 gap-4 px-2 pb-5 pt-1 md:gap-6 md:px-6 md:pb-6">
+            {[
+              { key: 'specs' as const, label: 'Teknik Özellikler' },
+              { key: 'dimensions' as const, label: 'Ürün Ölçüleri' },
+              { key: 'advantages' as const, label: 'Avantajları' },
+            ].map((tab) => {
+              const isActive = activeTab === tab.key
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`pb-2 text-center text-[14px] font-semibold transition md:text-[18px] lg:text-[20px] ${
+                    isActive
+                      ? 'border-b-2 border-[#f2a900] text-[#0b2f57]'
+                      : 'border-b-2 border-transparent text-slate-500 hover:text-[#0b2f57]'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="h-[320px] overflow-y-auto border-t border-slate-300 px-2 pb-8 pt-5 md:h-[360px] md:px-6 md:pb-10">
+            {activeTab === 'specs' && (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[680px] text-left text-[16px] md:text-[17px] md:leading-[1.5]">
+                  <tbody className="divide-y divide-slate-300">
+                    {product.specs.map((spec) => (
+                      <tr key={spec.key}>
+                        <th className="py-3 pr-4 font-semibold text-[#0f172a]">{spec.key}</th>
+                        <td className="py-3 text-[#0f172a]">{spec.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {activeTab === 'dimensions' && (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[680px] text-left text-[16px] md:text-[17px] md:leading-[1.5]">
+                  <thead className="border-b border-slate-300">
+                    <tr>
+                      <th className="py-3 font-semibold text-[#0f172a]">Kalınlık (mm)</th>
+                      <th className="py-3 font-semibold text-[#0f172a]">a (mm)</th>
+                      <th className="py-3 font-semibold text-[#0f172a]">b (mm)</th>
+                      <th className="py-3 font-semibold text-[#0f172a]">c (°)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-300">
+                    {dimensionsRows.map((row, index) => (
+                      <tr key={`${row.thickness}-${row.a}-${row.b}-${row.c}-${index}`}>
+                        <td className="py-3 text-[#0f172a]">{row.thickness}</td>
+                        <td className="py-3 text-[#0f172a]">{row.a}</td>
+                        <td className="py-3 text-[#0f172a]">{row.b}</td>
+                        <td className="py-3 text-[#0f172a]">{row.c}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {dimensionsRows.length === 0 ? <p className="pt-3 text-sm text-slate-500">Ölçü satırı bulunmuyor.</p> : null}
+              </div>
+            )}
+
+            {activeTab === 'advantages' && (
+              <ul className="list-disc space-y-2.5 pl-6 text-[16px] leading-7 text-[#0f172a] md:text-[17px] md:leading-8">
+                {product.useAreas.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="rounded-2xl border border-[#eab308]/30 bg-[#fff9e8] p-6">
-              <div className="flex items-center gap-3">
-                <FileText className="h-8 w-8 text-[#b88700]" />
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Teklif</p>
-                  <p className="mt-1 text-slate-600">Metraj bazlı fiyat çalışması talep edebilirsiniz.</p>
-                </div>
-              </div>
-              <a href="/#teklif" className="mt-4 inline-flex rounded-lg bg-[#eab308] px-5 py-2.5 font-semibold text-black transition hover:bg-[#facc15]">
-                Teklif Al
-              </a>
-            </motion.div>
+            )}
           </div>
         </div>
       </section>

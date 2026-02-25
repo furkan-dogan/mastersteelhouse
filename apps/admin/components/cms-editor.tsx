@@ -41,11 +41,15 @@ function createTechnicalDetailRow(keyText = '', valueText = ''): TechnicalDetail
 }
 
 type CmsEditorProps = {
+  mode?: 'default' | 'profile'
+
+  showCoverField?: boolean
+
   endpoint?: string
   mediaEndpoint?: string
 }
 
-export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/media' }: CmsEditorProps) {
+export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/media', showCoverField = true, mode = 'default' }: CmsEditorProps) {
   const searchParams = useSearchParams()
   const [store, setStore] = useState<ProductStore | null>(null)
   const [loading, setLoading] = useState(true)
@@ -76,7 +80,11 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
         item.name.toLowerCase().includes(q) ||
         item.slug.toLowerCase().includes(q) ||
         item.area.toLowerCase().includes(q) ||
-        item.description.toLowerCase().includes(q)
+        item.description.toLowerCase().includes(q) ||
+        (item.sliderTitle ?? '').toLowerCase().includes(q) ||
+        (item.sliderDescription ?? '').toLowerCase().includes(q) ||
+        (item.detailTitle ?? '').toLowerCase().includes(q) ||
+        (item.detailDescription ?? '').toLowerCase().includes(q)
       )
     })
   }, [categoryProducts, search])
@@ -210,6 +218,22 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       floorPlans: [],
     }
 
+    if (mode === 'profile') {
+      newProduct.name = 'Yeni Profil Ürünü'
+      newProduct.area = 'Standart 3000 mm'
+      newProduct.description = ''
+      newProduct.sliderTitle = ''
+      newProduct.sliderDescription = ''
+      newProduct.detailTitle = ''
+      newProduct.detailDescription = ''
+      newProduct.specs = []
+      newProduct.dimensions = []
+      newProduct.highlights = []
+      newProduct.gallery = []
+      newProduct.technicalDetails = {}
+      newProduct.floorPlans = []
+    }
+
     setStore({
       ...store,
       products: [...store.products, newProduct],
@@ -280,7 +304,8 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     if (mediaTarget.type === 'cover') {
       patchProduct({ image: url })
     } else if (mediaTarget.type === 'gallery') {
-      patchProduct({ gallery: [...(selectedProduct.gallery ?? []), url] })
+      const merged = [...(selectedProduct.gallery ?? []), url]
+      patchProduct({ gallery: mode === 'profile' ? Array.from(new Set(merged)) : Array.from(new Set(merged)).slice(0, 5) })
     } else {
       const current = [...(selectedProduct.floorPlans ?? [])]
       if (!current[mediaTarget.index]) {
@@ -421,6 +446,8 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       </AdminLayout>
 
       <ProductsEditorDrawer
+        mode={mode}
+        showCoverField={showCoverField}
         open={editorOpen}
         saving={saving}
         selectedProduct={selectedProduct}

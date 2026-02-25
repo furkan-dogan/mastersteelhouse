@@ -17,6 +17,7 @@ type ReferencesEditorFormProps = {
   onOpenMediaPicker: () => void
   onRequestDelete: () => void
   onError: (message: string | null) => void
+  simplified?: boolean
 }
 
 export function ReferencesEditorForm({
@@ -25,34 +26,41 @@ export function ReferencesEditorForm({
   onOpenMediaPicker,
   onRequestDelete,
   onError,
+  simplified = false,
 }: ReferencesEditorFormProps) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="mb-1 block text-xs font-medium text-muted-foreground">Başlık</label>
+        <label className="mb-1 block text-xs font-medium text-muted-foreground">Firma Adı</label>
         <input value={selectedItem.title} onChange={(e) => onPatchItem({ title: e.target.value })} className="cms-input" />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Konum</label>
-          <input value={selectedItem.location} onChange={(e) => onPatchItem({ location: e.target.value })} className="cms-input" />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Alan / Ölçek</label>
-          <input value={selectedItem.area ?? ''} onChange={(e) => onPatchItem({ area: e.target.value })} className="cms-input" />
-        </div>
-      </div>
-      <div>
-        <label className="mb-1 block text-xs font-medium text-muted-foreground">Kategoriler (virgülle)</label>
-        <input
-          value={selectedItem.categories.join(', ')}
-          onChange={(e) => onPatchItem({ categories: splitByComma(e.target.value) })}
-          className="cms-input"
-        />
-      </div>
+
+      {!simplified ? (
+        <>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Konum</label>
+              <input value={selectedItem.location} onChange={(e) => onPatchItem({ location: e.target.value })} className="cms-input" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Alan / Ölçek</label>
+              <input value={selectedItem.area ?? ''} onChange={(e) => onPatchItem({ area: e.target.value })} className="cms-input" />
+            </div>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Kategoriler (virgülle)</label>
+            <input
+              value={selectedItem.categories.join(', ')}
+              onChange={(e) => onPatchItem({ categories: splitByComma(e.target.value) })}
+              className="cms-input"
+            />
+          </div>
+        </>
+      ) : null}
+
       <div>
         <div className="mb-1 flex items-center justify-between">
-          <label className="block text-xs font-medium text-muted-foreground">Görsel</label>
+          <label className="block text-xs font-medium text-muted-foreground">Logo</label>
           {selectedItem.image && (
             <button onClick={() => onPatchItem({ image: '' })} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">
               Kaldır
@@ -71,7 +79,7 @@ export function ReferencesEditorForm({
         {selectedItem.image && (
           <div className="mt-3 max-w-[560px] overflow-hidden rounded-2xl border bg-muted">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={adminPreviewUrl(selectedItem.image)} alt="Referans görsel" className="aspect-[4/3] w-full object-cover" />
+            <img src={adminPreviewUrl(selectedItem.image)} alt="Referans logosu" className="aspect-[4/3] w-full object-cover" />
           </div>
         )}
       </div>

@@ -7,6 +7,8 @@ import { CtaSection } from '@/components/cta-section'
 import { SiteFooter } from '@/components/site-footer'
 import { getProfileProducts } from '@/lib/profile-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProfilHomePage() {
   const products = await getProfileProducts()
 

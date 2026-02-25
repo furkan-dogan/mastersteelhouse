@@ -54,7 +54,6 @@ export function HeroSlider({ products }: HeroSliderProps) {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">{product.shortName}</p>
               <h1 className="mt-4 text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">{product.heroTitle}</h1>
               <p className="mt-6 max-w-xl text-lg text-slate-700">{product.subtitle}</p>
               <Link

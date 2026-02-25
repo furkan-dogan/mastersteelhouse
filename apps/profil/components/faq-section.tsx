@@ -11,7 +11,7 @@ export const profileFaqs = [
       'Galvanizli profil sistemleri daha hızlı montaj, daha düşük saha maliyeti ve standart kalite avantajı sunar. Hassas üretim toleransları sayesinde proje süreleri kısalır ve uygulama hataları azalır.',
   },
   {
-    question: 'Alçıköşe profili hangi alanlarda kullanılır?',
+    question: 'Delikli Alçı Köşe profili hangi alanlarda kullanılır?',
     answer:
       'Alçıköşe profilleri alçıpan birleşim hatlarında düzgün köşe oluşturmak, darbe dayanımını artırmak ve boya öncesi yüzey kalitesini iyileştirmek için kullanılır.',
   },

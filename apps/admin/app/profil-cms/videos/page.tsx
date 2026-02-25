@@ -1,5 +1,5 @@
-import { VideosCmsEditor } from '@/components/videos-cms-editor'
+import { notFound } from 'next/navigation'
 
-export default function ProfileVideosPage() {
-  return <VideosCmsEditor endpoint="/api/profile/videos" />
+export default function RemovedProfileCmsVideosPage() {
+  notFound()
 }

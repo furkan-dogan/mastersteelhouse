@@ -16,19 +16,20 @@ import { ReferencesEditorDrawer } from '@/components/references-editor-drawer'
 
 const EMPTY_REFERENCE: ReferenceItem = {
   id: 'ref-yeni',
-  title: 'Yeni Referans',
+  title: 'Yeni Firma',
   location: 'Türkiye',
-  categories: ['Kamu Yapıları'],
-  image: '/project-1.jpg',
+  categories: ['Genel'],
+  image: '',
   area: '',
 }
 
 type ReferencesCmsEditorProps = {
   endpoint?: string
   mediaEndpoint?: string
+  simplified?: boolean
 }
 
-export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoint = '/api/media' }: ReferencesCmsEditorProps) {
+export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoint = '/api/media', simplified = false }: ReferencesCmsEditorProps) {
   const [store, setStore] = useState<ReferenceStore | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -60,15 +61,13 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
     if (!store) return []
     const q = search.trim().toLowerCase()
     return store.items.filter((item) => {
-      if (categoryFilter !== 'all' && !item.categories.includes(categoryFilter)) return false
+      if (!simplified && categoryFilter !== 'all' && !item.categories.includes(categoryFilter)) return false
       if (!q) return true
-      return (
-        item.title.toLowerCase().includes(q) ||
-        item.location.toLowerCase().includes(q) ||
-        item.categories.join(' ').toLowerCase().includes(q)
-      )
+      const titleMatch = item.title.toLowerCase().includes(q)
+      if (simplified) return titleMatch
+      return titleMatch || item.location.toLowerCase().includes(q) || item.categories.join(' ').toLowerCase().includes(q)
     })
-  }, [store, search, categoryFilter])
+  }, [store, search, categoryFilter, simplified])
 
   const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
@@ -191,20 +190,24 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
         <section className="cms-card overflow-hidden">
           <CmsListToolbar
             searchValue={search}
-            searchPlaceholder="Referans ara..."
+            searchPlaceholder={simplified ? 'Firma ara...' : 'Referans ara...'}
             onSearchChange={(value) => {
               setSearch(value)
               resetPage()
             }}
-            filterValue={categoryFilter}
-            onFilterChange={(value) => {
+            filterValue={simplified ? undefined : categoryFilter}
+            onFilterChange={simplified ? undefined : (value) => {
               setCategoryFilter(value)
               resetPage()
             }}
-            filterOptions={[
-              { value: 'all', label: 'Tüm Kategoriler' },
-              ...availableCategories.map((category) => ({ value: category, label: category })),
-            ]}
+            filterOptions={
+              simplified
+                ? [{ value: 'all', label: 'Tüm Firmalar' }]
+                : [
+                    { value: 'all', label: 'Tüm Kategoriler' },
+                    ...availableCategories.map((category) => ({ value: category, label: category })),
+                  ]
+            }
           />
 
           <ReferencesCmsTable
@@ -216,6 +219,7 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
             onPageChange={setPage}
             onOpenEditor={openEditor}
             onRequestDelete={requestDelete}
+            simplified={simplified}
           />
         </section>
       </AdminLayout>
@@ -233,12 +237,13 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
           requestDelete(selectedItem.id, selectedItem.title)
         }}
         onError={setError}
+        simplified={simplified}
       />
 
       <MediaPickerModal
         endpoint={mediaEndpoint}
         open={showMediaPicker}
-        title="Referans Görseli Seç"
+        title={simplified ? 'Firma Logosu Seç' : 'Referans Görseli Seç'}
         onClose={() => setShowMediaPicker(false)}
         onSelect={(url) => {
           patchItem({ image: url })

@@ -45,9 +45,14 @@ const EMPTY_POST: NewsPost = {
 type NewsCmsEditorProps = {
   endpoint?: string
   mediaEndpoint?: string
+  allowSlugEdit?: boolean
+  showDate?: boolean
+  showLocation?: boolean
+  showAuthor?: boolean
+  showReadTime?: boolean
 }
 
-export function NewsCmsEditor({ endpoint = '/api/news', mediaEndpoint = '/api/media' }: NewsCmsEditorProps) {
+export function NewsCmsEditor({ endpoint = '/api/news', mediaEndpoint = '/api/media', allowSlugEdit = true, showDate = true, showLocation = true, showAuthor = true, showReadTime = true }: NewsCmsEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
@@ -240,6 +245,11 @@ export function NewsCmsEditor({ endpoint = '/api/news', mediaEndpoint = '/api/me
         onClose={() => setEditorOpen(false)}
         onPatchPost={patchPost}
         onRenameSlug={renameSelectedPostSlug}
+        allowSlugEdit={allowSlugEdit}
+        showDateField={showDate}
+        showLocationField={showLocation}
+        showAuthorField={showAuthor}
+        showReadTimeField={showReadTime}
         onAddSection={addSection}
         onRemoveSection={removeSection}
         onUpdateSection={updateSection}

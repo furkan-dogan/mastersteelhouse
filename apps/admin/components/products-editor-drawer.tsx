@@ -3,8 +3,11 @@
 import type { ProductItem } from '@/lib/products-store'
 import { CmsEditorDrawer } from '@/components/ui/cms-editor-drawer'
 import { ProductEditorForm, type TechnicalDetailRow } from '@/components/product-editor-form'
+import { ProfileProductEditorForm } from '@/components/profile-product-editor-form'
 
 type ProductsEditorDrawerProps = {
+  mode?: 'default' | 'profile'
+  showCoverField?: boolean
   open: boolean
   saving: boolean
   selectedProduct: ProductItem | null
@@ -28,6 +31,8 @@ type ProductsEditorDrawerProps = {
 }
 
 export function ProductsEditorDrawer({
+  mode = 'default',
+  showCoverField = true,
   open,
   saving,
   selectedProduct,
@@ -61,24 +66,36 @@ export function ProductsEditorDrawer({
       onSave={onSave}
       onClose={onClose}
     >
-      <ProductEditorForm
-        selectedProduct={selectedProduct}
-        technicalDetailRows={technicalDetailRows}
-        onPatchProduct={onPatchProduct}
-        onSetSelectedProductSlug={onSetSelectedProductSlug}
-        onOpenCoverPicker={onOpenCoverPicker}
-        onOpenGalleryPicker={onOpenGalleryPicker}
-        onOpenFloorPlanPicker={onOpenFloorPlanPicker}
-        onRemoveGalleryImage={onRemoveGalleryImage}
-        onAddTechnicalDetailRow={onAddTechnicalDetailRow}
-        onUpdateTechnicalDetailRow={onUpdateTechnicalDetailRow}
-        onRemoveTechnicalDetailRow={onRemoveTechnicalDetailRow}
-        onAddFloorPlan={onAddFloorPlan}
-        onUpdateFloorPlan={onUpdateFloorPlan}
-        onRemoveFloorPlan={onRemoveFloorPlan}
-        onRequestDelete={onRequestDelete}
-        onError={onError}
-      />
+      {mode === 'profile' ? (
+        <ProfileProductEditorForm
+          selectedProduct={selectedProduct}
+          onPatchProduct={onPatchProduct}
+          onOpenGalleryPicker={onOpenGalleryPicker}
+          onRemoveGalleryImage={onRemoveGalleryImage}
+          onRequestDelete={onRequestDelete}
+          onError={onError}
+        />
+      ) : (
+        <ProductEditorForm
+          showCoverField={showCoverField}
+          selectedProduct={selectedProduct}
+          technicalDetailRows={technicalDetailRows}
+          onPatchProduct={onPatchProduct}
+          onSetSelectedProductSlug={onSetSelectedProductSlug}
+          onOpenCoverPicker={onOpenCoverPicker}
+          onOpenGalleryPicker={onOpenGalleryPicker}
+          onOpenFloorPlanPicker={onOpenFloorPlanPicker}
+          onRemoveGalleryImage={onRemoveGalleryImage}
+          onAddTechnicalDetailRow={onAddTechnicalDetailRow}
+          onUpdateTechnicalDetailRow={onUpdateTechnicalDetailRow}
+          onRemoveTechnicalDetailRow={onRemoveTechnicalDetailRow}
+          onAddFloorPlan={onAddFloorPlan}
+          onUpdateFloorPlan={onUpdateFloorPlan}
+          onRemoveFloorPlan={onRemoveFloorPlan}
+          onRequestDelete={onRequestDelete}
+          onError={onError}
+        />
+      )}
     </CmsEditorDrawer>
   )
 }

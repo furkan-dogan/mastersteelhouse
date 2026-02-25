@@ -13,6 +13,10 @@ type BlogPostEditorFormProps = {
   sections: CmsSectionRow[]
   onPatchPost: (update: Partial<BlogPost>) => void
   onRenameSlug: (value: string) => void
+  allowSlugEdit?: boolean
+  showAuthorField?: boolean
+  showDateField?: boolean
+  showReadTimeField?: boolean
   onAddSection: () => void
   onRemoveSection: (sectionId: string) => void
   onUpdateSection: (sectionId: string, patch: Partial<CmsSectionRow>) => void
@@ -27,6 +31,10 @@ export function BlogPostEditorForm({
   sections,
   onPatchPost,
   onRenameSlug,
+  allowSlugEdit = true,
+  showAuthorField = true,
+  showDateField = true,
+  showReadTimeField = true,
   onAddSection,
   onRemoveSection,
   onUpdateSection,
@@ -44,26 +52,34 @@ export function BlogPostEditorForm({
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Başlık</label>
             <input value={selectedPost.title} onChange={(event) => onPatchPost({ title: event.target.value })} className="cms-input" />
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Slug</label>
-            <input value={selectedPost.slug} onChange={(event) => onRenameSlug(event.target.value)} className="cms-input" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Tarih</label>
-            <input value={selectedPost.date} onChange={(event) => onPatchPost({ date: event.target.value })} className="cms-input" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Yazar</label>
-            <input value={selectedPost.author} onChange={(event) => onPatchPost({ author: event.target.value })} className="cms-input" />
-          </div>
+          {allowSlugEdit ? (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Slug</label>
+              <input value={selectedPost.slug} onChange={(event) => onRenameSlug(event.target.value)} className="cms-input" />
+            </div>
+          ) : null}
+          {showDateField ? (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Tarih</label>
+              <input value={selectedPost.date} onChange={(event) => onPatchPost({ date: event.target.value })} className="cms-input" />
+            </div>
+          ) : null}
+          {showAuthorField ? (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Yazar</label>
+              <input value={selectedPost.author} onChange={(event) => onPatchPost({ author: event.target.value })} className="cms-input" />
+            </div>
+          ) : null}
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Kategori</label>
             <input value={selectedPost.category} onChange={(event) => onPatchPost({ category: event.target.value })} className="cms-input" />
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Okuma Süresi</label>
-            <input value={selectedPost.readTime} onChange={(event) => onPatchPost({ readTime: event.target.value })} className="cms-input" />
-          </div>
+          {showReadTimeField ? (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Okuma Süresi</label>
+              <input value={selectedPost.readTime} onChange={(event) => onPatchPost({ readTime: event.target.value })} className="cms-input" />
+            </div>
+          ) : null}
         </div>
 
         <div>

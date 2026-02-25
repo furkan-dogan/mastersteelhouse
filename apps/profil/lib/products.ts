@@ -12,12 +12,12 @@ export type ProfileProduct = {
 
 export const profileProducts: ProfileProduct[] = [
   {
-    slug: 'alcikose-profili',
+    slug: 'delikli-alci-kose-profili',
     name: 'Alçıpan Köşe Profili',
     shortName: 'AKP-01',
     heroTitle: 'Kusursuz Köşe Hatları',
     subtitle:
-      'Alçı sıva ve alçıpan uygulamalarında köşe dayanımını artıran alçıköşe profili; düzgün hat, çatlak azaltma ve uzun ömürlü yüzey performansı sağlar.',
+      'Alçı sıva ve alçıpan uygulamalarında köşe dayanımını artıran delikli alçı köşe profili; düzgün hat, çatlak azaltma ve uzun ömürlü yüzey performansı sağlar.',
     image: '/profil-alcikose.jpg',
     description:
       'Alçıpan köşe profili, alçı levha köşe noktalarında düzgün hat oluşturur, çatlama riskini azaltır ve uzun ömürlü bir bitiş sunar.',

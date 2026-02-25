@@ -50,9 +50,9 @@ export function ProductsCmsTable({
                 <tr key={`${product.categorySlug}-${product.slug}`} className="border-t align-middle hover:bg-muted/30">
                   <td className="hidden px-4 py-3 md:table-cell">
                     <div className="h-16 w-24 overflow-hidden rounded-md border bg-muted/30">
-                      {product.image ? (
+                      {(product.image || product.gallery?.[0]) ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={adminPreviewUrl(product.image)} alt={product.name} className="h-full w-full object-cover" />
+                        <img src={adminPreviewUrl(product.image || product.gallery?.[0] || '')} alt={product.name} className="h-full w-full object-cover" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Gorsel yok</div>
                       )}
@@ -61,7 +61,7 @@ export function ProductsCmsTable({
                   <td className="px-4 py-3">
                     <div className="min-w-0">
                       <p className="truncate font-medium text-foreground">{product.name}</p>
-                      <p className="hidden truncate text-xs text-muted-foreground md:block">{product.description || 'Aciklama yok'}</p>
+                      <p className="hidden truncate text-xs text-muted-foreground md:block">{product.detailDescription || product.description || 'Aciklama yok'}</p>
                     </div>
                   </td>
                   <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{product.area || '-'}</td>

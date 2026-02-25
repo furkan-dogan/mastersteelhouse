@@ -14,6 +14,10 @@ type BlogEditorDrawerProps = {
   onClose: () => void
   onPatchPost: (update: Partial<BlogPost>) => void
   onRenameSlug: (nextSlug: string) => void
+  allowSlugEdit?: boolean
+  showAuthorField?: boolean
+  showDateField?: boolean
+  showReadTimeField?: boolean
   onAddSection: () => void
   onRemoveSection: (sectionId: string) => void
   onUpdateSection: (sectionId: string, patch: Partial<CmsSectionRow>) => void
@@ -32,6 +36,10 @@ export function BlogEditorDrawer({
   onClose,
   onPatchPost,
   onRenameSlug,
+  allowSlugEdit = true,
+  showAuthorField = true,
+  showDateField = true,
+  showReadTimeField = true,
   onAddSection,
   onRemoveSection,
   onUpdateSection,
@@ -56,6 +64,10 @@ export function BlogEditorDrawer({
         sections={sections}
         onPatchPost={onPatchPost}
         onRenameSlug={onRenameSlug}
+        allowSlugEdit={allowSlugEdit}
+        showAuthorField={showAuthorField}
+        showDateField={showDateField}
+        showReadTimeField={showReadTimeField}
         onAddSection={onAddSection}
         onRemoveSection={onRemoveSection}
         onUpdateSection={onUpdateSection}

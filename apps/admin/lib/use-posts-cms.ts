@@ -47,6 +47,20 @@ function createRow<TPost extends CmsPostLike>(section?: TPost['sections'][number
   }
 }
 
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/ç/g, 'c')
+    .replace(/ğ/g, 'g')
+    .replace(/ı/g, 'i')
+    .replace(/ö/g, 'o')
+    .replace(/ş/g, 's')
+    .replace(/ü/g, 'u')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
 export function usePostsCms<TPost extends CmsPostLike, TStore extends CmsStoreLike<TPost>>({
   endpoint,
   emptyPost,
@@ -71,15 +85,31 @@ export function usePostsCms<TPost extends CmsPostLike, TStore extends CmsStoreLi
       if (!response.ok) {
         throw new Error(loadErrorMessage)
       }
+
       const nextStore = (await response.json()) as TStore
-      setStore(nextStore)
-      setSelectedSlug(nextStore.posts[0]?.slug ?? '')
+      const used = new Set<string>()
+      const normalizedPosts = nextStore.posts.map((post, index) => {
+        const titleBased = slugify((post as { title?: string }).title ?? '')
+        const baseSlug = post.slug?.trim() || titleBased || `${slugBase}-${index + 1}`
+        let candidate = baseSlug
+        let counter = 2
+        while (used.has(candidate)) {
+          candidate = `${baseSlug}-${counter}`
+          counter += 1
+        }
+        used.add(candidate)
+        return { ...post, slug: candidate }
+      }) as TPost[]
+
+      const normalizedStore = { ...nextStore, posts: normalizedPosts } as TStore
+      setStore(normalizedStore)
+      setSelectedSlug(normalizedStore.posts[0]?.slug ?? '')
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'Beklenmeyen hata')
     } finally {
       setLoading(false)
     }
-  }, [endpoint, loadErrorMessage])
+  }, [endpoint, loadErrorMessage, slugBase])
 
   useEffect(() => {
     void loadStore()

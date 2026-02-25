@@ -14,6 +14,7 @@ type ReferencesEditorDrawerProps = {
   onOpenMediaPicker: () => void
   onRequestDelete: () => void
   onError: (message: string | null) => void
+  simplified?: boolean
 }
 
 export function ReferencesEditorDrawer({
@@ -26,6 +27,7 @@ export function ReferencesEditorDrawer({
   onOpenMediaPicker,
   onRequestDelete,
   onError,
+  simplified = false,
 }: ReferencesEditorDrawerProps) {
   if (!open || !selectedItem) return null
 
@@ -44,6 +46,7 @@ export function ReferencesEditorDrawer({
         onOpenMediaPicker={onOpenMediaPicker}
         onRequestDelete={onRequestDelete}
         onError={onError}
+        simplified={simplified}
       />
     </CmsEditorDrawer>
   )

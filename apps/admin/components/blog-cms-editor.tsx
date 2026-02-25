@@ -40,9 +40,20 @@ const EMPTY_POST: BlogPost = {
 type BlogCmsEditorProps = {
   endpoint?: string
   mediaEndpoint?: string
+  allowSlugEdit?: boolean
+  showAuthor?: boolean
+  showDate?: boolean
+  showReadTime?: boolean
 }
 
-export function BlogCmsEditor({ endpoint = '/api/blog', mediaEndpoint = '/api/media' }: BlogCmsEditorProps) {
+export function BlogCmsEditor({
+  endpoint = '/api/blog',
+  mediaEndpoint = '/api/media',
+  allowSlugEdit = true,
+  showAuthor = true,
+  showDate = true,
+  showReadTime = true,
+}: BlogCmsEditorProps) {
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
@@ -194,6 +205,8 @@ export function BlogCmsEditor({ endpoint = '/api/blog', mediaEndpoint = '/api/me
             onPageChange={setPage}
             onOpenEditor={openEditor}
             onRequestDelete={requestDelete}
+            showAuthorColumn={showAuthor}
+            showDateColumn={showDate}
           />
         </section>
       </AdminLayout>
@@ -207,6 +220,10 @@ export function BlogCmsEditor({ endpoint = '/api/blog', mediaEndpoint = '/api/me
         onClose={() => setEditorOpen(false)}
         onPatchPost={patchPost}
         onRenameSlug={renameSelectedPostSlug}
+        allowSlugEdit={allowSlugEdit}
+        showAuthorField={showAuthor}
+        showDateField={showDate}
+        showReadTimeField={showReadTime}
         onAddSection={addSection}
         onRemoveSection={removeSection}
         onUpdateSection={updateSection}

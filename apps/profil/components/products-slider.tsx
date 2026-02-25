@@ -69,7 +69,7 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
           <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Ürün Kataloğu</p>
           <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">3 Profil, Tüm İhtiyaçlar</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-            İnşaat projeleriniz için alçıpan köşe, kaba sıva ve tavan U-C profilleri. Galvanizli çelik, yüksek kalite.
+            İnşaat projeleriniz için alçıköşe, kaba sıva ve tavan U-C profilleri. Galvanizli çelik, yüksek kalite.
           </p>
         </motion.div>
 

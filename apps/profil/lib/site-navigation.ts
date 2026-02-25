@@ -10,14 +10,13 @@ export const corporateLinks: NavLinkItem[] = [
 ]
 
 export const productLinks: NavLinkItem[] = [
-  { label: 'Alçıköşe Profili', href: '/urunler/alcikose-profili' },
+  { label: 'Delikli Alçı Köşe Profili', href: '/urunler/delikli-alci-kose-profili' },
   { label: 'Kaba Sıva Profili', href: '/urunler/kaba-siva-profili' },
   { label: 'Tavan U-C Profilleri', href: '/urunler/tavan-u-c-profili' },
 ]
 
 export const mediaLinks: NavLinkItem[] = [
   { label: 'Haberler', href: '/medya/haberler' },
-  { label: 'Videolar', href: '/medya/videolar' },
   { label: 'Blog', href: '/medya/blog' },
 ]
 

@@ -19,6 +19,13 @@ export type ProductSpec = {
   icon: 'Clock' | 'Ruler' | 'Shield' | 'Zap'
 }
 
+export type ProductDimension = {
+  thickness: string
+  a: string
+  b: string
+  c: string
+}
+
 export type ProductCategory = {
   slug: string
   title: string
@@ -32,8 +39,13 @@ export type ProductItem = {
   area: string
   image: string
   description: string
+  sliderTitle?: string
+  sliderDescription?: string
+  detailTitle?: string
+  detailDescription?: string
   features: ProductFeatures
   specs?: ProductSpec[]
+  dimensions?: ProductDimension[]
   technicalDetails?: Record<string, string>
   highlights?: string[]
   gallery?: string[]

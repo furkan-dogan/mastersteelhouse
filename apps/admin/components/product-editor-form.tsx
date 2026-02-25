@@ -19,6 +19,8 @@ export type TechnicalDetailRow = {
 }
 
 type ProductEditorFormProps = {
+  showCoverField?: boolean
+
   selectedProduct: ProductItem
   technicalDetailRows: TechnicalDetailRow[]
   onPatchProduct: (update: Partial<ProductItem>) => void
@@ -38,6 +40,7 @@ type ProductEditorFormProps = {
 }
 
 export function ProductEditorForm({
+  showCoverField = true,
   selectedProduct,
   technicalDetailRows,
   onPatchProduct,
@@ -81,6 +84,7 @@ export function ProductEditorForm({
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Alan</label>
             <input value={selectedProduct.area} onChange={(event) => onPatchProduct({ area: event.target.value })} className="cms-input" placeholder="Orn: 100 m2" />
           </div>
+          {showCoverField ? (
           <div>
             <div className="mb-1 flex items-center justify-between">
               <label className="block text-xs font-medium text-muted-foreground">Kapak Gorseli</label>
@@ -108,6 +112,7 @@ export function ProductEditorForm({
               <p className="text-xs text-muted-foreground">Kapak gorseli secilmedi.</p>
             )}
           </div>
+          ) : null}
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Aciklama</label>

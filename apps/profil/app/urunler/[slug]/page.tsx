@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
@@ -8,15 +8,18 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
-export async function generateStaticParams() {
-  const products = await getProfileProducts()
-  return products.map((item) => ({ slug: item.slug }))
-}
+export const dynamic = 'force-dynamic'
 
 export default async function ProfilProductDetailPage({ params }: Props) {
   const { slug } = await params
   const products = await getProfileProducts()
-  const product = products.find((item) => item.slug === slug)
+  const normalizedSlug = slug === 'alcikose-profili' ? 'delikli-alci-kose-profili' : slug
+
+  if (slug === 'alcikose-profili') {
+    redirect('/urunler/delikli-alci-kose-profili')
+  }
+
+  const product = products.find((item) => item.slug === normalizedSlug)
 
   if (!product) {
     notFound()
