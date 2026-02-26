@@ -19,7 +19,6 @@ type TopNavItem = {
 const topNavItems: TopNavItem[] = [
   { key: 'kurumsal', label: 'Kurumsal', dropdown: 'kurumsal' },
   { key: 'urunler', label: 'Ürünler', dropdown: 'urunler' },
-  { key: 'referanslar', label: 'Referanslar', href: '/referanslar' },
   { key: 'iletisim', label: 'İletişim', href: '/iletisim' },
   { key: 'medya', label: 'Medya', dropdown: 'medya' },
 ]

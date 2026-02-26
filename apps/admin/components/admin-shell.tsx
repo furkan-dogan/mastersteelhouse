@@ -72,7 +72,7 @@ export function AdminShell({
           { href: route('/blog'), label: 'Blog', icon: BookOpenText },
           { href: route('/news'), label: 'Haberler', icon: Newspaper },
           ...(basePath === '/profil-cms' ? [] : [{ href: route('/videos'), label: 'Videolar', icon: Clapperboard }]),
-          { href: route('/references'), label: 'Referanslar', icon: FolderKanban },
+          ...(basePath === '/profil-cms' ? [] : [{ href: route('/references'), label: 'Referanslar', icon: FolderKanban }]),
         ],
       },
       {

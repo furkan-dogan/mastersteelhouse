@@ -25,7 +25,7 @@ export function ApplicationsSlider() {
   }, [active])
 
   return (
-    <section id="referanslar" className="scroll-mt-20 bg-[#eef1ee] py-20">
+    <section id="uygulama" className="scroll-mt-20 bg-[#eef1ee] py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Uygulama Alanları</p>

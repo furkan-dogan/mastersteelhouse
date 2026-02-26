@@ -52,14 +52,6 @@ export type ProfileNewsPost = {
   featured?: boolean
 }
 
-export type ProfileReferenceItem = {
-  id: string
-  title: string
-  location: string
-  categories: string[]
-  image: string
-  area: string
-}
 
 type ProductsStore = {
   products: Array<{
@@ -81,7 +73,6 @@ type ProductsStore = {
 
 type BlogStore = { posts: ProfileBlogPost[] }
 type NewsStore = { posts: ProfileNewsPost[] }
-type ReferencesStore = { items: ProfileReferenceItem[] }
 
 function getContentPath(fileName: string) {
   const candidates = [
@@ -185,7 +176,3 @@ export async function getProfileNewsPosts() {
   return store.posts
 }
 
-export async function getProfileReferences() {
-  const store = await readJson<ReferencesStore>('profile-references-cms.json')
-  return store.items
-}

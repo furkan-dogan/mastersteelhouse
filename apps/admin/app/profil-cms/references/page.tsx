@@ -1,5 +1,5 @@
-import { ReferencesCmsEditor } from '@/components/references-cms-editor'
+import { notFound } from 'next/navigation'
 
 export default function ProfileReferencesPage() {
-  return <ReferencesCmsEditor endpoint="/api/profile/references" mediaEndpoint="/api/profile/media" simplified />
+  notFound()
 }
