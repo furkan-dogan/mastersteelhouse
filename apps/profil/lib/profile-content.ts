@@ -1,7 +1,6 @@
 import { existsSync } from 'fs'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { unstable_noStore as noStore } from 'next/cache'
 
 export type ProfileProductSpec = {
   label: string
@@ -97,7 +96,6 @@ function getContentPath(fileName: string) {
 }
 
 async function readJson<T>(fileName: string): Promise<T> {
-  noStore()
   const raw = await fs.readFile(getContentPath(fileName), 'utf8')
   return JSON.parse(raw) as T
 }

@@ -8,7 +8,7 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export default async function ProfilProductDetailPage({ params }: Props) {
   const { slug } = await params

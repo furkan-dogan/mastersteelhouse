@@ -7,7 +7,7 @@ import { CtaSection } from '@/components/cta-section'
 import { SiteFooter } from '@/components/site-footer'
 import { getProfileFaqs, getProfileProducts } from '@/lib/profile-content'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export default async function ProfilHomePage() {
   const [products, faqs] = await Promise.all([getProfileProducts(), getProfileFaqs()])

@@ -23,7 +23,7 @@ type Props = {
 export function MediaUploadDropzone({
   multiple = false,
   compact = false,
-  helperText = 'PNG, JPG, GIF, WEBP (maks. 20MB)',
+  helperText = 'PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)',
   galleryButtonLabel = 'Galeriden seç',
   onUploaded,
   onPickFromMedia,
@@ -109,7 +109,7 @@ export function MediaUploadDropzone({
         ref={fileInputRef}
         type="file"
         multiple={multiple}
-        accept="image/*"
+        accept="image/*,.heic,.heif"
         className="hidden"
         onChange={(event) => {
           if (event.target.files) {

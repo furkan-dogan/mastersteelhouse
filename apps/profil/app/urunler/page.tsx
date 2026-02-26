@@ -3,7 +3,7 @@ import { ProductCardGrid } from '@/components/product-card-grid'
 import { SiteFooter } from '@/components/site-footer'
 import { getProfileProducts } from '@/lib/profile-content'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export default async function ProfilProductsPage() {
   const products = await getProfileProducts()

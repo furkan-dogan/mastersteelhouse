@@ -4,9 +4,39 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', weight: ['400', '500', '600', '700'] })
 
+const PROFILE_SITE_URL = process.env.NEXT_PUBLIC_PROFILE_SITE_URL ?? 'https://profil.mastersteelhouse.com'
+
 export const metadata: Metadata = {
-  title: 'Master Steel House | Profil Sistemleri',
-  description: 'Alçıpan köşe profili, kaba sıva profili ve tavan U-C profili. İnşaat sektörüne özel galvanizli çelik profil çözümleri.',
+  metadataBase: new URL(PROFILE_SITE_URL),
+  title: {
+    default: 'Master Steel House | Profil Sistemleri',
+    template: '%s | Master Steel House Profil Sistemleri',
+  },
+  description:
+    'Alçıpan köşe profili, kaba sıva profili ve tavan U-C profili. İnşaat sektörüne özel galvanizli çelik profil çözümleri.',
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'tr_TR',
+    url: '/',
+    siteName: 'Master Steel House Profil Sistemleri',
+    title: 'Master Steel House | Profil Sistemleri',
+    description:
+      'Alçıpan köşe profili, kaba sıva profili ve tavan U-C profili. İnşaat sektörüne özel galvanizli çelik profil çözümleri.',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -99,9 +99,15 @@ export function safeFilename(input: string) {
     .replace(/^-|-$/g, '')
 }
 
-export function inferMediaType(mimeType: string): MediaItem['type'] | null {
+export function inferMediaType(mimeType: string, fileName = ''): MediaItem['type'] | null {
   if (mimeType.startsWith('image/')) return 'image'
   if (mimeType.startsWith('video/')) return 'video'
   if (mimeType === 'application/pdf') return 'document'
+
+  const ext = path.extname(fileName).toLowerCase()
+  if (['.jpg', '.jpeg', '.png', '.webp', '.gif', '.heic', '.heif'].includes(ext)) return 'image'
+  if (['.mp4', '.webm', '.mov'].includes(ext)) return 'video'
+  if (ext === '.pdf') return 'document'
+
   return null
 }

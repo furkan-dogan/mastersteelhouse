@@ -9,6 +9,7 @@ import {
   writeMediaStore,
   type MediaItem,
 } from '@/lib/media-store'
+import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
 
 export const runtime = 'nodejs'
 
@@ -21,6 +22,8 @@ function getExtension(filename: string, mimeType: string) {
     'image/png': '.png',
     'image/webp': '.webp',
     'image/gif': '.gif',
+    'image/heic': '.heic',
+    'image/heif': '.heif',
     'video/mp4': '.mp4',
     'video/webm': '.webm',
     'video/quicktime': '.mov',
@@ -37,7 +40,7 @@ export async function GET() {
     return NextResponse.json({ items })
   } catch (error) {
     console.error('Failed to read media store', error)
-    return NextResponse.json({ message: 'Medya verisi okunamadi.' }, { status: 500 })
+    return NextResponse.json({ message: 'Medya verisi okunamadı.' }, { status: 500 })
   }
 }
 
@@ -56,7 +59,7 @@ export async function POST(request: Request) {
     const newItems: MediaItem[] = []
 
     for (const file of files) {
-      const mediaType = inferMediaType(file.type)
+      const mediaType = inferMediaType(file.type, file.name)
       if (!mediaType) {
         return NextResponse.json(
           { message: `Desteklenmeyen dosya tipi: ${file.name}` },
@@ -68,26 +71,43 @@ export async function POST(request: Request) {
         mediaType === 'image' ? 20 * 1024 * 1024 : mediaType === 'video' ? 200 * 1024 * 1024 : 30 * 1024 * 1024
       if (file.size > maxSizeBytes) {
         return NextResponse.json(
-          { message: `${file.name} boyutu limitin uzerinde.` },
+          { message: `${file.name} boyutu limitin üzerinde.` },
           { status: 400 }
         )
       }
 
-      const extension = getExtension(file.name, file.type)
-      const baseName = safeFilename(path.basename(file.name, extension)) || 'media'
+      let mimeType = file.type
+      let extension = getExtension(file.name, file.type)
+      const sourceBytes = Buffer.from(await file.arrayBuffer())
+      let outputBytes = sourceBytes
+
+      if (mediaType === 'image' && isHeicLikeFile(file.name, file.type)) {
+        try {
+          outputBytes = await convertHeicToJpeg(sourceBytes)
+          mimeType = 'image/jpeg'
+          extension = '.jpg'
+        } catch (error) {
+          console.error('Failed to convert HEIC file', error)
+          return NextResponse.json(
+            { message: 'HEIC görsel dönüştürülemedi. Lütfen JPG/PNG/WebP deneyin.' },
+            { status: 400 }
+          )
+        }
+      }
+
+      const baseName = safeFilename(path.basename(file.name, path.extname(file.name))) || 'media'
       const uniqueSuffix = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`
       const fileName = `${baseName}-${uniqueSuffix}${extension}`
       const targetPath = path.join(uploadsDir, fileName)
 
-      const bytes = await file.arrayBuffer()
-      await fs.writeFile(targetPath, Buffer.from(bytes))
+      await fs.writeFile(targetPath, outputBytes)
 
       const item: MediaItem = {
         id: `media-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`,
         name: file.name,
         type: mediaType,
-        mimeType: file.type,
-        size: file.size,
+        mimeType,
+        size: outputBytes.byteLength,
         url: `/uploads/media/${fileName}`,
         createdAt: new Date().toISOString(),
       }
@@ -103,7 +123,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ items: newItems })
   } catch (error) {
     console.error('Failed to upload media', error)
-    return NextResponse.json({ message: 'Dosya yukleme basarisiz.' }, { status: 500 })
+    return NextResponse.json({ message: 'Dosya yükleme başarısız.' }, { status: 500 })
   }
 }
 
