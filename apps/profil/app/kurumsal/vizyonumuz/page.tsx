@@ -47,7 +47,7 @@ export default function VizyonumuzPage() {
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="relative mb-20 h-[400px] overflow-hidden rounded-3xl border border-slate-200">
-            <img src="/profil-tavan-uc.jpg" alt="Vizyon" className="h-full w-full object-cover" />
+            <img src="/profil-tavan-uc.jpg" alt="Vizyon odaklı profil sistemleri" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/30 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center text-white">

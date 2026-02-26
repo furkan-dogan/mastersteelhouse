@@ -26,7 +26,7 @@ export default async function HaberlerPage() {
         '@type': 'ListItem',
         position: index + 1,
         name: item.title,
-        url: absoluteProfileUrl('/medya/haberler'),
+        url: absoluteProfileUrl(`/medya/haberler/${item.slug}`),
       })),
     },
   }
@@ -52,10 +52,10 @@ export default async function HaberlerPage() {
             {news
               .filter((item) => item.featured)
               .map((item) => (
-                <Link key={item.slug} href="#" className="group mb-12 block">
+                <Link key={item.slug} href={`/medya/haberler/${item.slug}`} className="group mb-12 block">
                   <div className="grid gap-8 rounded-3xl border-2 border-[#eab308]/30 bg-white p-8 transition-all duration-500 hover:border-[#eab308]/60 hover:shadow-2xl hover:shadow-[#eab308]/20 md:grid-cols-2">
                     <div className="relative h-80 overflow-hidden rounded-2xl">
-                      <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                      <img src={item.image} alt={`${item.title} haber görseli`} className="h-full w-full object-cover" />
                       <div className="absolute left-4 top-4">
                         <span className="rounded-full bg-[#eab308] px-4 py-2 text-xs font-semibold text-black shadow">{item.category}</span>
                       </div>
@@ -83,10 +83,10 @@ export default async function HaberlerPage() {
               {news
                 .filter((item) => !item.featured)
                 .map((item) => (
-                  <Link key={item.slug} href="#" className="group">
+                  <Link key={item.slug} href={`/medya/haberler/${item.slug}`} className="group">
                     <article className="h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-500 hover:-translate-y-2 hover:border-[#eab308]/50 hover:shadow-2xl hover:shadow-[#eab308]/10">
                       <div className="relative h-56 overflow-hidden">
-                        <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
+                        <img src={item.image} alt={`${item.title} haber görseli`} className="h-full w-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
                         <div className="absolute left-4 top-4">
                           <span className="rounded-full bg-[#eab308] px-3 py-1.5 text-xs font-semibold text-black">{item.category}</span>

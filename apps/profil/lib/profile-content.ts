@@ -186,3 +186,13 @@ export async function getProfileFaqs() {
   const store = await readJson<FaqStore>('profile-faq-cms.json')
   return store.items
 }
+
+export async function getProfileBlogPostBySlug(slug: string) {
+  const posts = await getProfileBlogPosts()
+  return posts.find((post) => post.slug === slug) ?? null
+}
+
+export async function getProfileNewsPostBySlug(slug: string) {
+  const posts = await getProfileNewsPosts()
+  return posts.find((post) => post.slug === slug) ?? null
+}

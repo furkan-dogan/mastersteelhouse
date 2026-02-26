@@ -23,7 +23,7 @@ export default async function BlogPage() {
       '@type': 'BlogPosting',
       headline: post.title,
       image: post.image.startsWith('http') ? post.image : absoluteProfileUrl(post.image),
-      url: absoluteProfileUrl('/medya/blog'),
+      url: absoluteProfileUrl(`/medya/blog/${post.slug}`),
     })),
   }
 

@@ -1,8 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { Calendar, User, ArrowRight, Clock } from 'lucide-react'
-import Link from 'next/link'
 import type { ProfileBlogPost } from '@/lib/profile-content'
 
 type ProfileBlogListProps = {
@@ -45,10 +45,10 @@ export function ProfileBlogList({ posts }: ProfileBlogListProps) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
-              <Link key={post.slug} href="#" className="group">
+              <Link key={post.slug} href={`/medya/blog/${post.slug}`} className="group">
                 <article className="h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-500 hover:-translate-y-2 hover:border-[#eab308]/50 hover:shadow-2xl hover:shadow-[#eab308]/10">
                   <div className="relative h-56 overflow-hidden">
-                    <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                    <img src={post.image} alt={`${post.title} kapak görseli`} className="h-full w-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
 
                     <div className="absolute left-4 top-4">
