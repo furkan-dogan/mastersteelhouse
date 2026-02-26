@@ -25,7 +25,7 @@ export function ProductGallery({
       <div className="relative h-[420px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden group">
         <Image
           src={images[currentIndex]}
-          alt={`${productName} - Gorsel ${currentIndex + 1}`}
+          alt={`${productName} - Görsel ${currentIndex + 1}`}
           fill
           className="object-cover transition-transform duration-700"
         />
@@ -64,11 +64,11 @@ export function ProductGallery({
             key={img + index}
             className="relative h-20 rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent transition-all duration-300 hover:scale-105 bg-muted"
             onClick={() => onOpen(index)}
-            aria-label={`${index + 1}. gorseli ac`}
+            aria-label={`${index + 1}. görseli aç`}
           >
             <Image
               src={img}
-              alt={`${productName} - Gorsel ${index + 1}`}
+              alt={`${productName} - Görsel ${index + 1}`}
               fill
               sizes="(max-width: 768px) 100vw, 150px"
               className="object-cover"

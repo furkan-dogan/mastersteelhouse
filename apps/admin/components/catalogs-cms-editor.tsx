@@ -18,7 +18,7 @@ import { CatalogsEditorDrawer } from '@/components/catalogs-editor-drawer'
 const EMPTY_STORE: CatalogsStore = {
   hero: {
     title: 'Kataloglar',
-    description: 'Urun kataloglarimizi inceleyin ve indirin',
+    description: 'Ürün kataloglarımızı inceleyin ve indirin',
   },
   items: [],
 }

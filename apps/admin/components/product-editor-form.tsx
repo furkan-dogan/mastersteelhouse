@@ -64,7 +64,7 @@ export function ProductEditorForm({
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Temel Bilgiler</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Urun Adi</label>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Ürün Adı</label>
             <input value={selectedProduct.name} onChange={(event) => onPatchProduct({ name: event.target.value })} className="cms-input" placeholder="Orn: Atlas Villa" />
           </div>
           <div>
@@ -87,10 +87,10 @@ export function ProductEditorForm({
           {showCoverField ? (
           <div>
             <div className="mb-1 flex items-center justify-between">
-              <label className="block text-xs font-medium text-muted-foreground">Kapak Gorseli</label>
+              <label className="block text-xs font-medium text-muted-foreground">Kapak Görseli</label>
               {selectedProduct.image && (
                 <button onClick={() => onPatchProduct({ image: '' })} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">
-                  Kaldir
+                  Kaldır
                 </button>
               )}
             </div>
@@ -106,22 +106,22 @@ export function ProductEditorForm({
             {selectedProduct.image ? (
               <div className="mt-2 overflow-hidden rounded-xl border bg-muted">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={adminPreviewUrl(selectedProduct.image)} alt="Kapak gorseli" className="aspect-[4/3] w-full object-cover" />
+                <img src={adminPreviewUrl(selectedProduct.image)} alt="Kapak görseli" className="aspect-[4/3] w-full object-cover" />
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground">Kapak gorseli secilmedi.</p>
+              <p className="text-xs text-muted-foreground">Kapak görseli seçilmedi.</p>
             )}
           </div>
           ) : null}
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Aciklama</label>
-          <textarea value={selectedProduct.description} onChange={(event) => onPatchProduct({ description: event.target.value })} rows={4} className="cms-textarea" placeholder="Urun aciklamasi..." />
+          <label className="mb-1 block text-xs font-medium text-muted-foreground">Açıklama</label>
+          <textarea value={selectedProduct.description} onChange={(event) => onPatchProduct({ description: event.target.value })} rows={4} className="cms-textarea" placeholder="Ürün açıklaması..." />
         </div>
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ozellikler</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Özellikler</h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Oda</label>
@@ -133,10 +133,10 @@ export function ProductEditorForm({
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Otopark</label>
-            <input value={selectedProduct.features.parking} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, parking: event.target.value } })} className="cms-input" placeholder="1 Araclik" />
+            <input value={selectedProduct.features.parking} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, parking: event.target.value } })} className="cms-input" placeholder="1 Araçlık" />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Yukseklik</label>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Yükseklik</label>
             <input value={selectedProduct.features.height} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, height: event.target.value } })} className="cms-input" placeholder="2.80m" />
           </div>
           <div>
@@ -145,7 +145,7 @@ export function ProductEditorForm({
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Deprem Dayanimi</label>
-            <input value={selectedProduct.features.earthquakeResistance ?? ''} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, earthquakeResistance: event.target.value } })} className="cms-input" placeholder="Yuksek Dayanim" />
+            <input value={selectedProduct.features.earthquakeResistance ?? ''} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, earthquakeResistance: event.target.value } })} className="cms-input" placeholder="Yüksek Dayanım" />
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Enerji Sinifi</label>
@@ -153,13 +153,13 @@ export function ProductEditorForm({
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Garanti</label>
-            <input value={selectedProduct.features.warranty ?? ''} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, warranty: event.target.value } })} className="cms-input" placeholder="20 Yil" />
+            <input value={selectedProduct.features.warranty ?? ''} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, warranty: event.target.value } })} className="cms-input" placeholder="20 Yıl" />
           </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ek Icerik</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ek İçerik</h3>
         <div className="grid gap-4 lg:grid-cols-2">
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Highlights (satir satir)</label>
@@ -167,7 +167,7 @@ export function ProductEditorForm({
           </div>
           <div>
             <div className="mb-1 flex items-center justify-between">
-              <label className="block text-xs font-medium text-muted-foreground">Galeri Gorselleri</label>
+              <label className="block text-xs font-medium text-muted-foreground">Galeri Görselleri</label>
             </div>
             <MediaUploadDropzone
               multiple
@@ -188,7 +188,7 @@ export function ProductEditorForm({
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-muted-foreground">Galeri bos. Medyadan gorsel ekleyebilirsin.</p>
+              <p className="text-xs text-muted-foreground">Galeri boş. Medyadan görsel ekleyebilirsin.</p>
             )}
           </div>
 
@@ -204,9 +204,9 @@ export function ProductEditorForm({
               {technicalDetailRows.map((row) => (
                 <div key={row.id} className="rounded-lg border p-2">
                   <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
-                    <input value={row.keyText} onChange={(event) => onUpdateTechnicalDetailRow(row.id, { keyText: event.target.value })} className="cms-input" placeholder="Anahtar (orn: Kat Yuksekligi)" />
-                    <input value={row.valueText} onChange={(event) => onUpdateTechnicalDetailRow(row.id, { valueText: event.target.value })} className="cms-input" placeholder="Deger (orn: 2.80m)" />
-                    <button onClick={() => onRemoveTechnicalDetailRow(row.id)} className="cms-btn-ghost h-10 px-2 py-1 text-xs" title="Satiri sil">
+                    <input value={row.keyText} onChange={(event) => onUpdateTechnicalDetailRow(row.id, { keyText: event.target.value })} className="cms-input" placeholder="Anahtar (Örn: Kat Yüksekliği)" />
+                    <input value={row.valueText} onChange={(event) => onUpdateTechnicalDetailRow(row.id, { valueText: event.target.value })} className="cms-input" placeholder="Değer (Örn: 2.80m)" />
+                    <button onClick={() => onRemoveTechnicalDetailRow(row.id)} className="cms-btn-ghost h-10 px-2 py-1 text-xs" title="Satırı sil">
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
@@ -218,7 +218,7 @@ export function ProductEditorForm({
           <div className="space-y-4">
             <div>
               <div className="mb-2 flex items-center justify-between">
-                <label className="block text-xs font-medium text-muted-foreground">Kat Planlari</label>
+                <label className="block text-xs font-medium text-muted-foreground">Kat Planları</label>
                 <button onClick={onAddFloorPlan} className="cms-btn-ghost h-7 px-2 py-1 text-xs">
                   <Plus className="h-3.5 w-3.5" />
                   Kat Ekle
@@ -228,7 +228,7 @@ export function ProductEditorForm({
                 {(selectedProduct.floorPlans ?? []).map((plan, index) => (
                   <div key={`${plan.name}-${index}`} className="space-y-2 rounded-lg border p-2">
                     <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
-                      <input value={plan.name} onChange={(event) => onUpdateFloorPlan(index, { name: event.target.value })} className="cms-input" placeholder="Kat adi" />
+                      <input value={plan.name} onChange={(event) => onUpdateFloorPlan(index, { name: event.target.value })} className="cms-input" placeholder="Kat adı" />
                       <button onClick={() => onRemoveFloorPlan(index)} className="cms-btn-ghost h-10 px-2 py-1 text-xs text-error">
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -239,7 +239,7 @@ export function ProductEditorForm({
                         <img src={adminPreviewUrl(plan.image)} alt={plan.name} className="aspect-[16/10] w-full object-cover" />
                       </div>
                     ) : (
-                      <p className="text-xs text-muted-foreground">Kat plani gorseli secilmedi.</p>
+                      <p className="text-xs text-muted-foreground">Kat planı görseli seçilmedi.</p>
                     )}
                     <div className="space-y-2">
                       <MediaUploadDropzone
@@ -254,7 +254,7 @@ export function ProductEditorForm({
                       />
                       {plan.image && (
                         <button onClick={() => onUpdateFloorPlan(index, { image: '' })} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">
-                          Kaldir
+                          Kaldır
                         </button>
                       )}
                     </div>
@@ -272,7 +272,7 @@ export function ProductEditorForm({
       <div className="border-t pt-4">
         <button onClick={onRequestDelete} className="cms-btn-ghost h-9 px-3 py-1.5 text-sm text-error">
           <Trash2 className="h-4 w-4" />
-          Bu Urunu Sil
+          Bu Ürünü Sil
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { CatalogsCmsEditor } from '@/components/catalogs-cms-editor'
+import { notFound } from 'next/navigation'
 
 export default function ProfileCatalogsPage() {
-  return <CatalogsCmsEditor endpoint="/api/profile/catalogs" mediaEndpoint="/api/profile/media" />
+  notFound()
 }

@@ -82,8 +82,10 @@ export function AdminShell({
         title: 'Medya & Doküman',
         items: [
           { href: route('/media'), label: 'Medya', icon: Image },
-          { href: route('/documents'), label: 'Belgeler', icon: FileBadge },
-          { href: route('/catalogs'), label: 'Kataloglar', icon: BookMarked },
+          ...(basePath === '/profil-cms' ? [] : [
+            { href: route('/documents'), label: 'Belgeler', icon: FileBadge },
+            { href: route('/catalogs'), label: 'Kataloglar', icon: BookMarked },
+          ]),
         ],
       },
     ],

@@ -17,7 +17,7 @@ export function SpecComparison({ products }: SpecComparisonProps) {
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-100 text-slate-900">
               <tr>
-                <th className="px-4 py-3 font-semibold">Urun</th>
+                <th className="px-4 py-3 font-semibold">Ürün</th>
                 <th className="px-4 py-3 font-semibold">Malzeme</th>
                 <th className="px-4 py-3 font-semibold">Et Kalinligi</th>
                 <th className="px-4 py-3 font-semibold">Standart Boy</th>

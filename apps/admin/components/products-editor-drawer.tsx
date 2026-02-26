@@ -60,7 +60,7 @@ export function ProductsEditorDrawer({
     <CmsEditorDrawer
       open={open}
       title={selectedProduct.name}
-      subtitle="Urun Duzenle"
+      subtitle="Ürün Düzenle"
       widthClassName="max-w-4xl"
       saving={saving}
       onSave={onSave}

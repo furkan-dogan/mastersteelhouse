@@ -40,7 +40,7 @@ export function GalleryLightbox({
           onPrev()
         }}
         className="absolute left-6 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10"
-        aria-label="Onceki gorsel"
+        aria-label="Önceki görsel"
       >
         <ChevronLeft className="w-8 h-8" />
       </button>
@@ -51,7 +51,7 @@ export function GalleryLightbox({
           onNext()
         }}
         className="absolute right-6 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-10"
-        aria-label="Sonraki gorsel"
+        aria-label="Sonraki görsel"
       >
         <ChevronRight className="w-8 h-8" />
       </button>
@@ -59,7 +59,7 @@ export function GalleryLightbox({
       <div className="relative w-full max-w-6xl h-full max-h-[85vh]" onClick={(event) => event.stopPropagation()}>
         <Image
           src={images[selectedIndex]}
-          alt={`${productName} - Gorsel ${selectedIndex + 1}`}
+          alt={`${productName} - Görsel ${selectedIndex + 1}`}
           fill
           className="object-contain"
           priority

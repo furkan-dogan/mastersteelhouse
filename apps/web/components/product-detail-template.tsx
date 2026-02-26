@@ -92,7 +92,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
 
         <section className="py-14 md:py-16 bg-muted/30">
           <div className={pageContainer}>
-            <h2 className="text-3xl font-bold mb-8">Teknik Ozellikler</h2>
+            <h2 className="text-3xl font-bold mb-8">Teknik Özellikler</h2>
             <TechnicalDetailsTable details={product.technicalDetails} />
           </div>
         </section>
@@ -102,7 +102,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Kat Plani ve Kroki</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Urunun detayli kat planini ve olculerini inceleyerek mekanlari kesfedin.
+                Ürünün detaylı kat planını ve ölçülerini inceleyerek mekanları keşfedin.
               </p>
             </div>
 

@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     const files = entries.filter((entry): entry is File => entry instanceof File)
 
     if (files.length === 0) {
-      return NextResponse.json({ message: 'Yuklenecek dosya bulunamadi.' }, { status: 400 })
+      return NextResponse.json({ message: 'Yüklenecek dosya bulunamadı.' }, { status: 400 })
     }
 
     const store = await readMediaStore()
@@ -117,7 +117,7 @@ export async function DELETE(request: Request) {
     const store = await readMediaStore()
     const target = store.items.find((item) => item.id === body.id)
     if (!target) {
-      return NextResponse.json({ message: 'Medya bulunamadi.' }, { status: 404 })
+      return NextResponse.json({ message: 'Medya bulunamadı.' }, { status: 404 })
     }
 
     const uploadsDir = getUploadsDir()

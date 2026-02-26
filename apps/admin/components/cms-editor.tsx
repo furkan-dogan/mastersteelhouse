@@ -24,12 +24,12 @@ type MediaTarget =
 const DEFAULT_PRODUCT_FEATURES = {
   rooms: '2+1',
   bathrooms: '1',
-  parking: '1 Araclik',
+  parking: '1 Araçlık',
   height: '2.80m',
   deliveryTime: '6-8 Hafta',
-  earthquakeResistance: 'Yuksek Dayanim',
+  earthquakeResistance: 'Yüksek Dayanım',
   energyClass: 'A+',
-  warranty: '20 Yil',
+  warranty: '20 Yıl',
 }
 
 function createTechnicalDetailRow(keyText = '', valueText = ''): TechnicalDetailRow {
@@ -117,7 +117,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       setError(null)
       const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) {
-        throw new Error('Veri alinamadi')
+        throw new Error('Veri alınamadı')
       }
       const rawStore = (await response.json()) as ProductStore
       const nextStore: ProductStore = {
@@ -205,10 +205,10 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     const newProduct: ProductItem = {
       categorySlug: selectedCategorySlug,
       slug: nextSlug,
-      name: 'Yeni Urun',
+      name: 'Yeni Ürün',
       area: '100 m2',
       image: '',
-      description: 'Urun aciklamasi',
+      description: 'Ürün açıklaması',
       features: {
         ...DEFAULT_PRODUCT_FEATURES,
       },
@@ -361,10 +361,10 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       })
 
       if (!response.ok) {
-        throw new Error('Kaydetme basarisiz')
+        throw new Error('Kaydetme başarısız')
       }
 
-      setMessage('Kayit tamamlandi.')
+      setMessage('Kayıt tamamlandı.')
       setTimeout(() => setMessage(null), 3000)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Beklenmeyen hata')
@@ -379,7 +379,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <p className="text-sm text-muted-foreground">CMS yukleniyor...</p>
+          <p className="text-sm text-muted-foreground">CMS yükleniyor...</p>
         </div>
       </div>
     )
@@ -389,7 +389,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="rounded-xl border border-error/30 bg-error/5 px-8 py-6 text-center">
-          <p className="font-medium text-error">Veri yuklenemedi.</p>
+          <p className="font-medium text-error">Veri yüklenemedi.</p>
           <button onClick={() => void loadStore()} className="mt-4 cms-btn-primary text-sm">
             Tekrar Dene
           </button>
@@ -401,12 +401,12 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
   return (
     <>
       <AdminLayout
-        title="Urun Icerik Yonetimi"
-        subtitle={`${selectedCategory ? selectedCategory.title : 'Kategori yok'} · ${filteredProducts.length} urun`}
+        title="Ürün İçerik Yönetimi"
+        subtitle={`${selectedCategory ? selectedCategory.title : 'Kategori yok'} · ${filteredProducts.length} ürün`}
         actions={
           <CmsPageActions
             saving={saving}
-            createLabel="Yeni Urun"
+            createLabel="Yeni Ürün"
             onRefresh={() => void loadStore()}
             onSave={() => void saveStore()}
             onCreate={addProduct}
@@ -417,20 +417,12 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
           <CmsListToolbar
             className="space-y-3"
             searchValue={search}
-            searchPlaceholder="Urun ara..."
+            searchPlaceholder="Ürün ara..."
             onSearchChange={(value) => {
               setSearch(value)
               resetPage()
             }}
-          >
-            {selectedCategory ? (
-              <div className="rounded-lg border border-border bg-muted/20 p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">Kategori</p>
-                <p className="mt-1 text-sm font-medium text-foreground">{selectedCategory.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{selectedCategory.description}</p>
-              </div>
-            ) : null}
-          </CmsListToolbar>
+          />
 
           <ProductsCmsTable
             filteredProducts={filteredProducts}
@@ -441,6 +433,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
             onPageChange={setPage}
             onOpenEditor={openEditor}
             onRequestDelete={requestDelete}
+            showAreaColumn={mode !== 'profile'}
           />
         </section>
       </AdminLayout>
@@ -478,10 +471,10 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
         open={showMediaPicker}
         title={
           mediaTarget.type === 'cover'
-            ? 'Kapak Gorseli Sec'
+            ? 'Kapak Görseli Seç'
             : mediaTarget.type === 'gallery'
               ? 'Galeriye Medya Ekle'
-              : 'Kat Plani Gorseli Sec'
+              : 'Kat Planı Görseli Seç'
         }
         onClose={() => setShowMediaPicker(false)}
         onSelect={handleMediaPick}

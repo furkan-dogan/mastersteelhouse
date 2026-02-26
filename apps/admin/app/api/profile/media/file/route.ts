@@ -52,6 +52,6 @@ export async function GET(request: Request) {
       },
     })
   } catch {
-    return NextResponse.json({ message: 'Dosya bulunamadi.' }, { status: 404 })
+    return NextResponse.json({ message: 'Dosya bulunamadı.' }, { status: 404 })
   }
 }

@@ -27,7 +27,7 @@ export default async function CategoryPage({
         <section className="pt-32 pb-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
           <div className="container mx-auto px-4">
             <SectionIntro
-              badge="Urun Kategorisi"
+              badge="Ürün Kategorisi"
               title={categoryData.title}
               description={categoryData.description}
               className="px-0"

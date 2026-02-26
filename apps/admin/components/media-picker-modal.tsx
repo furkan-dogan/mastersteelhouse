@@ -118,7 +118,7 @@ export function MediaPickerModal({
                         ) : (
                           <Video className="h-3.5 w-3.5" />
                         )}
-                        <span>{item.type === 'image' ? 'Gorsel' : item.type === 'document' ? 'PDF' : 'Video'}</span>
+                        <span>{item.type === 'image' ? 'Görsel' : item.type === 'document' ? 'PDF' : 'Video'}</span>
                       </div>
                       <p className="line-clamp-2 text-sm font-medium">{item.name}</p>
                     </div>
