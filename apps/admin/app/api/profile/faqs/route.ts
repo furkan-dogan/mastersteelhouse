@@ -1,0 +1,28 @@
+import { NextResponse } from 'next/server'
+import { readProfileFaqStore, writeProfileFaqStore, type ProfileFaqStore } from '@/lib/profile-faq-store'
+
+export async function GET() {
+  try {
+    const store = await readProfileFaqStore()
+    return NextResponse.json(store)
+  } catch (error) {
+    console.error('Failed to read profile faq store', error)
+    return NextResponse.json({ message: 'SSS verisi okunamadi.' }, { status: 500 })
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = (await request.json()) as ProfileFaqStore
+
+    if (!Array.isArray(body.items)) {
+      return NextResponse.json({ message: 'Gecersiz veri formati.' }, { status: 400 })
+    }
+
+    await writeProfileFaqStore(body)
+    return NextResponse.json({ ok: true })
+  } catch (error) {
+    console.error('Failed to write profile faq store', error)
+    return NextResponse.json({ message: 'Kayit basarisiz.' }, { status: 500 })
+  }
+}

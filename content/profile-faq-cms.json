@@ -1,0 +1,44 @@
+{
+  "items": [
+    {
+      "id": "faq-1",
+      "question": "Profil sistemleri neden geleneksel yöntemlere göre avantajlıdır?",
+      "answer": "Galvanizli profil sistemleri daha hızlı montaj, daha düşük saha maliyeti ve standart kalite avantajı sunar. Hassas üretim toleransları sayesinde proje süreleri kısalır ve uygulama hataları azalır."
+    },
+    {
+      "id": "faq-2",
+      "question": "Delikli Alçı Köşe profili hangi alanlarda kullanılır?",
+      "answer": "Alçıköşe profilleri alçıpan birleşim hatlarında düzgün köşe oluşturmak, darbe dayanımını artırmak ve boya öncesi yüzey kalitesini iyileştirmek için kullanılır."
+    },
+    {
+      "id": "faq-3",
+      "question": "Kaba sıva profili uygulamada ne sağlar?",
+      "answer": "Kaba sıva profili duvar ve kolon kenarlarında referans çizgisi oluşturarak sıvanın daha dengeli uygulanmasını sağlar. Bu da işçilik kalitesini ve son kat performansını yükseltir."
+    },
+    {
+      "id": "faq-4",
+      "question": "Tavan U-C profilleri hangi sistemlerde kullanılır?",
+      "answer": "Tavan U-C profilleri asma tavan taşıyıcı iskelet sistemlerinde kullanılır. Hafif ama dayanıklı yapısı sayesinde hızlı montaj ve uzun ömürlü kullanım sağlar."
+    },
+    {
+      "id": "faq-5",
+      "question": "Profil kalınlığı seçimi nasıl yapılmalı?",
+      "answer": "Profil kalınlığı, uygulama alanı, açıklık mesafesi ve taşıma ihtiyacına göre belirlenmelidir. Projeye uygun kesit ve et kalınlığı seçimi, sistem dayanımı için kritik önemdedir."
+    },
+    {
+      "id": "faq-6",
+      "question": "Ürünlerde paslanmaya karşı koruma var mı?",
+      "answer": "Evet. Ürünler galvaniz kaplama ile korozyona karşı korunur. Doğru depolama ve uygun montajla uzun yıllar performansını korur."
+    },
+    {
+      "id": "faq-7",
+      "question": "Sevkiyat ve teslim süreci nasıl ilerliyor?",
+      "answer": "Sipariş onayından sonra üretim planı yapılır, ürünler proje bazlı hazırlanır ve sevkiyat takvimiyle teslim edilir. Toplu ve etaplı sevkiyat desteği sağlanır."
+    },
+    {
+      "id": "faq-8",
+      "question": "Özel ölçü ve proje bazlı üretim yapılabiliyor mu?",
+      "answer": "Evet. Proje ihtiyaçlarına göre özel boy, kesit ve paketleme planı hazırlanabilir. Böylece sahada fire ve zaman kaybı minimuma iner."
+    }
+  ]
+}

@@ -1,8 +1,11 @@
 import { FAQSection } from '@/components/faq-section'
 import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SectionIntro } from '@/components/section-intro'
+import { getProfileFaqs } from '@/lib/profile-content'
 
-export default function SssPage() {
+export default async function SssPage() {
+  const faqs = await getProfileFaqs()
+
   return (
     <ProfilePageShell>
       <section className="bg-[#f3f4f1] pb-4 pt-12">
@@ -15,7 +18,7 @@ export default function SssPage() {
           />
         </div>
       </section>
-      <FAQSection />
+      <FAQSection faqs={faqs} />
     </ProfilePageShell>
   )
 }

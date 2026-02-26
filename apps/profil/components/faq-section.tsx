@@ -3,47 +3,14 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import type { ProfileFaqItem } from '@/lib/profile-content'
 
-export const profileFaqs = [
+const fallbackFaqs: ProfileFaqItem[] = [
   {
+    id: 'fallback-1',
     question: 'Profil sistemleri neden geleneksel yöntemlere göre avantajlıdır?',
     answer:
       'Galvanizli profil sistemleri daha hızlı montaj, daha düşük saha maliyeti ve standart kalite avantajı sunar. Hassas üretim toleransları sayesinde proje süreleri kısalır ve uygulama hataları azalır.',
-  },
-  {
-    question: 'Delikli Alçı Köşe profili hangi alanlarda kullanılır?',
-    answer:
-      'Alçıköşe profilleri alçıpan birleşim hatlarında düzgün köşe oluşturmak, darbe dayanımını artırmak ve boya öncesi yüzey kalitesini iyileştirmek için kullanılır.',
-  },
-  {
-    question: 'Kaba sıva profili uygulamada ne sağlar?',
-    answer:
-      'Kaba sıva profili duvar ve kolon kenarlarında referans çizgisi oluşturarak sıvanın daha dengeli uygulanmasını sağlar. Bu da işçilik kalitesini ve son kat performansını yükseltir.',
-  },
-  {
-    question: 'Tavan U-C profilleri hangi sistemlerde kullanılır?',
-    answer:
-      'Tavan U-C profilleri asma tavan taşıyıcı iskelet sistemlerinde kullanılır. Hafif ama dayanıklı yapısı sayesinde hızlı montaj ve uzun ömürlü kullanım sağlar.',
-  },
-  {
-    question: 'Profil kalınlığı seçimi nasıl yapılmalı?',
-    answer:
-      'Profil kalınlığı, uygulama alanı, açıklık mesafesi ve taşıma ihtiyacına göre belirlenmelidir. Projeye uygun kesit ve et kalınlığı seçimi, sistem dayanımı için kritik önemdedir.',
-  },
-  {
-    question: 'Ürünlerde paslanmaya karşı koruma var mı?',
-    answer:
-      'Evet. Ürünler galvaniz kaplama ile korozyona karşı korunur. Doğru depolama ve uygun montajla uzun yıllar performansını korur.',
-  },
-  {
-    question: 'Sevkiyat ve teslim süreci nasıl ilerliyor?',
-    answer:
-      'Sipariş onayından sonra üretim planı yapılır, ürünler proje bazlı hazırlanır ve sevkiyat takvimiyle teslim edilir. Toplu ve etaplı sevkiyat desteği sağlanır.',
-  },
-  {
-    question: 'Özel ölçü ve proje bazlı üretim yapılabiliyor mu?',
-    answer:
-      'Evet. Proje ihtiyaçlarına göre özel boy, kesit ve paketleme planı hazırlanabilir. Böylece sahada fire ve zaman kaybı minimuma iner.',
   },
 ]
 
@@ -51,17 +18,23 @@ type FAQSectionProps = {
   limit?: number
   showMoreButton?: boolean
   className?: string
+  faqs?: ProfileFaqItem[]
 }
 
-export function FAQSection({ limit, showMoreButton = false, className }: FAQSectionProps) {
+export function FAQSection({ limit, showMoreButton = false, className, faqs }: FAQSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
-  const faqs = useMemo(() => {
-    if (!limit || limit >= profileFaqs.length) {
-      return profileFaqs
+  const sourceFaqs = useMemo(() => {
+    if (faqs && faqs.length > 0) return faqs
+    return fallbackFaqs
+  }, [faqs])
+
+  const visibleFaqs = useMemo(() => {
+    if (!limit || limit >= sourceFaqs.length) {
+      return sourceFaqs
     }
-    return profileFaqs.slice(0, limit)
-  }, [limit])
+    return sourceFaqs.slice(0, limit)
+  }, [limit, sourceFaqs])
 
   return (
     <section className={`bg-[#f3f4f1] py-20 ${className ?? ''}`}>
@@ -73,11 +46,11 @@ export function FAQSection({ limit, showMoreButton = false, className }: FAQSect
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => {
+          {visibleFaqs.map((faq, index) => {
             const isOpen = openIndex === index
             return (
               <div
-                key={faq.question}
+                key={faq.id || faq.question}
                 className={`rounded-2xl border transition-all ${
                   isOpen ? 'border-[#eab308]/50 bg-[#fff9e8]' : 'border-slate-200 bg-white hover:border-slate-300'
                 }`}
@@ -107,7 +80,7 @@ export function FAQSection({ limit, showMoreButton = false, className }: FAQSect
           })}
         </div>
 
-        {showMoreButton && limit && profileFaqs.length > limit ? (
+        {showMoreButton && limit && sourceFaqs.length > limit ? (
           <div className="mt-10 text-center">
             <Link
               href="/sss"

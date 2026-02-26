@@ -52,6 +52,12 @@ export type ProfileNewsPost = {
   featured?: boolean
 }
 
+export type ProfileFaqItem = {
+  id: string
+  question: string
+  answer: string
+}
+
 
 type ProductsStore = {
   products: Array<{
@@ -73,6 +79,7 @@ type ProductsStore = {
 
 type BlogStore = { posts: ProfileBlogPost[] }
 type NewsStore = { posts: ProfileNewsPost[] }
+type FaqStore = { items: ProfileFaqItem[] }
 
 function getContentPath(fileName: string) {
   const candidates = [
@@ -176,3 +183,8 @@ export async function getProfileNewsPosts() {
   return store.posts
 }
 
+
+export async function getProfileFaqs() {
+  const store = await readJson<FaqStore>('profile-faq-cms.json')
+  return store.items
+}
