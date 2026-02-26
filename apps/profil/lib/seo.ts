@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 export const PROFILE_SITE_URL = process.env.NEXT_PUBLIC_PROFILE_SITE_URL ?? 'https://profil.mastersteelhouse.com'
 export const PROFILE_SITE_NAME = 'Master Steel House Profil Sistemleri'
 
+const DEFAULT_OG_IMAGE = '/logoprofil.png'
+
 type BuildProfileMetadataInput = {
   title: string
   description: string
@@ -24,11 +26,11 @@ export function buildProfileMetadata({
   path,
   keywords,
   type = 'website',
-  image = '/logo-profil.png',
+  image = DEFAULT_OG_IMAGE,
   robots,
 }: BuildProfileMetadataInput): Metadata {
   const canonicalPath = path.startsWith('/') ? path : `/${path}`
-  const imageUrl = absoluteProfileUrl(image)
+  const imageUrl = image.startsWith('http') ? image : absoluteProfileUrl(image)
 
   return {
     title,
@@ -36,6 +38,9 @@ export function buildProfileMetadata({
     keywords,
     alternates: {
       canonical: canonicalPath,
+      languages: {
+        'tr-TR': canonicalPath,
+      },
     },
     openGraph: {
       type,
@@ -44,7 +49,14 @@ export function buildProfileMetadata({
       title,
       description,
       url: canonicalPath,
-      images: [{ url: imageUrl }],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} | ${PROFILE_SITE_NAME}`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',

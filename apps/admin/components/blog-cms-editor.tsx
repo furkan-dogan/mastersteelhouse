@@ -15,6 +15,7 @@ import { useConfirmDelete } from '@/lib/use-confirm-delete'
 import { usePagination } from '@/lib/use-pagination'
 import { BlogCmsTable } from '@/components/blog-cms-table'
 import { BlogEditorDrawer } from '@/components/blog-editor-drawer'
+import { ContentPublishChecklist } from '@/components/content-publish-checklist'
 
 const EMPTY_POST: BlogPost = {
   slug: 'yeni-blog-yazisi',
@@ -177,6 +178,8 @@ export function BlogCmsEditor({
           />
         }
       >
+        <ContentPublishChecklist type="blog" />
+
         <section className="cms-card overflow-hidden">
           <CmsListToolbar
             searchValue={search}

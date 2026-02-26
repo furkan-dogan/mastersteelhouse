@@ -45,24 +45,68 @@ export default async function ProfileNewsDetailPage({ params }: Props) {
 
   if (!post) notFound()
 
-  const schema = {
+  const canonicalUrl = absoluteProfileUrl(`/medya/haberler/${post.slug}`)
+
+  const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: post.title,
     description: post.excerpt,
     image: post.image.startsWith('http') ? post.image : absoluteProfileUrl(post.image),
-    url: absoluteProfileUrl(`/medya/haberler/${post.slug}`),
+    url: canonicalUrl,
+    inLanguage: 'tr-TR',
+    mainEntityOfPage: canonicalUrl,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Master Steel House',
+    },
+  }
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Anasayfa',
+        item: absoluteProfileUrl('/'),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Haberler',
+        item: absoluteProfileUrl('/medya/haberler'),
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: canonicalUrl,
+      },
+    ],
   }
 
   return (
     <ProfilePageShell>
-      <SeoJsonLd data={schema} />
+      <SeoJsonLd data={[articleSchema, breadcrumbSchema]} />
       <article className="mx-auto max-w-4xl px-6 pb-20 pt-14 lg:px-8">
         <Link href="/medya/haberler" className="text-sm font-medium text-[#b88700] hover:underline">Haberlere Dön</Link>
         <h1 className="mt-4 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">{post.title}</h1>
         <p className="mt-4 text-lg leading-relaxed text-slate-600">{post.excerpt}</p>
         <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
           <img src={post.image} alt={`${post.title} görseli`} className="h-full w-full object-cover" />
+        </div>
+        <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-5">
+          <h2 className="text-lg font-semibold text-slate-900">İlgili Sayfalar</h2>
+          <div className="mt-3 flex flex-wrap gap-3 text-sm">
+            <Link href="/medya/blog" className="rounded-full border border-slate-300 px-3 py-1.5 text-slate-700 hover:border-[#eab308]/70 hover:text-slate-900">
+              Blog Yazıları
+            </Link>
+            <Link href="/iletisim" className="rounded-full border border-slate-300 px-3 py-1.5 text-slate-700 hover:border-[#eab308]/70 hover:text-slate-900">
+              İletişime Geç
+            </Link>
+          </div>
         </div>
       </article>
     </ProfilePageShell>

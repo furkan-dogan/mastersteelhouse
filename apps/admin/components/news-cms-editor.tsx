@@ -15,6 +15,7 @@ import { useConfirmDelete } from '@/lib/use-confirm-delete'
 import { usePagination } from '@/lib/use-pagination'
 import { NewsCmsTable } from '@/components/news-cms-table'
 import { NewsEditorDrawer } from '@/components/news-editor-drawer'
+import { ContentPublishChecklist } from '@/components/content-publish-checklist'
 
 const EMPTY_POST: NewsPost = {
   slug: 'yeni-haber',
@@ -203,6 +204,8 @@ export function NewsCmsEditor({ endpoint = '/api/news', mediaEndpoint = '/api/me
           />
         }
       >
+        <ContentPublishChecklist type="news" />
+
         <section className="cms-card overflow-hidden">
           <CmsListToolbar
             searchValue={search}
