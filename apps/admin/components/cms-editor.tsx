@@ -324,6 +324,20 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     })
   }
 
+  function moveGalleryImage(index: number, direction: 'up' | 'down') {
+    if (!selectedProduct) return
+
+    const gallery = [...(selectedProduct.gallery ?? [])]
+    if (gallery.length <= 1) return
+
+    const targetIndex = direction === 'up' ? index - 1 : index + 1
+    if (targetIndex < 0 || targetIndex >= gallery.length) return
+
+    const [moved] = gallery.splice(index, 1)
+    gallery.splice(targetIndex, 0, moved)
+    patchProduct({ gallery })
+  }
+
   function addFloorPlan() {
     if (!selectedProduct) return
     patchProduct({
@@ -453,6 +467,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
         onOpenGalleryPicker={() => openMediaPicker({ type: 'gallery' })}
         onOpenFloorPlanPicker={(index) => openMediaPicker({ type: 'floorPlan', index })}
         onRemoveGalleryImage={removeGalleryImage}
+        onMoveGalleryImage={moveGalleryImage}
         onAddTechnicalDetailRow={addTechnicalDetailRow}
         onUpdateTechnicalDetailRow={updateTechnicalDetailRow}
         onRemoveTechnicalDetailRow={removeTechnicalDetailRow}

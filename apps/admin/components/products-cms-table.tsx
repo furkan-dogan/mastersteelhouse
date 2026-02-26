@@ -50,38 +50,42 @@ export function ProductsCmsTable({
                 </td>
               </tr>
             ) : (
-              pagedItems.map((product) => (
-                <tr key={`${product.categorySlug}-${product.slug}`} className="border-t align-middle hover:bg-muted/30">
-                  <td className="hidden px-4 py-3 md:table-cell">
-                    <div className="h-16 w-24 overflow-hidden rounded-md border bg-muted/30">
-                      {(product.image || product.gallery?.[0]) ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={adminPreviewUrl(product.image || product.gallery?.[0] || '')} alt={product.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Görsel yok</div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="min-w-0">
-                      <p className="truncate font-medium text-foreground">{product.name}</p>
-                      <p className="hidden truncate text-xs text-muted-foreground md:block">{product.detailDescription || product.description || 'Açıklama yok'}</p>
-                    </div>
-                  </td>
-                  {showAreaColumn ? (
-                    <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{product.area || '-'}</td>
-                  ) : null}
-                  <td className="px-4 py-3">
-                    <CmsRowActions
-                      onPreview={() => onOpenEditor(product.slug)}
-                      onEdit={() => onOpenEditor(product.slug)}
-                      onDelete={() => onRequestDelete(product.slug, product.name)}
-                      previewTitle="Önizle"
-                      editTitle="Düzenle"
-                    />
-                  </td>
-                </tr>
-              ))
+              pagedItems.map((product) => {
+                const previewSrc = product.gallery?.[0] || product.image || ''
+
+                return (
+                  <tr key={`${product.categorySlug}-${product.slug}`} className="border-t align-middle hover:bg-muted/30">
+                    <td className="hidden px-4 py-3 md:table-cell">
+                      <div className="h-16 w-24 overflow-hidden rounded-md border bg-muted/30">
+                        {previewSrc ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={adminPreviewUrl(previewSrc)} alt={product.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Görsel yok</div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-foreground">{product.name}</p>
+                        <p className="hidden truncate text-xs text-muted-foreground md:block">{product.detailDescription || product.description || 'Açıklama yok'}</p>
+                      </div>
+                    </td>
+                    {showAreaColumn ? (
+                      <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{product.area || '-'}</td>
+                    ) : null}
+                    <td className="px-4 py-3">
+                      <CmsRowActions
+                        onPreview={() => onOpenEditor(product.slug)}
+                        onEdit={() => onOpenEditor(product.slug)}
+                        onDelete={() => onRequestDelete(product.slug, product.name)}
+                        previewTitle="Önizle"
+                        editTitle="Düzenle"
+                      />
+                    </td>
+                  </tr>
+                )
+              })
             )}
           </tbody>
         </table>

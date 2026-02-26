@@ -46,7 +46,7 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
       <Link href={`/urunler/${product.slug}`}>
         <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10">
           <div className="relative aspect-[4/3] overflow-hidden">
-            <img src={product.image} alt={product.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+            <img src={product.image} alt={product.name} className="h-full w-full object-contain bg-slate-50 p-2 transition duration-300" />
             <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-transparent" />
             <span className="absolute left-4 top-4 rounded-lg bg-[#eab308] px-3 py-1 text-xs font-semibold text-black">{product.shortName}</span>
           </div>

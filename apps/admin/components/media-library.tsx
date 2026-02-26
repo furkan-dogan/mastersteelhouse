@@ -16,6 +16,11 @@ import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { AdminLayout } from '@/components/admin-layout'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 
+type LibraryResponse = {
+  items: MediaItem[]
+  usedUrls?: string[]
+}
+
 function formatSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
@@ -28,6 +33,7 @@ type MediaLibraryProps = {
 
 export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
   const [items, setItems] = useState<MediaItem[]>([])
+  const [usedUrls, setUsedUrls] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -51,8 +57,9 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
       setLoading(true)
       const response = await fetch(endpoint, { cache: 'no-store' })
       if (!response.ok) throw new Error('Medya listesi alınamadı')
-      const data = (await response.json()) as { items: MediaItem[] }
+      const data = (await response.json()) as LibraryResponse
       setItems(data.items)
+      setUsedUrls(new Set(data.usedUrls ?? []))
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : 'Beklenmeyen hata')
     } finally {
@@ -108,6 +115,12 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
         throw new Error(data.message || 'Silme başarısız')
       }
       setItems((prev) => prev.filter((item) => item.id !== id))
+      setUsedUrls((prev) => {
+        const next = new Set(prev)
+        const deleted = items.find((item) => item.id === id)
+        if (deleted) next.delete(deleted.url)
+        return next
+      })
     } catch (deleteError) {
       setError(deleteError instanceof Error ? deleteError.message : 'Silme hatası')
     } finally {
@@ -137,7 +150,7 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
             ref={fileInputRef}
             type="file"
             multiple
-            accept="image/*,video/*,application/pdf"
+            accept="image/*,.heic,.heif,video/*,application/pdf"
             className="hidden"
             onChange={(event) => {
               if (event.target.files) void uploadFiles(event.target.files)
@@ -198,6 +211,7 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
           <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {filteredItems.map((item) => {
               const src = adminPreviewUrl(item.url)
+              const isUsed = usedUrls.has(item.url)
               return (
                 <div
                   key={item.id}
@@ -228,9 +242,16 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
                   <div className="p-2">
                     <p className="line-clamp-2 text-xs font-medium">{item.name}</p>
                     <div className="mt-1 flex items-center justify-between">
-                      <span className="text-[11px] text-muted-foreground">
-                        {formatSize(item.size)}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[11px] text-muted-foreground">{formatSize(item.size)}</span>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                            isUsed ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+                          }`}
+                        >
+                          {isUsed ? 'Kullanımda' : 'Boşta'}
+                        </span>
+                      </div>
                       <button
                         onClick={() => setConfirmDeleteItem(item)}
                         disabled={deletingId === item.id}

@@ -1,6 +1,6 @@
 'use client'
 
-import { Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react'
 import type { ProductDimension, ProductItem, ProductSpec } from '@/lib/products-store'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
@@ -25,6 +25,7 @@ type ProfileProductEditorFormProps = {
   onPatchProduct: (update: Partial<ProductItem>) => void
   onOpenGalleryPicker: () => void
   onRemoveGalleryImage: (index: number) => void
+  onMoveGalleryImage: (index: number, direction: 'up' | 'down') => void
   onRequestDelete: () => void
   onError: (message: string | null) => void
 }
@@ -34,6 +35,7 @@ export function ProfileProductEditorForm({
   onPatchProduct,
   onOpenGalleryPicker,
   onRemoveGalleryImage,
+  onMoveGalleryImage,
   onRequestDelete,
   onError,
 }: ProfileProductEditorFormProps) {
@@ -161,7 +163,7 @@ export function ProfileProductEditorForm({
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Foto Galeri</h3>
         <MediaUploadDropzone
           multiple
-          helperText="PNG, JPG, GIF, WEBP (maks. 20MB)"
+          helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
           galleryButtonLabel="Medyadan ekle"
           onUploaded={(urls) => {
             const merged = [...(selectedProduct.gallery ?? []), ...urls]
@@ -175,8 +177,26 @@ export function ProfileProductEditorForm({
             {(selectedProduct.gallery ?? []).map((img, index) => (
               <div key={`${img}-${index}`} className="relative aspect-square overflow-hidden rounded-lg border border-border bg-muted/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={adminPreviewUrl(img)} alt={`Galeri ${index + 1}`} className="h-full w-full object-cover" />
-                <button onClick={() => onRemoveGalleryImage(index)} className="absolute right-2 top-2 rounded-md bg-black/55 px-2 py-1 text-xs text-white hover:bg-black/70">Sil</button>
+                <img src={adminPreviewUrl(img)} alt={`Galeri ${index + 1}`} className="h-full w-full object-contain bg-white p-1" />
+                <div className="absolute right-2 top-2 flex gap-1">
+                  <button
+                    onClick={() => onMoveGalleryImage(index, 'up')}
+                    disabled={index === 0}
+                    className="rounded-md bg-black/55 p-1 text-xs text-white hover:bg-black/70 disabled:cursor-not-allowed disabled:opacity-40"
+                    title="Yukarı taşı"
+                  >
+                    <ArrowUp className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => onMoveGalleryImage(index, 'down')}
+                    disabled={index === (selectedProduct.gallery?.length ?? 0) - 1}
+                    className="rounded-md bg-black/55 p-1 text-xs text-white hover:bg-black/70 disabled:cursor-not-allowed disabled:opacity-40"
+                    title="Aşağı taşı"
+                  >
+                    <ArrowDown className="h-3.5 w-3.5" />
+                  </button>
+                  <button onClick={() => onRemoveGalleryImage(index)} className="rounded-md bg-black/55 px-2 py-1 text-xs text-white hover:bg-black/70">Sil</button>
+                </div>
               </div>
             ))}
           </div>

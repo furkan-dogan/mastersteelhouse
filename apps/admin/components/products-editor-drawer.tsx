@@ -20,6 +20,7 @@ type ProductsEditorDrawerProps = {
   onOpenGalleryPicker: () => void
   onOpenFloorPlanPicker: (index: number) => void
   onRemoveGalleryImage: (index: number) => void
+  onMoveGalleryImage: (index: number, direction: 'up' | 'down') => void
   onAddTechnicalDetailRow: () => void
   onUpdateTechnicalDetailRow: (rowId: string, patch: Partial<Omit<TechnicalDetailRow, 'id'>>) => void
   onRemoveTechnicalDetailRow: (rowId: string) => void
@@ -45,6 +46,7 @@ export function ProductsEditorDrawer({
   onOpenGalleryPicker,
   onOpenFloorPlanPicker,
   onRemoveGalleryImage,
+  onMoveGalleryImage,
   onAddTechnicalDetailRow,
   onUpdateTechnicalDetailRow,
   onRemoveTechnicalDetailRow,
@@ -72,6 +74,7 @@ export function ProductsEditorDrawer({
           onPatchProduct={onPatchProduct}
           onOpenGalleryPicker={onOpenGalleryPicker}
           onRemoveGalleryImage={onRemoveGalleryImage}
+          onMoveGalleryImage={onMoveGalleryImage}
           onRequestDelete={onRequestDelete}
           onError={onError}
         />

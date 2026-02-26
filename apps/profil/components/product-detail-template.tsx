@@ -52,14 +52,14 @@ export function ProductDetailTemplate({ product }: { product: ProfileProduct }) 
                   onClick={() => setActiveIndex(index)}
                   className={`h-[92px] w-[92px] overflow-hidden rounded-2xl border-2 ${activeIndex === index ? 'border-[#f2a900]' : 'border-slate-200'}`}
                 >
-                  <img src={img} alt={`${product.name} ${index + 1}`} className="h-full w-full object-cover" />
+                  <img src={img} alt={`${product.name} ${index + 1}`} className="h-full w-full object-contain bg-white p-1" />
                 </button>
               ))}
             </div>
 
             <div className="order-1 relative lg:order-2">
               <div className="overflow-hidden rounded-2xl bg-[#f0f1ef]">
-                <img src={activeImage} alt={product.name} className="aspect-[16/10] w-full object-cover" />
+                <img src={activeImage} alt={product.name} className="h-[clamp(320px,50vw,560px)] w-full object-contain bg-white" />
               </div>
 
               {gallery.length > 1 && (

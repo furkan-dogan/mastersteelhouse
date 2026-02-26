@@ -171,7 +171,7 @@ export function ProductEditorForm({
             </div>
             <MediaUploadDropzone
               multiple
-              helperText="PNG, JPG, GIF, WEBP (maks. 20MB)"
+              helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
               galleryButtonLabel="Medyadan ekle"
               onUploaded={(urls) => onPatchProduct({ gallery: [...(selectedProduct.gallery ?? []), ...urls] })}
               onPickFromMedia={onOpenGalleryPicker}

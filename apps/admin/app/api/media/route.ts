@@ -10,8 +10,19 @@ import {
   type MediaItem,
 } from '@/lib/media-store'
 import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
+import { collectUsedMediaUrls } from '@/lib/media-usage'
 
 export const runtime = 'nodejs'
+
+const WEB_MEDIA_REFERENCES = [
+  'products-cms.json',
+  'blog-cms.json',
+  'news-cms.json',
+  'videos-cms.json',
+  'references-cms.json',
+  'documents-cms.json',
+  'catalogs-cms.json',
+]
 
 function getExtension(filename: string, mimeType: string) {
   const ext = path.extname(filename).toLowerCase()
@@ -35,9 +46,13 @@ function getExtension(filename: string, mimeType: string) {
 
 export async function GET() {
   try {
-    const store = await readMediaStore()
+    const [store, usedUrls] = await Promise.all([
+      readMediaStore(),
+      collectUsedMediaUrls(WEB_MEDIA_REFERENCES),
+    ])
+
     const items = [...store.items].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-    return NextResponse.json({ items })
+    return NextResponse.json({ items, usedUrls: Array.from(usedUrls) })
   } catch (error) {
     console.error('Failed to read media store', error)
     return NextResponse.json({ message: 'Medya verisi okunamadı.' }, { status: 500 })
