@@ -1,9 +1,13 @@
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
+import { buildProfileMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Gizlilik Politikası | Master Steel House Profil',
-}
+export const metadata = buildProfileMetadata({
+  title: 'Gizlilik Politikası',
+  description: 'Master Steel House Profil Sistemleri gizlilik politikası.',
+  path: '/gizlilik-politikasi',
+  robots: { index: true, follow: true },
+})
 
 export default function PrivacyPage() {
   return (
@@ -28,9 +32,7 @@ export default function PrivacyPage() {
             hizmetin sağlanması amacıyla kullanılır.
           </p>
           <h2 className="text-lg font-semibold text-slate-900">4. İletişim</h2>
-          <p>
-            Gizlilikle ilgili sorularınız için iletişim sayfasındaki kanallardan bize ulaşabilirsiniz.
-          </p>
+          <p>Gizlilikle ilgili sorularınız için iletişim sayfasındaki kanallardan bize ulaşabilirsiniz.</p>
         </div>
       </main>
       <SiteFooter />

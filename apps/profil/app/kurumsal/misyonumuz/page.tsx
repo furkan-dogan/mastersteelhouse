@@ -2,6 +2,14 @@ import { Target, Sparkles, Award } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SectionIntro } from '@/components/section-intro'
 import { IconFeatureList } from '@/components/icon-feature-list'
+import { buildProfileMetadata } from '@/lib/seo'
+
+export const metadata = buildProfileMetadata({
+  title: 'Misyonumuz',
+  description: 'Müşteri odaklı, kalite güvenceli ve sürekli gelişen profil çözümleri üretme misyonumuz.',
+  path: '/kurumsal/misyonumuz',
+})
+
 
 export default function MisyonumuzPage() {
   const missionItems = [

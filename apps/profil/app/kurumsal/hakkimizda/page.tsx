@@ -2,6 +2,14 @@ import { Award, Users, Zap, Target } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SectionIntro } from '@/components/section-intro'
 import { IconFeatureGrid } from '@/components/icon-feature-grid'
+import { buildProfileMetadata } from '@/lib/seo'
+
+export const metadata = buildProfileMetadata({
+  title: 'Hakkımızda',
+  description: 'Profil sistemlerinde kalite, uzmanlık ve güven odaklı çalışma yaklaşımımız hakkında bilgiler.',
+  path: '/kurumsal/hakkimizda',
+})
+
 
 export default function HakkimizdaPage() {
   const values = [

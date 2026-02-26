@@ -2,6 +2,14 @@ import { Eye, TrendingUp, Globe, Lightbulb } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SectionIntro } from '@/components/section-intro'
 import { IconFeatureGrid } from '@/components/icon-feature-grid'
+import { buildProfileMetadata } from '@/lib/seo'
+
+export const metadata = buildProfileMetadata({
+  title: 'Vizyonumuz',
+  description: 'Profil sistemlerinde sürdürülebilir büyüme, yenilikçilik ve uzun vadeli güven odaklı vizyonumuz.',
+  path: '/kurumsal/vizyonumuz',
+})
+
 
 export default function VizyonumuzPage() {
   const goals = [

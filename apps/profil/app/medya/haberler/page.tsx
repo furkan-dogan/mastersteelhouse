@@ -1,18 +1,44 @@
-import { Calendar, ArrowRight, MapPin } from 'lucide-react'
 import Link from 'next/link'
+import { Calendar, ArrowRight, MapPin } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
+import { SeoJsonLd } from '@/components/seo-json-ld'
 import { getProfileNewsPosts } from '@/lib/profile-content'
+import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+
+export const metadata = buildProfileMetadata({
+  title: 'Haberler',
+  description: 'Profil sistemleriyle ilgili güncel haberler, duyurular ve saha gelişmeleri.',
+  path: '/medya/haberler',
+  keywords: ['profil haberleri', 'duyurular', 'güncel gelişmeler'],
+})
 
 export default async function HaberlerPage() {
   const news = await getProfileNewsPosts()
 
+  const newsSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Haberler ve Duyurular',
+    url: absoluteProfileUrl('/medya/haberler'),
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: news.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.title,
+        url: absoluteProfileUrl('/medya/haberler'),
+      })),
+    },
+  }
+
   return (
     <ProfilePageShell>
+      <SeoJsonLd data={newsSchema} />
       <section className="relative overflow-hidden py-16">
         <div className="absolute inset-0 bg-gradient-to-r from-[#eab308]/10 to-transparent" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-3xl">
-            <h1 className="mb-6 text-5xl font-bold md:text-6xl text-slate-900">
+            <h1 className="mb-6 text-5xl font-bold text-slate-900 md:text-6xl">
               Haberler & <span className="bg-gradient-to-r from-[#b88700] to-[#eab308] bg-clip-text text-transparent">Duyurular</span>
             </h1>
             <p className="text-xl text-slate-600">Profil sistemlerinden son gelişmeler, teknik paylaşımlar ve kurumsal güncellemeler.</p>

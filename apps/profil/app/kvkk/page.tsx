@@ -1,9 +1,13 @@
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
+import { buildProfileMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'KVKK | Master Steel House Profil',
-}
+export const metadata = buildProfileMetadata({
+  title: 'KVKK Aydınlatma Metni',
+  description: 'Kişisel verilerin işlenmesine ilişkin KVKK aydınlatma metni.',
+  path: '/kvkk',
+  robots: { index: true, follow: true },
+})
 
 export default function KvkkPage() {
   return (
@@ -33,9 +37,7 @@ export default function KvkkPage() {
             KVKK madde 11 kapsamında verilerinizle ilgili bilgi talep etme, düzeltme, silme, işleme itiraz etme ve zararın giderilmesini talep
             etme haklarına sahipsiniz.
           </p>
-          <p>
-            Başvuru ve talepleriniz için iletişim sayfasındaki kanallar üzerinden bizimle iletişime geçebilirsiniz.
-          </p>
+          <p>Başvuru ve talepleriniz için iletişim sayfasındaki kanallar üzerinden bizimle iletişime geçebilirsiniz.</p>
         </div>
       </main>
       <SiteFooter />

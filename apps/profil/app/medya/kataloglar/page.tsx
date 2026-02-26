@@ -1,5 +1,13 @@
 import { FileText, Download, Eye } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
+import { buildProfileMetadata } from '@/lib/seo'
+
+export const metadata = buildProfileMetadata({
+  title: 'Kataloglar',
+  description: 'Profil ürün katalogları ve teknik dokümanlar.',
+  path: '/medya/kataloglar',
+})
+
 
 const catalogs = [
   { id: 'c1', title: 'Genel Profil Kataloğu', pdfUrl: '/documents/catalog-profil.pdf' },
