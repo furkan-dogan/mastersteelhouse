@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
@@ -36,7 +37,14 @@ export function HeroSlider({ products }: HeroSliderProps) {
               transition={{ duration: 0.6 }}
               className="absolute inset-0"
             >
-              <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+              <Image
+                src={p.image}
+                alt={p.name}
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-r from-[#f3f4f1]/95 via-[#f3f4f1]/80 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#f3f4f1]/90 via-transparent to-transparent" />
             </motion.div>

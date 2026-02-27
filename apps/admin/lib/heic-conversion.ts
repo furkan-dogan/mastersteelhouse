@@ -10,7 +10,7 @@ export function isHeicLikeFile(fileName: string, mimeType?: string) {
   return byExtension || byMime
 }
 
-export async function convertHeicToJpeg(input: Buffer) {
+export async function convertHeicToJpeg(input: Buffer | Uint8Array) {
   const heicConvertModule = await import('heic-convert')
   const heicConvert = (heicConvertModule as { default?: unknown }).default ?? heicConvertModule
 
@@ -19,7 +19,7 @@ export async function convertHeicToJpeg(input: Buffer) {
     format: 'JPEG'
     quality: number
   }) => Promise<Buffer | Uint8Array>)({
-    buffer: input,
+    buffer: Buffer.isBuffer(input) ? input : Buffer.from(input),
     format: 'JPEG',
     quality: 0.92,
   })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
@@ -58,8 +58,7 @@ export function AdminShell({
     return `${basePath}${suffix}`
   }
 
-  const navGroups = useMemo<NavGroup[]>(
-    () => [
+  const navGroups: NavGroup[] = [
       {
         key: 'system',
         title: 'Sistem',
@@ -88,9 +87,7 @@ export function AdminShell({
           ]),
         ],
       },
-    ],
-    [basePath]
-  )
+  ]
 
   useEffect(() => {
     const handler = () => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')

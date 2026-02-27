@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
@@ -46,9 +47,14 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
       <Link href={`/urunler/${product.slug}`}>
         <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10">
           <div className="relative aspect-[4/3] overflow-hidden">
-            <img src={product.image} alt={product.name} className="h-full w-full object-contain bg-slate-50 p-2 transition duration-300" />
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-contain bg-slate-50 p-2 transition duration-300"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-transparent" />
-            <span className="absolute left-4 top-4 rounded-lg bg-[#eab308] px-3 py-1 text-xs font-semibold text-black">{product.shortName}</span>
           </div>
           <div className="p-6">
             <h3 className="text-xl font-semibold text-slate-900">{product.name}</h3>

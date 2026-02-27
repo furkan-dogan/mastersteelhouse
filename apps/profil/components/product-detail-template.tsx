@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
@@ -50,16 +51,29 @@ export function ProductDetailTemplate({ product }: { product: ProfileProduct }) 
                   key={`${img}-${index}`}
                   type="button"
                   onClick={() => setActiveIndex(index)}
-                  className={`h-[92px] w-[92px] overflow-hidden rounded-2xl border-2 ${activeIndex === index ? 'border-[#f2a900]' : 'border-slate-200'}`}
+                  className={`relative h-[92px] w-[92px] overflow-hidden rounded-2xl border-2 ${activeIndex === index ? 'border-[#f2a900]' : 'border-slate-200'}`}
                 >
-                  <img src={img} alt={`${product.name} ${index + 1}`} className="h-full w-full object-contain bg-white p-1" />
+                  <Image
+                    src={img}
+                    alt={`${product.name} ${index + 1}`}
+                    fill
+                    sizes="92px"
+                    className="object-contain bg-white p-1"
+                  />
                 </button>
               ))}
             </div>
 
             <div className="order-1 relative lg:order-2">
-              <div className="overflow-hidden rounded-2xl bg-[#f0f1ef]">
-                <img src={activeImage} alt={product.name} className="h-[clamp(320px,50vw,560px)] w-full object-contain bg-white" />
+              <div className="relative h-[clamp(320px,50vw,560px)] overflow-hidden rounded-2xl bg-[#f0f1ef]">
+                <Image
+                  src={activeImage}
+                  alt={product.name}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  className="object-contain bg-white"
+                />
               </div>
 
               {gallery.length > 1 && (

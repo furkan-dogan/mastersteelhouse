@@ -21,7 +21,7 @@ export function ContentPublishChecklist({ type }: ContentPublishChecklistProps) 
             <li>Başlık net ve özgün olsun.</li>
             <li>Hedef anahtar kelime başlığın başına yakın geçsin.</li>
             <li>
-              Örnek: <span className="font-medium">"{isBlog ? 'Delikli Alçı Köşe Profili Nedir? Uygulama Avantajları' : 'Yeni Üretim Hattımız Devrede: Profil Kapasitesi Arttı'}"</span>
+              Örnek: <span className="font-medium">{isBlog ? 'Delikli Alçı Köşe Profili Nedir? Uygulama Avantajları' : 'Yeni Üretim Hattımız Devrede: Profil Kapasitesi Arttı'}</span>
             </li>
           </ul>
         </div>
@@ -32,7 +32,7 @@ export function ContentPublishChecklist({ type }: ContentPublishChecklistProps) 
             <li>2-3 cümlede içeriğin değerini anlat.</li>
             <li>İlk cümlede konu net geçsin, gereksiz giriş yapma.</li>
             <li>
-              Örnek: <span className="font-medium">"{isBlog ? 'Bu yazıda delikli alçı köşe profilinin kullanım alanlarını ve doğru ürün seçimini adım adım özetliyoruz.' : 'Tesiste devreye alınan yeni hat ile profil üretim süreçleri daha hızlı ve planlı hale getirildi.'}"</span>
+              Örnek: <span className="font-medium">{isBlog ? 'Bu yazıda delikli alçı köşe profilinin kullanım alanlarını ve doğru ürün seçimini adım adım özetliyoruz.' : 'Tesiste devreye alınan yeni hat ile profil üretim süreçleri daha hızlı ve planlı hale getirildi.'}</span>
             </li>
           </ul>
         </div>
@@ -52,7 +52,7 @@ export function ContentPublishChecklist({ type }: ContentPublishChecklistProps) 
             <li>Kategori doğru seçilmiş olmalı.</li>
             <li>Metinde en az 1 iç yönlendirme mantığı kur (ürünler / iletişim).</li>
             <li>
-              Örnek yönlendirme: <span className="font-medium">"Detaylı teknik bilgi için Ürünler sayfasını inceleyin."</span>
+              Örnek yönlendirme: <span className="font-medium">Detaylı teknik bilgi için Ürünler sayfasını inceleyin.</span>
             </li>
           </ul>
         </div>

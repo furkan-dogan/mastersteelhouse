@@ -11,6 +11,7 @@ import {
 } from '@/lib/media-store'
 import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
 import { collectUsedMediaUrls } from '@/lib/media-usage'
+import { optimizeImageForWeb } from '@/lib/image-optimization'
 
 export const runtime = 'nodejs'
 
@@ -93,8 +94,8 @@ export async function POST(request: Request) {
 
       let mimeType = file.type
       let extension = getExtension(file.name, file.type)
-      const sourceBytes = Buffer.from(await file.arrayBuffer())
-      let outputBytes = sourceBytes
+      const sourceBytes: Uint8Array = new Uint8Array(await file.arrayBuffer())
+      let outputBytes: Uint8Array = sourceBytes
 
       if (mediaType === 'image' && isHeicLikeFile(file.name, file.type)) {
         try {
@@ -105,6 +106,25 @@ export async function POST(request: Request) {
           console.error('Failed to convert HEIC file', error)
           return NextResponse.json(
             { message: 'HEIC görsel dönüştürülemedi. Lütfen JPG/PNG/WebP deneyin.' },
+            { status: 400 }
+          )
+        }
+      }
+
+      if (mediaType === 'image') {
+        try {
+          const optimized = await optimizeImageForWeb({
+            source: outputBytes,
+            mimeType,
+            extension,
+          })
+          outputBytes = optimized.buffer
+          mimeType = optimized.mimeType
+          extension = optimized.extension
+        } catch (error) {
+          console.error('Failed to optimize image', error)
+          return NextResponse.json(
+            { message: 'Gorsel optimize edilemedi. Lutfen farkli bir dosya deneyin.' },
             { status: 400 }
           )
         }
