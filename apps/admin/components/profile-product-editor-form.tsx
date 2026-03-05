@@ -23,6 +23,7 @@ function deriveDimensionsFromSpecs(specs: ProductSpec[]): ProductDimension[] {
 type ProfileProductEditorFormProps = {
   selectedProduct: ProductItem
   onPatchProduct: (update: Partial<ProductItem>) => void
+  onOpenCardImagePicker: () => void
   onOpenGalleryPicker: () => void
   onRemoveGalleryImage: (index: number) => void
   onMoveGalleryImage: (index: number, direction: 'up' | 'down') => void
@@ -33,6 +34,7 @@ type ProfileProductEditorFormProps = {
 export function ProfileProductEditorForm({
   selectedProduct,
   onPatchProduct,
+  onOpenCardImagePicker,
   onOpenGalleryPicker,
   onRemoveGalleryImage,
   onMoveGalleryImage,
@@ -108,6 +110,42 @@ export function ProfileProductEditorForm({
             />
           </div>
         </div>
+      </div>
+
+      <div className="space-y-4 rounded-xl border border-border p-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Anasayfa Kart Görseli</h3>
+        <MediaUploadDropzone
+          multiple={false}
+          helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
+          galleryButtonLabel="Medyadan seç"
+          onUploaded={(urls) => {
+            if (!urls[0]) return
+            onPatchProduct({ image: urls[0] })
+          }}
+          onPickFromMedia={onOpenCardImagePicker}
+          onError={onError}
+        />
+        {selectedProduct.image ? (
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => onPatchProduct({ image: '' })}
+              className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error"
+            >
+              Kart görselini kaldır
+            </button>
+            <div className="overflow-hidden rounded-xl border border-border bg-white">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={adminPreviewUrl(selectedProduct.image)}
+                alt={`${selectedProduct.name} kart görseli`}
+                className="aspect-[4/3] w-full object-contain bg-white p-2"
+              />
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs text-muted-foreground">Kart görseli seçilmezse galerideki ilk görsel kullanılır.</p>
+        )}
       </div>
 
       <div className="space-y-4 rounded-xl border border-border p-4">

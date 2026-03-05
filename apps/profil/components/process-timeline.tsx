@@ -7,7 +7,7 @@ import { processSteps } from '@/lib/home-content'
 const processStepVideos = [
   {
     title: 'Hammadde',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Steel_Mills_East_Chicago_%26_Indiana_Harbor.webm',
+    src: '/hammadde.mp4',
   },
   {
     title: 'Üretim',
@@ -15,11 +15,11 @@ const processStepVideos = [
   },
   {
     title: 'Kalite Kontrol',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/7/76/CopyMapFactory.webm',
+    src: '/kalitekontrol.mp4',
   },
   {
     title: 'Paketleme ve Sevkiyat',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Vacuum_Packaging_Machine.webm',
+    src: '/paketlemevesevkiyat.mp4',
   },
 ]
 

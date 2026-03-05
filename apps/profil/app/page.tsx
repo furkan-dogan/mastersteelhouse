@@ -1,7 +1,6 @@
 import { HeroSlider } from '@/components/hero-slider'
 import { FAQSection } from '@/components/faq-section'
 import { CtaSection } from '@/components/cta-section'
-import { InternalLinksStrip } from '@/components/internal-links-strip'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { SeoJsonLd } from '@/components/seo-json-ld'
@@ -51,7 +50,6 @@ export default async function ProfilHomePage() {
       <ProductsSlider products={products} />
       <ProcessTimeline />
       <FAQSection faqs={faqs} limit={4} showMoreButton />
-      <InternalLinksStrip />
       <CtaSection />
       <SiteFooter />
     </div>

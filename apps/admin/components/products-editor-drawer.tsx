@@ -72,6 +72,7 @@ export function ProductsEditorDrawer({
         <ProfileProductEditorForm
           selectedProduct={selectedProduct}
           onPatchProduct={onPatchProduct}
+          onOpenCardImagePicker={onOpenCoverPicker}
           onOpenGalleryPicker={onOpenGalleryPicker}
           onRemoveGalleryImage={onRemoveGalleryImage}
           onMoveGalleryImage={onMoveGalleryImage}
