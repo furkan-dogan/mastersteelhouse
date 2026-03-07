@@ -1,4 +1,11 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  NoSuchKey,
+  PutObjectCommand,
+  S3Client,
+  S3ServiceException,
+} from '@aws-sdk/client-s3'
 
 let cachedClient: S3Client | null = null
 
@@ -22,6 +29,16 @@ function readR2Env(): R2Env {
   }
 
   return { accountId, accessKeyId, secretAccessKey, bucketName, publicBaseUrl }
+}
+
+export function isR2Configured() {
+  return Boolean(
+    process.env.R2_ACCOUNT_ID?.trim() &&
+      process.env.R2_ACCESS_KEY_ID?.trim() &&
+      process.env.R2_SECRET_ACCESS_KEY?.trim() &&
+      process.env.R2_BUCKET_NAME?.trim() &&
+      process.env.R2_PUBLIC_BASE_URL?.trim()
+  )
 }
 
 function getClient() {
@@ -100,4 +117,41 @@ export async function deleteFromR2PublicUrl(url: string) {
   )
 
   return true
+}
+
+export async function readJsonFromR2<T>(key: string): Promise<T | null> {
+  const env = readR2Env()
+  const client = getClient()
+
+  try {
+    const result = await client.send(
+      new GetObjectCommand({
+        Bucket: env.bucketName,
+        Key: key,
+      })
+    )
+
+    if (!result.Body) return null
+    const raw = await result.Body.transformToString()
+    return JSON.parse(raw) as T
+  } catch (error) {
+    if (error instanceof NoSuchKey) return null
+    if (error instanceof S3ServiceException && error.name === 'NoSuchKey') return null
+    throw error
+  }
+}
+
+export async function writeJsonToR2(key: string, value: unknown) {
+  const env = readR2Env()
+  const client = getClient()
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: env.bucketName,
+      Key: key,
+      Body: Buffer.from(`${JSON.stringify(value, null, 2)}\n`, 'utf8'),
+      ContentType: 'application/json; charset=utf-8',
+      CacheControl: 'no-store',
+    })
+  )
 }

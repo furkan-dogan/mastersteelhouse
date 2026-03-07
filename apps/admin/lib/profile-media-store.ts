@@ -1,6 +1,7 @@
 import { existsSync } from 'fs'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { isR2Configured, readJsonFromR2, writeJsonToR2 } from '@/lib/r2-storage'
 
 export type MediaItem = {
   id: string
@@ -15,6 +16,8 @@ export type MediaItem = {
 export type MediaStore = {
   items: MediaItem[]
 }
+
+const PROFILE_MEDIA_INDEX_KEY = '_cms/profile-media-cms.json'
 
 function resolveStorePath() {
   const candidates = [
@@ -70,6 +73,8 @@ export function getWebPublicDir() {
 }
 
 export async function ensureMediaStorage() {
+  if (isR2Configured()) return
+
   const storePath = resolveStorePath()
   if (!existsSync(storePath)) {
     await fs.writeFile(storePath, '{\n  "items": []\n}\n', 'utf8')
@@ -78,12 +83,32 @@ export async function ensureMediaStorage() {
 }
 
 export async function readMediaStore(): Promise<MediaStore> {
+  if (isR2Configured()) {
+    const r2Store = await readJsonFromR2<MediaStore>(PROFILE_MEDIA_INDEX_KEY)
+    if (r2Store && Array.isArray(r2Store.items)) return r2Store
+
+    try {
+      const raw = await fs.readFile(resolveStorePath(), 'utf8')
+      const fallback = JSON.parse(raw) as MediaStore
+      if (fallback && Array.isArray(fallback.items)) return fallback
+    } catch {
+      // ignore local fallback errors on serverless
+    }
+
+    return { items: [] }
+  }
+
   await ensureMediaStorage()
   const raw = await fs.readFile(resolveStorePath(), 'utf8')
   return JSON.parse(raw) as MediaStore
 }
 
 export async function writeMediaStore(store: MediaStore) {
+  if (isR2Configured()) {
+    await writeJsonToR2(PROFILE_MEDIA_INDEX_KEY, store)
+    return
+  }
+
   await ensureMediaStorage()
   await fs.writeFile(resolveStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')
 }
