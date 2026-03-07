@@ -2,8 +2,17 @@
 
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MessageCircle, Phone } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
+
+const quickContactLines = [
+  {
+    title: 'Satış ve Teklif Hattı 1',
+    phoneLabel: '+90 533 498 15 40',
+    phoneHref: 'tel:+905334981540',
+    whatsappHref: 'https://api.whatsapp.com/send/?phone=+905334981540',
+  },
+]
 
 export function ProductDetailTemplate({ product }: { product: ProfileProduct }) {
   const gallery = useMemo(() => {
@@ -181,6 +190,48 @@ export function ProductDetailTemplate({ product }: { product: ProfileProduct }) 
                 ))}
               </ul>
             )}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-14 lg:px-8">
+        <div className="rounded-3xl border border-[#eab308]/30 bg-gradient-to-br from-[#fff9e8] via-white to-[#fff3cc] p-6 md:p-8">
+          <div className="mb-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#b88700]">Hızlı İletişim</p>
+            <h3 className="mt-2 text-2xl font-extrabold text-[#0b2f57] md:text-3xl">Ücretsiz Teklif Alın</h3>
+            <p className="mt-2 text-sm text-slate-700 md:text-base">
+              Form doldurmadan doğrudan bize ulaşın. Hızlı teklif ve teknik destek için hatlarımız aktif.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-1">
+            {quickContactLines.map((line) => (
+              <div key={line.phoneHref} className="rounded-2xl border border-[#eab308]/25 bg-white/80 p-4">
+                <p className="text-sm font-semibold text-[#0b2f57]">{line.title}</p>
+                <a href={line.phoneHref} className="mt-1 block text-lg font-bold text-slate-900 hover:text-[#0b2f57]">
+                  {line.phoneLabel}
+                </a>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <a
+                    href={line.phoneHref}
+                    className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 hover:border-[#0b2f57] hover:text-[#0b2f57]"
+                  >
+                    <Phone className="h-4 w-4" />
+                    Hemen Ara
+                  </a>
+                  <a
+                    href={line.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#22c55e] px-3 py-2 text-sm font-semibold text-white hover:bg-[#16a34a]"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

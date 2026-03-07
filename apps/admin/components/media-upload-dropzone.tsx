@@ -15,6 +15,7 @@ type Props = {
   compact?: boolean
   helperText?: string
   galleryButtonLabel?: string
+  accept?: string
   onUploaded: (urls: string[]) => void
   onPickFromMedia: () => void
   onError?: (message: string) => void
@@ -25,6 +26,7 @@ export function MediaUploadDropzone({
   compact = false,
   helperText = 'PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)',
   galleryButtonLabel = 'Galeriden seç',
+  accept = 'image/*,.heic,.heif',
   onUploaded,
   onPickFromMedia,
   onError,
@@ -109,7 +111,7 @@ export function MediaUploadDropzone({
         ref={fileInputRef}
         type="file"
         multiple={multiple}
-        accept="image/*,.heic,.heif"
+        accept={accept}
         className="hidden"
         onChange={(event) => {
           if (event.target.files) {

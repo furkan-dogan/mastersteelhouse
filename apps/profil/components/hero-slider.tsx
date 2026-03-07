@@ -11,6 +11,11 @@ type HeroSliderProps = {
   products: ProfileProduct[]
 }
 
+function isVideoAsset(url?: string) {
+  if (!url) return false
+  return /\.(mp4|webm|mov)(\?.*)?$/i.test(url)
+}
+
 export function HeroSlider({ products }: HeroSliderProps) {
   const [active, setActive] = useState(0)
 
@@ -37,14 +42,26 @@ export function HeroSlider({ products }: HeroSliderProps) {
               transition={{ duration: 0.6 }}
               className="absolute inset-0"
             >
-              <Image
-                src={p.image}
-                alt={p.name}
-                fill
-                priority={i === 0}
-                sizes="100vw"
-                className="object-cover"
-              />
+              {isVideoAsset(p.sliderImage || p.image) ? (
+                <video
+                  src={p.sliderImage || p.image}
+                  className="h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <Image
+                  src={p.sliderImage || p.image}
+                  alt={p.name}
+                  fill
+                  priority={i === 0}
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-r from-[#f3f4f1]/95 via-[#f3f4f1]/80 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#f3f4f1]/90 via-transparent to-transparent" />
             </motion.div>

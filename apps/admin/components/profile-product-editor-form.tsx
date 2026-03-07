@@ -5,6 +5,11 @@ import type { ProductDimension, ProductItem, ProductSpec } from '@/lib/products-
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
 
+function isVideoAsset(url?: string) {
+  if (!url) return false
+  return /\.(mp4|webm|mov)(\?.*)?$/i.test(url)
+}
+
 function deriveDimensionsFromSpecs(specs: ProductSpec[]): ProductDimension[] {
   const thicknessSpec = specs.find((item) => item.label.toLowerCase().includes('kalın'))
   if (!thicknessSpec?.value) return []
@@ -24,6 +29,7 @@ type ProfileProductEditorFormProps = {
   selectedProduct: ProductItem
   onPatchProduct: (update: Partial<ProductItem>) => void
   onOpenCardImagePicker: () => void
+  onOpenSliderImagePicker: () => void
   onOpenGalleryPicker: () => void
   onRemoveGalleryImage: (index: number) => void
   onMoveGalleryImage: (index: number, direction: 'up' | 'down') => void
@@ -35,6 +41,7 @@ export function ProfileProductEditorForm({
   selectedProduct,
   onPatchProduct,
   onOpenCardImagePicker,
+  onOpenSliderImagePicker,
   onOpenGalleryPicker,
   onRemoveGalleryImage,
   onMoveGalleryImage,
@@ -120,16 +127,16 @@ export function ProfileProductEditorForm({
           galleryButtonLabel="Medyadan seç"
           onUploaded={(urls) => {
             if (!urls[0]) return
-            onPatchProduct({ image: urls[0] })
+            onPatchProduct({ cardImage: urls[0] })
           }}
           onPickFromMedia={onOpenCardImagePicker}
           onError={onError}
         />
-        {selectedProduct.image ? (
+        {(selectedProduct.cardImage || selectedProduct.image) ? (
           <div className="space-y-2">
             <button
               type="button"
-              onClick={() => onPatchProduct({ image: '' })}
+              onClick={() => onPatchProduct({ cardImage: '' })}
               className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error"
             >
               Kart görselini kaldır
@@ -137,7 +144,7 @@ export function ProfileProductEditorForm({
             <div className="overflow-hidden rounded-xl border border-border bg-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={adminPreviewUrl(selectedProduct.image)}
+                src={adminPreviewUrl(selectedProduct.cardImage || selectedProduct.image || '')}
                 alt={`${selectedProduct.name} kart görseli`}
                 className="aspect-[4/3] w-full object-contain bg-white p-2"
               />
@@ -168,6 +175,60 @@ export function ProfileProductEditorForm({
             className="cms-textarea"
             placeholder="Slider altında gözüken kısa açıklama"
           />
+        </div>
+        <div className="space-y-2">
+          <label className="mb-1 block text-xs font-medium text-muted-foreground">Slider Görseli</label>
+          <MediaUploadDropzone
+            multiple={false}
+            helperText="PNG, JPG, GIF, WEBP, HEIC, MP4, WEBM, MOV (maks. 20MB görsel / 200MB video)"
+            galleryButtonLabel="Medyadan seç"
+            accept="image/*,video/mp4,video/webm,video/quicktime,.heic,.heif,.mov"
+            onUploaded={(urls) => {
+              if (!urls[0]) return
+              onPatchProduct({ sliderImage: urls[0] })
+            }}
+            onPickFromMedia={onOpenSliderImagePicker}
+            onError={onError}
+          />
+          {(selectedProduct.sliderImage || selectedProduct.image || selectedProduct.gallery?.[0]) ? (
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => onPatchProduct({ sliderImage: '' })}
+                className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error"
+              >
+                Slider görselini kaldır
+              </button>
+              <div className="overflow-hidden rounded-xl border border-border bg-white">
+                {(() => {
+                  const sliderPreviewUrl = adminPreviewUrl(selectedProduct.sliderImage || selectedProduct.image || selectedProduct.gallery?.[0] || '')
+                  if (isVideoAsset(sliderPreviewUrl)) {
+                    return (
+                      <video
+                        src={sliderPreviewUrl}
+                        className="aspect-video w-full object-cover"
+                        controls
+                        muted
+                        playsInline
+                        preload="metadata"
+                      />
+                    )
+                  }
+
+                  return (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={sliderPreviewUrl}
+                      alt={`${selectedProduct.name} slider görseli`}
+                      className="aspect-video w-full object-cover"
+                    />
+                  )
+                })()}
+              </div>
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground">Slider görseli seçilmezse kart görseli, o da yoksa galeri ilk görseli kullanılır.</p>
+          )}
         </div>
       </div>
 

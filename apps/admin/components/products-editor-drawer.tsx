@@ -17,6 +17,7 @@ type ProductsEditorDrawerProps = {
   onPatchProduct: (update: Partial<ProductItem>) => void
   onSetSelectedProductSlug: (slug: string) => void
   onOpenCoverPicker: () => void
+  onOpenSliderImagePicker: () => void
   onOpenGalleryPicker: () => void
   onOpenFloorPlanPicker: (index: number) => void
   onRemoveGalleryImage: (index: number) => void
@@ -43,6 +44,7 @@ export function ProductsEditorDrawer({
   onPatchProduct,
   onSetSelectedProductSlug,
   onOpenCoverPicker,
+  onOpenSliderImagePicker,
   onOpenGalleryPicker,
   onOpenFloorPlanPicker,
   onRemoveGalleryImage,
@@ -73,6 +75,7 @@ export function ProductsEditorDrawer({
           selectedProduct={selectedProduct}
           onPatchProduct={onPatchProduct}
           onOpenCardImagePicker={onOpenCoverPicker}
+          onOpenSliderImagePicker={onOpenSliderImagePicker}
           onOpenGalleryPicker={onOpenGalleryPicker}
           onRemoveGalleryImage={onRemoveGalleryImage}
           onMoveGalleryImage={onMoveGalleryImage}

@@ -22,6 +22,8 @@ export type ProfileProduct = {
   heroTitle: string
   subtitle: string
   image: string
+  cardImage: string
+  sliderImage: string
   description: string
   useAreas: string[]
   specs: Array<{ key: string; value: string }>
@@ -64,6 +66,8 @@ type ProductsStore = {
     name: string
     area: string
     image: string
+    cardImage?: string
+    sliderImage?: string
     description: string
     sliderTitle?: string
     sliderDescription?: string
@@ -152,7 +156,9 @@ export async function getProfileProducts(): Promise<ProfileProduct[]> {
     shortName: buildShortName(product.name),
     heroTitle: product.sliderTitle || buildHeroTitle(product.name),
     subtitle: product.sliderDescription || product.description,
-    image: product.image || product.gallery?.[0] || '',
+    image: product.image || product.cardImage || product.sliderImage || product.gallery?.[0] || '',
+    cardImage: product.cardImage || product.image || product.gallery?.[0] || '',
+    sliderImage: product.sliderImage || product.image || product.gallery?.[0] || '',
     description: product.detailDescription || product.description,
     useAreas:
       product.highlights?.length

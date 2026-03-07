@@ -18,6 +18,8 @@ import { ProductsEditorDrawer } from '@/components/products-editor-drawer'
 
 type MediaTarget =
   | { type: 'cover' }
+  | { type: 'profileCard' }
+  | { type: 'profileSlider' }
   | { type: 'gallery' }
   | { type: 'floorPlan'; index: number }
 
@@ -208,6 +210,8 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       name: 'Yeni Ürün',
       area: '100 m2',
       image: '',
+      cardImage: '',
+      sliderImage: '',
       description: 'Ürün açıklaması',
       features: {
         ...DEFAULT_PRODUCT_FEATURES,
@@ -301,7 +305,11 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
   function handleMediaPick(url: string) {
     if (!selectedProduct) return
-    if (mediaTarget.type === 'cover') {
+    if (mediaTarget.type === 'profileCard') {
+      patchProduct({ cardImage: url })
+    } else if (mediaTarget.type === 'profileSlider') {
+      patchProduct({ sliderImage: url })
+    } else if (mediaTarget.type === 'cover') {
       patchProduct({ image: url })
     } else if (mediaTarget.type === 'gallery') {
       const merged = [...(selectedProduct.gallery ?? []), url]
@@ -463,7 +471,8 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
         onClose={() => setEditorOpen(false)}
         onPatchProduct={patchProduct}
         onSetSelectedProductSlug={setSelectedProductSlug}
-        onOpenCoverPicker={() => openMediaPicker({ type: 'cover' })}
+        onOpenCoverPicker={() => openMediaPicker({ type: mode === 'profile' ? 'profileCard' : 'cover' })}
+        onOpenSliderImagePicker={() => openMediaPicker({ type: 'profileSlider' })}
         onOpenGalleryPicker={() => openMediaPicker({ type: 'gallery' })}
         onOpenFloorPlanPicker={(index) => openMediaPicker({ type: 'floorPlan', index })}
         onRemoveGalleryImage={removeGalleryImage}
@@ -487,9 +496,13 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
         title={
           mediaTarget.type === 'cover'
             ? 'Kapak Görseli Seç'
-            : mediaTarget.type === 'gallery'
-              ? 'Galeriye Medya Ekle'
-              : 'Kat Planı Görseli Seç'
+            : mediaTarget.type === 'profileCard'
+              ? 'Kart Görseli Seç'
+              : mediaTarget.type === 'profileSlider'
+                ? 'Slider Görseli Seç'
+                : mediaTarget.type === 'gallery'
+                  ? 'Galeriye Medya Ekle'
+                  : 'Kat Planı Görseli Seç'
         }
         onClose={() => setShowMediaPicker(false)}
         onSelect={handleMediaPick}

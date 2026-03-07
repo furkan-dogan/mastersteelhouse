@@ -12,6 +12,7 @@ import {
 import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
 import { collectUsedMediaUrls } from '@/lib/media-usage'
 import { optimizeImageForWeb } from '@/lib/image-optimization'
+import { deleteFromR2PublicUrl, uploadToR2 } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
 
@@ -71,7 +72,6 @@ export async function POST(request: Request) {
     }
 
     const store = await readMediaStore()
-    const uploadsDir = getUploadsDir()
     const newItems: MediaItem[] = []
 
     for (const file of files) {
@@ -133,9 +133,13 @@ export async function POST(request: Request) {
       const baseName = safeFilename(path.basename(file.name, path.extname(file.name))) || 'media'
       const uniqueSuffix = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`
       const fileName = `${baseName}-${uniqueSuffix}${extension}`
-      const targetPath = path.join(uploadsDir, fileName)
 
-      await fs.writeFile(targetPath, outputBytes)
+      const uploaded = await uploadToR2({
+        scope: 'web',
+        fileName,
+        bytes: outputBytes,
+        contentType: mimeType,
+      })
 
       const item: MediaItem = {
         id: `media-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`,
@@ -143,7 +147,7 @@ export async function POST(request: Request) {
         type: mediaType,
         mimeType,
         size: outputBytes.byteLength,
-        url: `/uploads/media/${fileName}`,
+        url: uploaded.url,
         createdAt: new Date().toISOString(),
       }
       newItems.push(item)
@@ -175,13 +179,22 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ message: 'Medya bulunamadı.' }, { status: 404 })
     }
 
-    const uploadsDir = getUploadsDir()
-    const filename = path.basename(target.url)
-    const filePath = path.join(uploadsDir, filename)
+    let deletedFromR2 = false
     try {
-      await fs.unlink(filePath)
-    } catch {
-      // metadata cleanup should continue even if file is already missing
+      deletedFromR2 = await deleteFromR2PublicUrl(target.url)
+    } catch (error) {
+      console.error('Failed to delete media from R2', error)
+    }
+
+    if (!deletedFromR2 && target.url.startsWith('/uploads/media/')) {
+      const uploadsDir = getUploadsDir()
+      const filename = path.basename(target.url)
+      const filePath = path.join(uploadsDir, filename)
+      try {
+        await fs.unlink(filePath)
+      } catch {
+        // metadata cleanup should continue even if file is already missing
+      }
     }
 
     await writeMediaStore({

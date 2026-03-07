@@ -38,6 +38,8 @@ export type ProductItem = {
   name: string
   area: string
   image: string
+  cardImage?: string
+  sliderImage?: string
   description: string
   sliderTitle?: string
   sliderDescription?: string

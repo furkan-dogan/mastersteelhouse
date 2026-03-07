@@ -51,7 +51,7 @@ export function ProductsCmsTable({
               </tr>
             ) : (
               pagedItems.map((product) => {
-                const previewSrc = product.image || product.gallery?.[0] || ''
+                const previewSrc = product.cardImage || product.image || product.gallery?.[0] || ''
 
                 return (
                   <tr key={`${product.categorySlug}-${product.slug}`} className="border-t align-middle hover:bg-muted/30">

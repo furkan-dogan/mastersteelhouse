@@ -12,7 +12,7 @@ const contactInfo = [
     icon: Phone,
     title: 'Telefon',
     description: 'Hızlı Destek',
-    lines: ['+90 533 498 15 40', '+90 532 603 34 66'],
+    lines: ['+90 533 498 15 40'],
     color: 'from-blue-500/20 to-blue-600/20',
     iconColor: 'text-blue-600',
   },

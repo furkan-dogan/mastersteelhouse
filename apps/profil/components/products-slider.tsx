@@ -48,7 +48,7 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
         <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10">
           <div className="relative aspect-[4/3] overflow-hidden">
             <Image
-              src={product.image}
+              src={product.cardImage || product.image}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 33vw"
