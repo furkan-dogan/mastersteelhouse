@@ -11,7 +11,7 @@ import {
 } from '@/lib/media-store'
 import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
 import { collectUsedMediaUrls } from '@/lib/media-usage'
-import { optimizeImageForWeb } from '@/lib/image-optimization'
+import { generateThumbnailForImage, optimizeImageForWeb } from '@/lib/image-optimization'
 import { deleteFromR2PublicUrl, uploadToR2 } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
@@ -132,7 +132,8 @@ export async function POST(request: Request) {
 
       const baseName = safeFilename(path.basename(file.name, path.extname(file.name))) || 'media'
       const uniqueSuffix = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`
-      const fileName = `${baseName}-${uniqueSuffix}${extension}`
+      const baseWithSuffix = `${baseName}-${uniqueSuffix}`
+      const fileName = `${baseWithSuffix}${extension}`
 
       const uploaded = await uploadToR2({
         scope: 'web',
@@ -141,6 +142,22 @@ export async function POST(request: Request) {
         contentType: mimeType,
       })
 
+      let thumbnailUrl: string | undefined
+      if (mediaType === 'image') {
+        try {
+          const thumb = await generateThumbnailForImage(outputBytes)
+          const thumbUploaded = await uploadToR2({
+            scope: 'web',
+            fileName: `${baseWithSuffix}-thumb${thumb.extension}`,
+            bytes: thumb.buffer,
+            contentType: thumb.mimeType,
+          })
+          thumbnailUrl = thumbUploaded.url
+        } catch (error) {
+          console.error('Failed to create/upload media thumbnail', error)
+        }
+      }
+
       const item: MediaItem = {
         id: `media-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`,
         name: file.name,
@@ -148,6 +165,7 @@ export async function POST(request: Request) {
         mimeType,
         size: outputBytes.byteLength,
         url: uploaded.url,
+        thumbnailUrl,
         createdAt: new Date().toISOString(),
       }
       newItems.push(item)
@@ -182,6 +200,9 @@ export async function DELETE(request: Request) {
     let deletedFromR2 = false
     try {
       deletedFromR2 = await deleteFromR2PublicUrl(target.url)
+      if (target.thumbnailUrl) {
+        await deleteFromR2PublicUrl(target.thumbnailUrl)
+      }
     } catch (error) {
       console.error('Failed to delete media from R2', error)
     }

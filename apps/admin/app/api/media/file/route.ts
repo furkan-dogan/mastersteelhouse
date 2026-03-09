@@ -2,6 +2,7 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { NextResponse } from 'next/server'
 import { getWebPublicDir } from '@/lib/media-store'
+import { readBytesFromR2PublicUrl } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
 
@@ -40,18 +41,15 @@ async function proxyExternalUrl(url: string) {
   }
 
   try {
-    const upstream = await fetch(url, { cache: 'no-store' })
-    if (!upstream.ok) {
-      return NextResponse.json({ message: 'Uzak dosya okunamadı.' }, { status: upstream.status })
+    const object = await readBytesFromR2PublicUrl(url)
+    if (!object) {
+      return NextResponse.json({ message: 'Uzak dosya bulunamadı.' }, { status: 404 })
     }
 
-    const bytes = new Uint8Array(await upstream.arrayBuffer())
-    const contentType = upstream.headers.get('content-type') || contentTypeFromExt(url)
-
-    return new NextResponse(bytes, {
+    return new NextResponse(object.bytes, {
       status: 200,
       headers: {
-        'Content-Type': contentType,
+        'Content-Type': object.contentType || contentTypeFromExt(url),
         'Content-Disposition': 'inline',
         'Cache-Control': 'public, max-age=3600',
       },

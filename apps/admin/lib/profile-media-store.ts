@@ -11,6 +11,7 @@ export type MediaItem = {
   size: number
   url: string
   createdAt: string
+  thumbnailUrl?: string
 }
 
 export type MediaStore = {

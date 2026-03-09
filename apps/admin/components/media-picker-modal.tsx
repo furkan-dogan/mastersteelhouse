@@ -88,7 +88,7 @@ export function MediaPickerModal({
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((item) => {
-                const src = adminPreviewUrl(item.url)
+                const src = adminPreviewUrl(item.thumbnailUrl || item.url)
                 return (
                   <button
                     key={item.id}

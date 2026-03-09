@@ -14,13 +14,21 @@ type OptimizeParams = {
 
 const IMAGE_MAX_WIDTH = 1920
 const IMAGE_MAX_HEIGHT = 1920
-const IMAGE_QUALITY = 80
+const IMAGE_QUALITY = 78
+
+const THUMB_MAX_WIDTH = 560
+const THUMB_MAX_HEIGHT = 560
+const THUMB_QUALITY = 68
+
+function toUint8Array(input: Buffer | Uint8Array) {
+  return input instanceof Uint8Array ? input : new Uint8Array(input)
+}
 
 export async function optimizeImageForWeb({ source, mimeType, extension }: OptimizeParams): Promise<OptimizedImageResult> {
   const isGif = mimeType === 'image/gif' || extension.toLowerCase() === '.gif'
   if (isGif) {
     return {
-      buffer: source instanceof Uint8Array ? source : new Uint8Array(source),
+      buffer: toUint8Array(source),
       mimeType,
       extension,
     }
@@ -36,6 +44,29 @@ export async function optimizeImageForWeb({ source, mimeType, extension }: Optim
   const output = await pipeline
     .webp({
       quality: IMAGE_QUALITY,
+      effort: 4,
+    })
+    .toBuffer()
+
+  return {
+    buffer: new Uint8Array(output),
+    mimeType: 'image/webp',
+    extension: '.webp',
+  }
+}
+
+export async function generateThumbnailForImage(source: Buffer | Uint8Array): Promise<OptimizedImageResult> {
+  const output = await sharp(source, { failOn: 'none' })
+    .rotate()
+    .resize({
+      width: THUMB_MAX_WIDTH,
+      height: THUMB_MAX_HEIGHT,
+      fit: 'cover',
+      position: 'centre',
+      withoutEnlargement: true,
+    })
+    .webp({
+      quality: THUMB_QUALITY,
       effort: 4,
     })
     .toBuffer()

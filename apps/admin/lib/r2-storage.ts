@@ -155,3 +155,31 @@ export async function writeJsonToR2(key: string, value: unknown) {
     })
   )
 }
+
+export async function readBytesFromR2PublicUrl(url: string) {
+  const key = extractR2KeyFromPublicUrl(url)
+  if (!key) return null
+
+  const env = readR2Env()
+  const client = getClient()
+
+  try {
+    const result = await client.send(
+      new GetObjectCommand({
+        Bucket: env.bucketName,
+        Key: key,
+      })
+    )
+
+    if (!result.Body) return null
+    const bytes = new Uint8Array(await result.Body.transformToByteArray())
+    return {
+      bytes,
+      contentType: result.ContentType || 'application/octet-stream',
+    }
+  } catch (error) {
+    if (error instanceof NoSuchKey) return null
+    if (error instanceof S3ServiceException && error.name === 'NoSuchKey') return null
+    throw error
+  }
+}

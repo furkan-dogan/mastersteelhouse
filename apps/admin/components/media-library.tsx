@@ -210,7 +210,7 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
         ) : (
           <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {filteredItems.map((item) => {
-              const src = adminPreviewUrl(item.url)
+              const src = adminPreviewUrl(item.thumbnailUrl || item.url)
               const isUsed = usedUrls.has(item.url)
               return (
                 <div
