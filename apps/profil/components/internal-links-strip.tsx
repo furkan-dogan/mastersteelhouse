@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
 const links = [
-  { href: '/urunler', label: 'Tüm Profil Ürünleri' },
-  { href: '/sss', label: 'Sıkça Sorulan Sorular' },
-  { href: '/iletisim', label: 'Teklif ve İletişim' },
+  { href: '/urunler', label: 'Ürünler' },
+  { href: '/sss', label: 'SSS' },
+  { href: '/iletisim', label: 'İletişim' },
   { href: '/kurumsal/hakkimizda', label: 'Hakkımızda' },
-  { href: '/medya/blog', label: 'Teknik Blog' },
+  { href: '/medya/blog', label: 'Blog' },
   { href: '/medya/haberler', label: 'Haberler' },
 ]
 

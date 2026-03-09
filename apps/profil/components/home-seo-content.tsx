@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export function HomeSeoContent() {
   return (
     <section className="bg-[#f3f4f1] py-20">
@@ -42,6 +44,49 @@ export function HomeSeoContent() {
             almak ve doğru profil kombinasyonunu belirlemek için iletişim sayfamız üzerinden teknik ekibimize
             doğrudan ulaşabilirsiniz.
           </p>
+
+          <h3 className="mt-10 text-2xl font-semibold text-slate-900">Teknik Kaynaklar</h3>
+          <p className="mt-4 leading-8 text-slate-700">
+            Galvanizli çelik, korozyon dayanımı ve yapı güvenliği konusunda temel bilgileri resmi ve sektörel
+            kaynaklardan takip etmek önemlidir. İlgili teknik çerçeveyi görmek isterseniz
+            {' '}
+            <a
+              href="https://www.worldsteel.org/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-semibold text-[#0b2f57] underline-offset-4 hover:underline"
+            >
+              World Steel Association
+            </a>
+            {' '}
+            ve
+            {' '}
+            <a
+              href="https://www.iso.org/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-semibold text-[#0b2f57] underline-offset-4 hover:underline"
+            >
+              ISO standart sayfaları
+            </a>
+            {' '}
+            üzerinden güncel yayınları inceleyebilirsiniz.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/urunler"
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-[#eab308]/70 hover:text-slate-900"
+            >
+              Profil ürünlerini incele
+            </Link>
+            <Link
+              href="/iletisim"
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-[#eab308]/70 hover:text-slate-900"
+            >
+              Teknik teklif al
+            </Link>
+          </div>
         </div>
       </div>
     </section>

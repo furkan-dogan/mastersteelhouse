@@ -1,12 +1,16 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 import type { ProfileProduct } from '@/lib/profile-content'
 
 type ProductsSliderProps = {
   products: ProfileProduct[]
+}
+
+function buildCardTeaser(product: ProfileProduct) {
+  const source = product.description?.trim() || product.subtitle?.trim() || ''
+  if (!source) return ''
+  if (source.length <= 170) return source
+  return `${source.slice(0, 167).trimEnd()}...`
 }
 
 export function ProductsSlider({ products }: ProductsSliderProps) {
@@ -15,28 +19,19 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
   return (
     <section id="urunler" className="scroll-mt-20 relative overflow-hidden bg-[#f3f4f1] py-20">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-14 text-center"
-        >
+        <div className="mb-14 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Ürün Kataloğu</p>
           <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">3 Profil, Tüm İhtiyaçlar</h2>
           <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600">
             Delikli alçı köşe profili, kaba sıva profili ve tavan U-C profili seçenekleri ile
             farklı proje ihtiyaçlarına uygun galvanizli çelik çözümleri sunuyoruz.
           </p>
-        </motion.div>
+        </div>
 
         <div className="flex gap-6 overflow-x-auto pb-4 md:grid md:grid-cols-3 md:overflow-visible md:pb-0">
-          {products.map((product, i) => (
-            <motion.article
+          {products.map((product) => (
+            <article
               key={product.slug}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
               className="group min-w-[85vw] shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10 sm:min-w-[340px] md:min-w-0"
             >
               <Link href={`/urunler/${product.slug}`}>
@@ -53,13 +48,13 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
 
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-slate-900">{product.name}</h3>
-                  <p className="mt-2 text-sm text-slate-600">{product.subtitle}</p>
+                  <p className="mt-2 text-sm text-slate-600">{buildCardTeaser(product)}</p>
                   <span className="mt-4 inline-block text-sm font-semibold text-[#b88700] transition group-hover:underline">
-                    {product.name} detayları →
+                    {product.shortName} profili →
                   </span>
                 </div>
               </Link>
-            </motion.article>
+            </article>
           ))}
         </div>
 

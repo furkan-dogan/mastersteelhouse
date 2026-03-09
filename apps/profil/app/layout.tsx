@@ -7,9 +7,17 @@ import { PROFILE_SITE_NAME, PROFILE_SITE_URL, absoluteProfileUrl } from '@/lib/s
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', weight: ['400', '500', '600', '700'] })
 
-const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-const BING_SITE_VERIFICATION = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
-const YANDEX_SITE_VERIFICATION = process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION
+function parseVerificationToken(raw?: string) {
+  if (!raw) return undefined
+  const trimmed = raw.trim()
+  const metaContentMatch = trimmed.match(/content\s*=\s*["']([^"']+)["']/i)
+  const token = (metaContentMatch?.[1] ?? trimmed).trim()
+  return token.replace(/^\.{3}/, '')
+}
+
+const GOOGLE_SITE_VERIFICATION = parseVerificationToken(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION)
+const BING_SITE_VERIFICATION = parseVerificationToken(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION)
+const YANDEX_SITE_VERIFICATION = parseVerificationToken(process.env.NEXT_PUBLIC_YANDEX_SITE_VERIFICATION)
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? 'G-9XR6LH9ZYH'
 
 export const metadata: Metadata = {
