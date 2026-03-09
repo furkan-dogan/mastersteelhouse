@@ -6,13 +6,14 @@ import { SiteHeader } from '@/components/site-header'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { ProcessTimeline } from '@/components/process-timeline'
 import { ProductsSlider } from '@/components/products-slider'
+import { HomeSeoContent } from '@/components/home-seo-content'
 import { getProfileFaqs, getProfileProducts } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata, PROFILE_SITE_NAME, PROFILE_SITE_URL } from '@/lib/seo'
 
 export const revalidate = 300
 
 export const metadata = buildProfileMetadata({
-  title: 'Profil Sistemleri',
+  title: 'Delikli Alçı Köşe, Kaba Sıva ve Tavan U-C Profilleri',
   description:
     'Delikli alçı köşe profili, kaba sıva profili ve tavan U-C profili ürünlerinde teknik detaylar, uygulama alanları ve teklif süreçleri.',
   path: '/',
@@ -49,6 +50,7 @@ export default async function ProfilHomePage() {
       <HeroSlider products={products} />
       <ProductsSlider products={products} />
       <ProcessTimeline />
+      <HomeSeoContent />
       <FAQSection faqs={faqs} limit={4} showMoreButton />
       <CtaSection />
       <SiteFooter />

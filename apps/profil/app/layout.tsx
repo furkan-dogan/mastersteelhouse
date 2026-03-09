@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     },
   },
   manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [{ url: '/logoprofil.png', type: 'image/png' }],
+    apple: [{ url: '/logoprofil.png', type: 'image/png' }],
+    shortcut: ['/logoprofil.png'],
+  },
   verification: {
     ...(GOOGLE_SITE_VERIFICATION ? { google: GOOGLE_SITE_VERIFICATION } : {}),
     ...(BING_SITE_VERIFICATION ? { other: { 'msvalidate.01': BING_SITE_VERIFICATION } } : {}),

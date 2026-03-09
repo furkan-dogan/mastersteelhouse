@@ -85,7 +85,7 @@ export function HeroSlider({ products }: HeroSliderProps) {
                 href={`/urunler/${product.slug}`}
                 className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#eab308] px-6 py-3.5 font-semibold text-black transition hover:bg-[#facc15]"
               >
-                Ürün Detayı
+                {product.name} detayı
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </motion.div>

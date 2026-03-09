@@ -34,7 +34,7 @@ export function ProductCardGrid({ products }: ProductCardGridProps) {
                   <h3 className="text-xl font-semibold text-slate-900">{product.name}</h3>
                   <p className="mt-2 text-sm text-slate-600">{product.subtitle}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#b88700] transition group-hover:underline">
-                    Detaylı incele
+                    {product.name} detayları
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
