@@ -15,11 +15,7 @@ export const productLinks: NavLinkItem[] = [
   { label: 'Tavan U-C Profilleri', href: '/urunler/tavan-u-c-profili' },
 ]
 
-export const mediaLinks: NavLinkItem[] = [
-  { label: 'Haberler', href: '/medya/haberler' },
-  { label: 'Blog', href: '/medya/blog' },
-]
-
 export const desktopPrimaryLinks: NavLinkItem[] = [
+  { label: 'Blog', href: '/medya/blog' },
   { label: 'İletişim', href: '/iletisim' },
 ]

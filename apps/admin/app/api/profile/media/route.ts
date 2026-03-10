@@ -19,7 +19,6 @@ export const runtime = 'nodejs'
 const PROFILE_MEDIA_REFERENCES = [
   'profile-products-cms.json',
   'profile-blog-cms.json',
-  'profile-news-cms.json',
   'profile-faq-cms.json',
 ]
 

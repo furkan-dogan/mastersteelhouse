@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { getProfileProducts, getProfileBlogPosts, getProfileNewsPosts } from '@/lib/profile-content'
+import { getProfileProducts, getProfileBlogPosts } from '@/lib/profile-content'
 
 const PROFILE_SITE_URL = process.env.NEXT_PUBLIC_PROFILE_SITE_URL ?? 'https://profil.mastersteelhouse.com'
 
@@ -10,7 +10,6 @@ const STATIC_ROUTES = [
   '/kurumsal/vizyonumuz',
   '/urunler',
   '/medya/blog',
-  '/medya/haberler',
   '/sss',
   '/iletisim',
   '/kvkk',
@@ -19,11 +18,7 @@ const STATIC_ROUTES = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
-  const [products, blogPosts, newsPosts] = await Promise.all([
-    getProfileProducts(),
-    getProfileBlogPosts(),
-    getProfileNewsPosts(),
-  ])
+  const [products, blogPosts] = await Promise.all([getProfileProducts(), getProfileBlogPosts()])
 
   const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((route) => ({
     url: `${PROFILE_SITE_URL}${route}`,
@@ -46,12 +41,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  const newsEntries: MetadataRoute.Sitemap = newsPosts.map((post) => ({
-    url: `${PROFILE_SITE_URL}/medya/haberler/${post.slug}`,
-    lastModified: now,
-    changeFrequency: 'weekly',
-    priority: 0.7,
-  }))
-
-  return [...staticEntries, ...productEntries, ...blogEntries, ...newsEntries]
+  return [...staticEntries, ...productEntries, ...blogEntries]
 }

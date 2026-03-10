@@ -37,21 +37,31 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('')
 
+  const isProfileCms = hrefBase === '/profil-cms'
+
   const load = useCallback(async () => {
     try {
-      const [productsRes, blogRes, newsRes, mediaRes] = await Promise.all([
+      const requests = [
         fetch(`${endpointBase}/products`, { cache: 'no-store' }),
         fetch(`${endpointBase}/blog`, { cache: 'no-store' }),
-        fetch(`${endpointBase}/news`, { cache: 'no-store' }),
         fetch(`${endpointBase}/media`, { cache: 'no-store' }),
-      ])
+      ]
+
+      if (!isProfileCms) {
+        requests.push(fetch(`${endpointBase}/news`, { cache: 'no-store' }))
+      }
+
+      const responses = await Promise.all(requests)
+      const [productsRes, blogRes, mediaRes, newsRes] = responses
 
       const products = productsRes.ok ? ((await productsRes.json()) as { products?: unknown[] }) : null
       const blog = blogRes.ok ? ((await blogRes.json()) as { posts?: { slug: string; title: string; date?: string }[] }) : null
-      const news = newsRes.ok ? ((await newsRes.json()) as { posts?: { slug: string; title: string; date?: string }[] }) : null
       const media = mediaRes.ok ? ((await mediaRes.json()) as { items?: unknown[] }) : null
+      const news = !isProfileCms && newsRes?.ok
+        ? ((await newsRes.json()) as { posts?: { slug: string; title: string; date?: string }[] })
+        : null
 
-      setKpis([
+      const nextKpis: Kpi[] = [
         {
           label: 'Toplam Ürün',
           value: products?.products?.length ?? 0,
@@ -64,39 +74,54 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
           icon: <BookOpenText className="h-5 w-5" />,
           href: `${hrefBase}/blog`,
         },
-        {
+      ]
+
+      if (!isProfileCms) {
+        nextKpis.push({
           label: 'Haberler',
           value: news?.posts?.length ?? 0,
           icon: <Newspaper className="h-5 w-5" />,
           href: `${hrefBase}/news`,
-        },
-        {
-          label: 'Medya Dosyası',
-          value: media?.items?.length ?? 0,
-          icon: <ImageIcon className="h-5 w-5" />,
-          href: `${hrefBase}/media`,
-        },
-      ])
+        })
+      }
+
+      nextKpis.push({
+        label: 'Medya Dosyası',
+        value: media?.items?.length ?? 0,
+        icon: <ImageIcon className="h-5 w-5" />,
+        href: `${hrefBase}/media`,
+      })
+
+      setKpis(nextKpis)
 
       const items: RecentItem[] = []
       blog?.posts?.slice(0, 5).forEach((p) => {
         items.push({ id: `blog-${p.slug}`, title: p.title, type: 'Blog', date: p.date })
       })
-      news?.posts?.slice(0, 5).forEach((n) => {
-        items.push({ id: `news-${n.slug}`, title: n.title, type: 'Haber', date: n.date })
-      })
+
+      if (!isProfileCms) {
+        news?.posts?.slice(0, 5).forEach((n) => {
+          items.push({ id: `news-${n.slug}`, title: n.title, type: 'Haber', date: n.date })
+        })
+      }
+
       setRecent(items.slice(0, 8))
     } catch {
-      setKpis([
+      const fallback: Kpi[] = [
         { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: `${hrefBase}/` },
         { label: 'Blog', value: '-', icon: <BookOpenText className="h-5 w-5" />, href: `${hrefBase}/blog` },
-        { label: 'Haberler', value: '-', icon: <Newspaper className="h-5 w-5" />, href: `${hrefBase}/news` },
-        { label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: `${hrefBase}/media` },
-      ])
+      ]
+
+      if (!isProfileCms) {
+        fallback.push({ label: 'Haberler', value: '-', icon: <Newspaper className="h-5 w-5" />, href: `${hrefBase}/news` })
+      }
+
+      fallback.push({ label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: `${hrefBase}/media` })
+      setKpis(fallback)
     } finally {
       setLoading(false)
     }
-  }, [endpointBase, hrefBase])
+  }, [endpointBase, hrefBase, isProfileCms])
 
   useEffect(() => {
     void load()

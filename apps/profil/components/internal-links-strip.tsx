@@ -6,7 +6,6 @@ const links = [
   { href: '/iletisim', label: 'İletişim' },
   { href: '/kurumsal/hakkimizda', label: 'Hakkımızda' },
   { href: '/medya/blog', label: 'Blog' },
-  { href: '/medya/haberler', label: 'Haberler' },
 ]
 
 export function InternalLinksStrip() {

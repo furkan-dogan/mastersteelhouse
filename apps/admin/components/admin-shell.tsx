@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Package,
   BookOpenText,
-  Newspaper,
   FolderKanban,
   Image,
   FileBadge,
@@ -70,7 +69,6 @@ export function AdminShell({
         items: [
           { href: route('/'), label: 'Ürünler', icon: Package },
           { href: route('/blog'), label: 'Blog', icon: BookOpenText },
-          { href: route('/news'), label: 'Haberler', icon: Newspaper },
           ...(basePath === '/profil-cms' ? [{ href: route('/sss'), label: 'SSS', icon: MessageSquare }] : []),
           ...(basePath === '/profil-cms' ? [] : [{ href: route('/videos'), label: 'Videolar', icon: Clapperboard }]),
           ...(basePath === '/profil-cms' ? [] : [{ href: route('/references'), label: 'Referanslar', icon: FolderKanban }]),

@@ -59,7 +59,6 @@ export type ProfileFaqItem = {
   answer: string
 }
 
-
 type ProductsStore = {
   products: Array<{
     slug: string
@@ -83,6 +82,12 @@ type ProductsStore = {
 type BlogStore = { posts: ProfileBlogPost[] }
 type NewsStore = { posts: ProfileNewsPost[] }
 type FaqStore = { items: ProfileFaqItem[] }
+
+const LEGACY_BLOG_IMAGE_MAP: Record<string, string> = {
+  '/profil-alcikose.jpg': '/uploads/media/img-2821-1772097200995-322d0a.jpg',
+  '/profil-kabasiva.jpg': '/uploads/media/img-2823-1772096428209-911296.jpg',
+  '/profil-tavan-uc.jpg': '/uploads/media/img-2818-1772096687379-f7260c.jpg',
+}
 
 function getContentPath(fileName: string) {
   const candidates = [
@@ -147,6 +152,25 @@ function buildDimensionsFromSpecs(specs: ProfileProductSpec[] | undefined): Prof
   })
 }
 
+function normalizeProfileBlogImage(image: string | undefined) {
+  if (!image) return '/logoprofil.png'
+
+  if (image.startsWith('/api/profile/media/file?url=') || image.startsWith('/api/media/file?url=')) {
+    try {
+      const raw = image.split('url=')[1] ?? ''
+      const decoded = decodeURIComponent(raw)
+      if (decoded) return decoded
+    } catch {
+      // ignore parse errors and continue with fallback rules
+    }
+  }
+
+  if (image.startsWith('http://') || image.startsWith('https://') || image.startsWith('/uploads/')) return image
+  if (LEGACY_BLOG_IMAGE_MAP[image]) return LEGACY_BLOG_IMAGE_MAP[image]
+  if (image.startsWith('/')) return '/logoprofil.png'
+  return image
+}
+
 export async function getProfileProducts(): Promise<ProfileProduct[]> {
   const store = await readJson<ProductsStore>('profile-products-cms.json')
 
@@ -179,14 +203,16 @@ export async function getProfileProducts(): Promise<ProfileProduct[]> {
 
 export async function getProfileBlogPosts() {
   const store = await readJson<BlogStore>('profile-blog-cms.json')
-  return store.posts
+  return store.posts.map((post) => ({
+    ...post,
+    image: normalizeProfileBlogImage(post.image),
+  }))
 }
 
 export async function getProfileNewsPosts() {
   const store = await readJson<NewsStore>('profile-news-cms.json')
   return store.posts
 }
-
 
 export async function getProfileFaqs() {
   const store = await readJson<FaqStore>('profile-faq-cms.json')

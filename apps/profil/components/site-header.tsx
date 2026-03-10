@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { corporateLinks, mediaLinks, productLinks, type NavLinkItem } from '@/lib/site-navigation'
+import { corporateLinks, productLinks, desktopPrimaryLinks, type NavLinkItem } from '@/lib/site-navigation'
 
-type DropdownKey = 'kurumsal' | 'urunler' | 'medya'
+type DropdownKey = 'kurumsal' | 'urunler'
 
 type TopNavItem = {
   key: string
@@ -19,14 +19,12 @@ type TopNavItem = {
 const topNavItems: TopNavItem[] = [
   { key: 'kurumsal', label: 'Kurumsal', dropdown: 'kurumsal' },
   { key: 'urunler', label: 'Ürünler', dropdown: 'urunler' },
-  { key: 'iletisim', label: 'İletişim', href: '/iletisim' },
-  { key: 'medya', label: 'Medya', dropdown: 'medya' },
+  ...desktopPrimaryLinks.map((item) => ({ key: item.href, label: item.label, href: item.href })),
 ]
 
 function dropdownLinksByKey(key: DropdownKey): NavLinkItem[] {
   if (key === 'kurumsal') return corporateLinks
-  if (key === 'urunler') return productLinks
-  return mediaLinks
+  return productLinks
 }
 
 export function SiteHeader() {
@@ -46,6 +44,7 @@ export function SiteHeader() {
     if (!href) return false
     if (href.startsWith('/#')) return false
     if (href === '/urunler') return pathname.startsWith('/urunler')
+    if (href === '/medya/blog') return pathname.startsWith('/medya/blog')
     return pathname === href
   }
 
@@ -66,7 +65,6 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
         <Link href="/" className="flex items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logoprofil.png" alt="Master Steel House" className="block h-11 w-auto" />
         </Link>
 
