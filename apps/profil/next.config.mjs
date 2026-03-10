@@ -12,9 +12,12 @@ const nextConfig = {
         hostname: configuredHost,
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'profil.mastersteelhouse.com',
+        pathname: '/**',
+      },
     ],
-    // Localde Next image optimizer R2 TLS handshake'inde hata veriyor.
-    // Browser doğrudan R2'den alsın; production optimizasyonu açık kalır.
     unoptimized: process.env.NODE_ENV === 'development',
   },
 }

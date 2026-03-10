@@ -67,7 +67,7 @@ export function ProductDetailTemplate({ product }: { product: ProfileProduct }) 
                     alt={`${product.name} ${index + 1}`}
                     fill
                     sizes="92px"
-                    className="object-contain bg-white p-1"
+                    className="object-cover bg-slate-100"
                   />
                 </button>
               ))}
@@ -81,7 +81,7 @@ export function ProductDetailTemplate({ product }: { product: ProfileProduct }) 
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 55vw"
-                  className="object-contain bg-white"
+                  className="object-cover"
                 />
               </div>
 
