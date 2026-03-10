@@ -1,5 +1,6 @@
 import { HeroSlider } from '@/components/hero-slider'
 import { FAQSection } from '@/components/faq-section'
+import { InstagramFollowSection } from '@/components/instagram-follow-section'
 import { CtaSection } from '@/components/cta-section'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
@@ -52,6 +53,7 @@ export default async function ProfilHomePage() {
       <ProcessTimeline />
       <HomeSeoContent />
       <FAQSection faqs={faqs} limit={4} showMoreButton />
+      <InstagramFollowSection />
       <CtaSection />
       <SiteFooter />
     </div>

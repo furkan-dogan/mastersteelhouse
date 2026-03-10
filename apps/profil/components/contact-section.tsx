@@ -2,12 +2,23 @@
 
 import { useRef, useState } from 'react'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Send, Clock, MessageCircle, CheckCircle2, XCircle } from 'lucide-react'
+import { Phone, Mail, MapPin, Send, Clock, MessageCircle, CheckCircle2, XCircle, Instagram } from 'lucide-react'
+import { PROFILE_INSTAGRAM_URL } from '@/lib/seo'
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mykdoyzn'
 const MIN_SUBMIT_MS = 3000
 
-const contactInfo = [
+type ContactInfoItem = {
+  icon: typeof Phone
+  title: string
+  description: string
+  lines: string[]
+  color: string
+  iconColor: string
+  href?: string
+}
+
+const contactInfo: ContactInfoItem[] = [
   {
     icon: Phone,
     title: 'Telefon',
@@ -39,6 +50,15 @@ const contactInfo = [
     lines: ['Pazartesi - Cuma: 08:00 - 18:00', 'Cumartesi: 09:00 - 14:00'],
     color: 'from-orange-500/20 to-orange-600/20',
     iconColor: 'text-orange-600',
+  },
+  {
+    icon: Instagram,
+    title: 'Instagram',
+    description: 'Hızlı İletişim',
+    lines: ['@mastersteelhouseprofil'],
+    color: 'from-pink-500/20 to-purple-600/20',
+    iconColor: 'text-pink-600',
+    href: PROFILE_INSTAGRAM_URL,
   },
 ]
 
@@ -174,9 +194,14 @@ export function ContactSection() {
         <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {contactInfo.map((info) => {
             const Icon = info.icon
+            const Wrapper = info.href ? 'a' : 'div'
+            const wrapperProps = info.href
+              ? { href: info.href, target: '_blank', rel: 'noreferrer noopener' as const }
+              : {}
             return (
-              <div
+              <Wrapper
                 key={info.title}
+                {...wrapperProps}
                 className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10"
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
@@ -194,7 +219,7 @@ export function ContactSection() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </Wrapper>
             )
           })}
         </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 export const PROFILE_SITE_URL = process.env.NEXT_PUBLIC_PROFILE_SITE_URL ?? 'https://profil.mastersteelhouse.com'
 export const PROFILE_SITE_NAME = 'Master Steel House Profil Sistemleri'
+export const PROFILE_INSTAGRAM_URL = 'https://www.instagram.com/mastersteelhouseprofil/'
 
 const DEFAULT_OG_IMAGE = '/logoprofil.png'
 

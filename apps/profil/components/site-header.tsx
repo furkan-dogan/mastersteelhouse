@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Instagram } from 'lucide-react'
+import { PROFILE_INSTAGRAM_URL } from '@/lib/seo'
 import { corporateLinks, productLinks, desktopPrimaryLinks, type NavLinkItem } from '@/lib/site-navigation'
 
 type DropdownKey = 'kurumsal' | 'urunler'
@@ -68,8 +69,18 @@ export function SiteHeader() {
           <img src="/logoprofil.png" alt="Master Steel House" className="block h-11 w-auto" />
         </Link>
 
+        <div className="hidden items-center gap-3 md:flex">
+        <a
+          href={PROFILE_INSTAGRAM_URL}
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label="Instagram"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300/80 bg-white/85 text-slate-600 transition hover:border-[#eab308]/50 hover:bg-[#eab308]/10 hover:text-[#b88700]"
+        >
+          <Instagram className="h-5 w-5" />
+        </a>
         <nav
-          className="hidden items-center gap-1 rounded-full border border-slate-300/80 bg-white/85 p-1 md:flex"
+          className="flex items-center gap-1 rounded-full border border-slate-300/80 bg-white/85 p-1"
           onMouseLeave={() => setActiveDropdown(null)}
         >
           {topNavItems.map((item) => {
@@ -124,13 +135,24 @@ export function SiteHeader() {
             )
           })}
         </nav>
+        </div>
 
-        <button
-          type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-slate-800 md:hidden"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Menü"
-        >
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href={PROFILE_INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="Instagram"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-slate-800"
+          >
+            <Instagram className="h-5 w-5" />
+          </a>
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 text-slate-800"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label="Menü"
+          >
           {mobileOpen ? (
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -140,7 +162,8 @@ export function SiteHeader() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}
-        </button>
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
