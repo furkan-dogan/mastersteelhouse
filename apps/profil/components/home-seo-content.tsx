@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { BookOpen, Ruler, Wrench, CheckSquare2, ExternalLink } from 'lucide-react'
+import { BookOpen, Ruler, Layout, Layers, LayoutGrid, GitCompare, ExternalLink } from 'lucide-react'
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -23,28 +23,40 @@ const cards: GuideCard[] = [
     icon: Ruler,
     title: 'Delikli Alçı Köşe Profili Ne Sağlar?',
     content:
-      'Delikli alçı köşe profili, duvar ve kolon köşelerinde düzgün hat elde etmek için kullanılır. Delikli yüzey yapısı, sıva ve alçı katmanının profile daha iyi tutunmasına yardımcı olur. Bu sayede darbelere karşı daha dayanıklı bir köşe formu oluşur ve boya öncesi yüzey kalitesi yükselir. Uygulama sırasında ölçü kaçaklarını azaltması, işçilik süresini kısaltması nedeniyle sahada maliyet kontrolüne katkı sağlar.',
+      'Delikli alçı köşe profili, duvar ve kolon köşelerinde düzgün hat elde etmek için kullanılır. Delikli yüzey yapısı, sıva ve alçı katmanının profile daha iyi tutunmasına yardımcı olur. Bu sayede darbelere karşı daha dayanıklı bir köşe formu oluşur ve boya öncesi yüzey kalitesi yükselir. Uygulama sırasında ölçü kaçaklarını azaltması, işçilik süresini kısaltması nedeniyle sahada maliyet kontrolüne katkı sağlar. İç mekan bitişlerinde temiz hat istenen projelerde en sık tercih edilen galvanizli köşe profili çözümüdür.',
   },
   {
-    icon: Wrench,
-    title: 'Kaba Sıva Profili ve Tavan U-C Profili Farkı',
+    icon: Layout,
+    title: 'Kaba Sıva Profili Ne Sağlar?',
     content:
-      'Kaba sıva profili, sıva kalınlığını dengelemek ve cephe yüzeylerinde referans hattı oluşturmak için kullanılır. Tavan U-C profili ise asma tavan sistemlerinde ana ve tali taşıyıcı iskeletin temelini oluşturur. Her ikisi de galvanizli çelik yapısı sayesinde uzun ömürlü kullanım ve korozyona karşı dayanım sunar. Doğru kesit ve et kalınlığı seçildiğinde sistem stabilitesi artar.',
+      'Kaba sıva profili, iç ve dış cephe sıva uygulamalarında düzgün kot ve referans hattı oluşturur. Sıva kalınlığını sabitleyerek çatlak riskini azaltır, homojen yüzey kalitesi sağlar. Galvanizli çelik yapısı sayesinde paslanmaya karşı dirençli, uzun ömürlü kullanım sunar. Hızlı montaj avantajı ile işçilik süresini kısaltır, yüksek metrajlı projelerde fire oranını düşürür. Cephe ve iç mekan sıva uygulamalarında profesyonel bitiş için ideal galvaniz sıva profili çözümüdür.',
   },
   {
-    icon: CheckSquare2,
-    title: 'Doğru Ürün Seçimi İçin Pratik Kriterler',
+    icon: Layers,
+    title: 'Tavan U-C Profili Ne Sağlar?',
     content:
-      'Profil seçimi yapılırken uygulama alanının iç veya dış mekan olması, beklenen darbe dayanımı, montaj hızına dair ihtiyaç ve standart boy gereksinimi birlikte ele alınmalıdır. Ürün ölçüleri ile sahadaki detay çözümünü eşleştirdiğinizde hem fire oranı azalır hem de iş programı daha öngörülebilir ilerler. Teknik ekibimize doğrudan ulaşarak hızlı teklif alabilirsiniz.',
+      'Tavan U-C profili, asma tavan sistemlerinde ana ve tali taşıyıcı iskeletin temelini oluşturur. U kanal ve C taşıyıcı profil kombinasyonu ile rijit, sarkma yapmayan bir altyapı sunar. Galvaniz kaplı çelikten üretildiği için nemli ortamlarda dahi güvenle kullanılabilir. Konut, ofis, mağaza ve ticari projelerde alçıpan asma tavan uygulamaları için standart 3000 ve 4000 mm boy seçenekleri ile hızlı montaj ve uzun ömürlü performans sağlar.',
+  },
+  {
+    icon: LayoutGrid,
+    title: 'Duvar U-C Profili Ne Sağlar?',
+    content:
+      'Duvar U-C profili, bölme duvar ve alçıpan duvar sistemlerinde taşıyıcı iskelet oluşturmak için kullanılır. Dikey C profiller (dikme) ve yatay U profiller (tavan/taban kanalı) ile rijit bölme duvar konstrüksiyonu kurar. Galvanizli çelik yapısı sayesinde yangına dayanıklı, uzun ömürlü ve deprem performansı yüksek duvar çözümleri sunar. Ofis bölümleri, konut iç bölmeleri ve ticari mekanlarda hızlı montaj ile esnek planlama imkânı sağlar.',
+  },
+  {
+    icon: GitCompare,
+    title: 'Tavan U-C ve Duvar U-C Farkı',
+    content:
+      'Tavan U-C profili asma tavan sistemlerinde yatay taşıyıcı iskelet için, Duvar U-C profili ise bölme duvar sistemlerinde dikey taşıyıcı iskelet için tasarlanır. Her ikisi de U ve C profil kombinasyonu kullanır; fark uygulama yönü ve yük dağılımındadır. Tavan U-C daha çok aşağı doğru yük taşırken, Duvar U-C dikey yük ve rüzgâr yüklerine karşı rijitlik sağlar. Doğru kesit ve et kalınlığı seçimi her iki uygulama için de kritik öneme sahiptir.',
   },
   {
     icon: ExternalLink,
-    title: 'Teknik Kaynaklar',
+    title: 'Teknik Kaynaklar ve Standartlar',
     content:
-      'Galvanizli çelik, korozyon dayanımı ve yapı güvenliği konusunda temel bilgileri resmi ve sektörel kaynaklardan takip etmek önemlidir.',
+      'Galvanizli çelik profil sistemlerinde korozyon dayanımı, yapı güvenliği ve yangın performansı konusunda uluslararası standartları takip etmek önemlidir. World Steel Association galvanizli çelik üretimi ve sürdürülebilirlik raporları için referans kaynaktır. ISO standartları ise profil kesitleri, et kalınlıkları ve montaj detayları için teknik çerçeve sunar. Proje öncesi bu kaynaklardan güncel yayınları inceleyerek doğru ürün seçimini destekleyebilirsiniz.',
     links: [
-      { label: 'World Steel Association', href: 'https://www.worldsteel.org/' },
-      { label: 'ISO standart sayfaları', href: 'https://www.iso.org/' },
+      { label: 'World Steel Association – galvanizli çelik ve sürdürülebilirlik', href: 'https://www.worldsteel.org/' },
+      { label: 'ISO – yapısal çelik ve profil standartları', href: 'https://www.iso.org/' },
     ],
   },
 ]
@@ -76,16 +88,16 @@ export function HomeSeoContent() {
           <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full bg-[#eab308]/10 blur-3xl" />
           <div className="relative">
             <p className="text-base leading-8 text-slate-700">
-              Delikli alçı köşe profili, kaba sıva profili ve tavan U-C profili ürün grupları; hem konut projelerinde hem
-              ticari yapılarda hem de yoğun kullanım alanlarında güvenilir bir taşıyıcı ve bitiş altyapısı sunar. Doğru
-              profil seçimi yalnızca malzeme tercihinden ibaret değildir; proje tipine, yüzey beklentisine, montaj hızına
-              ve bakım ihtiyacına göre birlikte değerlendirilmelidir.
+              Delikli alçı köşe profili, kaba sıva profili, tavan U-C profili ve duvar U-C profili ürün grupları; hem
+              konut projelerinde hem ticari yapılarda hem de yoğun kullanım alanlarında güvenilir bir taşıyıcı ve bitiş
+              altyapısı sunar. Doğru profil seçimi yalnızca malzeme tercihinden ibaret değildir; proje tipine, yüzey
+              beklentisine, montaj hızına ve bakım ihtiyacına göre birlikte değerlendirilmelidir.
             </p>
           </div>
         </motion.div>
 
         {/* Topic cards grid */}
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card, index) => {
             const Icon = card.icon
             const hasLinks = 'links' in card && card.links
