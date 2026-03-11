@@ -1,6 +1,7 @@
 import { existsSync } from 'fs'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { isR2Configured, readJsonFromR2, writeJsonToR2 } from '@/lib/r2-storage'
 
 export type ProductFeatures = {
   rooms: string
@@ -59,6 +60,8 @@ export type ProductStore = {
   products: ProductItem[]
 }
 
+const PROFILE_PRODUCTS_INDEX_KEY = '_cms/profile-products-cms.json'
+
 function getStorePath() {
   const candidates = [
     path.join(process.cwd(), 'content', 'profile-products-cms.json'),
@@ -75,10 +78,29 @@ function getStorePath() {
 }
 
 export async function readProductStore(): Promise<ProductStore> {
+  if (isR2Configured()) {
+    const r2Store = await readJsonFromR2<ProductStore>(PROFILE_PRODUCTS_INDEX_KEY)
+    if (r2Store && Array.isArray(r2Store.categories) && Array.isArray(r2Store.products)) return r2Store
+
+    try {
+      const raw = await fs.readFile(getStorePath(), 'utf8')
+      const fallback = JSON.parse(raw) as ProductStore
+      if (fallback && Array.isArray(fallback.categories) && Array.isArray(fallback.products)) return fallback
+    } catch {
+      // ignore local fallback errors on serverless
+    }
+
+    return { categories: [], products: [] }
+  }
+
   const raw = await fs.readFile(getStorePath(), 'utf8')
   return JSON.parse(raw) as ProductStore
 }
 
 export async function writeProductStore(store: ProductStore) {
+  if (isR2Configured()) {
+    await writeJsonToR2(PROFILE_PRODUCTS_INDEX_KEY, store)
+  }
+
   await fs.writeFile(getStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')
 }

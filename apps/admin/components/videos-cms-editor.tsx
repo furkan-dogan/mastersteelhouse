@@ -121,21 +121,23 @@ export function VideosCmsEditor({ endpoint = '/api/videos' }: VideosCmsEditorPro
   }
 
   function deleteById(id: string) {
-    setStore((prev) => {
-      const nextItems = prev.items.filter((item) => item.id !== id)
-      if (selectedId === id) {
-        setSelectedId(nextItems[0]?.id ?? '')
-        if (nextItems.length === 0) {
-          setEditorOpen(false)
-        }
+    const nextStore: VideosStore = {
+      ...store,
+      items: store.items.filter((item) => item.id !== id),
+    }
+    setStore(nextStore)
+    if (selectedId === id) {
+      setSelectedId(nextStore.items[0]?.id ?? '')
+      if (nextStore.items.length === 0) {
+        setEditorOpen(false)
       }
-      return { ...prev, items: nextItems }
-    })
+    }
+    void saveStore(nextStore, 'Video silindi ve kaydedildi.')
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
 
-  async function saveStore() {
+  async function saveStore(storeToPersist: VideosStore = store, successMessage = 'Videolar kaydedildi.') {
     try {
       setSaving(true)
       setError(null)
@@ -143,10 +145,10 @@ export function VideosCmsEditor({ endpoint = '/api/videos' }: VideosCmsEditorPro
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(store),
+        body: JSON.stringify(storeToPersist),
       })
       if (!response.ok) throw new Error('Kaydetme başarısız')
-      setMessage('Videolar kaydedildi.')
+      setMessage(successMessage)
       setTimeout(() => setMessage(null), 2500)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Kaydetme başarısız')

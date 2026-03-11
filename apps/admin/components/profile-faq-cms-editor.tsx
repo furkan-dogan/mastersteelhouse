@@ -92,17 +92,21 @@ export function ProfileFaqCmsEditor({ endpoint = '/api/profile/faqs' }: Props) {
 
   function deleteItem(id: string) {
     if (!store) return
-    const nextItems = store.items.filter((item) => item.id !== id)
-    setStore({ ...store, items: nextItems })
-    if (selectedId === id) {
-      setSelectedId(nextItems[0]?.id ?? '')
+    const nextStore: ProfileFaqStore = {
+      ...store,
+      items: store.items.filter((item) => item.id !== id),
     }
+    setStore(nextStore)
+    if (selectedId === id) {
+      setSelectedId(nextStore.items[0]?.id ?? '')
+    }
+    void saveStore(nextStore, 'Soru silindi ve kaydedildi.')
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteItem)
 
-  async function saveStore() {
-    if (!store) return
+  async function saveStore(storeToPersist: ProfileFaqStore | null = store, successMessage = 'SSS içerikleri kaydedildi.') {
+    if (!storeToPersist) return
     try {
       setSaving(true)
       setError(null)
@@ -111,12 +115,12 @@ export function ProfileFaqCmsEditor({ endpoint = '/api/profile/faqs' }: Props) {
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(store),
+        body: JSON.stringify(storeToPersist),
       })
 
       if (!response.ok) throw new Error('Kaydetme basarisiz')
 
-      setMessage('SSS içerikleri kaydedildi.')
+      setMessage(successMessage)
       setTimeout(() => setMessage(null), 2500)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Beklenmeyen hata')

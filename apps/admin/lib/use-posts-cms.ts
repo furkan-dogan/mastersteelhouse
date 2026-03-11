@@ -202,8 +202,8 @@ export function usePostsCms<TPost extends CmsPostLike, TStore extends CmsStoreLi
     syncSections(nextRows.length > 0 ? nextRows : [createRow<TPost>()])
   }
 
-  async function saveStore() {
-    if (!store) return
+  async function saveStore(storeToPersist: TStore | null = store, successMessage = saveSuccessMessage) {
+    if (!storeToPersist) return
 
     try {
       setSaving(true)
@@ -212,12 +212,12 @@ export function usePostsCms<TPost extends CmsPostLike, TStore extends CmsStoreLi
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(store),
+        body: JSON.stringify(storeToPersist),
       })
       if (!response.ok) {
         throw new Error('Kaydetme başarısız')
       }
-      setMessage(saveSuccessMessage)
+      setMessage(successMessage)
       setTimeout(() => setMessage(null), 3000)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Beklenmeyen hata')

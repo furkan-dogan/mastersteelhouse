@@ -90,6 +90,7 @@ const LEGACY_BLOG_IMAGE_MAP: Record<string, string> = {
 }
 
 const DEV_IMAGE_PROXY_BASE = (process.env.PROFILE_DEV_IMAGE_PROXY_BASE ?? 'https://profil.mastersteelhouse.com').replace(/\/$/, '')
+const R2_PUBLIC_BASE_URL = (process.env.R2_PUBLIC_BASE_URL ?? '').replace(/\/$/, '')
 
 function isR2DevUrl(url: string) {
   return /^https:\/\/[^/]+\.r2\.dev\//i.test(url)
@@ -130,6 +131,17 @@ function getContentPath(fileName: string) {
 }
 
 async function readJson<T>(fileName: string): Promise<T> {
+  if (R2_PUBLIC_BASE_URL) {
+    try {
+      const response = await fetch(`${R2_PUBLIC_BASE_URL}/_cms/${fileName}`, { cache: 'no-store' })
+      if (response.ok) {
+        return (await response.json()) as T
+      }
+    } catch {
+      // ignore R2 network issues and fallback to local content in development
+    }
+  }
+
   const raw = await fs.readFile(getContentPath(fileName), 'utf8')
   return JSON.parse(raw) as T
 }

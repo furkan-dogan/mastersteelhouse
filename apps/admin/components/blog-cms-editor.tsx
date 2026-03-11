@@ -143,14 +143,15 @@ export function BlogCmsEditor({
 
   function deleteBySlug(slug: string) {
     if (!store) return
-    const nextPosts = store.posts.filter((post) => post.slug !== slug)
-    setStore({ ...store, posts: nextPosts })
+    const nextStore = { ...store, posts: store.posts.filter((post) => post.slug !== slug) }
+    setStore(nextStore)
     if (selectedSlug === slug) {
-      setSelectedSlug(nextPosts[0]?.slug ?? '')
-      if (nextPosts.length === 0) {
+      setSelectedSlug(nextStore.posts[0]?.slug ?? '')
+      if (nextStore.posts.length === 0) {
         setEditorOpen(false)
       }
     }
+    void saveStore(nextStore as BlogStore, 'Yazı silindi ve kaydedildi.')
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteBySlug)

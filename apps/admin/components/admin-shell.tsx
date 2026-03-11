@@ -53,9 +53,10 @@ export function AdminShell({
   })
 
   const route = (suffix: string) => {
-    if (suffix === '/') return basePath || '/'
     return `${basePath}${suffix}`
   }
+
+  const productsHref = basePath === '/profil-cms' ? '/profil-cms' : '/products'
 
   const navGroups: NavGroup[] = [
       {
@@ -67,7 +68,7 @@ export function AdminShell({
         key: 'content',
         title: 'İçerik Yönetimi',
         items: [
-          { href: route('/'), label: 'Ürünler', icon: Package },
+          { href: productsHref, label: 'Ürünler', icon: Package },
           { href: route('/blog'), label: 'Blog', icon: BookOpenText },
           ...(basePath === '/profil-cms' ? [{ href: route('/sss'), label: 'SSS', icon: MessageSquare }] : []),
           ...(basePath === '/profil-cms' ? [] : [{ href: route('/videos'), label: 'Videolar', icon: Clapperboard }]),
@@ -106,7 +107,7 @@ export function AdminShell({
     router.refresh()
   }
 
-  const productsRoot = route('/')
+  const productsRoot = productsHref
 
   function isItemActive(href: string) {
     return href === productsRoot ? pathname === productsRoot || pathname === `${productsRoot}/` : pathname.startsWith(href)

@@ -175,6 +175,19 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     return store?.categories.find((item) => item.slug === selectedCategorySlug) ?? null
   }, [store, selectedCategorySlug])
 
+  const categoryFilterOptions = useMemo(() => {
+    if (!store) return []
+    return store.categories.map((category) => ({ value: category.slug, label: category.title }))
+  }, [store])
+
+  function handleCategoryChange(nextCategorySlug: string) {
+    if (!store || nextCategorySlug === selectedCategorySlug) return
+    setSelectedCategorySlug(nextCategorySlug)
+    setSelectedProductSlug(store.products.find((item) => item.categorySlug === nextCategorySlug)?.slug ?? '')
+    setEditorOpen(false)
+    resetPage()
+  }
+
   function patchProduct(update: Partial<ProductItem>) {
     if (!store || !selectedProduct) return
     setStore({
@@ -248,16 +261,20 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
   function deleteBySlug(slug: string) {
     if (!store) return
+
     const nextProducts = store.products.filter(
       (item) => !(item.slug === slug && item.categorySlug === selectedCategorySlug)
     )
-    setStore({ ...store, products: nextProducts })
+    const nextStore = { ...store, products: nextProducts }
+    setStore(nextStore)
 
     if (selectedProductSlug === slug) {
       const nextSelected = nextProducts.find((item) => item.categorySlug === selectedCategorySlug)?.slug ?? ''
       setSelectedProductSlug(nextSelected)
       if (!nextSelected) setEditorOpen(false)
     }
+
+    void saveStore(nextStore, 'Ürün silindi ve kaydedildi.')
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteBySlug)
@@ -313,7 +330,12 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       patchProduct({ image: url })
     } else if (mediaTarget.type === 'gallery') {
       const merged = [...(selectedProduct.gallery ?? []), url]
-      patchProduct({ gallery: mode === 'profile' ? Array.from(new Set(merged)) : Array.from(new Set(merged)).slice(0, 5) })
+      const nextGallery = mode === 'profile' ? Array.from(new Set(merged)) : Array.from(new Set(merged)).slice(0, 5)
+
+      patchProduct({
+        gallery: nextGallery,
+        image: selectedProduct.image?.trim() ? selectedProduct.image : nextGallery[0] ?? selectedProduct.image,
+      })
     } else {
       const current = [...(selectedProduct.floorPlans ?? [])]
       if (!current[mediaTarget.index]) {
@@ -368,8 +390,8 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     })
   }
 
-  async function saveStore() {
-    if (!store) return
+  async function saveStore(storeToPersist = store, successMessage = 'Kayıt tamamlandı.') {
+    if (!storeToPersist) return
 
     try {
       setSaving(true)
@@ -379,14 +401,14 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(store),
+        body: JSON.stringify(storeToPersist),
       })
 
       if (!response.ok) {
         throw new Error('Kaydetme başarısız')
       }
 
-      setMessage('Kayıt tamamlandı.')
+      setMessage(successMessage)
       setTimeout(() => setMessage(null), 3000)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Beklenmeyen hata')
@@ -444,6 +466,9 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
               setSearch(value)
               resetPage()
             }}
+            filterValue={selectedCategorySlug}
+            filterOptions={categoryFilterOptions}
+            onFilterChange={handleCategoryChange}
           />
 
           <ProductsCmsTable

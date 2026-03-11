@@ -4,7 +4,10 @@
       "id": "ref-1",
       "title": "Prof. Dr. Murat Dilmener Acil Durum Hastanesi",
       "location": "İstanbul",
-      "categories": ["Sağlık Yapıları", "Kamu Yapıları"],
+      "categories": [
+        "Sağlık Yapıları",
+        "Kamu Yapıları"
+      ],
       "image": "/ref-hospital.jpg",
       "area": "15.000 m²"
     },
@@ -12,7 +15,11 @@
       "id": "ref-2",
       "title": "TOKİ - AFAD Elazığ Hafif Çelik Köy Evleri",
       "location": "Elazığ",
-      "categories": ["Kamu Yapıları", "Çoklu Projeler", "Tek Katlı Çelik Villalar"],
+      "categories": [
+        "Kamu Yapıları",
+        "Çoklu Projeler",
+        "Tek Katlı Çelik Villalar"
+      ],
       "image": "/project-1.jpg",
       "area": "450 konut"
     },
@@ -20,7 +27,11 @@
       "id": "ref-3",
       "title": "TOKİ - AFAD Erzurum Hafif Çelik Köy Evleri",
       "location": "Erzurum",
-      "categories": ["Kamu Yapıları", "Çoklu Projeler", "Tek Katlı Çelik Villalar"],
+      "categories": [
+        "Kamu Yapıları",
+        "Çoklu Projeler",
+        "Tek Katlı Çelik Villalar"
+      ],
       "image": "/project-2.jpg",
       "area": "380 konut"
     },
@@ -28,7 +39,10 @@
       "id": "ref-4",
       "title": "T.C Tarım ve Hayvancılık Bakanlığı Çelik Yapı Kreş",
       "location": "Anaokulu - Ankara",
-      "categories": ["Eğitim Yapıları", "Kamu Yapıları"],
+      "categories": [
+        "Eğitim Yapıları",
+        "Kamu Yapıları"
+      ],
       "image": "/ref-school.jpg",
       "area": "1.800 m²"
     },
@@ -36,7 +50,10 @@
       "id": "ref-5",
       "title": "Bülent Ecevit Üniversitesi Kafeterya",
       "location": "Zonguldak",
-      "categories": ["Eğitim Yapıları", "Ticari Yapılar"],
+      "categories": [
+        "Eğitim Yapıları",
+        "Ticari Yapılar"
+      ],
       "image": "/project-3.jpg",
       "area": "580 m²"
     },
@@ -44,7 +61,10 @@
       "id": "ref-6",
       "title": "İstanbul Kadıköy İbrahim Öktem İlkokulu",
       "location": "İstanbul - Kadıköy",
-      "categories": ["Eğitim Yapıları", "Kamu Yapıları"],
+      "categories": [
+        "Eğitim Yapıları",
+        "Kamu Yapıları"
+      ],
       "image": "/project-4.jpg",
       "area": "2.400 m²"
     },
@@ -52,7 +72,10 @@
       "id": "ref-7",
       "title": "Endüstriyel Üretim Tesisi",
       "location": "Kocaeli",
-      "categories": ["Endüstriyel Yapılar", "Çelik Çatılar"],
+      "categories": [
+        "Endüstriyel Yapılar",
+        "Çelik Çatılar"
+      ],
       "image": "/ref-factory.jpg",
       "area": "8.500 m²"
     },
@@ -60,7 +83,10 @@
       "id": "ref-8",
       "title": "Modern İş Merkezi",
       "location": "Ankara - Çankaya",
-      "categories": ["Ofis Yapıları", "Ticari Yapılar"],
+      "categories": [
+        "Ofis Yapıları",
+        "Ticari Yapılar"
+      ],
       "image": "/ref-office-complex.jpg",
       "area": "3.200 m²"
     },
@@ -68,7 +94,9 @@
       "id": "ref-9",
       "title": "Lüks Villa Projesi",
       "location": "Antalya - Belek",
-      "categories": ["Çok Katlı Çelik Villalar"],
+      "categories": [
+        "Çok Katlı Çelik Villalar"
+      ],
       "image": "/multi-story-villa.jpg",
       "area": "450 m²"
     },
@@ -76,7 +104,9 @@
       "id": "ref-10",
       "title": "Loft Konseptli Çelik Villa",
       "location": "İzmir - Çeşme",
-      "categories": ["Loftlu Çelik Villalar"],
+      "categories": [
+        "Loftlu Çelik Villalar"
+      ],
       "image": "/loft-villa.jpg",
       "area": "380 m²"
     },
@@ -84,7 +114,9 @@
       "id": "ref-11",
       "title": "İkiz Villa Konut Projesi",
       "location": "Bursa - Mudanya",
-      "categories": ["İkiz Villalar"],
+      "categories": [
+        "İkiz Villalar"
+      ],
       "image": "/twin-villa.jpg",
       "area": "2x220 m²"
     },
@@ -92,7 +124,9 @@
       "id": "ref-12",
       "title": "Tiny House Modern Yaşam",
       "location": "İstanbul - Büyükçekmece",
-      "categories": ["Tiny House"],
+      "categories": [
+        "Tiny House"
+      ],
       "image": "/tiny-house.jpg",
       "area": "85 m²"
     },
@@ -100,7 +134,10 @@
       "id": "ref-13",
       "title": "Boutique Otel Projesi",
       "location": "Kapadokya",
-      "categories": ["Turizm Yapıları", "Ticari Yapılar"],
+      "categories": [
+        "Turizm Yapıları",
+        "Ticari Yapılar"
+      ],
       "image": "/project-5.jpg",
       "area": "2.800 m²"
     },
@@ -108,7 +145,10 @@
       "id": "ref-14",
       "title": "Alışveriş Merkezi Çelik Çatı",
       "location": "Eskişehir",
-      "categories": ["Ticari Yapılar", "Çelik Çatılar"],
+      "categories": [
+        "Ticari Yapılar",
+        "Çelik Çatılar"
+      ],
       "image": "/project-6.jpg",
       "area": "12.000 m²"
     }

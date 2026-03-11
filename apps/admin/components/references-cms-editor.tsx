@@ -127,20 +127,24 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
 
   function deleteById(id: string) {
     if (!store) return
-    const filtered = store.items.filter((item) => item.id !== id)
-    setStore({ ...store, items: filtered })
+    const nextStore: ReferenceStore = {
+      ...store,
+      items: store.items.filter((item) => item.id !== id),
+    }
+    setStore(nextStore)
     if (selectedId === id) {
-      setSelectedId(filtered[0]?.id ?? '')
-      if (filtered.length === 0) {
+      setSelectedId(nextStore.items[0]?.id ?? '')
+      if (nextStore.items.length === 0) {
         setEditorOpen(false)
       }
     }
+    void saveStore(nextStore, 'Referans silindi ve kaydedildi.')
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
 
-  async function saveStore() {
-    if (!store) return
+  async function saveStore(storeToPersist: ReferenceStore | null = store, successMessage = 'Referans içerikleri kaydedildi.') {
+    if (!storeToPersist) return
 
     try {
       setSaving(true)
@@ -149,12 +153,12 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(store),
+        body: JSON.stringify(storeToPersist),
       })
       if (!response.ok) {
         throw new Error('Kaydetme başarısız')
       }
-      setMessage('Referans içerikleri kaydedildi.')
+      setMessage(successMessage)
       setTimeout(() => setMessage(null), 3000)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Beklenmeyen hata')

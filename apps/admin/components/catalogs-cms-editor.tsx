@@ -109,14 +109,16 @@ export function CatalogsCmsEditor({ endpoint = '/api/catalogs', mediaEndpoint = 
   }
 
   function deleteById(id: string) {
-    setStore((prev) => {
-      const nextItems = prev.items.filter((item) => item.id !== id)
-      if (selectedId === id) {
-        setSelectedId(nextItems[0]?.id ?? '')
-        if (nextItems.length === 0) setEditorOpen(false)
-      }
-      return { ...prev, items: nextItems }
-    })
+    const nextStore: CatalogsStore = {
+      ...store,
+      items: store.items.filter((item) => item.id !== id),
+    }
+    setStore(nextStore)
+    if (selectedId === id) {
+      setSelectedId(nextStore.items[0]?.id ?? '')
+      if (nextStore.items.length === 0) setEditorOpen(false)
+    }
+    void saveStore(nextStore, 'Katalog silindi ve kaydedildi.')
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteById)
@@ -150,7 +152,7 @@ export function CatalogsCmsEditor({ endpoint = '/api/catalogs', mediaEndpoint = 
     }
   }
 
-  async function saveStore() {
+  async function saveStore(storeToPersist: CatalogsStore = store, successMessage = 'Kataloglar kaydedildi.') {
     try {
       setSaving(true)
       setError(null)
@@ -158,10 +160,10 @@ export function CatalogsCmsEditor({ endpoint = '/api/catalogs', mediaEndpoint = 
       const response = await fetch(endpoint, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(store),
+        body: JSON.stringify(storeToPersist),
       })
       if (!response.ok) throw new Error('Kaydetme başarısız')
-      setMessage('Kataloglar kaydedildi.')
+      setMessage(successMessage)
       setTimeout(() => setMessage(null), 2500)
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Kaydetme başarısız')
