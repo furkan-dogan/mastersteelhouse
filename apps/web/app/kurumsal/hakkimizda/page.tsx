@@ -1,8 +1,8 @@
-import Image from 'next/image'
 import { Award, Users, Zap, Target } from 'lucide-react'
 import { SitePageShell } from '@/components/site-page-shell'
-import { SectionIntro } from '@/components/section-intro'
 import { IconFeatureGrid } from '@/components/icon-feature-grid'
+import { CorporateIntroSection } from '@/components/corporate-intro-section'
+import { MediaBanner } from '@/components/media-banner'
 
 export const metadata = {
   title: 'Hakkımızda | Çelik Yapı',
@@ -37,30 +37,30 @@ export default function HakkimizdaPage() {
   return (
     <SitePageShell>
       <main className="min-h-screen">
-        <section className="pt-32 pb-20 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-          <SectionIntro
-            badge="Hakkımızda"
-            title="Çelik Yapıda"
-            accent="Öncü Firmayız"
-            description="Hafif çelik yapı sistemlerinde uzun yıllara dayanan birikimimizle, güvenli ve estetik yaşam alanları inşa ediyoruz. Kalite odaklı yaklaşımımızla her projede sürdürülebilir değer üretiyoruz."
+        <CorporateIntroSection
+          badge="Hakkımızda"
+          title="Çelik Yapıda"
+          accent="Öncü Firmayız"
+          description="Hafif çelik yapı sistemlerinde uzun yıllara dayanan birikimimizle, güvenli ve estetik yaşam alanları inşa ediyoruz. Kalite odaklı yaklaşımımızla her projede sürdürülebilir değer üretiyoruz."
+          sectionClassName="bg-gradient-to-br from-primary/5 via-background to-accent/5"
+        >
+          <MediaBanner
+            src="/steel-structure.jpg"
+            alt="Hakkımızda"
+            heightClassName="h-[500px]"
+            className="shadow-2xl"
+            overlayClassName="bg-gradient-to-t from-primary/80 via-transparent to-transparent"
           />
+        </CorporateIntroSection>
 
+        <section className="bg-background py-20">
           <div className="container mx-auto px-4">
-            <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-              <Image src="/steel-structure.jpg" alt="Hakkımızda" fill className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid items-center gap-12 lg:grid-cols-2">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <h2 className="mb-6 text-3xl font-bold md:text-4xl">
                   Uzun Yıllara Dayanan <span className="text-accent">Uzmanlık</span>
                 </h2>
-                <div className="space-y-4 text-muted-foreground leading-relaxed">
+                <div className="space-y-4 leading-relaxed text-muted-foreground">
                   <p>
                     Firmamız, hafif çelik yapı sistemleri alanında proje planlamadan uygulamaya kadar uçtan uca hizmet
                     sunar. Konut projelerinden endüstriyel ve ticari yapılara uzanan geniş bir ölçekte, ihtiyaca özel
@@ -81,20 +81,12 @@ export default function HakkimizdaPage() {
               <div className="relative">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-4">
-                    <div className="relative h-48 rounded-2xl overflow-hidden">
-                      <Image src="/project-1.jpg" alt="Proje" fill className="object-cover" />
-                    </div>
-                    <div className="relative h-64 rounded-2xl overflow-hidden">
-                      <Image src="/project-2.jpg" alt="Proje" fill className="object-cover" />
-                    </div>
+                    <MediaBanner src="/project-1.jpg" alt="Proje" heightClassName="h-48" />
+                    <MediaBanner src="/project-2.jpg" alt="Proje" heightClassName="h-64" />
                   </div>
                   <div className="space-y-4 pt-8">
-                    <div className="relative h-64 rounded-2xl overflow-hidden">
-                      <Image src="/project-3.jpg" alt="Proje" fill className="object-cover" />
-                    </div>
-                    <div className="relative h-48 rounded-2xl overflow-hidden">
-                      <Image src="/project-4.jpg" alt="Proje" fill className="object-cover" />
-                    </div>
+                    <MediaBanner src="/project-3.jpg" alt="Proje" heightClassName="h-64" />
+                    <MediaBanner src="/project-4.jpg" alt="Proje" heightClassName="h-48" />
                   </div>
                 </div>
               </div>
@@ -102,10 +94,10 @@ export default function HakkimizdaPage() {
           </div>
         </section>
 
-        <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
+        <section className="bg-gradient-to-br from-muted/30 to-background py-20">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Değerlerimiz</h2>
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <h2 className="mb-6 text-3xl font-bold md:text-4xl">Değerlerimiz</h2>
               <p className="text-lg text-muted-foreground">Başarımızın ardındaki temel değerlerimiz</p>
             </div>
 

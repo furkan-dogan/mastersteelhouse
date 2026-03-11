@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import type { ReferenceItem } from '@/lib/reference-types'
+import { PageHero } from '@/components/page-hero'
 
 type Props = {
   references: ReferenceItem[]
@@ -25,20 +26,17 @@ export function ReferencesClient({ references }: Props) {
       : references.filter((reference) => reference.categories.includes(selectedCategory))
 
   return (
-    <main className="min-h-screen bg-background pt-32 pb-20">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Referans <span className="text-accent">Projelerimiz</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Türkiye'nin dört bir yanında gerçekleştirdiğimiz başarılı projeler
-          </p>
-        </div>
+    <main className="min-h-screen bg-background pb-20 pt-32">
+      <PageHero
+        title="Referans"
+        highlight="Projelerimiz"
+        description="Türkiye'nin dört bir yanında gerçekleştirdiğimiz başarılı projeler"
+      />
 
+      <div className="container mx-auto px-4">
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-sm font-semibold text-foreground whitespace-nowrap">Referansları Filtrele :</span>
+          <div className="mb-4 flex items-center gap-3">
+            <span className="whitespace-nowrap text-sm font-semibold text-foreground">Referansları Filtrele :</span>
           </div>
 
           <div className="flex flex-wrap gap-2">

@@ -1,81 +1,45 @@
 import 'server-only'
 
-import { existsSync } from 'fs'
-import { promises as fs } from 'fs'
-import path from 'path'
 import type { NewsPost } from '@/lib/news-types'
 import { normalizeMediaPlacement } from '@/lib/media-placement'
+import { ensureUniqueSectionIds } from '@/lib/content-utils'
+import { normalizeCmsMediaUrl, readCmsJson } from '@/lib/cms-fetch'
 
 type NewsStore = {
   posts: NewsPost[]
 }
 
-function resolveStorePath() {
-  const candidates = [
-    path.join(process.cwd(), 'content', 'news-cms.json'),
-    path.join(process.cwd(), '..', '..', 'content', 'news-cms.json'),
-    path.join(process.cwd(), '..', 'content', 'news-cms.json'),
-  ]
-
-  const found = candidates.find((candidate) => existsSync(candidate))
-  if (!found) {
-    throw new Error('news-cms.json not found')
-  }
-
-  return found
-}
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .trim()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+function isNewsStore(value: unknown): value is NewsStore {
+  return Boolean(value && typeof value === 'object' && Array.isArray((value as NewsStore).posts))
 }
 
 function normalizePost(post: NewsPost): NewsPost {
-  const seen = new Set<string>()
-  const sections = (post.sections ?? []).map((section, index) => {
-    const rawId = section.id?.trim() || slugify(section.title) || `bolum-${index + 1}`
-    let id = rawId
-    let suffix = 2
-    while (seen.has(id)) {
-      id = `${rawId}-${suffix}`
-      suffix += 1
-    }
-    seen.add(id)
-
-    return {
-      ...section,
-      id,
-      imagePosition: section.imagePosition || '50% 50%',
-      imagePlacement: normalizeMediaPlacement(section.imagePlacement, section.imagePosition),
-    }
-  })
+  const sections = ensureUniqueSectionIds(post.sections).map((section) => ({
+    ...section,
+    image: normalizeCmsMediaUrl(section.image),
+    imagePosition: section.imagePosition || '50% 50%',
+    imagePlacement: normalizeMediaPlacement(section.imagePlacement, section.imagePosition),
+  }))
 
   return {
     ...post,
+    image: normalizeCmsMediaUrl(post.image),
     imagePosition: post.imagePosition || '50% 50%',
     imagePlacement: normalizeMediaPlacement(post.imagePlacement, post.imagePosition),
-    imagePlacementCard: normalizeMediaPlacement(
-      post.imagePlacementCard ?? post.imagePlacement,
-      post.imagePosition
-    ),
-    imagePlacementHero: normalizeMediaPlacement(
-      post.imagePlacementHero ?? post.imagePlacement,
-      post.imagePosition
-    ),
+    imagePlacementCard: normalizeMediaPlacement(post.imagePlacementCard ?? post.imagePlacement, post.imagePosition),
+    imagePlacementHero: normalizeMediaPlacement(post.imagePlacementHero ?? post.imagePlacement, post.imagePosition),
     sections,
-    gallery: post.gallery ?? [],
+    gallery: (post.gallery ?? []).map((item) => normalizeCmsMediaUrl(item)),
   }
 }
 
 async function readStore(): Promise<NewsStore> {
-  const filePath = resolveStorePath()
-  const raw = await fs.readFile(filePath, 'utf8')
-  return JSON.parse(raw) as NewsStore
+  return readCmsJson<NewsStore>({
+    r2Key: '_cms/news-cms.json',
+    devApiPath: '/api/news',
+    localFileName: 'news-cms.json',
+    validate: isNewsStore,
+  })
 }
 
 export async function getNewsPosts(): Promise<NewsPost[]> {

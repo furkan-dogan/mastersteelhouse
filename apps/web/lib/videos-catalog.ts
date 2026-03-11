@@ -1,27 +1,23 @@
 import 'server-only'
 
-import { existsSync } from 'fs'
-import { promises as fs } from 'fs'
-import path from 'path'
 import type { VideosStore } from '@/lib/videos-types'
+import { readCmsJson } from '@/lib/cms-fetch'
 
-function resolveStorePath() {
-  const candidates = [
-    path.join(process.cwd(), 'content', 'videos-cms.json'),
-    path.join(process.cwd(), '..', '..', 'content', 'videos-cms.json'),
-    path.join(process.cwd(), '..', 'content', 'videos-cms.json'),
-  ]
-
-  const found = candidates.find((candidate) => existsSync(candidate))
-  if (!found) {
-    throw new Error('videos-cms.json not found')
-  }
-
-  return found
+function isVideosStore(value: unknown): value is VideosStore {
+  return Boolean(
+    value &&
+      typeof value === 'object' &&
+      typeof (value as VideosStore).hero?.title === 'string' &&
+      typeof (value as VideosStore).hero?.description === 'string' &&
+      Array.isArray((value as VideosStore).items)
+  )
 }
 
 export async function getVideosContent(): Promise<VideosStore> {
-  const raw = await fs.readFile(resolveStorePath(), 'utf8')
-  return JSON.parse(raw) as VideosStore
+  return readCmsJson<VideosStore>({
+    r2Key: '_cms/videos-cms.json',
+    devApiPath: '/api/videos',
+    localFileName: 'videos-cms.json',
+    validate: isVideosStore,
+  })
 }
-

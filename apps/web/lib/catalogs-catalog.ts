@@ -1,26 +1,31 @@
 import 'server-only'
 
-import { existsSync } from 'fs'
-import { promises as fs } from 'fs'
-import path from 'path'
 import type { CatalogsStore } from '@/lib/catalogs-types'
+import { normalizeCmsMediaUrl, readCmsJson } from '@/lib/cms-fetch'
 
-function resolveStorePath() {
-  const candidates = [
-    path.join(process.cwd(), 'content', 'catalogs-cms.json'),
-    path.join(process.cwd(), '..', '..', 'content', 'catalogs-cms.json'),
-    path.join(process.cwd(), '..', 'content', 'catalogs-cms.json'),
-  ]
-
-  const found = candidates.find((candidate) => existsSync(candidate))
-  if (!found) {
-    throw new Error('catalogs-cms.json not found')
-  }
-
-  return found
+function isCatalogsStore(value: unknown): value is CatalogsStore {
+  return Boolean(
+    value &&
+      typeof value === 'object' &&
+      typeof (value as CatalogsStore).hero?.title === 'string' &&
+      typeof (value as CatalogsStore).hero?.description === 'string' &&
+      Array.isArray((value as CatalogsStore).items)
+  )
 }
 
 export async function getCatalogsContent(): Promise<CatalogsStore> {
-  const raw = await fs.readFile(resolveStorePath(), 'utf8')
-  return JSON.parse(raw) as CatalogsStore
+  const store = await readCmsJson<CatalogsStore>({
+    r2Key: '_cms/catalogs-cms.json',
+    devApiPath: '/api/catalogs',
+    localFileName: 'catalogs-cms.json',
+    validate: isCatalogsStore,
+  })
+
+  return {
+    ...store,
+    items: store.items.map((item) => ({
+      ...item,
+      pdfUrl: normalizeCmsMediaUrl(item.pdfUrl),
+    })),
+  }
 }

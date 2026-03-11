@@ -1,8 +1,6 @@
 import 'server-only'
 
-import { promises as fs } from 'fs'
-import { existsSync } from 'fs'
-import path from 'path'
+import { normalizeCmsMediaUrl, readCmsJson } from '@/lib/cms-fetch'
 
 export type ProductFeatures = {
   rooms: string
@@ -86,104 +84,19 @@ const DEFAULT_HIGHLIGHTS = [
   'Modern mimari cizgiler',
 ]
 
-const WEB_DEV_MEDIA_PROXY_BASE = (process.env.WEB_DEV_MEDIA_PROXY_BASE ?? 'http://localhost:3002').trim().replace(/\/$/, '')
-
-function isR2DevUrl(url: string) {
-  return /^https:\/\/[^/]+\.r2\.dev\//i.test(url)
-}
-
-function toAdminMediaProxy(url: string) {
-  return `${WEB_DEV_MEDIA_PROXY_BASE}/api/media/file?url=${encodeURIComponent(url)}`
-}
-
-function resolveStorePath() {
-  const candidates = [
-    path.join(process.cwd(), 'content', 'products-cms.json'),
-    path.join(process.cwd(), '..', '..', 'content', 'products-cms.json'),
-    path.join(process.cwd(), '..', 'content', 'products-cms.json'),
-  ]
-
-  const found = candidates.find((candidate) => existsSync(candidate))
-  if (!found) {
-    throw new Error('products-cms.json not found')
-  }
-  return found
-}
-
-function normalizeMediaUrl(input: string | undefined): string {
-  const value = (input ?? '').trim()
-  if (!value) return ''
-
-  if (
-    value.startsWith('/api/media/file?url=') ||
-    value.startsWith('/api/profile/media/file?url=') ||
-    value.startsWith('/api/media/file?path=') ||
-    value.startsWith('/api/profile/media/file?path=')
-  ) {
-    try {
-      const query = value.includes('url=') ? 'url=' : 'path='
-      const raw = value.split(query)[1] ?? ''
-      const decoded = decodeURIComponent(raw)
-      return decoded || value
-    } catch {
-      return value
-    }
-  }
-
-  // Local geliştirmede bazı makinelerde *.r2.dev TLS hatası verebiliyor.
-  // Bu durumda görseli admin proxy endpoint'i üzerinden servis et.
-  if (process.env.NODE_ENV === 'development' && isR2DevUrl(value)) {
-    return toAdminMediaProxy(value)
-  }
-
-  return value
-}
-
-async function readStoreFromR2(): Promise<ProductStore | null> {
-  const base = (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? '').trim().replace(/\/$/, '')
-  if (!base) return null
-
-  try {
-    const response = await fetch(`${base}/_cms/products-cms.json?ts=${Date.now()}`, {
-      cache: 'no-store',
-    })
-
-    if (!response.ok) return null
-    const json = (await response.json()) as ProductStore
-    if (!Array.isArray(json.categories) || !Array.isArray(json.products)) return null
-    return json
-  } catch {
-    return null
-  }
-}
-
-async function readStoreFromAdminDev(): Promise<ProductStore | null> {
-  if (process.env.NODE_ENV !== 'development') return null
-
-  const adminBase = (process.env.WEB_DEV_ADMIN_BASE_URL ?? 'http://localhost:3002').trim().replace(/\/$/, '')
-  if (!adminBase) return null
-
-  try {
-    const response = await fetch(`${adminBase}/api/products`, { cache: 'no-store' })
-    if (!response.ok) return null
-    const json = (await response.json()) as ProductStore
-    if (!Array.isArray(json.categories) || !Array.isArray(json.products)) return null
-    return json
-  } catch {
-    return null
-  }
+function isProductStore(value: unknown): value is ProductStore {
+  if (!value || typeof value !== 'object') return false
+  const candidate = value as ProductStore
+  return Array.isArray(candidate.categories) && Array.isArray(candidate.products)
 }
 
 async function readStore(): Promise<ProductStore> {
-  const r2Store = await readStoreFromR2()
-  if (r2Store) return r2Store
-
-  const adminDevStore = await readStoreFromAdminDev()
-  if (adminDevStore) return adminDevStore
-
-  const filePath = resolveStorePath()
-  const raw = await fs.readFile(filePath, 'utf8')
-  return JSON.parse(raw) as ProductStore
+  return readCmsJson<ProductStore>({
+    r2Key: '_cms/products-cms.json',
+    devApiPath: '/api/products',
+    localFileName: 'products-cms.json',
+    validate: isProductStore,
+  })
 }
 
 function normalizeProduct(product: ProductStore['products'][number]): ProductItem {
@@ -192,7 +105,7 @@ function normalizeProduct(product: ProductStore['products'][number]): ProductIte
     slug: product.slug,
     name: product.name,
     area: product.area,
-    image: normalizeMediaUrl(product.image || product.cardImage || product.sliderImage || product.gallery?.[0]),
+    image: normalizeCmsMediaUrl(product.image || product.cardImage || product.sliderImage || product.gallery?.[0]),
     description: product.description,
     features: {
       rooms: product.features?.rooms ?? '2+1',
@@ -206,10 +119,10 @@ function normalizeProduct(product: ProductStore['products'][number]): ProductIte
     },
     technicalDetails: product.technicalDetails ?? DEFAULT_TECHNICAL_DETAILS,
     highlights: product.highlights ?? DEFAULT_HIGHLIGHTS,
-    gallery: (product.gallery ?? DEFAULT_GALLERY).map((url) => normalizeMediaUrl(url)),
+    gallery: (product.gallery ?? DEFAULT_GALLERY).map((url) => normalizeCmsMediaUrl(url)),
     floorPlans: (product.floorPlans ?? DEFAULT_FLOOR_PLANS).map((plan) => ({
       ...plan,
-      image: normalizeMediaUrl(plan.image),
+      image: normalizeCmsMediaUrl(plan.image),
     })),
   }
 }

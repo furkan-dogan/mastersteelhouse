@@ -1,8 +1,8 @@
-import Image from 'next/image'
 import { Target, Sparkles, Award } from 'lucide-react'
 import { SitePageShell } from '@/components/site-page-shell'
-import { SectionIntro } from '@/components/section-intro'
 import { IconFeatureList } from '@/components/icon-feature-list'
+import { CorporateIntroSection } from '@/components/corporate-intro-section'
+import { MediaBanner } from '@/components/media-banner'
 
 export const metadata = {
   title: 'Misyonumuz | Çelik Yapı',
@@ -35,40 +35,38 @@ export default function MisyonPage() {
   return (
     <SitePageShell>
       <main className="min-h-screen">
-        <section className="pt-32 pb-20">
-          <SectionIntro badge="Misyonumuz" title="Geleceği" accent="İnşa Ediyoruz" />
+        <CorporateIntroSection badge="Misyonumuz" title="Geleceği" accent="İnşa Ediyoruz">
+          <div className="mb-20 grid items-center gap-12 lg:grid-cols-2">
+            <MediaBanner
+              src="/hero-slide-2.jpg"
+              alt="Misyon"
+              heightClassName="h-[500px]"
+              overlayClassName="bg-gradient-to-t from-primary/60 to-transparent"
+            />
 
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
-              <div className="relative h-[500px] rounded-3xl overflow-hidden">
-                <Image src="/hero-slide-2.jpg" alt="Misyon" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
-              </div>
+            <IconFeatureList
+              items={missionItems}
+              itemClassName="rounded-none border-0 bg-transparent p-0"
+              iconWrapClassName="h-12 w-12 rounded-xl"
+              titleClassName="text-xl font-bold mb-2"
+              descriptionClassName="text-base leading-relaxed"
+            />
+          </div>
 
-              <IconFeatureList
-                items={missionItems}
-                itemClassName="rounded-none border-0 bg-transparent p-0"
-                iconWrapClassName="h-12 w-12 rounded-xl"
-                titleClassName="text-xl font-bold mb-2"
-                descriptionClassName="text-base leading-relaxed"
-              />
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-              <div className="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-accent/5 to-accent/10 border border-accent/20">
-                <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Çalışma Prensibimiz</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed text-center mb-6">
-                  Her projede önce ihtiyacı doğru tanımlar, ardından tasarım, üretim ve uygulama adımlarını aynı
-                  kalite çizgisinde ilerleterek işlevsel ve güvenli sonuçlar üretiriz.
-                </p>
-                <p className="text-lg text-muted-foreground leading-relaxed text-center">
-                  İş ortaklarımızla kurduğumuz açık iletişim, teknik disiplin ve sorumluluk odaklı yaklaşımımız; uzun
-                  vadeli iş birliğinin temelini oluşturur.
-                </p>
-              </div>
+          <div className="mx-auto max-w-4xl">
+            <div className="rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/5 to-accent/10 p-8 md:p-12">
+              <h2 className="mb-6 text-center text-2xl font-bold md:text-3xl">Çalışma Prensibimiz</h2>
+              <p className="mb-6 text-center text-lg leading-relaxed text-muted-foreground">
+                Her projede önce ihtiyacı doğru tanımlar, ardından tasarım, üretim ve uygulama adımlarını aynı
+                kalite çizgisinde ilerleterek işlevsel ve güvenli sonuçlar üretiriz.
+              </p>
+              <p className="text-center text-lg leading-relaxed text-muted-foreground">
+                İş ortaklarımızla kurduğumuz açık iletişim, teknik disiplin ve sorumluluk odaklı yaklaşımımız; uzun
+                vadeli iş birliğinin temelini oluşturur.
+              </p>
             </div>
           </div>
-        </section>
+        </CorporateIntroSection>
       </main>
     </SitePageShell>
   )
