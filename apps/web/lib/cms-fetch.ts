@@ -14,6 +14,9 @@ type ReadCmsJsonOptions<T> = {
 const WEB_DEV_ADMIN_API_BASE = (process.env.WEB_DEV_ADMIN_API_BASE ?? 'http://localhost:3002').trim().replace(/\/$/, '')
 const WEB_DEV_MEDIA_PROXY_BASE = (process.env.WEB_DEV_MEDIA_PROXY_BASE ?? WEB_DEV_ADMIN_API_BASE).trim().replace(/\/$/, '')
 
+const IS_DEV = process.env.NODE_ENV === 'development'
+const CMS_REVALIDATE_SECONDS = Number.parseInt(process.env.CMS_REVALIDATE_SECONDS ?? '120', 10)
+
 function resolveLocalContentPath(fileName: string) {
   const candidates = [
     path.join(process.cwd(), 'content', fileName),
@@ -63,16 +66,20 @@ export function normalizeCmsMediaUrl(input: string | undefined): string {
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && isR2DevUrl(value)) {
+  if (IS_DEV && isR2DevUrl(value)) {
     return toAdminMediaProxy(value)
   }
 
   return value
 }
 
-async function fetchJson<T>(url: string): Promise<T | null> {
+async function fetchJson<T>(url: string, { forceNoStore = false }: { forceNoStore?: boolean } = {}): Promise<T | null> {
   try {
-    const response = await fetch(url, { cache: 'no-store' })
+    const response = await fetch(url, {
+      cache: IS_DEV || forceNoStore ? 'no-store' : 'force-cache',
+      next: !IS_DEV && !forceNoStore ? { revalidate: CMS_REVALIDATE_SECONDS } : undefined,
+    })
+
     if (!response.ok) return null
     return (await response.json()) as T
   } catch {
@@ -88,14 +95,12 @@ export async function readCmsJson<T>({
 }: ReadCmsJsonOptions<T>): Promise<T> {
   const r2Base = resolveR2BaseUrl()
   if (r2Base) {
-    const r2Value = await fetchJson<unknown>(`${r2Base}/${r2Key}?ts=${Date.now()}`)
+    const r2Value = await fetchJson<unknown>(`${r2Base}/${r2Key}`)
     if (r2Value && validate(r2Value)) return r2Value
   }
 
-  if (process.env.NODE_ENV === 'development' && devApiPath) {
-    const devValue = await fetchJson<unknown>(
-      `${WEB_DEV_ADMIN_API_BASE}${devApiPath}${devApiPath.includes('?') ? '&' : '?'}ts=${Date.now()}`
-    )
+  if (IS_DEV && devApiPath) {
+    const devValue = await fetchJson<unknown>(`${WEB_DEV_ADMIN_API_BASE}${devApiPath}`, { forceNoStore: true })
     if (devValue && validate(devValue)) return devValue
   }
 

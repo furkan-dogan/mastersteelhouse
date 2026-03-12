@@ -1,12 +1,34 @@
+import type { Metadata } from 'next'
 import { Calendar, Clock, MapPin, User } from 'lucide-react'
 import { NewsGallery } from '@/components/news-gallery'
 import { getNewsPostBySlug, getRelatedNewsPosts } from '@/lib/news-catalog'
 import { ArticleDetailPage, ArticleNotFoundPage } from '@/components/article-detail/article-detail-page'
+import { buildArticleMetadata, trimForMeta } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const haber = await getNewsPostBySlug(slug)
+
+  if (!haber) {
+    return {
+      title: 'Haber Bulunamadı',
+      description: 'İstenen haber bulunamadı.',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  return buildArticleMetadata({
+    title: haber.title,
+    description: trimForMeta(haber.excerpt || haber.title, 160),
+    path: `/medya/haberler/${haber.slug}`,
+    image: haber.image,
+  })
 }
 
 export default async function HaberDetay({ params }: Props) {

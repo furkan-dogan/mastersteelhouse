@@ -1,28 +1,78 @@
-import React from "react"
+import React from 'react'
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const inter = Inter({ 
-  subsets: ["latin"],
+const inter = Inter({
+  subsets: ['latin'],
   variable: '--font-inter',
-});
+})
 
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ["latin"],
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
   variable: '--font-space-grotesk',
-});
+})
+
+const DEFAULT_SITE_URL = 'https://mastersteelhouse.com'
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).trim().replace(/\/$/, '')
+const brandName = 'Master Steel House'
+const defaultTitle = `${brandName} | Profesyonel Çelik Yapı Çözümleri`
+const defaultDescription =
+  'Master Steel House; hafif çelik yapı, çelik villa, çelik konstrüksiyon ve anahtar teslim çözümlerle dayanıklı, modern ve hızlı yapı sistemleri sunar.'
 
 export const metadata: Metadata = {
-  title: 'Master Steel House | Profesyonel Çelik Yapı Çözümleri',
-  description: 'Master Steel House - Hafif çelik yapı, çelik villa, çelik ev ve tüm çelik konstrüksiyon hizmetlerinde 20+ yıllık deneyim. Depreme dayanıklı, hızlı montaj, uygun fiyat garantisi.',
-  keywords: 'master steel house, çelik yapı, hafif çelik, çelik villa, çelik ev, metal konstrüksiyon, çelik konstrüksiyon, prefabrik ev, depreme dayanıklı yapı',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: defaultTitle,
+    template: `%s | ${brandName}`,
+  },
+  description: defaultDescription,
+  keywords: [
+    'master steel house',
+    'çelik yapı',
+    'hafif çelik',
+    'çelik villa',
+    'çelik ev',
+    'çelik konstrüksiyon',
+    'prefabrik ev',
+    'depreme dayanıklı yapı',
+  ],
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
-    title: 'Profesyonel Çelik Yapı Çözümleri',
-    description: 'Hafif çelik yapı sistemleriyle modern, dayanıklı ve ekonomik çözümler sunuyoruz.',
+    title: defaultTitle,
+    description: defaultDescription,
+    url: '/',
+    siteName: brandName,
     type: 'website',
     locale: 'tr_TR',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: `${brandName} logo`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: defaultTitle,
+    description: defaultDescription,
+    images: ['/logo.png'],
   },
   icons: {
     icon: [
@@ -41,7 +91,6 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
-    generator: 'v0.app'
 }
 
 export default function RootLayout({

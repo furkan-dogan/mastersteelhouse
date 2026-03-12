@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Calendar, ArrowRight, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -5,6 +6,20 @@ import { getNewsPosts } from '@/lib/news-catalog'
 import { mediaPlacementImageStyle } from '@/lib/media-placement'
 import { PageHero } from '@/components/page-hero'
 import { SitePageShell } from '@/components/site-page-shell'
+
+export const metadata: Metadata = {
+  title: 'Haberler ve Duyurular',
+  description: "Master Steel House'dan son gelişmeler, proje haberleri ve kurumsal duyurular.",
+  alternates: {
+    canonical: '/medya/haberler',
+  },
+  openGraph: {
+    title: 'Master Steel House Haberler ve Duyurular',
+    description: "Master Steel House'dan son gelişmeler, proje haberleri ve kurumsal duyurular.",
+    url: '/medya/haberler',
+    type: 'website',
+  },
+}
 
 export default async function Haberler() {
   const news = await getNewsPosts()

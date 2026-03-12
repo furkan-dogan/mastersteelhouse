@@ -1,11 +1,33 @@
+import type { Metadata } from 'next'
 import { Calendar, User, Clock } from 'lucide-react'
 import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/blog-catalog'
 import { ArticleDetailPage, ArticleNotFoundPage } from '@/components/article-detail/article-detail-page'
+import { buildArticleMetadata, trimForMeta } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const blog = await getBlogPostBySlug(slug)
+
+  if (!blog) {
+    return {
+      title: 'Blog Yazısı Bulunamadı',
+      description: 'İstenen blog yazısı bulunamadı.',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  return buildArticleMetadata({
+    title: blog.title,
+    description: trimForMeta(blog.excerpt || blog.title, 160),
+    path: `/medya/blog/${blog.slug}`,
+    image: blog.image,
+  })
 }
 
 export default async function BlogDetail({ params }: Props) {
