@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
 import { getProfileProducts } from '@/lib/profile-content'
-import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+import { absoluteProfileUrl, buildProfileMetadata, trimForMeta } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -15,6 +15,10 @@ export const revalidate = 300
 
 function normalizeProductSlug(slug: string) {
   return slug === 'alcikose-profili' ? 'delikli-alci-kose-profili' : slug
+}
+
+function buildProductMetaDescription(name: string, subtitle: string, description: string) {
+  return trimForMeta(`${name}: ${subtitle} ${description}`, 158)
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -33,10 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return buildProfileMetadata({
-    title: product.name,
-    description: product.description,
+    title: `${product.name} Teknik Özellikleri ve Ölçüleri`,
+    description: buildProductMetaDescription(product.name, product.subtitle, product.description),
     path: `/urunler/${product.slug}`,
-    keywords: [product.name, 'profil teknik özellikleri', 'galvanizli profil'],
+    keywords: [product.name, 'profil teknik özellikleri', 'galvanizli profil', 'ölçü tablosu', 'uygulama avantajları'],
     type: 'article',
     image: product.gallery[0] || product.image || '/logo-profil.png',
   })

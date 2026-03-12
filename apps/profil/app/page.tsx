@@ -14,9 +14,9 @@ import { absoluteProfileUrl, buildProfileMetadata, PROFILE_SITE_NAME, PROFILE_SI
 export const revalidate = 300
 
 export const metadata = buildProfileMetadata({
-  title: 'Delikli Alçı Köşe, Kaba Sıva ve Tavan U-C Profilleri',
+  title: 'Galvanizli Profil Sistemleri: Delikli Alçı Köşe, Kaba Sıva ve Tavan U-C Profilleri',
   description:
-    'Delikli alçı köşe profili, kaba sıva profili ve tavan U-C profili ürünlerinde teknik detaylar, uygulama alanları ve teklif süreçleri.',
+    'Galvanizli delikli alçı köşe profili, kaba sıva profili ve tavan U-C profili çözümlerini teknik özellikler, uygulama rehberi ve hızlı teklif desteği ile inceleyin.',
   path: '/',
   keywords: ['profil sistemleri', 'delikli alçı köşe profili', 'kaba sıva profili', 'tavan u-c profili'],
 })

@@ -7,7 +7,7 @@ type ProductsSliderProps = {
 }
 
 function buildCardTeaser(product: ProfileProduct) {
-  const source = product.description?.trim() || product.subtitle?.trim() || ''
+  const source = product.subtitle?.trim() || product.description?.trim() || ''
   if (!source) return ''
   if (source.length <= 170) return source
   return `${source.slice(0, 167).trimEnd()}...`

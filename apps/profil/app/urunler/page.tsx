@@ -8,9 +8,9 @@ import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
 export const revalidate = 300
 
 export const metadata = buildProfileMetadata({
-  title: 'Ürünler',
+  title: 'Profil Ürünleri: Delikli Alçı Köşe, Kaba Sıva ve Tavan U-C Profilleri',
   description:
-    'Delikli alçı köşe profili, kaba sıva profili ve tavan U-C profili ürünlerini teknik özellikleriyle inceleyin.',
+    'Profil ürün kataloğunda delikli alçı köşe, kaba sıva ve tavan U-C profili modellerini teknik detaylar, ölçüler ve kullanım senaryolarıyla karşılaştırın.',
   path: '/urunler',
   keywords: ['profil ürünleri', 'alçı köşe profili', 'kaba sıva profili', 'u-c profil'],
 })

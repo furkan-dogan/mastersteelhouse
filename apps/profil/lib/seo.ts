@@ -6,6 +6,12 @@ export const PROFILE_INSTAGRAM_URL = 'https://www.instagram.com/mastersteelhouse
 
 const DEFAULT_OG_IMAGE = '/logoprofil.png'
 
+export function trimForMeta(text: string, max = 160) {
+  const clean = text.replace(/\s+/g, ' ').trim()
+  if (clean.length <= max) return clean
+  return `${clean.slice(0, max - 1).trimEnd()}…`
+}
+
 type BuildProfileMetadataInput = {
   title: string
   description: string
