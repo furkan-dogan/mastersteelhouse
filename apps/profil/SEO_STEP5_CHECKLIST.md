@@ -4,7 +4,7 @@ Bu adım, teknik kurgu sonrası canlıya çıkmadan önce doğrulama ve izleme k
 
 ## 1) Search Console / Bing doğrulama
 
-`.env` veya Vercel Environment Variables:
+Vercel Environment Variables:
 
 - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=...`
 - `NEXT_PUBLIC_BING_SITE_VERIFICATION=...`
@@ -21,7 +21,7 @@ Canlıda şu URL’leri kontrol et:
 
 Beklenti:
 - robots içinde sitemap URL görünmeli
-- sitemap içinde ürün + blog detay + haber detay sayfaları listelenmeli
+- sitemap içinde ürün + blog detay sayfaları listelenmeli
 
 ## 3) Rich Results / Schema doğrulama
 
@@ -30,12 +30,12 @@ Google Rich Results Test ile kontrol edilecek sayfalar:
 - `/`
 - `/urunler`
 - `/urunler/delikli-alci-kose-profili`
+- `/medya/blog`
 - `/medya/blog/<slug>`
-- `/medya/haberler/<slug>`
 - `/sss`
 
 Beklenti:
-- Product, FAQPage, BlogPosting/NewsArticle, BreadcrumbList parse edilmeli
+- Product, FAQPage, BlogPosting, BreadcrumbList parse edilmeli
 
 ## 4) Sosyal paylaşım önizleme
 
@@ -53,14 +53,11 @@ Beklenti:
 Elle kontrol:
 
 - Blog liste -> blog detay linkleri çalışıyor mu
-- Haber liste -> haber detay linkleri çalışıyor mu
+- Ürün liste -> ürün detay linkleri çalışıyor mu
 - Detay sayfalardan ilgili sayfalara dönüş linkleri var mı
 
 ## 6) Son doğrulama komutları
 
 ```bash
-pnpm --filter mastersteelhouse-profil dev
-# ayrı terminal
-pnpm --filter mastersteelhouse-profil lint
-pnpm --filter mastersteelhouse-profil exec tsc --noEmit
+corepack pnpm --filter mastersteelhouse-profil build
 ```
