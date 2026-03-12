@@ -2,6 +2,7 @@ import { ProfilePageShell } from '@/components/profile-page-shell'
 import { ContactSection } from '@/components/contact-section'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 export const metadata = buildProfileMetadata({
   title: 'İletişim',
@@ -11,6 +12,11 @@ export const metadata = buildProfileMetadata({
 })
 
 export default function IletisimPage() {
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: 'İletişim', path: '/iletisim' },
+  ])
+
   const contactSchema = {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
@@ -21,7 +27,7 @@ export default function IletisimPage() {
 
   return (
     <ProfilePageShell>
-      <SeoJsonLd data={contactSchema} />
+      <SeoJsonLd data={[breadcrumbSchema, contactSchema]} />
       <ContactSection />
     </ProfilePageShell>
   )

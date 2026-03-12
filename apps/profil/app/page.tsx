@@ -10,6 +10,7 @@ import { ProductsSlider } from '@/components/products-slider'
 import { HomeSeoContent } from '@/components/home-seo-content'
 import { getProfileFaqs, getProfileProducts } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata, PROFILE_SITE_NAME, PROFILE_SITE_URL } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 export const revalidate = 300
 
@@ -32,6 +33,8 @@ export default async function ProfilHomePage() {
     inLanguage: 'tr-TR',
   }
 
+  const breadcrumbSchema = buildBreadcrumbList([{ name: 'Anasayfa', path: '/' }])
+
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -46,7 +49,7 @@ export default async function ProfilHomePage() {
 
   return (
     <div className="min-h-screen bg-[#f3f4f1]">
-      <SeoJsonLd data={[websiteSchema, itemListSchema]} />
+      <SeoJsonLd data={[websiteSchema, breadcrumbSchema, itemListSchema]} />
       <SiteHeader />
       <HeroSlider products={products} />
       <ProductsSlider products={products} />

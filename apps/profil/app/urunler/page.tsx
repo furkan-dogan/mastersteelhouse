@@ -4,6 +4,7 @@ import { SeoJsonLd } from '@/components/seo-json-ld'
 import { ProductCardGrid } from '@/components/product-card-grid'
 import { getProfileProducts } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 export const revalidate = 300
 
@@ -17,6 +18,11 @@ export const metadata = buildProfileMetadata({
 
 export default async function ProfilProductsPage() {
   const products = await getProfileProducts()
+
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: 'Ürünler', path: '/urunler' },
+  ])
 
   const listSchema = {
     '@context': 'https://schema.org',
@@ -35,7 +41,7 @@ export default async function ProfilProductsPage() {
 
   return (
     <div className="min-h-screen bg-[#f3f4f1] pt-20">
-      <SeoJsonLd data={listSchema} />
+      <SeoJsonLd data={[breadcrumbSchema, listSchema]} />
       <SiteHeader />
       <main>
         <ProductCardGrid products={products} />

@@ -3,6 +3,7 @@ import { SeoJsonLd } from '@/components/seo-json-ld'
 import { ProfileBlogList } from '@/components/profile-blog-list'
 import { getProfileBlogPosts } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 export const metadata = buildProfileMetadata({
   title: 'Blog',
@@ -13,6 +14,11 @@ export const metadata = buildProfileMetadata({
 
 export default async function BlogPage() {
   const posts = await getProfileBlogPosts()
+
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: 'Blog', path: '/medya/blog' },
+  ])
 
   const blogSchema = {
     '@context': 'https://schema.org',
@@ -27,9 +33,21 @@ export default async function BlogPage() {
     })),
   }
 
+  const blogListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Profil Sistemleri Blog Yazıları',
+    itemListElement: posts.map((post, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: post.title,
+      url: absoluteProfileUrl(`/medya/blog/${post.slug}`),
+    })),
+  }
+
   return (
     <ProfilePageShell>
-      <SeoJsonLd data={blogSchema} />
+      <SeoJsonLd data={[breadcrumbSchema, blogSchema, blogListSchema]} />
       <section className="relative overflow-hidden py-16">
         <div className="absolute inset-0 bg-gradient-to-r from-[#eab308]/10 to-transparent" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">

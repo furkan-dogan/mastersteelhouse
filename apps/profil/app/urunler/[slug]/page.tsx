@@ -6,6 +6,7 @@ import { SeoJsonLd } from '@/components/seo-json-ld'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
 import { getProfileProducts } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata, trimForMeta } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -61,6 +62,12 @@ export default async function ProfilProductDetailPage({ params }: Props) {
     notFound()
   }
 
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: 'Ürünler', path: '/urunler' },
+    { name: product.name, path: `/urunler/${product.slug}` },
+  ])
+
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -76,11 +83,16 @@ export default async function ProfilProductDetailPage({ params }: Props) {
       name: 'Master Steel House',
     },
     url: absoluteProfileUrl(`/urunler/${product.slug}`),
+    additionalProperty: product.specs.map((spec) => ({
+      '@type': 'PropertyValue',
+      name: spec.key,
+      value: spec.value,
+    })),
   }
 
   return (
     <div className="min-h-screen bg-[#f3f4f1] pt-20">
-      <SeoJsonLd data={productSchema} />
+      <SeoJsonLd data={[breadcrumbSchema, productSchema]} />
       <SiteHeader />
       <ProductDetailTemplate product={product} />
       <SiteFooter />

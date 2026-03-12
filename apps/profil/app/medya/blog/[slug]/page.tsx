@@ -5,6 +5,7 @@ import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { getProfileBlogPostBySlug, getProfileBlogPosts } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -62,30 +63,11 @@ export default async function ProfileBlogDetailPage({ params }: Props) {
     },
   }
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Anasayfa',
-        item: absoluteProfileUrl('/'),
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Blog',
-        item: absoluteProfileUrl('/medya/blog'),
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: post.title,
-        item: canonicalUrl,
-      },
-    ],
-  }
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: 'Blog', path: '/medya/blog' },
+    { name: post.title, path: `/medya/blog/${post.slug}` },
+  ])
 
   return (
     <ProfilePageShell>

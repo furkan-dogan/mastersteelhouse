@@ -4,6 +4,7 @@ import { SectionIntro } from '@/components/section-intro'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { getProfileFaqs } from '@/lib/profile-content'
 import { absoluteProfileUrl, buildProfileMetadata } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 export const metadata = buildProfileMetadata({
   title: 'Sıkça Sorulan Sorular',
@@ -14,6 +15,11 @@ export const metadata = buildProfileMetadata({
 
 export default async function SssPage() {
   const faqs = await getProfileFaqs()
+
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: 'SSS', path: '/sss' },
+  ])
 
   const faqSchema = {
     '@context': 'https://schema.org',
@@ -31,7 +37,7 @@ export default async function SssPage() {
 
   return (
     <ProfilePageShell>
-      <SeoJsonLd data={faqSchema} />
+      <SeoJsonLd data={[breadcrumbSchema, faqSchema]} />
       <section className="bg-[#f3f4f1] pb-4 pt-12">
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
           <SectionIntro

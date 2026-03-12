@@ -17,16 +17,16 @@ pnpm install
 
 ## Geliştirme
 ```bash
-pnpm --filter mastersteelhouse-web dev
-pnpm --filter mastersteelhouse-admin dev
-pnpm --filter mastersteelhouse-profil dev
+corepack pnpm --filter mastersteelhouse-web dev
+corepack pnpm --filter mastersteelhouse-admin dev z
+corepack pnpm --filter mastersteelhouse-profil dev
 ```
 
 ## Build
 ```bash
-pnpm --filter mastersteelhouse-web build
-pnpm --filter mastersteelhouse-admin build
-pnpm --filter mastersteelhouse-profil build
+corepack pnpm --filter mastersteelhouse-web build
+corepack pnpm --filter mastersteelhouse-admin build
+corepack pnpm --filter mastersteelhouse-profil build
 ```
 
 ## Ortam Değişkenleri
