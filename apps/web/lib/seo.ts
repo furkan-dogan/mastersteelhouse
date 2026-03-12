@@ -20,17 +20,21 @@ export function trimForMeta(text: string, max = 160) {
   return `${clean.slice(0, max - 1).trimEnd()}…`
 }
 
-export function buildArticleMetadata({
-  title,
-  description,
-  path,
-  image,
-}: {
+type BuildPageMetadataOptions = {
   title: string
   description: string
   path: string
   image?: string
-}): Metadata {
+  type?: 'website' | 'article'
+}
+
+export function buildPageMetadata({
+  title,
+  description,
+  path,
+  image,
+  type = 'website',
+}: BuildPageMetadataOptions): Metadata {
   const canonical = path.startsWith('/') ? path : `/${path}`
   const ogImage = image
     ? image.startsWith('http')
@@ -48,7 +52,7 @@ export function buildArticleMetadata({
       title,
       description,
       url: canonical,
-      type: 'article',
+      type,
       images: [{ url: ogImage }],
     },
     twitter: {
@@ -58,4 +62,24 @@ export function buildArticleMetadata({
       images: [ogImage],
     },
   }
+}
+
+export function buildArticleMetadata({
+  title,
+  description,
+  path,
+  image,
+}: {
+  title: string
+  description: string
+  path: string
+  image?: string
+}): Metadata {
+  return buildPageMetadata({
+    title,
+    description,
+    path,
+    image,
+    type: 'article',
+  })
 }

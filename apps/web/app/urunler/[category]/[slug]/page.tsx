@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
 import { getAllProductPaths, getCategoryBySlug, getProduct } from '@/lib/product-catalog'
-import { trimForMeta } from '@/lib/seo'
+import { buildPageMetadata, trimForMeta } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,31 +27,13 @@ export async function generateMetadata({
     }
   }
 
-  const title = `${product.name} | ${categoryData.title}`
-  const description = trimForMeta(product.description, 160)
-  const canonical = `/urunler/${categoryData.slug}/${product.slug}`
-  const image = product.image
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      type: 'article',
-      images: image ? [{ url: image }] : undefined,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: image ? [image] : undefined,
-    },
-  }
+  return buildPageMetadata({
+    title: `${product.name} | ${categoryData.title}`,
+    description: trimForMeta(product.description, 160),
+    path: `/urunler/${categoryData.slug}/${product.slug}`,
+    image: product.image,
+    type: 'article',
+  })
 }
 
 export default async function ProductDetailPage({

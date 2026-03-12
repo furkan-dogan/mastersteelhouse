@@ -1,11 +1,10 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Calendar, User, ArrowRight, Clock } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { Calendar, User, Clock } from 'lucide-react'
 import type { BlogPost } from '@/lib/blog-types'
 import { mediaPlacementImageStyle } from '@/lib/media-placement'
+import { ArticleListCard } from '@/components/article-list-card'
 
 type Props = {
   posts: BlogPost[]
@@ -50,54 +49,21 @@ export function BlogListClient({ posts }: Props) {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {filteredPosts.map((post) => (
-              <Link key={post.slug} href={`/medya/blog/${post.slug}`} className="group">
-                <article className="h-full rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 hover:-translate-y-2">
-                  <div className="relative h-56 overflow-hidden">
-                    <Image
-                      src={post.image || '/placeholder.svg'}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                      style={mediaPlacementImageStyle(post.imagePlacement, post.imagePosition)}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
-
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1.5 rounded-full bg-accent/90 backdrop-blur-sm text-accent-foreground text-xs font-semibold">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mb-4">
-                      <span className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {post.date}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" />
-                        {post.readTime}
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5" />
-                        {post.author}
-                      </span>
-                    </div>
-
-                    <h2 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-accent transition-colors">
-                      {post.title}
-                    </h2>
-
-                    <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{post.excerpt}</p>
-
-                    <div className="flex items-center gap-2 text-accent font-semibold text-sm group-hover:gap-3 transition-all">
-                      Devamını Oku
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
-                  </div>
-                </article>
-              </Link>
+              <ArticleListCard
+                key={post.slug}
+                href={`/medya/blog/${post.slug}`}
+                title={post.title}
+                excerpt={post.excerpt}
+                image={post.image || '/placeholder.svg'}
+                category={post.category}
+                imageStyle={mediaPlacementImageStyle(post.imagePlacement, post.imagePosition)}
+                meta={[
+                  { icon: Calendar, label: post.date },
+                  { icon: Clock, label: post.readTime },
+                  { icon: User, label: post.author },
+                ]}
+                ctaLabel="Devamını Oku"
+              />
             ))}
           </div>
         </div>

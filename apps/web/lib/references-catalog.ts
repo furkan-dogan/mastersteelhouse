@@ -1,22 +1,18 @@
 import 'server-only'
 
 import type { ReferenceItem } from '@/lib/reference-types'
-import { readCmsJson } from '@/lib/cms-fetch'
+import { createCmsStoreValidator, readCmsStore } from '@/lib/cms-store'
 
 type ReferenceStore = {
   items: ReferenceItem[]
 }
 
-function isReferenceStore(value: unknown): value is ReferenceStore {
-  return Boolean(
-    value &&
-      typeof value === 'object' &&
-      Array.isArray((value as ReferenceStore).items)
-  )
-}
+const isReferenceStore = createCmsStoreValidator({
+  arrayPaths: ['items'],
+}) as (value: unknown) => value is ReferenceStore
 
 export async function getReferenceItems(): Promise<ReferenceItem[]> {
-  const store = await readCmsJson<ReferenceStore>({
+  const store = await readCmsStore<ReferenceStore>({
     r2Key: '_cms/references-cms.json',
     devApiPath: '/api/references',
     localFileName: 'references-cms.json',

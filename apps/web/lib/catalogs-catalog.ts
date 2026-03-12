@@ -1,31 +1,24 @@
 import 'server-only'
 
 import type { CatalogsStore } from '@/lib/catalogs-types'
-import { normalizeCmsMediaUrl, readCmsJson } from '@/lib/cms-fetch'
+import { normalizeCmsMediaUrl } from '@/lib/cms-fetch'
+import { createCmsStoreValidator, mapStoreItems, readCmsStore } from '@/lib/cms-store'
 
-function isCatalogsStore(value: unknown): value is CatalogsStore {
-  return Boolean(
-    value &&
-      typeof value === 'object' &&
-      typeof (value as CatalogsStore).hero?.title === 'string' &&
-      typeof (value as CatalogsStore).hero?.description === 'string' &&
-      Array.isArray((value as CatalogsStore).items)
-  )
-}
+const isCatalogsStore = createCmsStoreValidator({
+  stringPaths: ['hero.title', 'hero.description'],
+  arrayPaths: ['items'],
+}) as (value: unknown) => value is CatalogsStore
 
 export async function getCatalogsContent(): Promise<CatalogsStore> {
-  const store = await readCmsJson<CatalogsStore>({
+  const store = await readCmsStore<CatalogsStore>({
     r2Key: '_cms/catalogs-cms.json',
     devApiPath: '/api/catalogs',
     localFileName: 'catalogs-cms.json',
     validate: isCatalogsStore,
   })
 
-  return {
-    ...store,
-    items: store.items.map((item) => ({
-      ...item,
-      pdfUrl: normalizeCmsMediaUrl(item.pdfUrl),
-    })),
-  }
+  return mapStoreItems<CatalogsStore, CatalogsStore['items'][number]>(store, (item) => ({
+    ...item,
+    pdfUrl: normalizeCmsMediaUrl(item.pdfUrl),
+  }))
 }

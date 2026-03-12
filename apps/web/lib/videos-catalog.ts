@@ -1,20 +1,15 @@
 import 'server-only'
 
 import type { VideosStore } from '@/lib/videos-types'
-import { readCmsJson } from '@/lib/cms-fetch'
+import { createCmsStoreValidator, readCmsStore } from '@/lib/cms-store'
 
-function isVideosStore(value: unknown): value is VideosStore {
-  return Boolean(
-    value &&
-      typeof value === 'object' &&
-      typeof (value as VideosStore).hero?.title === 'string' &&
-      typeof (value as VideosStore).hero?.description === 'string' &&
-      Array.isArray((value as VideosStore).items)
-  )
-}
+const isVideosStore = createCmsStoreValidator({
+  stringPaths: ['hero.title', 'hero.description'],
+  arrayPaths: ['items'],
+}) as (value: unknown) => value is VideosStore
 
 export async function getVideosContent(): Promise<VideosStore> {
-  return readCmsJson<VideosStore>({
+  return readCmsStore<VideosStore>({
     r2Key: '_cms/videos-cms.json',
     devApiPath: '/api/videos',
     localFileName: 'videos-cms.json',

@@ -6,20 +6,14 @@ import { getNewsPosts } from '@/lib/news-catalog'
 import { mediaPlacementImageStyle } from '@/lib/media-placement'
 import { PageHero } from '@/components/page-hero'
 import { SitePageShell } from '@/components/site-page-shell'
+import { buildPageMetadata } from '@/lib/seo'
+import { ArticleListCard } from '@/components/article-list-card'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Haberler ve Duyurular',
   description: "Master Steel House'dan son gelişmeler, proje haberleri ve kurumsal duyurular.",
-  alternates: {
-    canonical: '/medya/haberler',
-  },
-  openGraph: {
-    title: 'Master Steel House Haberler ve Duyurular',
-    description: "Master Steel House'dan son gelişmeler, proje haberleri ve kurumsal duyurular.",
-    url: '/medya/haberler',
-    type: 'website',
-  },
-}
+  path: '/medya/haberler',
+})
 
 export default async function Haberler() {
   const news = await getNewsPosts()
@@ -88,49 +82,20 @@ export default async function Haberler() {
                 {news
                   .filter((item) => !item.featured)
                   .map((item) => (
-                    <Link key={item.slug} href={`/medya/haberler/${item.slug}`} className="group">
-                      <article className="h-full rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 hover:-translate-y-2">
-                        <div className="relative h-56 overflow-hidden">
-                          <Image
-                            src={item.image || '/placeholder.svg'}
-                            alt={item.title}
-                            fill
-                            className="object-cover"
-                            style={mediaPlacementImageStyle(item.imagePlacementCard ?? item.imagePlacement, item.imagePosition)}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
-                          <div className="absolute top-4 left-4">
-                            <span className="px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold shadow-lg">
-                              {item.category}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="p-6">
-                          <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-3">
-                            <span className="flex items-center gap-1.5">
-                              <Calendar className="w-3.5 h-3.5" />
-                              {item.date}
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                              <MapPin className="w-3.5 h-3.5" />
-                              {item.location}
-                            </span>
-                          </div>
-
-                          <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-accent transition-colors">
-                            {item.title}
-                          </h3>
-
-                          <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{item.excerpt}</p>
-
-                          <div className="flex items-center gap-2 text-accent font-semibold text-sm group-hover:gap-3 transition-all">
-                            Detayları Gör
-                            <ArrowRight className="w-4 h-4" />
-                          </div>
-                        </div>
-                      </article>
-                    </Link>
+                    <ArticleListCard
+                      key={item.slug}
+                      href={`/medya/haberler/${item.slug}`}
+                      title={item.title}
+                      excerpt={item.excerpt}
+                      image={item.image || '/placeholder.svg'}
+                      category={item.category}
+                      imageStyle={mediaPlacementImageStyle(item.imagePlacementCard ?? item.imagePlacement, item.imagePosition)}
+                      meta={[
+                        { icon: Calendar, label: item.date },
+                        { icon: MapPin, label: item.location },
+                      ]}
+                      ctaLabel="Detayları Gör"
+                    />
                   ))}
               </div>
             </div>

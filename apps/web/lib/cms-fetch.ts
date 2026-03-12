@@ -4,7 +4,7 @@ import { existsSync } from 'fs'
 import { promises as fs } from 'fs'
 import path from 'path'
 
-type ReadCmsJsonOptions<T> = {
+export type ReadCmsJsonOptions<T> = {
   r2Key: string
   devApiPath?: string
   localFileName: string
