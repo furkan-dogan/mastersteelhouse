@@ -34,7 +34,7 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
               key={product.slug}
               className="group min-w-[85vw] shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10 sm:min-w-[340px] md:min-w-0"
             >
-              <Link href={`/urunler/${product.slug}`}>
+              <Link href={`/urunler/${product.slug}`} aria-label={`${product.name} ürün detayına git`}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={product.cardImage || product.image}
@@ -45,15 +45,22 @@ export function ProductsSlider({ products }: ProductsSliderProps) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-transparent" />
                 </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-slate-900">{product.name}</h3>
-                  <p className="mt-2 text-sm text-slate-600">{buildCardTeaser(product)}</p>
-                  <span className="mt-4 inline-block text-sm font-semibold text-[#b88700] transition group-hover:underline">
-                    {product.shortName} profili →
-                  </span>
-                </div>
               </Link>
+
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-slate-900">
+                  <Link href={`/urunler/${product.slug}`} className="hover:text-[#b88700] transition-colors">
+                    {product.name}
+                  </Link>
+                </h3>
+                <p className="mt-2 text-sm text-slate-600">{buildCardTeaser(product)}</p>
+                <Link
+                  href={`/urunler/${product.slug}`}
+                  className="mt-4 inline-block text-sm font-semibold text-[#b88700] transition group-hover:underline"
+                >
+                  {product.shortName} profili →
+                </Link>
+              </div>
             </article>
           ))}
         </div>

@@ -1,15 +1,5 @@
-'use client'
-
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { BookOpen, Ruler, Layout, Layers, LayoutGrid, GitCompare, ExternalLink } from 'lucide-react'
-
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-40px' },
-  transition: { duration: 0.5 },
-}
 
 type GuideCard = {
   icon: typeof Ruler
@@ -47,7 +37,7 @@ const cards: GuideCard[] = [
     icon: GitCompare,
     title: 'Tavan U-C ve Duvar U-C Farkı',
     content:
-      'Tavan U-C profili asma tavan sistemlerinde yatay taşıyıcı iskelet için, Duvar U-C profili ise bölme duvar sistemlerinde dikey taşıyıcı iskelet için tasarlanır. Her ikisi de U ve C profil kombinasyonu kullanır; fark uygulama yönü ve yük dağılımındadır. Tavan U-C daha çok aşağı doğru yük taşırken, Duvar U-C dikey yük ve rüzgâr yüklerine karşı rijitlik sağlar. Doğru kesit ve et kalınlığı seçimi her iki uygulama için de kritik öneme sahiptir.',
+      'Tavan U-C profili asma tavan sistemlerinde yatay taşıyıcı iskelet için, Duvar U-C profili ise bölme duvar sistemlerinde dikey taşıyıcı iskelet için tasarlanır. Her ikisi de U ve C profil kombinasyonu kullanır; fark uygulama yönü ve yük dağılımındadır. Tavan U-C daha çok aşağı doğru yük taşırken, Duvar U-C dikey yük ve rüzgar yüklerine karşı rijitlik sağlar. Doğru kesit ve et kalınlığı seçimi her iki uygulama için de kritik önemdedir.',
   },
   {
     icon: ExternalLink,
@@ -65,11 +55,7 @@ export function HomeSeoContent() {
   return (
     <section id="teknik-rehber" className="scroll-mt-20 bg-[#f3f4f1] py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Section header */}
-        <motion.div
-          {...fadeUp}
-          className="mb-14 text-center"
-        >
+        <div className="mb-14 text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-[#b88700]">Teknik Bilgi</p>
           <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">Profil Sistemlerinde Teknik Rehber</h2>
           <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-slate-600">
@@ -77,14 +63,9 @@ export function HomeSeoContent() {
             sürdürülebilir performansı aynı anda hedefler. Doğru profil seçimi, proje tipine, yüzey beklentisine ve
             montaj hızına göre birlikte değerlendirilmelidir.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Intro card */}
-        <motion.div
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.1 }}
-          className="relative mb-12 overflow-hidden rounded-2xl border border-[#eab308]/25 bg-gradient-to-br from-white via-[#fffef9] to-[#fff9e8]/60 p-8 shadow-sm lg:p-10"
-        >
+        <div className="relative mb-12 overflow-hidden rounded-2xl border border-[#eab308]/25 bg-gradient-to-br from-white via-[#fffef9] to-[#fff9e8]/60 p-8 shadow-sm lg:p-10">
           <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full bg-[#eab308]/10 blur-3xl" />
           <div className="relative">
             <p className="text-base leading-8 text-slate-700">
@@ -94,19 +75,16 @@ export function HomeSeoContent() {
               beklentisine, montaj hızına ve bakım ihtiyacına göre birlikte değerlendirilmelidir.
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Topic cards grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card, index) => {
+          {cards.map((card) => {
             const Icon = card.icon
             const hasLinks = 'links' in card && card.links
 
             return (
-              <motion.article
+              <article
                 key={card.title}
-                {...fadeUp}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
                 className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 transition-all duration-300 hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/8 lg:p-8"
               >
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#eab308]/15 text-[#b88700] transition-colors group-hover:bg-[#eab308]/25">
@@ -130,20 +108,15 @@ export function HomeSeoContent() {
                     ))}
                   </div>
                 )}
-              </motion.article>
+              </article>
             )
           })}
         </div>
 
-        {/* CTA buttons */}
-        <motion.div
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.3 }}
-          className="mt-12 flex flex-wrap justify-center gap-4"
-        >
+        <div className="mt-12 flex flex-wrap justify-center gap-4">
           <Link
             href="/urunler"
-            className="inline-flex items-center gap-2 rounded-xl border border-[#eab308]/60 bg-white px-6 py-3 text-sm font-semibold text-[#b88700] transition hover:bg-[#eab308]/10 hover:border-[#eab308]"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#eab308]/60 bg-white px-6 py-3 text-sm font-semibold text-[#b88700] transition hover:border-[#eab308] hover:bg-[#eab308]/10"
           >
             <BookOpen className="h-4 w-4" />
             Profil ürünlerini incele
@@ -154,7 +127,7 @@ export function HomeSeoContent() {
           >
             Teknik teklif al
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

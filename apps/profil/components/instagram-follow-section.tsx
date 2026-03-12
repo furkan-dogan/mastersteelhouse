@@ -1,7 +1,3 @@
-'use client'
-
-import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { Instagram, ArrowUpRight } from 'lucide-react'
 import { PROFILE_INSTAGRAM_URL } from '@/lib/seo'
 
@@ -9,13 +5,10 @@ export function InstagramFollowSection() {
   return (
     <section className="py-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.a
+        <a
           href={PROFILE_INSTAGRAM_URL}
           target="_blank"
           rel="noreferrer noopener"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
           className="group relative flex flex-col items-center overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10 md:flex-row md:justify-between md:gap-8 md:p-10"
         >
           <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-pink-400/20 to-purple-500/20 blur-3xl transition-opacity group-hover:opacity-100" />
@@ -37,7 +30,7 @@ export function InstagramFollowSection() {
               <ArrowUpRight className="h-5 w-5" />
             </span>
           </div>
-        </motion.a>
+        </a>
       </div>
     </section>
   )

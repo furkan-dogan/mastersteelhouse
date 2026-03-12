@@ -1,19 +1,11 @@
-'use client'
-
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { ArrowRight, MessageCircle } from 'lucide-react'
 
 export function CtaSection() {
   return (
     <section className="py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative overflow-hidden rounded-3xl border border-[#eab308]/30 bg-gradient-to-br from-white via-[#f8fafc] to-[#eef1ee] p-12 lg:p-16"
-        >
+        <div className="relative overflow-hidden rounded-3xl border border-[#eab308]/30 bg-gradient-to-br from-white via-[#f8fafc] to-[#eef1ee] p-12 lg:p-16">
           <div className="absolute -right-32 -top-32 h-64 w-64 rounded-full bg-[#eab308]/15 blur-3xl" />
           <div className="absolute -bottom-32 -left-32 h-64 w-64 rounded-full bg-[#eab308]/10 blur-3xl" />
 
@@ -36,7 +28,7 @@ export function CtaSection() {
               <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

@@ -1,6 +1,5 @@
-'use client'
-
 import Link from 'next/link'
+import Image from 'next/image'
 import { Instagram } from 'lucide-react'
 import { PROFILE_INSTAGRAM_URL } from '@/lib/seo'
 
@@ -17,7 +16,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-3">
-            <img src="/logoprofil.png" alt="Master Steel House" className="h-8 w-auto" />
+            <Image src="/logoprofil.png" alt="Master Steel House" width={180} height={32} className="h-8 w-auto" />
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-6">
             {links.map((link) => (
