@@ -61,11 +61,11 @@ export function VideosGridClient({ items }: Props) {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-1.5 w-fit">
+      <div className="flex w-full flex-col gap-2 rounded-xl border border-border bg-card p-1.5 sm:w-fit sm:flex-row sm:items-center">
         <button
           type="button"
           onClick={() => setActiveTab('videos')}
-          className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+          className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors sm:min-w-[132px] ${
             activeTab === 'videos' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'
           }`}
         >
@@ -74,7 +74,7 @@ export function VideosGridClient({ items }: Props) {
         <button
           type="button"
           onClick={() => setActiveTab('reels')}
-          className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+          className={`rounded-lg px-4 py-2 text-sm font-semibold transition-colors sm:min-w-[132px] ${
             activeTab === 'reels' ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground'
           }`}
         >
@@ -88,15 +88,15 @@ export function VideosGridClient({ items }: Props) {
         </div>
       ) : null}
 
-      <div className={`${activeTab === 'reels' ? 'flex flex-wrap gap-8' : 'grid md:grid-cols-2 gap-8'}`}>
+      <div className={`${activeTab === 'reels' ? 'flex flex-wrap gap-6 md:gap-8' : 'grid gap-6 md:grid-cols-2 md:gap-8'}`}>
         {visibleItems.map((video) => {
           const sourceUrl = video.youtubeUrl ?? video.videoFileUrl ?? video.videoUrl ?? ''
           const embedUrl = getYouTubeEmbedUrl(sourceUrl)
           const isShort = isYouTubeShortUrl(sourceUrl)
-          const mediaBoxClass = isShort ? 'mx-auto w-full max-w-[260px] aspect-[9/16]' : 'w-full aspect-video'
+          const mediaBoxClass = isShort ? 'mx-auto aspect-[9/16] w-full max-w-[240px] sm:max-w-[260px]' : 'w-full aspect-video'
 
           return (
-            <article key={video.id} className={`group ${activeTab === 'reels' ? 'w-full sm:w-[260px]' : ''}`}>
+            <article key={video.id} className={`group ${activeTab === 'reels' ? 'w-full sm:w-[240px] md:w-[260px]' : ''}`}>
               <div className={`relative rounded-xl overflow-hidden border bg-black mb-4 ${mediaBoxClass}`}>
                 {embedUrl ? (
                   <iframe

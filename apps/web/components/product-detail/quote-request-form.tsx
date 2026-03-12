@@ -18,9 +18,9 @@ export function QuoteRequestForm() {
         className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40"
       />
 
-      <div className="grid md:grid-cols-[148px_1fr] gap-4 items-center">
+      <div className="grid gap-4 sm:grid-cols-[148px_1fr] sm:items-center">
         <div
-          className="h-14 rounded-lg border border-border flex items-center justify-center text-2xl font-bold tracking-[0.14em] tabular-nums text-foreground"
+          className="flex h-14 items-center justify-center rounded-lg border border-border text-xl font-bold tracking-[0.12em] tabular-nums text-foreground sm:text-2xl"
           style={{
             backgroundImage:
               'repeating-linear-gradient(135deg, rgba(220,38,38,0.12) 0px, rgba(220,38,38,0.12) 2px, transparent 2px, transparent 6px)',

@@ -36,7 +36,7 @@ export const heroSlides: HeroSlide[] = [
     id: 3,
     image: '/hero-slide-3.jpg',
     badge: 'Ticari Yapılar',
-    title: ['Modern ve Fonksiyonel', 'Ticari', 'Binalar'],
+    title: ['Modern', 'Ticari', 'Binalar'],
     description:
       'Ofis binaları, showroom ve ticari tesisler için özel çelik konstrüksiyon çözümleri. Enerji verimliliği ve estetik bir arada.',
     cta: 'Ticari Projeler',

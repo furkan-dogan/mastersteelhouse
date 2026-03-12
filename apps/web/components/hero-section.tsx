@@ -133,9 +133,9 @@ export function HeroSection() {
               </div>
 
               <div className="relative h-full flex items-center z-20">
-                <div className="container mx-auto px-4 pl-20 sm:pl-24 md:pl-28 lg:pl-32">
+                <div className="container mx-auto px-4 pt-20 sm:pt-24 md:pt-0 md:pl-28 lg:pl-32">
                   <div className="max-w-4xl">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.1]">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.05]">
                       {slide.title.map((line, i) => (
                         <div
                           key={i}
@@ -157,7 +157,7 @@ export function HeroSection() {
                     </h1>
 
                     <p
-                      className={`text-lg md:text-xl text-white/90 mb-10 leading-relaxed max-w-2xl transition-all duration-700 ${
+                      className={`text-base sm:text-lg md:text-xl text-white/90 mb-8 md:mb-10 leading-relaxed max-w-2xl transition-all duration-700 ${
                         isActive
                           ? 'opacity-100 translate-x-0'
                           : direction === 'next'
@@ -187,7 +187,7 @@ export function HeroSection() {
                     </div>
 
                     <div
-                      className={`flex flex-col sm:flex-row items-start gap-4 transition-all duration-700 ${
+                      className={`flex flex-col sm:flex-row items-stretch sm:items-start gap-4 transition-all duration-700 ${
                         isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                       }`}
                       style={{ transitionDelay: isActive ? '1050ms' : '0ms' }}
@@ -197,7 +197,7 @@ export function HeroSection() {
                         size="lg"
                         className="bg-accent hover:bg-accent/90 text-accent-foreground group h-14 px-8 text-base shadow-2xl shadow-accent/50 hover:shadow-accent/70 transition-all hover:scale-105"
                       >
-                        <a href="#contact" className="flex items-center gap-2">
+                        <a href="#contact" className="flex items-center justify-center gap-2">
                           {slide.cta}
                           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </a>
@@ -208,7 +208,7 @@ export function HeroSection() {
                         variant="outline"
                         className="border-2 border-white/40 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 h-14 px-8 text-base group"
                       >
-                        <a href="#about" className="flex items-center gap-2">
+                        <a href="#about" className="flex items-center justify-center gap-2">
                           <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
                           Daha Fazla Bilgi
                         </a>
@@ -233,7 +233,7 @@ export function HeroSection() {
 
       <SlideIndicators slides={slides} currentSlide={currentSlide} progress={progress} onGoToSlide={goToSlide} />
 
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce mt-20">
+      <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 z-20 animate-bounce md:block">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
             <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />

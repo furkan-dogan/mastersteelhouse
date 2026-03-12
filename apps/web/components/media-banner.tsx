@@ -15,7 +15,7 @@ type MediaBannerProps = {
 export function MediaBanner({
   src,
   alt,
-  heightClassName = 'h-[400px]',
+  heightClassName = 'h-[260px] sm:h-[320px] md:h-[400px]',
   className,
   imageClassName,
   overlayClassName,
