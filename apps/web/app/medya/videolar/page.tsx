@@ -1,6 +1,13 @@
 import { getVideosContent } from '@/lib/videos-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
+import { buildPageMetadata } from '@/lib/seo'
 import { VideosGridClient } from './videos-grid-client'
+
+export const metadata = buildPageMetadata({
+  title: 'Videolar',
+  description: 'Master Steel House üretim, montaj ve proje süreçlerinden video içerikler.',
+  path: '/medya/videolar',
+})
 
 export default async function Videolar() {
   const content = await getVideosContent()

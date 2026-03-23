@@ -1,4 +1,11 @@
 import { ProcessHeroPage } from '@/components/process-hero-page'
+import { buildPageMetadata } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Lojistik ve Sevkiyat',
+  description: 'Yapı elemanlarının planlı lojistik yönetimi ve zamanında sevkiyat süreçleri.',
+  path: '/proje-sureci/lojistik-ve-sevkiyat',
+})
 
 export default function LojistikVeSevkiyat() {
   return (

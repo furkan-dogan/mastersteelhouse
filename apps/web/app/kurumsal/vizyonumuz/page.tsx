@@ -3,12 +3,14 @@ import { SitePageShell } from '@/components/site-page-shell'
 import { IconFeatureGrid } from '@/components/icon-feature-grid'
 import { CorporateIntroSection } from '@/components/corporate-intro-section'
 import { MediaBanner } from '@/components/media-banner'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Vizyonumuz | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'Vizyonumuz',
   description:
     'Vizyonumuz; hafif çelik yapı sistemlerinde yenilikçi, sürdürülebilir ve güvenilir çözümlerle güçlü bir marka olmaktır.',
-}
+  path: '/kurumsal/vizyonumuz',
+})
 
 export default function VizyonPage() {
   const goals = [

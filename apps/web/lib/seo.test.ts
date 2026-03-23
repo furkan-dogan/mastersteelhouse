@@ -14,7 +14,7 @@ test('buildPageMetadata creates canonical and social fields', () => {
   assert.equal(metadata.description, 'Test açıklama')
   assert.equal(metadata.alternates?.canonical, '/ornek-sayfa')
   assert.equal(metadata.openGraph?.url, '/ornek-sayfa')
-  assert.equal(metadata.openGraph?.type, 'website')
+  assert.equal((metadata.openGraph as { type?: string } | undefined)?.type, 'website')
   assert.deepEqual(metadata.twitter?.images, [toAbsoluteUrl('/og-image.jpg')])
 })
 

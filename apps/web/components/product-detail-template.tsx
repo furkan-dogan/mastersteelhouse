@@ -28,13 +28,13 @@ export function ProductDetailTemplate({ product, category }: Props) {
   const floorPlans = product.floorPlans
 
   const specs: ProductSpecItem[] = [
-    { icon: Bed, label: 'Oda Sayisi', value: product.features.rooms },
+    { icon: Bed, label: 'Oda Sayısı', value: product.features.rooms },
     { icon: Bath, label: 'Banyo', value: product.features.bathrooms },
     { icon: Car, label: 'Otopark', value: product.features.parking },
-    { icon: Home, label: 'Yapi Tipi', value: category.title },
-    { icon: Timer, label: 'Teslim Suresi', value: product.features.deliveryTime },
-    { icon: ShieldCheck, label: 'Deprem Dayanimi', value: product.features.earthquakeResistance },
-    { icon: Zap, label: 'Enerji Sinifi', value: product.features.energyClass },
+    { icon: Home, label: 'Yapı Tipi', value: category.title },
+    { icon: Timer, label: 'Teslim Süresi', value: product.features.deliveryTime },
+    { icon: ShieldCheck, label: 'Deprem Dayanımı', value: product.features.earthquakeResistance },
+    { icon: Zap, label: 'Enerji Sınıfı', value: product.features.energyClass },
     { icon: BadgeCheck, label: 'Garanti', value: product.features.warranty },
   ]
 
@@ -57,7 +57,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors mb-8 group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>{category.title} sayfasina don</span>
+              <span>{category.title} sayfasına dön</span>
             </Link>
 
             <div className="grid lg:grid-cols-2 gap-8 xl:gap-12 items-start">
@@ -100,7 +100,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
         <section className="py-14 md:py-16 bg-gradient-to-br from-muted/30 to-background">
           <div className={pageContainer}>
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Kat Plani ve Kroki</h2>
+              <h2 className="text-3xl font-bold mb-4">Kat Planı ve Kroki</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Ürünün detaylı kat planını ve ölçülerini inceleyerek mekanları keşfedin.
               </p>

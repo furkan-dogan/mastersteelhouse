@@ -1,9 +1,11 @@
 import { LegalPage } from '@/components/legal-page'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'KVKK | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'KVKK',
   description: 'Kişisel verilerin korunmasına ilişkin aydınlatma metni.',
-}
+  path: '/kvkk',
+})
 
 export default function KvkkPage() {
   return (

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Play } from 'lucide-react'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { heroSlides as slides } from '@/lib/content/hero-slides'
 import { NavigationControls } from '@/components/hero/navigation-controls'
 import { SlideIndicators } from '@/components/hero/slide-indicators'
@@ -197,10 +198,10 @@ export function HeroSection() {
                         size="lg"
                         className="bg-accent hover:bg-accent/90 text-accent-foreground group h-14 px-8 text-base shadow-2xl shadow-accent/50 hover:shadow-accent/70 transition-all hover:scale-105"
                       >
-                        <a href="#contact" className="flex items-center justify-center gap-2">
+                        <Link href={slide.ctaHref} className="flex items-center justify-center gap-2">
                           {slide.cta}
                           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </a>
+                        </Link>
                       </Button>
                       <Button
                         asChild
@@ -208,10 +209,10 @@ export function HeroSection() {
                         variant="outline"
                         className="border-2 border-white/40 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 h-14 px-8 text-base group"
                       >
-                        <a href="#about" className="flex items-center justify-center gap-2">
+                        <Link href="/kurumsal/hakkimizda" className="flex items-center justify-center gap-2">
                           <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
                           Daha Fazla Bilgi
-                        </a>
+                        </Link>
                       </Button>
                     </div>
                   </div>

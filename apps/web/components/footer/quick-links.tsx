@@ -1,8 +1,10 @@
+import Link from 'next/link'
+
 const quickLinks = [
-  { name: 'Hakkımızda', href: '#about' },
-  { name: 'Hizmetlerimiz', href: '#services' },
-  { name: 'Projelerimiz', href: '#projects' },
-  { name: 'İletişim', href: '#contact' },
+  { name: 'Hakkımızda', href: '/kurumsal/hakkimizda' },
+  { name: 'Hizmetlerimiz', href: '/urunler/tek-katli-celik-villalar' },
+  { name: 'Projelerimiz', href: '/referanslar' },
+  { name: 'İletişim', href: '/iletisim' },
 ]
 
 export function FooterQuickLinks() {
@@ -15,13 +17,13 @@ export function FooterQuickLinks() {
       <ul className="space-y-3">
         {quickLinks.map((link) => (
           <li key={link.name} className="group">
-            <a
+            <Link
               href={link.href}
               className="text-sm text-primary-foreground/80 hover:text-primary-foreground hover:translate-x-2 inline-flex items-center gap-2 transition-all"
             >
               <div className="w-1.5 h-1.5 rounded-full bg-accent opacity-0 group-hover:opacity-100 transition-opacity" />
               {link.name}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

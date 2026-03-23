@@ -1,9 +1,11 @@
 import { LegalPage } from '@/components/legal-page'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Gizlilik Politikası | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'Gizlilik Politikası',
   description: 'Web sitesi gizlilik politikası.',
-}
+  path: '/gizlilik-politikasi',
+})
 
 export default function PrivacyPolicyPage() {
   return (

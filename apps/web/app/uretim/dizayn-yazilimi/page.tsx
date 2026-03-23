@@ -1,6 +1,13 @@
 import { Laptop, Box, Ruler, FileCode } from 'lucide-react'
 import { SitePageShell } from '@/components/site-page-shell'
 import { MediaFeatureSection } from '@/components/media-feature-section'
+import { buildPageMetadata } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Dizayn Yazılımı',
+  description: 'Tasarım süreçlerinde kullandığımız 3D modelleme, statik analiz ve BIM yazılım altyapısı.',
+  path: '/uretim/dizayn-yazilimi',
+})
 
 export default function DizaynYazilimi() {
   const tools = [

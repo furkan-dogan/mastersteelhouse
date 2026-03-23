@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import type { AboutTimelineItem } from '@/lib/content/about-content'
 
 type AboutTimelineProps = {
@@ -95,12 +96,12 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
       <div className="mt-20 text-center">
         <div className="inline-flex flex-col items-center gap-4 p-8 rounded-3xl bg-gradient-to-br from-accent/5 to-accent/10 border border-accent/20">
           <p className="text-lg font-semibold text-foreground">Projeniz için detaylı bilgi almak ister misiniz?</p>
-          <a
-            href="#contact"
+          <Link
+            href="/iletisim"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/80 text-accent-foreground font-semibold hover:shadow-xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105"
           >
             Hemen İletişime Geçin
-          </a>
+          </Link>
         </div>
       </div>
     </div>

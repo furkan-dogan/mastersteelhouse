@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import {
   Accordion,
   AccordionContent,
@@ -138,12 +139,12 @@ export function FAQSection() {
           <p className="text-lg text-muted-foreground mb-6">
             Başka sorularınız mı var?
           </p>
-          <a 
-            href="#contact"
+          <Link
+            href="/iletisim"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/80 text-accent-foreground font-semibold hover:shadow-xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105"
           >
             Bize Ulaşın
-          </a>
+          </Link>
         </div>
       </div>
     </section>

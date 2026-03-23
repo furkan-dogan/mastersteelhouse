@@ -46,7 +46,7 @@ export function FloorPlansSection({
         <div className="relative aspect-[16/10]">
           <Image
             src={plans[selectedIndex]?.image ?? fallbackImage}
-            alt={`${productName} - ${plans[selectedIndex]?.name ?? 'Kat Plani'}`}
+            alt={`${productName} - ${plans[selectedIndex]?.name ?? 'Kat Planı'}`}
             fill
             className="object-cover"
           />
@@ -54,7 +54,7 @@ export function FloorPlansSection({
             onClick={onOpenImage}
             className="absolute top-4 right-4 px-4 py-2 rounded-full bg-accent/90 text-accent-foreground text-sm font-medium hover:scale-105 transition-transform"
           >
-            Buyut
+            Büyüt
           </button>
         </div>
       </div>

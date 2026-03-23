@@ -3,11 +3,13 @@ import Link from 'next/link'
 import { getDocumentsContent } from '@/lib/documents-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
 import { SectionIntro } from '@/components/section-intro'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Belgelerimiz | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'Belgelerimiz',
   description: 'ISO sertifikalarımız ve kalite belgelerimizle güven veriyoruz.',
-}
+  path: '/kurumsal/belgelerimiz',
+})
 
 export const dynamic = 'force-dynamic'
 

@@ -2,6 +2,13 @@ import { FileText, Download, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { getCatalogsContent } from '@/lib/catalogs-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
+import { buildPageMetadata } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Kataloglar',
+  description: 'Master Steel House ürün ve hizmet kataloglarına buradan ulaşabilirsiniz.',
+  path: '/medya/kataloglar',
+})
 
 export const dynamic = 'force-dynamic'
 

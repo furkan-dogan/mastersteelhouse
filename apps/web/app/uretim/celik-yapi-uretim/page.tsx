@@ -1,6 +1,13 @@
 import { Cog, Zap, Shield, Award } from 'lucide-react'
 import { SitePageShell } from '@/components/site-page-shell'
 import { MediaFeatureSection } from '@/components/media-feature-section'
+import { buildPageMetadata } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Çelik Yapı Üretim',
+  description: 'Modern üretim tesisimizde CNC destekli hassas çelik yapı üretim süreçleri.',
+  path: '/uretim/celik-yapi-uretim',
+})
 
 export default function CelikYapiUretim() {
   const features = [

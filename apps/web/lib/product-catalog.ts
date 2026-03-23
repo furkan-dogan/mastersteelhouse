@@ -67,22 +67,153 @@ const DEFAULT_FLOOR_PLANS = [
 ]
 
 const DEFAULT_TECHNICAL_DETAILS = {
-  TasiyiciSistem: 'Galvanizli hafif celik konstruksiyon',
-  DisDuvar: '14 cm celik karkas + tas yunu izolasyon',
-  IcDuvar: '9 cm celik karkas + tas yunu izolasyon',
-  Cati: 'Kumsuz metal kiremit',
-  DisCephe: 'Nem bariyeri + boardex + mineral siva',
-  IcCephe: 'OSB uzeri alcipan + silikonlu boya',
+  'Taşıyıcı Sistem': 'Galvanizli hafif çelik konstrüksiyon',
+  'Dış Duvar': '14 cm çelik karkas + taş yünü izolasyon',
+  'İç Duvar': '9 cm çelik karkas + taş yünü izolasyon',
+  Çatı: 'Kumsuz metal kiremit',
+  'Dış Cephe': 'Nem bariyeri + boardex + mineral sıva',
+  'İç Cephe': 'OSB üzeri alçıpan + silikonlu boya',
 }
 
 const DEFAULT_HIGHLIGHTS = [
-  'Depreme dayanikli yapi',
-  'Hizli uretim ve montaj',
-  'Enerji verimli tasarim',
-  'Ses ve isi yalitimi',
-  'Uzun omurlu celik sistem',
-  'Modern mimari cizgiler',
+  'Depreme dayanıklı yapı',
+  'Hızlı üretim ve montaj',
+  'Enerji verimli tasarım',
+  'Ses ve ısı yalıtımı',
+  'Uzun ömürlü çelik sistem',
+  'Modern mimari çizgiler',
 ]
+
+const TECHNICAL_DETAIL_KEY_MAP: Record<string, string> = {
+  TasiyiciSistem: 'Taşıyıcı Sistem',
+  DisDuvar: 'Dış Duvar',
+  IcDuvar: 'İç Duvar',
+  Cati: 'Çatı',
+  DisCephe: 'Dış Cephe',
+  IcCephe: 'İç Cephe',
+}
+
+const TURKISH_TEXT_REPLACEMENTS: Array<[string, string]> = [
+  ['Tasiyici', 'Taşıyıcı'],
+  ['tasiyici', 'taşıyıcı'],
+  ['Celik', 'Çelik'],
+  ['celik', 'çelik'],
+  ['konstruksiyon', 'konstrüksiyon'],
+  ['Konstruksiyon', 'Konstrüksiyon'],
+  ['Yapi', 'Yapı'],
+  ['yapi', 'yapı'],
+  ['Yapisi', 'Yapısı'],
+  ['yapisi', 'yapısı'],
+  ['Yapilari', 'Yapıları'],
+  ['yapilari', 'yapıları'],
+  ['Yuksek', 'Yüksek'],
+  ['yuksek', 'yüksek'],
+  ['Cok', 'Çok'],
+  ['cok', 'çok'],
+  ['Cozumleri', 'Çözümleri'],
+  ['cozumleri', 'çözümleri'],
+  ['Cozumu', 'Çözümü'],
+  ['cozumu', 'çözümü'],
+  ['Cozum', 'Çözüm'],
+  ['cozum', 'çözüm'],
+  ['Hizli', 'Hızlı'],
+  ['hizli', 'hızlı'],
+  ['Tasarim', 'Tasarım'],
+  ['tasarim', 'tasarım'],
+  ['tasarlanmis', 'tasarlanmış'],
+  ['Tasarlanmis', 'Tasarlanmış'],
+  ['cizgi', 'çizgi'],
+  ['Cizgi', 'Çizgi'],
+  ['detaylari', 'detayları'],
+  ['Detaylari', 'Detayları'],
+  ['plani', 'planı'],
+  ['Plani', 'Planı'],
+  ['olcekli', 'ölçekli'],
+  ['Olcekli', 'Ölçekli'],
+  ['olceginde', 'ölçeğinde'],
+  ['Olceginde', 'Ölçeğinde'],
+  ['olcekte', 'ölçekte'],
+  ['Olcekte', 'Ölçekte'],
+  ['buyuyen', 'büyüyen'],
+  ['Buyuyen', 'Büyüyen'],
+  ['buyuk', 'büyük'],
+  ['Buyuk', 'Büyük'],
+  ['guvenli', 'güvenli'],
+  ['Guvenli', 'Güvenli'],
+  ['guclu', 'güçlü'],
+  ['Guclu', 'Güçlü'],
+  ['moduler', 'modüler'],
+  ['Moduler', 'Modüler'],
+  ['kampusu', 'kampüsü'],
+  ['Kampusu', 'Kampüsü'],
+  ['ziyaretci', 'ziyaretçi'],
+  ['Ziyaretci', 'Ziyaretçi'],
+  ['sinif', 'sınıf'],
+  ['Sinif', 'Sınıf'],
+  ['calisma', 'çalışma'],
+  ['Calisma', 'Çalışma'],
+  ['toplanti', 'toplantı'],
+  ['Toplanti', 'Toplantı'],
+  ['acik', 'açık'],
+  ['Acik', 'Açık'],
+  ['kres', 'kreş'],
+  ['Kres', 'Kreş'],
+  ['yasamina', 'yaşamına'],
+  ['Yasamina', 'Yaşamına'],
+  ['gelistirilmis', 'geliştirilmiş'],
+  ['Gelistirilmis', 'Geliştirilmiş'],
+  ['one cikan', 'öne çıkan'],
+  ['One cikan', 'Öne çıkan'],
+  ['Uretim', 'Üretim'],
+  ['uretim', 'üretim'],
+  ['Araclik', 'Araçlık'],
+  ['araclik', 'araçlık'],
+  ['Dayanim', 'Dayanım'],
+  ['dayanim', 'dayanım'],
+  ['Yalitim', 'Yalıtım'],
+  ['yalitim', 'yalıtım'],
+  ['Omurlu', 'Ömürlü'],
+  ['omurlu', 'ömürlü'],
+  ['Yil', 'Yıl'],
+  ['yil', 'yıl'],
+  ['Katli', 'Katlı'],
+  ['katli', 'katlı'],
+  ['Icin', 'İçin'],
+  ['icin', 'için'],
+  ['Ahsap', 'Ahşap'],
+  ['ahsap', 'ahşap'],
+  ['tas yunu', 'taş yünü'],
+  ['Siva', 'Sıva'],
+  ['siva', 'sıva'],
+  ['Uzeri', 'Üzeri'],
+  ['uzeri', 'üzeri'],
+  ['Alcipan', 'Alçıpan'],
+  ['alcipan', 'alçıpan'],
+  ['Guncel', 'Güncel'],
+  ['guncel', 'güncel'],
+  ['Yasam', 'Yaşam'],
+  ['yasam', 'yaşam'],
+  ['islevselligi', 'işlevselliği'],
+]
+
+function normalizeTurkishText(input: string | undefined): string {
+  if (!input) return ''
+  let next = input
+  for (const [from, to] of TURKISH_TEXT_REPLACEMENTS) {
+    next = next.replaceAll(from, to)
+  }
+  return next
+}
+
+function normalizeTechnicalDetails(details?: Record<string, string>): Record<string, string> {
+  const source = details ?? DEFAULT_TECHNICAL_DETAILS
+  return Object.fromEntries(
+    Object.entries(source).map(([key, value]) => [
+      TECHNICAL_DETAIL_KEY_MAP[key] ?? normalizeTurkishText(key),
+      normalizeTurkishText(value),
+    ])
+  )
+}
 
 function isProductStore(value: unknown): value is ProductStore {
   if (!value || typeof value !== 'object') return false
@@ -103,25 +234,26 @@ function normalizeProduct(product: ProductStore['products'][number]): ProductIte
   return {
     categorySlug: product.categorySlug,
     slug: product.slug,
-    name: product.name,
+    name: normalizeTurkishText(product.name),
     area: product.area,
     image: normalizeCmsMediaUrl(product.image || product.cardImage || product.sliderImage || product.gallery?.[0]),
-    description: product.description,
+    description: normalizeTurkishText(product.description),
     features: {
-      rooms: product.features?.rooms ?? '2+1',
-      bathrooms: product.features?.bathrooms ?? '1',
-      parking: product.features?.parking ?? '1 Araçlık',
-      height: product.features?.height ?? '2.80m',
-      deliveryTime: product.features?.deliveryTime ?? '6-8 Hafta',
-      earthquakeResistance: product.features?.earthquakeResistance ?? 'Yüksek Dayanım',
-      energyClass: product.features?.energyClass ?? 'A+',
-      warranty: product.features?.warranty ?? '20 Yıl',
+      rooms: normalizeTurkishText(product.features?.rooms ?? '2+1'),
+      bathrooms: normalizeTurkishText(product.features?.bathrooms ?? '1'),
+      parking: normalizeTurkishText(product.features?.parking ?? '1 Araçlık'),
+      height: normalizeTurkishText(product.features?.height ?? '2.80m'),
+      deliveryTime: normalizeTurkishText(product.features?.deliveryTime ?? '6-8 Hafta'),
+      earthquakeResistance: normalizeTurkishText(product.features?.earthquakeResistance ?? 'Yüksek Dayanım'),
+      energyClass: normalizeTurkishText(product.features?.energyClass ?? 'A+'),
+      warranty: normalizeTurkishText(product.features?.warranty ?? '20 Yıl'),
     },
-    technicalDetails: product.technicalDetails ?? DEFAULT_TECHNICAL_DETAILS,
-    highlights: product.highlights ?? DEFAULT_HIGHLIGHTS,
+    technicalDetails: normalizeTechnicalDetails(product.technicalDetails),
+    highlights: (product.highlights ?? DEFAULT_HIGHLIGHTS).map((value) => normalizeTurkishText(value)),
     gallery: (product.gallery ?? DEFAULT_GALLERY).map((url) => normalizeCmsMediaUrl(url)),
     floorPlans: (product.floorPlans ?? DEFAULT_FLOOR_PLANS).map((plan) => ({
       ...plan,
+      name: normalizeTurkishText(plan.name),
       image: normalizeCmsMediaUrl(plan.image),
     })),
   }
@@ -129,7 +261,11 @@ function normalizeProduct(product: ProductStore['products'][number]): ProductIte
 
 export async function getCategories(): Promise<ProductCategory[]> {
   const store = await readStore()
-  return store.categories
+  return store.categories.map((category) => ({
+    ...category,
+    title: normalizeTurkishText(category.title),
+    description: normalizeTurkishText(category.description),
+  }))
 }
 
 export async function getCategoryBySlug(categorySlug: string): Promise<ProductCategory | undefined> {

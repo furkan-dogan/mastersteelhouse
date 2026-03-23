@@ -1,10 +1,12 @@
 import { ContactSection } from '@/components/contact-section'
 import { SitePageShell } from '@/components/site-page-shell'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'İletişim | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'İletişim',
   description: 'Bizimle iletişime geçin. Projeleriniz için profesyonel çelik yapı çözümleri.',
-}
+  path: '/iletisim',
+})
 
 export default function IletisimPage() {
   return (

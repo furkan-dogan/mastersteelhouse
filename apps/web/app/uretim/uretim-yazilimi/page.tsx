@@ -2,6 +2,13 @@ import { Cpu, Database, Network, Monitor } from 'lucide-react'
 import { SitePageShell } from '@/components/site-page-shell'
 import { IconFeatureGrid } from '@/components/icon-feature-grid'
 import { CorporateIntroSection } from '@/components/corporate-intro-section'
+import { buildPageMetadata } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Üretim Yazılımı',
+  description: 'CNC, ERP ve otomasyon altyapısı ile dijital üretim süreçleri.',
+  path: '/uretim/uretim-yazilimi',
+})
 
 export default function UretimYazilimi() {
   const systems = [

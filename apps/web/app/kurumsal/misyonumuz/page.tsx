@@ -3,12 +3,14 @@ import { SitePageShell } from '@/components/site-page-shell'
 import { IconFeatureList } from '@/components/icon-feature-list'
 import { CorporateIntroSection } from '@/components/corporate-intro-section'
 import { MediaBanner } from '@/components/media-banner'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Misyonumuz | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'Misyonumuz',
   description:
     'Hafif çelik yapı projelerinde teknik doğruluk, kaliteli uygulama ve şeffaf süreç yönetimiyle güvenilir çözümler sunuyoruz.',
-}
+  path: '/kurumsal/misyonumuz',
+})
 
 export default function MisyonPage() {
   const missionItems = [

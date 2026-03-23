@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { Calendar, Clock, MapPin, User } from 'lucide-react'
 import { NewsGallery } from '@/components/news-gallery'
 import { getNewsPostBySlug, getRelatedNewsPosts } from '@/lib/news-catalog'
-import { ArticleDetailPage, ArticleNotFoundPage } from '@/components/article-detail/article-detail-page'
+import { ArticleDetailPage } from '@/components/article-detail/article-detail-page'
 import { buildArticleMetadata, trimForMeta } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
@@ -37,7 +38,7 @@ export default async function HaberDetay({ params }: Props) {
   const relatedNews = await getRelatedNewsPosts(slug)
 
   if (!haber) {
-    return <ArticleNotFoundPage message="Haber bulunamadı." />
+    notFound()
   }
 
   return (

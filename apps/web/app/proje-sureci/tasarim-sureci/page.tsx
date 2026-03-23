@@ -1,5 +1,12 @@
 import { Pencil, Box, Users, FileCheck } from 'lucide-react'
 import { SitePageShell } from '@/components/site-page-shell'
+import { buildPageMetadata } from '@/lib/seo'
+
+export const metadata = buildPageMetadata({
+  title: 'Tasarım Süreci',
+  description: 'İhtiyaç analizi, 3D modelleme ve revizyon adımlarıyla ilerleyen proje tasarım süreci.',
+  path: '/proje-sureci/tasarim-sureci',
+})
 
 export default function TasarimSureci() {
   const steps = [

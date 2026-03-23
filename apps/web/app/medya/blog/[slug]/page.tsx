@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { Calendar, User, Clock } from 'lucide-react'
 import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/blog-catalog'
-import { ArticleDetailPage, ArticleNotFoundPage } from '@/components/article-detail/article-detail-page'
+import { ArticleDetailPage } from '@/components/article-detail/article-detail-page'
 import { buildArticleMetadata, trimForMeta } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
@@ -36,7 +37,7 @@ export default async function BlogDetail({ params }: Props) {
   const relatedPosts = await getRelatedBlogPosts(slug)
 
   if (!blog) {
-    return <ArticleNotFoundPage message="Blog yazısı bulunamadı." />
+    notFound()
   }
 
   return (

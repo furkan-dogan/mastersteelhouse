@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
 import { ProjectCard } from '@/components/projects/project-card'
 import { useRevealOnScroll } from '@/hooks/use-reveal-on-scroll'
 import { projects } from '@/lib/content/projects'
@@ -57,13 +58,13 @@ export function ProjectsSection() {
 
         <div className="mt-16 text-center">
           <p className="text-lg text-muted-foreground mb-6">Daha fazla proje görmek ister misiniz?</p>
-          <a
-            href="#contact"
+          <Link
+            href="/referanslar"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/80 text-accent-foreground font-semibold hover:shadow-xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105"
           >
-            Portfolyomuzu İnceleyin
+            Portföyümüzü İnceleyin
             <ArrowUpRight className="w-5 h-5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

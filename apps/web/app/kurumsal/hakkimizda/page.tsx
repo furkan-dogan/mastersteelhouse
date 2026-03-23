@@ -3,12 +3,14 @@ import { SitePageShell } from '@/components/site-page-shell'
 import { IconFeatureGrid } from '@/components/icon-feature-grid'
 import { CorporateIntroSection } from '@/components/corporate-intro-section'
 import { MediaBanner } from '@/components/media-banner'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Hakkımızda | Çelik Yapı',
+export const metadata = buildPageMetadata({
+  title: 'Hakkımızda',
   description:
     'Kurumsal yapımız, teknik uzmanlığımız ve uygulama disiplinimizle hafif çelik yapı projelerinde uçtan uca çözüm sunuyoruz.',
-}
+  path: '/kurumsal/hakkimizda',
+})
 
 export default function HakkimizdaPage() {
   const values = [
