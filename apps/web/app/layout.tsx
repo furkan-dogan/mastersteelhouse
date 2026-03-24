@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
+import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -16,6 +17,7 @@ const spaceGrotesk = Space_Grotesk({
 
 const DEFAULT_SITE_URL = 'https://www.mastersteelhouse.com'
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).trim().replace(/\/$/, '')
+const GTM_ID = (process.env.NEXT_PUBLIC_GTM_ID ?? 'GTM-PZRWQN9W').trim()
 const brandName = 'Master Steel House'
 const defaultTitle = `${brandName} | Profesyonel Çelik Yapı Çözümleri`
 const defaultDescription =
@@ -89,6 +91,27 @@ export default function RootLayout({
   return (
     <html lang="tr" className="scroll-smooth">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+        {GTM_ID ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        ) : null}
+
+        {GTM_ID ? (
+          <Script id="gtm-init" strategy="afterInteractive">{`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','${GTM_ID}');
+          `}</Script>
+        ) : null}
+
         {children}
         <Analytics />
       </body>

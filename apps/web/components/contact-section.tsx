@@ -7,6 +7,7 @@ import { ContactMap } from '@/components/contact/contact-map'
 import { ContactResultPopup } from '@/components/contact/contact-result-popup'
 import { useContactForm } from '@/components/contact/use-contact-form'
 import { useRevealOnScroll } from '@/hooks/use-reveal-on-scroll'
+import { CONTACT_WHATSAPP_URL } from '@/lib/contact-details'
 
 export function ContactSection() {
   const { ref, isVisible } = useRevealOnScroll()
@@ -38,6 +39,17 @@ export function ContactSection() {
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-balance">
             Ücretsiz keşif ve teklif almak için formu doldurun, uzman ekibimiz 24 saat içinde size dönüş yapsın.
           </p>
+          <div className="mt-8">
+            <a
+              href={CONTACT_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whatsappButton inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-500"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp'tan Hızlı İletişim
+            </a>
+          </div>
         </div>
 
         <ContactInfoGrid isVisible={isVisible} />

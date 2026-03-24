@@ -37,20 +37,6 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
                     <Image src={item.image || '/placeholder.svg'} alt={item.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
 
-                    <div className="absolute top-6 left-6">
-                      <div className="w-16 h-16 rounded-full bg-accent/90 backdrop-blur-sm border-4 border-accent-foreground/20 flex items-center justify-center text-3xl shadow-lg">
-                        {item.icon}
-                      </div>
-                    </div>
-
-                    <div className="absolute bottom-6 right-6">
-                      <div className="w-16 h-16 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center">
-                        <span className="text-2xl font-bold bg-gradient-to-br from-accent to-accent/60 bg-clip-text text-transparent">
-                          {item.step}
-                        </span>
-                      </div>
-                    </div>
-
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   </div>
                 </div>

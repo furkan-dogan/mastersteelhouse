@@ -45,14 +45,23 @@ export function SocialStrip({ isPastHero }: SocialStripProps) {
         const Icon = socialIconMap[social.key]
         const gradient = socialGradientMap[social.key]
         return (
-          <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="relative group" style={{ animationDelay: `${index * 100}ms` }}>
+          <a
+            key={social.label}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative group"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
             <div
-              className={`relative w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 hover:scale-125 hover:rotate-12 hover:shadow-2xl group-hover:border-transparent ${
-                isPastHero ? 'bg-black/10 border border-black/20' : 'bg-white/10 backdrop-blur-xl border border-white/20'
+              className={`relative w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 hover:scale-125 hover:rotate-12 hover:shadow-2xl overflow-hidden ${
+                isPastHero ? 'border border-black/20' : 'border border-white/25'
               }`}
             >
-              <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              <Icon className={`relative z-10 w-5 h-5 transition-all duration-300 group-hover:scale-110 ${isPastHero ? 'text-black/75 group-hover:text-white' : 'text-white'}`} />
+              <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${gradient} opacity-95`} />
+              <div className="absolute inset-0 rounded-xl bg-white/0 transition-colors duration-300 group-hover:bg-white/10" />
+              <div className="absolute inset-0 rounded-xl ring-1 ring-white/20 transition-colors duration-300 group-hover:ring-white/45" />
+              <Icon className="relative z-10 w-5 h-5 text-white transition-all duration-300 group-hover:scale-110" />
             </div>
 
             <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
@@ -61,7 +70,7 @@ export function SocialStrip({ isPastHero }: SocialStripProps) {
               </div>
             </div>
 
-            <div className="absolute inset-0 rounded-xl bg-accent/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+            <div className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${gradient} blur-md opacity-45 transition-all duration-500 group-hover:opacity-70 group-hover:blur-lg -z-10`} />
           </a>
         )
       })}

@@ -7,6 +7,7 @@ import { FooterContactInfo } from './footer/contact-info'
 import { FooterQuickLinks } from './footer/quick-links'
 import { ScrollTopButton } from './footer/scroll-top-button'
 import { FooterServicesLinks } from './footer/services-links'
+import { WhatsAppWidget } from './footer/whatsapp-widget'
 
 export function Footer() {
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -43,6 +44,7 @@ export function Footer() {
       </div>
 
       <ScrollTopButton visible={showScrollTop} onClick={scrollToTop} />
+      <WhatsAppWidget />
     </footer>
   )
 }
