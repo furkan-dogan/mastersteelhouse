@@ -13,9 +13,11 @@ export type ReadCmsJsonOptions<T> = {
 
 const WEB_DEV_ADMIN_API_BASE = (process.env.WEB_DEV_ADMIN_API_BASE ?? 'http://localhost:3002').trim().replace(/\/$/, '')
 const WEB_DEV_MEDIA_PROXY_BASE = (process.env.WEB_DEV_MEDIA_PROXY_BASE ?? WEB_DEV_ADMIN_API_BASE).trim().replace(/\/$/, '')
+const DEFAULT_R2_PUBLIC_BASE_URL = 'https://pub-d48ad607846349fc992b42968ced0d17.r2.dev'
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 const CMS_REVALIDATE_SECONDS = Number.parseInt(process.env.CMS_REVALIDATE_SECONDS ?? '120', 10)
+const CMS_FORCE_NO_STORE = (process.env.CMS_FORCE_NO_STORE ?? 'true').trim().toLowerCase() !== 'false'
 
 function resolveLocalContentPath(fileName: string) {
   const candidates = [
@@ -33,7 +35,7 @@ function resolveLocalContentPath(fileName: string) {
 }
 
 function resolveR2BaseUrl() {
-  return (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? '')
+  return (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? DEFAULT_R2_PUBLIC_BASE_URL)
     .trim()
     .replace(/\/$/, '')
 }
@@ -75,9 +77,10 @@ export function normalizeCmsMediaUrl(input: string | undefined): string {
 
 async function fetchJson<T>(url: string, { forceNoStore = false }: { forceNoStore?: boolean } = {}): Promise<T | null> {
   try {
+    const shouldBypassCache = IS_DEV || forceNoStore || CMS_FORCE_NO_STORE
     const response = await fetch(url, {
-      cache: IS_DEV || forceNoStore ? 'no-store' : 'force-cache',
-      next: !IS_DEV && !forceNoStore ? { revalidate: CMS_REVALIDATE_SECONDS } : undefined,
+      cache: shouldBypassCache ? 'no-store' : 'force-cache',
+      next: !shouldBypassCache ? { revalidate: CMS_REVALIDATE_SECONDS } : undefined,
     })
 
     if (!response.ok) return null

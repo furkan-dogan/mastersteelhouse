@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { readCatalogsStore, writeCatalogsStore, type CatalogsStore } from '@/lib/catalogs-store'
+import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
 
@@ -15,6 +16,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
+    assertR2ConfiguredForProduction()
     const body = (await request.json()) as CatalogsStore
     await writeCatalogsStore(body)
     return NextResponse.json({ ok: true })

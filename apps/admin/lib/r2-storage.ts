@@ -41,6 +41,14 @@ export function isR2Configured() {
   )
 }
 
+export function assertR2ConfiguredForProduction() {
+  if (process.env.NODE_ENV === 'production' && !isR2Configured()) {
+    throw new Error(
+      'R2 yapılandırması eksik. Production ortamında CMS güncellemeleri için R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME ve R2_PUBLIC_BASE_URL zorunludur.'
+    )
+  }
+}
+
 function getClient() {
   if (cachedClient) return cachedClient
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { readVideosStore, writeVideosStore, type VideosStore } from '@/lib/videos-store'
+import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
 
@@ -15,6 +16,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
+    assertR2ConfiguredForProduction()
     const body = (await request.json()) as VideosStore
     await writeVideosStore(body)
     return NextResponse.json({ ok: true })
@@ -23,4 +25,3 @@ export async function PUT(request: Request) {
     return NextResponse.json({ message: 'Video kaydedilemedi.' }, { status: 500 })
   }
 }
-
