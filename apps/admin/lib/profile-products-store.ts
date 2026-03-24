@@ -100,6 +100,7 @@ export async function readProductStore(): Promise<ProductStore> {
 export async function writeProductStore(store: ProductStore) {
   if (isR2Configured()) {
     await writeJsonToR2(PROFILE_PRODUCTS_INDEX_KEY, store)
+    return
   }
 
   await fs.writeFile(getStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')

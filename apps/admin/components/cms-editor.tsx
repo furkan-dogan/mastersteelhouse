@@ -51,6 +51,22 @@ type CmsEditorProps = {
   mediaEndpoint?: string
 }
 
+async function readApiErrorMessage(response: Response, fallbackMessage: string) {
+  try {
+    const contentType = response.headers.get('content-type') ?? ''
+    if (contentType.includes('application/json')) {
+      const payload = (await response.json()) as { message?: string }
+      if (payload?.message && payload.message.trim()) return payload.message
+      return fallbackMessage
+    }
+
+    const text = (await response.text()).trim()
+    return text || fallbackMessage
+  } catch {
+    return fallbackMessage
+  }
+}
+
 export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/media', showCoverField = true, mode = 'default' }: CmsEditorProps) {
   const searchParams = useSearchParams()
   const [store, setStore] = useState<ProductStore | null>(null)
@@ -118,9 +134,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       setLoading(true)
       setError(null)
       const response = await fetch(endpoint, { cache: 'no-store' })
-      if (!response.ok) {
-        throw new Error('Veri alınamadı')
-      }
+      if (!response.ok) throw new Error(await readApiErrorMessage(response, 'Veri alınamadı'))
       const rawStore = (await response.json()) as ProductStore
       const nextStore: ProductStore = {
         ...rawStore,
@@ -148,7 +162,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     } finally {
       setLoading(false)
     }
-  }, [selectedCategoryFromQuery])
+  }, [endpoint, selectedCategoryFromQuery])
 
   useEffect(() => {
     void loadStore()
@@ -266,15 +280,19 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       (item) => !(item.slug === slug && item.categorySlug === selectedCategorySlug)
     )
     const nextStore = { ...store, products: nextProducts }
-    setStore(nextStore)
+    const nextSelected =
+      selectedProductSlug === slug
+        ? nextProducts.find((item) => item.categorySlug === selectedCategorySlug)?.slug ?? ''
+        : selectedProductSlug
 
-    if (selectedProductSlug === slug) {
-      const nextSelected = nextProducts.find((item) => item.categorySlug === selectedCategorySlug)?.slug ?? ''
+    void (async () => {
+      const saved = await saveStore(nextStore, 'Ürün silindi ve kaydedildi.')
+      if (!saved) return
+
+      setStore(nextStore)
       setSelectedProductSlug(nextSelected)
       if (!nextSelected) setEditorOpen(false)
-    }
-
-    void saveStore(nextStore, 'Ürün silindi ve kaydedildi.')
+    })()
   }
 
   const { deleteTarget, requestDelete, closeDeleteDialog, confirmDelete } = useConfirmDelete<string>(deleteBySlug)
@@ -391,7 +409,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
   }
 
   async function saveStore(storeToPersist = store, successMessage = 'Kayıt tamamlandı.') {
-    if (!storeToPersist) return
+    if (!storeToPersist) return false
 
     try {
       setSaving(true)
@@ -405,14 +423,16 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       })
 
       if (!response.ok) {
-        throw new Error('Kaydetme başarısız')
+        throw new Error(await readApiErrorMessage(response, 'Kaydetme başarısız'))
       }
 
       setMessage(successMessage)
       setTimeout(() => setMessage(null), 3000)
+      return true
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'Beklenmeyen hata')
       setTimeout(() => setError(null), 5000)
+      return false
     } finally {
       setSaving(false)
     }

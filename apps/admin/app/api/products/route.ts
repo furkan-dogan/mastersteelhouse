@@ -25,6 +25,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Failed to write products store', error)
-    return NextResponse.json({ message: 'Kayit basarisiz.' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Kayit basarisiz.'
+    return NextResponse.json({ message }, { status: 500 })
   }
 }

@@ -72,6 +72,7 @@ export async function readDocumentsStore(): Promise<DocumentsStore> {
 export async function writeDocumentsStore(store: DocumentsStore) {
   if (isR2Configured()) {
     await writeJsonToR2(WEB_DOCUMENTS_INDEX_KEY, store)
+    return
   }
 
   await fs.writeFile(getStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')

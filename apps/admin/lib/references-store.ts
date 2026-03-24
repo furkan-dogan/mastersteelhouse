@@ -56,6 +56,7 @@ export async function readReferenceStore(): Promise<ReferenceStore> {
 export async function writeReferenceStore(store: ReferenceStore) {
   if (isR2Configured()) {
     await writeJsonToR2(WEB_REFERENCES_INDEX_KEY, store)
+    return
   }
 
   await fs.writeFile(getStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')

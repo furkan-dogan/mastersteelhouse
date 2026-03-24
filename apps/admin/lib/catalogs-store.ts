@@ -60,6 +60,7 @@ export async function readCatalogsStore(): Promise<CatalogsStore> {
 export async function writeCatalogsStore(store: CatalogsStore) {
   if (isR2Configured()) {
     await writeJsonToR2(WEB_CATALOGS_INDEX_KEY, store)
+    return
   }
 
   await fs.writeFile(getStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')

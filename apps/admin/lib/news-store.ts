@@ -82,6 +82,7 @@ export async function readNewsStore(): Promise<NewsStore> {
 export async function writeNewsStore(store: NewsStore) {
   if (isR2Configured()) {
     await writeJsonToR2(WEB_NEWS_INDEX_KEY, store)
+    return
   }
 
   await fs.writeFile(getStorePath(), `${JSON.stringify(store, null, 2)}\n`, 'utf8')
