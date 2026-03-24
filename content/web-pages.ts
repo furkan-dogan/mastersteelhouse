@@ -124,7 +124,6 @@ export const DEFAULT_WEB_PAGES: WebPageContent[] = [
   DEFAULT_INFO_CONTENT("uretim-dizayn-yazilimi", "Dizayn Yazılımı", "Teknoloji", "Dijital tasarım süreçlerimizi paylaşın."),
   DEFAULT_INFO_CONTENT("uretim-uretim-yazilimi", "Üretim Yazılımı", "Kontrol", "Üretim planlama ve izleme sistemleri."),
   DEFAULT_INFO_CONTENT("medya-blog", "Blog", "Haberler", "Sektörel içerikler ve teknik paylaşımlar."),
-  DEFAULT_INFO_CONTENT("medya-haberler", "Haberler", "Duyurular", "Güncel duyurular ve basın bültenleri."),
   DEFAULT_INFO_CONTENT("medya-kataloglar", "Kataloglar", "Dokümanlar", "Ürün kataloglarını buradan yönetin."),
   DEFAULT_INFO_CONTENT("medya-videolar", "Videolar", "Görseller", "Video ve görsel içerikleri buradan yönetin."),
   DEFAULT_INFO_CONTENT("iletisim", "İletişim", "Bize Ulaşın", "İletişim bilgileri ve form detayları."),

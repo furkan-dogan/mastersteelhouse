@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Package, BookOpenText, Newspaper, Image as ImageIcon, BarChart3, Search, RefreshCw } from 'lucide-react'
+import { Package, BookOpenText, Image as ImageIcon, BarChart3, Search, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from './admin-layout'
@@ -41,25 +41,16 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
 
   const load = useCallback(async () => {
     try {
-      const requests = [
+      const responses = await Promise.all([
         fetch(`${endpointBase}/products`, { cache: 'no-store' }),
         fetch(`${endpointBase}/blog`, { cache: 'no-store' }),
         fetch(`${endpointBase}/media`, { cache: 'no-store' }),
-      ]
-
-      if (!isProfileCms) {
-        requests.push(fetch(`${endpointBase}/news`, { cache: 'no-store' }))
-      }
-
-      const responses = await Promise.all(requests)
-      const [productsRes, blogRes, mediaRes, newsRes] = responses
+      ])
+      const [productsRes, blogRes, mediaRes] = responses
 
       const products = productsRes.ok ? ((await productsRes.json()) as { products?: unknown[] }) : null
       const blog = blogRes.ok ? ((await blogRes.json()) as { posts?: { slug: string; title: string; date?: string }[] }) : null
       const media = mediaRes.ok ? ((await mediaRes.json()) as { items?: unknown[] }) : null
-      const news = !isProfileCms && newsRes?.ok
-        ? ((await newsRes.json()) as { posts?: { slug: string; title: string; date?: string }[] })
-        : null
 
       const nextKpis: Kpi[] = [
         {
@@ -76,15 +67,6 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
         },
       ]
 
-      if (!isProfileCms) {
-        nextKpis.push({
-          label: 'Haberler',
-          value: news?.posts?.length ?? 0,
-          icon: <Newspaper className="h-5 w-5" />,
-          href: `${hrefBase}/news`,
-        })
-      }
-
       nextKpis.push({
         label: 'Medya Dosyası',
         value: media?.items?.length ?? 0,
@@ -99,22 +81,12 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
         items.push({ id: `blog-${p.slug}`, title: p.title, type: 'Blog', date: p.date })
       })
 
-      if (!isProfileCms) {
-        news?.posts?.slice(0, 5).forEach((n) => {
-          items.push({ id: `news-${n.slug}`, title: n.title, type: 'Haber', date: n.date })
-        })
-      }
-
       setRecent(items.slice(0, 8))
     } catch {
       const fallback: Kpi[] = [
         { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: `${hrefBase}/` },
         { label: 'Blog', value: '-', icon: <BookOpenText className="h-5 w-5" />, href: `${hrefBase}/blog` },
       ]
-
-      if (!isProfileCms) {
-        fallback.push({ label: 'Haberler', value: '-', icon: <Newspaper className="h-5 w-5" />, href: `${hrefBase}/news` })
-      }
 
       fallback.push({ label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: `${hrefBase}/media` })
       setKpis(fallback)
@@ -239,7 +211,6 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
                   onClick={() => {
                     const item = filteredRecent[index]
                     if (item?.type === 'Blog') router.push(`${hrefBase}/blog`)
-                    else if (item?.type === 'Haber') router.push(`${hrefBase}/news`)
                   }}
                 >
                   Görüntüle

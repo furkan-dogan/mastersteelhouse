@@ -19,7 +19,7 @@ import { VideosEditorDrawer } from '@/components/videos-editor-drawer'
 const EMPTY_STORE: VideosStore = {
   hero: {
     title: 'Videolar',
-    description: 'Master Steel House projelerinden videolar',
+    description: 'Firmamızdan bazı videolar',
   },
   items: [],
 }

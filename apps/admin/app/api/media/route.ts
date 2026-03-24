@@ -19,7 +19,6 @@ export const runtime = 'nodejs'
 const WEB_MEDIA_REFERENCES = [
   'products-cms.json',
   'blog-cms.json',
-  'news-cms.json',
   'videos-cms.json',
   'references-cms.json',
   'documents-cms.json',

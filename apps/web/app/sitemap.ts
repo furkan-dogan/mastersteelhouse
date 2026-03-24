@@ -1,6 +1,5 @@
 import type { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/blog-catalog'
-import { getNewsPosts } from '@/lib/news-catalog'
 import { getAllProductPaths } from '@/lib/product-catalog'
 import { getSiteUrl } from '@/lib/seo'
 
@@ -13,7 +12,6 @@ const staticRoutes = [
   '/gizlilik-politikasi',
   '/referanslar',
   '/medya/blog',
-  '/medya/haberler',
   '/medya/videolar',
   '/kurumsal/hakkimizda',
   '/kurumsal/misyonumuz',
@@ -39,10 +37,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === '/' ? 1 : 0.7,
   }))
 
-  const [products, blogPosts, newsPosts] = await Promise.all([
+  const [products, blogPosts] = await Promise.all([
     getAllProductPaths(),
     getBlogPosts(),
-    getNewsPosts(),
   ])
 
   const productEntries: MetadataRoute.Sitemap = products.map((item) => ({
@@ -68,12 +65,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  const newsEntries: MetadataRoute.Sitemap = newsPosts.map((post) => ({
-    url: `${siteUrl}/medya/haberler/${post.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
-
-  return [...staticEntries, ...productCategoryEntries, ...productEntries, ...blogEntries, ...newsEntries]
+  return [...staticEntries, ...productCategoryEntries, ...productEntries, ...blogEntries]
 }

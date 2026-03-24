@@ -78,7 +78,6 @@ export const productFlowItems: ProductFlowItem[] = [
 ]
 
 export const mediaLinks: NavLinkItem[] = [
-  { label: 'Haberler', href: '/medya/haberler' },
   { label: 'Videolar', href: '/medya/videolar' },
   { label: 'Blog', href: '/medya/blog' },
 ]
