@@ -3,6 +3,7 @@
 import { MessageCircle } from 'lucide-react'
 import { ContactInfoGrid } from '@/components/contact/contact-info-grid'
 import { ContactForm } from '@/components/contact/contact-form'
+import { ContactMap } from '@/components/contact/contact-map'
 import { ContactResultPopup } from '@/components/contact/contact-result-popup'
 import { useContactForm } from '@/components/contact/use-contact-form'
 import { useRevealOnScroll } from '@/hooks/use-reveal-on-scroll'
@@ -65,6 +66,8 @@ export function ContactSection() {
             </div>
           </div>
         </div>
+
+        <ContactMap isVisible={isVisible} />
       </div>
 
       <ContactResultPopup popup={resultPopup} onClose={() => setResultPopup(null)} />

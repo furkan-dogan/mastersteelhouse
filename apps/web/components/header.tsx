@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import {
   corporateLinks,
@@ -17,6 +18,7 @@ import { ProductsOverlay } from '@/components/header/products-overlay'
 import type { DropdownKey } from '@/components/header/types'
 
 export function Header() {
+  const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<DropdownKey | null>(null)
@@ -29,6 +31,10 @@ export function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const isHomePage = pathname === '/'
+  const useWhiteLogo = isHomePage && !isScrolled
+  const logoSrc = useWhiteLogo ? '/logolongwhite.png' : '/logolongblack.png'
 
   const clearCloseTimer = () => {
     if (!closeDropdownTimerRef.current) return
@@ -76,9 +82,11 @@ export function Header() {
             <div className={`relative transition-all duration-500 ${isScrolled ? 'h-10' : 'h-14'}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logolongwhite.png"
+                src={logoSrc}
                 alt="Master Steel House Logo"
-                className={`relative transition-all duration-500 group-hover:scale-105 drop-shadow-2xl ${
+                className={`relative transition-all duration-500 group-hover:scale-105 ${
+                  useWhiteLogo ? 'drop-shadow-2xl' : ''
+                } ${
                   isScrolled ? 'h-10' : 'h-14'
                 }`}
                 style={{ width: 'auto' }}

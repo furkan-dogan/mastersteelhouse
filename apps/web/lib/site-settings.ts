@@ -1,3 +1,10 @@
+import {
+  CONTACT_ADDRESS,
+  CONTACT_EMAIL,
+  CONTACT_PHONES,
+  CONTACT_WORKING_HOURS,
+} from '@/lib/contact-details'
+
 export type SocialIconKey = 'facebook' | 'instagram' | 'x' | 'youtube'
 
 export type SocialLink = {
@@ -49,8 +56,8 @@ export const contactInfoItems: ContactInfoItem[] = [
   {
     icon: 'phone',
     title: 'Telefon',
-    description: '7/24 Destek Hattı',
-    lines: ['+90 500 000 00 00', '+90 500 000 00 01'],
+    description: 'Telefon & Email',
+    lines: [...CONTACT_PHONES],
     colorClass: 'from-blue-500/20 to-blue-600/20',
     iconColorClass: 'text-blue-500',
   },
@@ -58,7 +65,7 @@ export const contactInfoItems: ContactInfoItem[] = [
     icon: 'mail',
     title: 'E-posta',
     description: 'Hızlı İletişim',
-    lines: ['info@celikyapi.com', 'proje@celikyapi.com'],
+    lines: [CONTACT_EMAIL],
     colorClass: 'from-green-500/20 to-green-600/20',
     iconColorClass: 'text-green-500',
   },
@@ -66,15 +73,15 @@ export const contactInfoItems: ContactInfoItem[] = [
     icon: 'map-pin',
     title: 'Adres',
     description: 'Merkez Ofis',
-    lines: ['Organize Sanayi Bölgesi', '1. Cadde No: 15, Ankara/Türkiye'],
+    lines: [CONTACT_ADDRESS],
     colorClass: 'from-purple-500/20 to-purple-600/20',
     iconColorClass: 'text-purple-500',
   },
   {
     icon: 'clock',
     title: 'Çalışma Saatleri',
-    description: 'Hafta İçi',
-    lines: ['Pazartesi - Cuma: 08:00 - 18:00', 'Cumartesi: 09:00 - 14:00'],
+    description: 'Haftaiçi & Cumartesi',
+    lines: [...CONTACT_WORKING_HOURS],
     colorClass: 'from-orange-500/20 to-orange-600/20',
     iconColorClass: 'text-orange-500',
   },

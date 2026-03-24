@@ -25,9 +25,6 @@ const nextConfig = {
       { source: '/hizmetler/tekkatliyapilar', destination: '/urunler/tek-katli-celik-villalar', permanent: true },
       { source: '/hizmetler/hafif-celik-profil', destination: '/uretim/celik-yapi-uretim', permanent: true },
 
-      // Known case-variant fallbacks
-      { source: '/ILETISIM', destination: '/iletisim', permanent: true },
-
       // Legacy catalog URL
       {
         source: '/Master%20Steel%20House%20Hafif%20%C3%87elik%20Sistemleri%20Katalog.pdf',
