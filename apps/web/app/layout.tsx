@@ -14,7 +14,7 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
 })
 
-const DEFAULT_SITE_URL = 'https://mastersteelhouse.com'
+const DEFAULT_SITE_URL = 'https://www.mastersteelhouse.com'
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).trim().replace(/\/$/, '')
 const brandName = 'Master Steel House'
 const defaultTitle = `${brandName} | Profesyonel Çelik Yapı Çözümleri`
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     locale: 'tr_TR',
     images: [
       {
-        url: '/logo.png',
+        url: '/hero-slide-1.jpg',
         width: 1200,
         height: 630,
         alt: `${brandName} logo`,
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: defaultTitle,
     description: defaultDescription,
-    images: ['/logo.png'],
+    images: ['/hero-slide-1.jpg'],
   },
   icons: {
     icon: [

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-const DEFAULT_SITE_URL = 'https://mastersteelhouse.com'
+const DEFAULT_SITE_URL = 'https://www.mastersteelhouse.com'
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).trim().replace(/\/$/, '')
 
 export const BRAND_NAME = 'Master Steel House'
@@ -40,7 +40,7 @@ export function buildPageMetadata({
     ? image.startsWith('http')
       ? image
       : toAbsoluteUrl(image)
-    : toAbsoluteUrl('/logo.png')
+    : toAbsoluteUrl('/hero-slide-1.jpg')
 
   return {
     title,
