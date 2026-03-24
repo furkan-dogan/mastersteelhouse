@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react'
 import { socialLinks } from '@/lib/site-settings'
 
@@ -17,12 +19,16 @@ export function FooterCompanyInfo() {
   return (
     <div className="space-y-6">
       <div className="group">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center shadow-lg shadow-accent/30 group-hover:scale-110 transition-transform">
-            <span className="text-accent-foreground font-bold text-xl">ÇY</span>
-          </div>
-          <span className="text-2xl font-bold font-mono">ÇELİK YAPI</span>
-        </div>
+        <Link href="/" className="mb-4 inline-flex items-center">
+          <Image
+            src="/logolongwhite.png"
+            alt="Master Steel House Logo"
+            width={280}
+            height={70}
+            className="h-12 w-auto transition-transform group-hover:scale-[1.02]"
+            priority={false}
+          />
+        </Link>
         <p className="text-primary-foreground/80 text-sm leading-relaxed">
           20+ yıllık tecrübemizle çelik yapı sektöründe güvenilir çözümler sunuyoruz. Kalite, güvenlik ve müşteri
           memnuniyeti önceliğimizdir.
