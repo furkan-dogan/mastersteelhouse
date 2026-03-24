@@ -16,7 +16,7 @@ export default async function Blog() {
 
   return (
     <SitePageShell>
-      <main className="min-h-screen bg-gradient-to-b from-background via-muted/20 to-background pt-32">
+      <main className="page-top-offset min-h-screen bg-gradient-to-b from-background via-muted/20 to-background">
         <PageHero
           title="Master Steel House"
           highlight="Blog"

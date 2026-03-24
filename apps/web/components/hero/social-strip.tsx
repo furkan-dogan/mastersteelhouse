@@ -21,7 +21,7 @@ type SocialStripProps = {
 
 export function SocialStrip({ isPastHero }: SocialStripProps) {
   return (
-    <div className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-30 flex-col gap-3">
+    <div className="hero-social-strip fixed right-8 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-3 lg:flex">
       <div className="relative group">
         <div
           className={`w-14 h-14 rounded-2xl border flex items-center justify-center cursor-pointer transition-all duration-500 hover:scale-110 hover:rotate-6 ${

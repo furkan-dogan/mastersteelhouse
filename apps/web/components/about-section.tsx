@@ -10,12 +10,9 @@ import { useRevealOnScroll } from '@/hooks/use-reveal-on-scroll'
 
 export function AboutSection() {
   const [countedStats, setCountedStats] = useState<number[]>([])
-  const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true)
+  const [activeFeature, setActiveFeature] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
   const { ref, isVisible } = useRevealOnScroll<HTMLElement>()
-
-  const displayedFeature = hoveredFeature !== null ? hoveredFeature : 0
 
   useEffect(() => {
     if (!isVisible) return
@@ -25,16 +22,6 @@ export function AboutSection() {
       }, index * 200)
     })
   }, [isVisible])
-
-  const toggleVideo = () => {
-    if (!videoRef.current) return
-    if (isVideoPlaying) {
-      videoRef.current.pause()
-    } else {
-      void videoRef.current.play()
-    }
-    setIsVideoPlaying((prev) => !prev)
-  }
 
   return (
     <section id="about" ref={ref} className="py-24 bg-background relative overflow-hidden">
@@ -51,18 +38,16 @@ export function AboutSection() {
             isVisible={isVisible}
             features={features}
             stats={stats}
-            displayedFeatureIndex={displayedFeature}
+            displayedFeatureIndex={activeFeature}
             countedStats={countedStats}
-            isVideoPlaying={isVideoPlaying}
             videoRef={videoRef}
-            onToggleVideo={toggleVideo}
           />
 
           <AboutFeatureList
             isVisible={isVisible}
             features={features}
-            hoveredFeature={hoveredFeature}
-            onHoverFeature={setHoveredFeature}
+            activeFeature={activeFeature}
+            onHoverFeature={setActiveFeature}
           />
         </div>
 

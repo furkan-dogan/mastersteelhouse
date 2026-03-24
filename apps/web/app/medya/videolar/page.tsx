@@ -14,7 +14,7 @@ export default async function Videolar() {
 
   return (
     <SitePageShell>
-      <main className="min-h-screen pt-32">
+      <main className="page-top-offset min-h-screen">
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">

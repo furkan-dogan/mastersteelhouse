@@ -24,7 +24,7 @@ export default async function BelgelerPage() {
   return (
     <SitePageShell>
       <main className="min-h-screen">
-        <section className="pt-32 pb-20">
+        <section className="page-top-offset pb-20">
           <SectionIntro
             badge={content.hero.badge}
             title={content.hero.title}

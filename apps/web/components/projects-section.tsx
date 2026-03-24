@@ -30,11 +30,6 @@ export function ProjectsSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <div className="inline-block mb-4">
-            <span className="px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium border border-accent/20">
-              Projelerimiz
-            </span>
-          </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
             Başarıyla Tamamladığımız{' '}
             <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">Projeler</span>

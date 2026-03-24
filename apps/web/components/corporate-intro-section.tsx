@@ -22,7 +22,7 @@ export function CorporateIntroSection({
   children,
 }: CorporateIntroSectionProps) {
   return (
-    <section className={cn('pt-32 pb-20', sectionClassName)}>
+    <section className={cn('page-top-offset pb-20', sectionClassName)}>
       <SectionIntro badge={badge} title={title} accent={accent} description={description} />
       <div className={cn('container mx-auto px-4', containerClassName)}>{children}</div>
     </section>

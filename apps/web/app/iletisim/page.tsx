@@ -12,7 +12,7 @@ export default function IletisimPage() {
   return (
     <SitePageShell>
       <main className="min-h-screen">
-        <div className="pt-32">
+        <div className="page-top-offset">
           <ContactSection />
         </div>
       </main>

@@ -18,7 +18,7 @@ export default function TasarimSureci() {
 
   return (
     <SitePageShell>
-      <main className="min-h-screen pt-32">
+      <main className="page-top-offset min-h-screen">
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">

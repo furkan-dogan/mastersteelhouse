@@ -11,23 +11,22 @@ const featureIconMap = {
 type AboutFeatureListProps = {
   isVisible: boolean
   features: AboutFeature[]
-  hoveredFeature: number | null
-  onHoverFeature: (index: number | null) => void
+  activeFeature: number
+  onHoverFeature: (index: number) => void
 }
 
-export function AboutFeatureList({ isVisible, features, hoveredFeature, onHoverFeature }: AboutFeatureListProps) {
+export function AboutFeatureList({ isVisible, features, activeFeature, onHoverFeature }: AboutFeatureListProps) {
   return (
     <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
       <div className="space-y-6">
         {features.map((feature, index) => {
           const Icon = featureIconMap[feature.icon]
-          const isHovered = hoveredFeature === index
+          const isHovered = activeFeature === index
 
           return (
             <div
               key={feature.title}
               onMouseEnter={() => onHoverFeature(index)}
-              onMouseLeave={() => onHoverFeature(null)}
               className={`group transition-all duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
             >
               <div

@@ -12,7 +12,7 @@ type ProcessHeroPageProps = {
 export function ProcessHeroPage(props: ProcessHeroPageProps) {
   return (
     <SitePageShell>
-      <main className="min-h-screen pt-32">
+      <main className="page-top-offset min-h-screen">
         <ProcessHeroSection {...props} />
       </main>
     </SitePageShell>

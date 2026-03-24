@@ -50,7 +50,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
   return (
     <SitePageShell>
       <main className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
-        <section className="relative pt-30 pb-14 md:pt-32 md:pb-16">
+        <section className="page-top-offset relative pb-14 md:pb-16">
           <div className={pageContainer}>
             <Link
               href={`/urunler/${category.slug}`}

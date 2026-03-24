@@ -121,7 +121,7 @@ type ArticleNotFoundPageProps = {
 export function ArticleNotFoundPage({ message }: ArticleNotFoundPageProps) {
   return (
     <SitePageShell>
-      <main className="min-h-screen pt-32">
+      <main className="page-top-offset min-h-screen">
         <div className="container mx-auto px-4">
           <p className="text-lg text-muted-foreground">{message}</p>
         </div>

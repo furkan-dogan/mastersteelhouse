@@ -9,7 +9,7 @@ type SlideIndicatorsProps = {
 
 export function SlideIndicators({ slides, currentSlide, progress, onGoToSlide }: SlideIndicatorsProps) {
   return (
-    <div className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 sm:bottom-10 sm:gap-3">
+    <div className="hero-slide-indicators absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 sm:bottom-10 sm:gap-3">
       {slides.map((slide, index) => (
         <button key={slide.id} onClick={() => onGoToSlide(index)} className="group relative" aria-label={`Go to slide ${index + 1}`}>
           <div className="h-1 w-10 overflow-hidden rounded-full bg-white/20 backdrop-blur-sm sm:w-16">

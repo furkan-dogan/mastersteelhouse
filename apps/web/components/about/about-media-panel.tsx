@@ -1,5 +1,4 @@
 import type { RefObject } from 'react'
-import { Pause, Play } from 'lucide-react'
 import Image from 'next/image'
 import type { AboutFeature, AboutStat } from '@/lib/content/about-content'
 
@@ -9,9 +8,7 @@ type AboutMediaPanelProps = {
   stats: AboutStat[]
   displayedFeatureIndex: number
   countedStats: number[]
-  isVideoPlaying: boolean
   videoRef: RefObject<HTMLVideoElement | null>
-  onToggleVideo: () => void
 }
 
 export function AboutMediaPanel({
@@ -20,9 +17,7 @@ export function AboutMediaPanel({
   stats,
   displayedFeatureIndex,
   countedStats,
-  isVideoPlaying,
   videoRef,
-  onToggleVideo,
 }: AboutMediaPanelProps) {
   const feature = features[displayedFeatureIndex]
 
@@ -38,23 +33,6 @@ export function AboutMediaPanel({
         </div>
 
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
-
-        <button
-          onClick={onToggleVideo}
-          className="absolute top-6 right-6 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-all duration-300 group"
-        >
-          {isVideoPlaying ? (
-            <Pause className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform" />
-          ) : (
-            <Play className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform" />
-          )}
-        </button>
-
-        <div className="absolute top-6 left-6">
-          <div className="px-4 py-2 rounded-full bg-accent/90 backdrop-blur-sm border border-accent-foreground/20 animate-pulse">
-            <span className="text-sm font-semibold text-accent-foreground">{feature.title}</span>
-          </div>
-        </div>
 
         <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-background/95 backdrop-blur-xl border border-border shadow-2xl">
           <div className="grid grid-cols-2 gap-4">

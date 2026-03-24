@@ -8,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Sparkles } from 'lucide-react'
 import { homeFaqItems } from '@/lib/content/faqs'
 
 export function FAQSection() {
@@ -62,10 +61,6 @@ export function FAQSection() {
         <div className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium border border-accent/20 mb-6">
-            <Sparkles className="w-4 h-4" />
-            <span>Sıkça Sorulan Sorular</span>
-          </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
             Merak Ettikleriniz{' '}
             <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">Burada</span>
@@ -92,7 +87,7 @@ export function FAQSection() {
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`}
-                  className={`group relative bg-card border-2 border-border rounded-2xl overflow-hidden transition-all duration-700 hover:shadow-xl hover:shadow-accent/10 ${
+                  className={`group relative last:border-b bg-card border-2 border-border rounded-2xl overflow-hidden transition-all duration-700 hover:shadow-xl hover:shadow-accent/10 ${
                     isOpen ? 'border-accent shadow-xl shadow-accent/20' : ''
                   } ${
                     itemVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'

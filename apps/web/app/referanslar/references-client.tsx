@@ -26,7 +26,7 @@ export function ReferencesClient({ references }: Props) {
       : references.filter((reference) => reference.categories.includes(selectedCategory))
 
   return (
-    <main className="min-h-screen bg-background pb-20 pt-32">
+    <main className="page-top-offset min-h-screen bg-background pb-20">
       <PageHero
         title="Referans"
         highlight="Projelerimiz"

@@ -8,7 +8,7 @@ type NavigationControlsProps = {
 
 export function NavigationControls({ isAnimating, onPrev, onNext }: NavigationControlsProps) {
   return (
-    <div className="absolute left-4 bottom-24 z-30 flex flex-row gap-3 sm:bottom-28 xl:left-8 xl:bottom-auto xl:top-1/2 xl:-translate-y-1/2 xl:flex-col xl:gap-4">
+    <div className="hero-nav-controls absolute bottom-24 left-4 z-30 flex flex-row gap-3 sm:bottom-28 xl:bottom-auto xl:left-8 xl:top-1/2 xl:-translate-y-1/2 xl:flex-col xl:gap-4">
       <button
         onClick={onPrev}
         disabled={isAnimating}

@@ -19,7 +19,7 @@ export default function DizaynYazilimi() {
 
   return (
     <SitePageShell>
-      <main className="min-h-screen pt-32">
+      <main className="page-top-offset min-h-screen">
         <MediaFeatureSection
           title="Dizayn"
           accent="Yazılımı"

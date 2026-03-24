@@ -85,7 +85,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section ref={heroRef} className="relative h-screen overflow-hidden bg-black">
+    <section ref={heroRef} className="hero-shell relative overflow-hidden bg-black">
       <div className="relative h-full">
         {slides.map((slide, index) => {
           const isActive = index === currentSlide
@@ -133,14 +133,14 @@ export function HeroSection() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
               </div>
 
-              <div className="relative h-full flex items-center z-20">
-                <div className="container mx-auto px-4 pt-20 sm:pt-24 md:pt-0 md:pl-28 lg:pl-32">
+              <div className="relative z-20 flex min-h-full items-center">
+                <div className="hero-content container mx-auto px-4 md:pl-28 lg:pl-32">
                   <div className="max-w-4xl">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-[1.05]">
+                    <h1 className="hero-title font-bold">
                       {slide.title.map((line, i) => (
                         <div
                           key={i}
-                          className={`overflow-hidden transition-all duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`}
+                          className={`my-[-0.08em] overflow-hidden py-[0.08em] transition-all duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`}
                           style={{ transitionDelay: isActive ? `${300 + i * 150}ms` : '0ms' }}
                         >
                           <span
@@ -158,7 +158,7 @@ export function HeroSection() {
                     </h1>
 
                     <p
-                      className={`text-base sm:text-lg md:text-xl text-white/90 mb-8 md:mb-10 leading-relaxed max-w-2xl transition-all duration-700 ${
+                      className={`hero-description max-w-2xl leading-relaxed text-white/90 transition-all duration-700 ${
                         isActive
                           ? 'opacity-100 translate-x-0'
                           : direction === 'next'
@@ -171,7 +171,7 @@ export function HeroSection() {
                     </p>
 
                     <div
-                      className={`flex flex-wrap gap-3 mb-10 transition-all duration-700 ${
+                      className={`hero-features flex flex-wrap gap-3 transition-all duration-700 ${
                         isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                       }`}
                       style={{ transitionDelay: isActive ? '900ms' : '0ms' }}
@@ -207,7 +207,7 @@ export function HeroSection() {
                         asChild
                         size="lg"
                         variant="outline"
-                        className="border-2 border-white/40 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 h-14 px-8 text-base group"
+                        className="group h-14 border-2 border-white/55 bg-white/10 px-8 text-base !text-white shadow-lg shadow-black/35 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.03] hover:border-accent hover:!bg-accent hover:!text-primary hover:shadow-xl hover:shadow-accent/45"
                       >
                         <Link href="/kurumsal/hakkimizda" className="flex items-center justify-center gap-2">
                           <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -220,7 +220,7 @@ export function HeroSection() {
               </div>
 
               <div
-                className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-64 bg-gradient-to-b from-transparent via-accent to-transparent transition-all duration-1000 ${
+                className={`hero-side-accent absolute left-0 top-1/2 h-64 w-1 -translate-y-1/2 bg-gradient-to-b from-transparent via-accent to-transparent transition-all duration-1000 ${
                   isActive ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0'
                 }`}
                 style={{ transitionDelay: isActive ? '1200ms' : '0ms' }}
@@ -234,7 +234,7 @@ export function HeroSection() {
 
       <SlideIndicators slides={slides} currentSlide={currentSlide} progress={progress} onGoToSlide={goToSlide} />
 
-      <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 z-20 animate-bounce md:block">
+      <div className="hero-scroll-hint absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 animate-bounce md:block">
         <div className="flex flex-col items-center gap-2">
           <div className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
             <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />

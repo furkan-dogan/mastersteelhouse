@@ -11,9 +11,6 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
   return (
     <div className="mt-32">
       <div className="text-center mb-20">
-        <div className="inline-block mb-4">
-          <span className="px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium border border-accent/20">Çalışma Sürecimiz</span>
-        </div>
         <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
           Fikir'den Teslim'e <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">5 Adım</span>
         </h3>
@@ -46,10 +43,6 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
                     <div className="absolute -top-4 -left-4 text-9xl font-bold text-accent/5 select-none">{item.step}</div>
 
                     <div className="relative">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-4">
-                        <span className="text-sm font-semibold text-accent">Adım {item.step}</span>
-                      </div>
-
                       <h4 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-accent transition-colors">{item.title}</h4>
 
                       <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">{item.description}</p>
