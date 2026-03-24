@@ -13,9 +13,11 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  let body: ProductStore | null = null
+
   try {
     assertR2ConfiguredForProduction()
-    const body = (await request.json()) as ProductStore
+    body = (await request.json()) as ProductStore
 
     if (!Array.isArray(body.categories) || !Array.isArray(body.products)) {
       return NextResponse.json({ message: 'Gecersiz veri formati.' }, { status: 400 })
@@ -25,6 +27,20 @@ export async function PUT(request: Request) {
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Failed to write products store', error)
+
+    // Some hosting environments can throw after a successful upstream write.
+    // If persisted store already matches the incoming payload, treat it as success.
+    if (body && Array.isArray(body.categories) && Array.isArray(body.products)) {
+      try {
+        const latest = await readProductStore()
+        if (JSON.stringify(latest) === JSON.stringify(body)) {
+          return NextResponse.json({ ok: true, recovered: true })
+        }
+      } catch (recoveryError) {
+        console.error('Failed to recover products write status', recoveryError)
+      }
+    }
+
     const message = error instanceof Error ? error.message : 'Kayit basarisiz.'
     return NextResponse.json({ message }, { status: 500 })
   }
