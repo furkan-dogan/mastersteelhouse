@@ -2,15 +2,8 @@
 
 import type { RefObject } from 'react'
 import { ExternalLink, FileText } from 'lucide-react'
-import type { DocumentsStore, DocumentItem } from '@/lib/documents-store'
+import type { DocumentItem } from '@/lib/documents-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
-
-function splitLines(value: string) {
-  return value
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-}
 
 function isPdfUrl(url: string) {
   const value = url.split('?')[0].toLowerCase()
@@ -18,11 +11,9 @@ function isPdfUrl(url: string) {
 }
 
 type DocumentsEditorFormProps = {
-  store: DocumentsStore
   selectedItem: DocumentItem
   uploadingFile: boolean
   fileInputRef: RefObject<HTMLInputElement | null>
-  onPatchStore: (update: Partial<DocumentsStore>) => void
   onPatchItem: (update: Partial<DocumentItem>) => void
   onUploadFile: (files: FileList | File[]) => Promise<void>
   onOpenMediaPicker: () => void
@@ -30,11 +21,9 @@ type DocumentsEditorFormProps = {
 }
 
 export function DocumentsEditorForm({
-  store,
   selectedItem,
   uploadingFile,
   fileInputRef,
-  onPatchStore,
   onPatchItem,
   onUploadFile,
   onOpenMediaPicker,
@@ -42,21 +31,10 @@ export function DocumentsEditorForm({
 }: DocumentsEditorFormProps) {
   return (
     <div className="space-y-6">
-      <div className="space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sayfa Ayarları</h3>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <input value={store.hero.badge} onChange={(e) => onPatchStore({ hero: { ...store.hero, badge: e.target.value } })} className="cms-input" placeholder="Badge" />
-          <input value={store.hero.title} onChange={(e) => onPatchStore({ hero: { ...store.hero, title: e.target.value } })} className="cms-input" placeholder="Başlık" />
-          <input value={store.hero.titleAccent} onChange={(e) => onPatchStore({ hero: { ...store.hero, titleAccent: e.target.value } })} className="cms-input" placeholder="Vurgulu Başlık" />
-        </div>
-        <textarea value={store.hero.description} onChange={(e) => onPatchStore({ hero: { ...store.hero, description: e.target.value } })} rows={3} className="cms-textarea" placeholder="Açıklama" />
-      </div>
-
-      <div className="space-y-4 border-t pt-4">
+      <div className="space-y-4">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Belge Detayı</h3>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3">
           <input value={selectedItem.title} onChange={(e) => onPatchItem({ title: e.target.value })} className="cms-input" placeholder="Belge adı" />
-          <input value={selectedItem.subtitle} onChange={(e) => onPatchItem({ subtitle: e.target.value })} className="cms-input" placeholder="Alt başlık" />
         </div>
         <textarea value={selectedItem.description} onChange={(e) => onPatchItem({ description: e.target.value })} rows={3} className="cms-textarea" placeholder="Belge açıklaması" />
 
@@ -100,12 +78,6 @@ export function DocumentsEditorForm({
             <p className="text-xs text-muted-foreground">Henüz dosya seçilmedi.</p>
           )}
         </div>
-      </div>
-
-      <div className="space-y-3 border-t pt-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Alt Bilgi</h3>
-        <textarea value={store.features.join('\n')} onChange={(e) => onPatchStore({ features: splitLines(e.target.value) })} rows={6} className="cms-textarea" placeholder="Özellikler (satır satır)" />
-        <textarea value={store.footerNote} onChange={(e) => onPatchStore({ footerNote: e.target.value })} rows={2} className="cms-textarea" placeholder="Alt not" />
       </div>
 
       <div className="border-t pt-4">

@@ -18,7 +18,7 @@ pnpm install
 ## Geliştirme
 ```bash
 corepack pnpm --filter mastersteelhouse-web dev
-corepack pnpm --filter mastersteelhouse-admin dev z
+corepack pnpm --filter mastersteelhouse-admin dev
 corepack pnpm --filter mastersteelhouse-profil dev
 ```
 

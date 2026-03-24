@@ -14,6 +14,7 @@ import { useConfirmDelete } from '@/lib/use-confirm-delete'
 import { usePagination } from '@/lib/use-pagination'
 import { DocumentsCmsTable } from '@/components/documents-cms-table'
 import { DocumentsEditorDrawer } from '@/components/documents-editor-drawer'
+import { DocumentsPageSettingsForm } from '@/components/documents-page-settings-form'
 
 const EMPTY_STORE: DocumentsStore = {
   hero: {
@@ -32,7 +33,6 @@ function createDocument(): DocumentItem {
   return {
     id: createEditorRowId('doc'),
     title: 'Yeni Belge',
-    subtitle: 'Belge Alt Başlığı',
     description: 'Belge açıklaması',
     pdfUrl: '',
   }
@@ -67,7 +67,6 @@ export function DocumentsCmsEditor({ endpoint = '/api/documents', mediaEndpoint 
       if (!q) return true
       return (
         item.title.toLowerCase().includes(q) ||
-        item.subtitle.toLowerCase().includes(q) ||
         item.description.toLowerCase().includes(q)
       )
     })
@@ -209,6 +208,8 @@ export function DocumentsCmsEditor({ endpoint = '/api/documents', mediaEndpoint 
           />
         }
       >
+        <DocumentsPageSettingsForm store={store} onPatchStore={patchStore} />
+
         <section className="cms-card overflow-hidden">
           <CmsListToolbar
             searchValue={search}
@@ -235,13 +236,11 @@ export function DocumentsCmsEditor({ endpoint = '/api/documents', mediaEndpoint 
       <DocumentsEditorDrawer
         open={editorOpen}
         saving={saving}
-        store={store}
         selectedItem={selectedItem}
         uploadingFile={uploadingPdf}
         fileInputRef={fileInputRef}
         onSave={() => void saveStore()}
         onClose={() => setEditorOpen(false)}
-        onPatchStore={patchStore}
         onPatchItem={patchItem}
         onUploadFile={uploadFile}
         onOpenMediaPicker={() => setShowMediaPicker(true)}

@@ -28,7 +28,12 @@ const nextConfig = {
       // Legacy catalog URL
       {
         source: '/Master%20Steel%20House%20Hafif%20%C3%87elik%20Sistemleri%20Katalog.pdf',
-        destination: '/medya/kataloglar',
+        destination: '/uploads/media/master-steel-house-hafif-celik-sistemleri-katalog-1771338462283-dbf97d.pdf',
+        permanent: true,
+      },
+      {
+        source: '/medya/kataloglar',
+        destination: '/uploads/media/master-steel-house-hafif-celik-sistemleri-katalog-1771338462283-dbf97d.pdf',
         permanent: true,
       },
 

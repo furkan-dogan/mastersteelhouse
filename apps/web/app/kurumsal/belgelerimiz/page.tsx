@@ -60,8 +60,7 @@ export default async function BelgelerPage() {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="mb-2 text-xl font-bold transition-colors group-hover:text-accent">{doc.title}</h3>
-                    <div className="mb-4 text-sm font-medium text-accent/80">{doc.subtitle}</div>
+                    <h3 className="mb-4 text-xl font-bold transition-colors group-hover:text-accent">{doc.title}</h3>
                     <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{doc.description}</p>
                     {doc.pdfUrl ? (
                       <div className="flex flex-wrap gap-2">

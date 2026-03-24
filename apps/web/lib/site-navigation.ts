@@ -1,6 +1,7 @@
 export type NavLinkItem = {
   label: string
   href: string
+  newTab?: boolean
 }
 
 export type NavGroup = {
@@ -13,6 +14,9 @@ export type ProductFlowItem = {
   href: string
   image: string
 }
+
+export const CATALOG_PDF_PATH =
+  '/uploads/media/master-steel-house-hafif-celik-sistemleri-katalog-1771338462283-dbf97d.pdf'
 
 export const corporateLinks: NavLinkItem[] = [
   { label: 'Hakkımızda', href: '/kurumsal/hakkimizda' },
@@ -74,18 +78,19 @@ export const productFlowItems: ProductFlowItem[] = [
 ]
 
 export const mediaLinks: NavLinkItem[] = [
-  { label: 'Kataloglar', href: '/medya/kataloglar' },
   { label: 'Haberler', href: '/medya/haberler' },
   { label: 'Videolar', href: '/medya/videolar' },
   { label: 'Blog', href: '/medya/blog' },
 ]
 
 export const desktopPrimaryLinks: NavLinkItem[] = [
+  { label: 'Katalog', href: CATALOG_PDF_PATH, newTab: true },
   { label: 'Referanslar', href: '/referanslar' },
   { label: 'İletişim', href: '/iletisim' },
 ]
 
 export const mobilePrimaryLinks: NavLinkItem[] = [
+  { label: 'Katalog', href: CATALOG_PDF_PATH, newTab: true },
   { label: 'Referanslar', href: '/referanslar' },
   { label: 'Üretim', href: '/uretim/celik-yapi-uretim' },
   { label: 'Proje Süreci', href: '/proje-sureci/tasarim-sureci' },

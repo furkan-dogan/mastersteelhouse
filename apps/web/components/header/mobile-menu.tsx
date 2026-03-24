@@ -67,6 +67,8 @@ export function MobileMenu({
             key={item.href}
             href={item.href}
             onClick={onCloseAll}
+            target={item.newTab ? '_blank' : undefined}
+            rel={item.newTab ? 'noopener noreferrer' : undefined}
             className="block px-4 py-3 rounded-xl text-foreground/80 hover:bg-accent/10 hover:text-accent transition-all"
           >
             {item.label}

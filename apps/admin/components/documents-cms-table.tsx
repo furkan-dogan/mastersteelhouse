@@ -38,8 +38,7 @@ export function DocumentsCmsTable({
           <thead className="bg-muted/40 text-muted-foreground">
             <tr>
               <th className="hidden w-[140px] px-4 py-3 text-left font-medium md:table-cell">Önizleme</th>
-              <th className="w-[52%] px-4 py-3 text-left font-medium">Belge</th>
-              <th className="hidden w-[20%] px-4 py-3 text-left font-medium md:table-cell">Alt Başlık</th>
+              <th className="w-[72%] px-4 py-3 text-left font-medium">Belge</th>
               <th className="hidden w-[12%] px-4 py-3 text-left font-medium lg:table-cell">Durum</th>
               <th className="w-[120px] px-4 py-3 text-right font-medium">İşlemler</th>
             </tr>
@@ -47,7 +46,7 @@ export function DocumentsCmsTable({
           <tbody>
             {filteredItems.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-10 text-center text-sm text-muted-foreground">
+                <td colSpan={4} className="px-4 py-10 text-center text-sm text-muted-foreground">
                   Belge bulunamadı.
                 </td>
               </tr>
@@ -80,7 +79,6 @@ export function DocumentsCmsTable({
                       <p className="hidden truncate text-xs text-muted-foreground md:block">{item.description || 'Açıklama girilmemiş'}</p>
                     </div>
                   </td>
-                  <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">{item.subtitle || '-'}</td>
                   <td className="hidden px-4 py-3 lg:table-cell">
                     <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${item.pdfUrl ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300'}`}>
                       {item.pdfUrl ? 'Hazır' : 'Eksik'}

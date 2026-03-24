@@ -2,25 +2,32 @@
   "hero": {
     "badge": "Belgelerimiz",
     "title": "Kalite ve",
-    "titleAccent": "Guven",
-    "description": "Sahip oldugumuz uluslararasi sertifikalar ve kalite belgelerimiz ile musterilerimize guven veriyoruz."
+    "titleAccent": "Güven",
+    "description": "Sahip olduğumuz uluslararası sertifikalar ve kalite belgelerimiz ile müşterilerimize güven veriyoruz."
   },
   "items": [
     {
       "id": "doc-1",
       "title": "ISO 9001:2015",
-      "subtitle": "Kalite Yonetim Sistemi",
-      "description": "Urun ve hizmet kalitesinin surekli iyilestirilmesi icin uluslararasi standartlara uygunluk belgesi.",
+      "subtitle": "Kalite Yönetim Sistemi",
+      "description": "Süreçlerimizin kaliteli, planlı ve sürekli iyileştirme esaslı yürütüldüğünü gösterir.",
       "pdfUrl": "/uploads/media/sqr-certification-iso-9001-1771514224414-238005.jpeg"
+    },
+    {
+      "id": "doc-1774347741740-385e3c",
+      "title": "ISO 14001:2015",
+      "subtitle": "Kalite Yönetim Sistemi",
+      "description": "Çevresel etkileri kontrol altında tutarak sürdürülebilir ve sorumlu üretim yaptığımızı belgeleyen sistemdir.",
+      "pdfUrl": "https://pub-d48ad607846349fc992b42968ced0d17.r2.dev/web/sqr-certification-iso-14001-1774347924272-8f97cf.webp"
     }
   ],
   "features": [
-    "Uluslararasi kalite standartlarina tam uyum",
-    "Duzenli denetim ve sertifika yenilemeleri",
-    "Cevre dostu ve surdurulebilir uretim",
-    "Is guvenligi oncelikli calisma ortami",
-    "Avrupa pazarina ihracat yetkisi",
-    "Deprem yonetmeligine tam uygunluk"
+    "Uluslararası kalite standartlarına tam uyum",
+    "Düzenli denetim ve sertifika yenilemeleri",
+    "Çevre dostu ve sürdürülebilir üretim",
+    "İş güvenliği öncelikli çalışma ortamı",
+    "Avrupa pazarına ihracat yetkisi",
+    "Deprem yönetmeliğine tam uygunluk"
   ],
-  "footerNote": "Tum belgelerimiz duzenli olarak denetleniyor ve yenileniyor. Kalite standartlarimizdan asla odun vermiyoruz."
+  "footerNote": "Tüm belgelerimiz düzenli olarak denetleniyor ve yenileniyor. Kalite standartlarımızdan asla ödün vermiyoruz."
 }

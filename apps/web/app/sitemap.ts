@@ -14,7 +14,6 @@ const staticRoutes = [
   '/referanslar',
   '/medya/blog',
   '/medya/haberler',
-  '/medya/kataloglar',
   '/medya/videolar',
   '/kurumsal/hakkimizda',
   '/kurumsal/misyonumuz',

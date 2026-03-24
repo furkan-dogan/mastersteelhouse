@@ -6,7 +6,7 @@ import { isR2Configured, readJsonFromR2, writeJsonToR2 } from '@/lib/r2-storage'
 export type DocumentItem = {
   id: string
   title: string
-  subtitle: string
+  subtitle?: string
   description: string
   pdfUrl: string
 }
