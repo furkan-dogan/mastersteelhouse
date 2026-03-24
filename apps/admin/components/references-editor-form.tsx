@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import type { ReferenceItem } from '@/lib/references-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
@@ -28,6 +29,12 @@ export function ReferencesEditorForm({
   onError,
   simplified = false,
 }: ReferencesEditorFormProps) {
+  const [categoriesInput, setCategoriesInput] = useState(selectedItem.categories.join(', '))
+
+  useEffect(() => {
+    setCategoriesInput(selectedItem.categories.join(', '))
+  }, [selectedItem.id, selectedItem.categories])
+
   return (
     <div className="space-y-4">
       <div>
@@ -43,15 +50,19 @@ export function ReferencesEditorForm({
               <input value={selectedItem.location} onChange={(e) => onPatchItem({ location: e.target.value })} className="cms-input" />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-muted-foreground">Alan / Ölçek</label>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Adet</label>
               <input value={selectedItem.area ?? ''} onChange={(e) => onPatchItem({ area: e.target.value })} className="cms-input" />
             </div>
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Kategoriler (virgülle)</label>
             <input
-              value={selectedItem.categories.join(', ')}
-              onChange={(e) => onPatchItem({ categories: splitByComma(e.target.value) })}
+              value={categoriesInput}
+              onChange={(e) => {
+                const value = e.target.value
+                setCategoriesInput(value)
+                onPatchItem({ categories: splitByComma(value) })
+              }}
               className="cms-input"
             />
           </div>

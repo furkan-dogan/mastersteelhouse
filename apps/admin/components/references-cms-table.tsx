@@ -64,7 +64,7 @@ export function ReferencesCmsTable({
                         <div className="min-w-0">
                           <p className="truncate font-medium text-foreground hover:underline">{item.title}</p>
                           {!simplified ? (
-                            <p className="hidden truncate text-xs text-muted-foreground md:block">{item.area || 'Alan bilgisi yok'}</p>
+                            <p className="hidden truncate text-xs text-muted-foreground md:block">{item.area || 'Adet bilgisi yok'}</p>
                           ) : null}
                         </div>
                       </div>
