@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { readCatalogsStore, writeCatalogsStore, type CatalogsStore } from '@/lib/profile-catalogs-store'
+import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
 
 export async function GET() {
   try {
@@ -13,6 +14,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
+    assertR2ConfiguredForProduction()
     const body = (await request.json()) as CatalogsStore
     if (!Array.isArray(body.items)) {
       return NextResponse.json({ message: 'Gecersiz veri formati.' }, { status: 400 })

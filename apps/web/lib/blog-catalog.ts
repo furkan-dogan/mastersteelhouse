@@ -31,7 +31,7 @@ function normalizePost(post: BlogPost): BlogPost {
 async function readStore(): Promise<BlogStore> {
   return readCmsJson<BlogStore>({
     r2Key: '_cms/blog-cms.json',
-    devApiPath: '/api/blog',
+    devApiPath: '/api/public/blog',
     localFileName: 'blog-cms.json',
     validate: isBlogStore,
   })

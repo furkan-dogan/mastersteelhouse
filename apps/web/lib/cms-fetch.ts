@@ -13,7 +13,6 @@ export type ReadCmsJsonOptions<T> = {
 
 const WEB_DEV_ADMIN_API_BASE = (process.env.WEB_DEV_ADMIN_API_BASE ?? 'http://localhost:3002').trim().replace(/\/$/, '')
 const WEB_DEV_MEDIA_PROXY_BASE = (process.env.WEB_DEV_MEDIA_PROXY_BASE ?? WEB_DEV_ADMIN_API_BASE).trim().replace(/\/$/, '')
-const DEFAULT_R2_PUBLIC_BASE_URL = 'https://pub-d48ad607846349fc992b42968ced0d17.r2.dev'
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 const CMS_REVALIDATE_SECONDS = Number.parseInt(process.env.CMS_REVALIDATE_SECONDS ?? '120', 10)
@@ -35,7 +34,7 @@ function resolveLocalContentPath(fileName: string) {
 }
 
 function resolveR2BaseUrl() {
-  return (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? DEFAULT_R2_PUBLIC_BASE_URL)
+  return (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? '')
     .trim()
     .replace(/\/$/, '')
 }
@@ -101,18 +100,25 @@ export async function readCmsJson<T>({
     if (devValue && validate(devValue)) return devValue
   }
 
+  const r2Base = resolveR2BaseUrl()
+  let r2FetchAttempted = false
+  if (r2Base) {
+    r2FetchAttempted = true
+    const r2Value = await fetchJson<unknown>(`${r2Base}/${r2Key}`)
+    if (r2Value && validate(r2Value)) return r2Value
+  }
+
   try {
     const raw = await fs.readFile(resolveLocalContentPath(localFileName), 'utf8')
     const parsed = JSON.parse(raw) as unknown
-    if (validate(parsed)) return parsed
+    if (validate(parsed)) {
+      if (!IS_DEV && r2FetchAttempted) {
+        console.warn(`[CMS] Falling back to local content for ${localFileName}. Check R2_PUBLIC_BASE_URL and R2 object sync.`)
+      }
+      return parsed
+    }
   } catch {
-    // keep going and try R2 fallback
-  }
-
-  const r2Base = resolveR2BaseUrl()
-  if (r2Base) {
-    const r2Value = await fetchJson<unknown>(`${r2Base}/${r2Key}`)
-    if (r2Value && validate(r2Value)) return r2Value
+    // keep going
   }
 
   throw new Error(`Invalid CMS shape in ${localFileName}`)

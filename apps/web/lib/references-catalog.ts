@@ -14,7 +14,7 @@ const isReferenceStore = createCmsStoreValidator({
 export async function getReferenceItems(): Promise<ReferenceItem[]> {
   const store = await readCmsStore<ReferenceStore>({
     r2Key: '_cms/references-cms.json',
-    devApiPath: '/api/references',
+    devApiPath: '/api/public/references',
     localFileName: 'references-cms.json',
     validate: isReferenceStore,
   })

@@ -12,7 +12,7 @@ import {
 import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
 import { collectUsedMediaUrls } from '@/lib/media-usage'
 import { generateThumbnailForImage, optimizeImageForWeb } from '@/lib/image-optimization'
-import { deleteFromR2PublicUrl, uploadToR2 } from '@/lib/r2-storage'
+import { assertR2ConfiguredForProduction, deleteFromR2PublicUrl, uploadToR2 } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
 
@@ -62,6 +62,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    assertR2ConfiguredForProduction()
     const formData = await request.formData()
     const entries = formData.getAll('files')
     const files = entries.filter((entry): entry is File => entry instanceof File)
@@ -185,6 +186,7 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    assertR2ConfiguredForProduction()
     const body = (await request.json()) as { id?: string }
     if (!body.id) {
       return NextResponse.json({ message: 'Medya id gerekli.' }, { status: 400 })

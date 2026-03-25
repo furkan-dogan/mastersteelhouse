@@ -196,6 +196,27 @@
   .hero-features {
     margin-bottom: clamp(1rem, 2.4vh, 2rem);
   }
+
+  .msh-whatsapp-chatbox,
+  .msh-whatsapp-chatbox input {
+    color: #111111 !important;
+  }
+
+  .msh-whatsapp input[class*='styles-module_input__'] {
+    color: #111111 !important;
+    -webkit-text-fill-color: #111111 !important;
+  }
+
+  .msh-whatsapp-chatbox input::placeholder {
+    color: #6b7280 !important;
+    opacity: 1;
+  }
+
+  .msh-whatsapp input[class*='styles-module_input__']::placeholder {
+    color: #6b7280 !important;
+    -webkit-text-fill-color: #6b7280 !important;
+    opacity: 1;
+  }
 }
 
 @keyframes marquee-left {

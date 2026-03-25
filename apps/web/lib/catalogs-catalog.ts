@@ -12,7 +12,7 @@ const isCatalogsStore = createCmsStoreValidator({
 export async function getCatalogsContent(): Promise<CatalogsStore> {
   const store = await readCmsStore<CatalogsStore>({
     r2Key: '_cms/catalogs-cms.json',
-    devApiPath: '/api/catalogs',
+    devApiPath: '/api/public/catalogs',
     localFileName: 'catalogs-cms.json',
     validate: isCatalogsStore,
   })

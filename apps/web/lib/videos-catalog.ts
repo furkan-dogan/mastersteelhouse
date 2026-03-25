@@ -11,7 +11,7 @@ const isVideosStore = createCmsStoreValidator({
 export async function getVideosContent(): Promise<VideosStore> {
   return readCmsStore<VideosStore>({
     r2Key: '_cms/videos-cms.json',
-    devApiPath: '/api/videos',
+    devApiPath: '/api/public/videos',
     localFileName: 'videos-cms.json',
     validate: isVideosStore,
   })

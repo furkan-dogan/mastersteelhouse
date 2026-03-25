@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { readProductStore, writeProductStore, type ProductStore } from '@/lib/profile-products-store'
+import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
 
 export async function GET() {
   try {
@@ -13,6 +14,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
+    assertR2ConfiguredForProduction()
     const body = (await request.json()) as ProductStore
 
     if (!Array.isArray(body.categories) || !Array.isArray(body.products)) {

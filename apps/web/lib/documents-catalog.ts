@@ -12,7 +12,7 @@ const isDocumentsStore = createCmsStoreValidator({
 export async function getDocumentsContent(): Promise<DocumentsStore> {
   const store = await readCmsStore<DocumentsStore>({
     r2Key: '_cms/documents-cms.json',
-    devApiPath: '/api/documents',
+    devApiPath: '/api/public/documents',
     localFileName: 'documents-cms.json',
     validate: isDocumentsStore,
   })

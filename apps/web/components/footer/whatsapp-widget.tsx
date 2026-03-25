@@ -33,6 +33,11 @@ export function WhatsAppWidget() {
       chatMessage="Merhabalar! Nasıl yardımcı olabiliriz? 🤝"
       placeholder="Bir mesaj yazın..."
       avatar="/images/avatar.webp"
+      style={{ color: '#111111' }}
+      chatboxStyle={{ color: '#111111' }}
+      className="msh-whatsapp"
+      chatboxClassName="msh-whatsapp-chatbox"
+      darkMode={false}
     />
   )
 }
