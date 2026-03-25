@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import type { ProductStore, ProductItem } from '@/lib/products-store'
 import { AdminLayout } from '@/components/admin-layout'
@@ -42,6 +42,13 @@ function createTechnicalDetailRow(keyText = '', valueText = ''): TechnicalDetail
   }
 }
 
+function createTechnicalDetailRowsFromRecord(technicalDetails?: Record<string, string>) {
+  const rows = Object.entries(technicalDetails ?? {}).map(([key, value]) =>
+    createTechnicalDetailRow(key, value)
+  )
+  return rows.length > 0 ? rows : [createTechnicalDetailRow()]
+}
+
 type CmsEditorProps = {
   mode?: 'default' | 'profile'
 
@@ -78,6 +85,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>('')
   const [selectedProductSlug, setSelectedProductSlug] = useState<string>('')
   const [technicalDetailRows, setTechnicalDetailRows] = useState<TechnicalDetailRow[]>([])
+  const technicalRowsOwnerRef = useRef<string>('')
   const [showMediaPicker, setShowMediaPicker] = useState(false)
   const [mediaTarget, setMediaTarget] = useState<MediaTarget>({ type: 'cover' })
   const [search, setSearch] = useState('')
@@ -110,23 +118,31 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
   const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredProducts, 10)
 
   useEffect(() => {
-    if (!store || !selectedCategorySlug || !selectedProductSlug) {
+    const selectionKey =
+      selectedCategorySlug && selectedProductSlug
+        ? `${selectedCategorySlug}::${selectedProductSlug}`
+        : ''
+
+    if (!store || !selectionKey) {
+      technicalRowsOwnerRef.current = ''
       setTechnicalDetailRows([])
       return
     }
+
+    // Keep input focus stable while editing; only rehydrate rows when selected product changes.
+    if (technicalRowsOwnerRef.current === selectionKey) return
 
     const product = store.products.find(
       (item) => item.categorySlug === selectedCategorySlug && item.slug === selectedProductSlug
     )
     if (!product) {
+      technicalRowsOwnerRef.current = ''
       setTechnicalDetailRows([])
       return
     }
 
-    const rows = Object.entries(product.technicalDetails ?? {}).map(([key, value]) =>
-      createTechnicalDetailRow(key, value)
-    )
-    setTechnicalDetailRows(rows.length > 0 ? rows : [createTechnicalDetailRow()])
+    technicalRowsOwnerRef.current = selectionKey
+    setTechnicalDetailRows(createTechnicalDetailRowsFromRecord(product.technicalDetails))
   }, [store, selectedCategorySlug, selectedProductSlug])
 
   const loadStore = useCallback(async () => {
