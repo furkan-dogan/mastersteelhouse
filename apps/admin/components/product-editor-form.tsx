@@ -5,13 +5,6 @@ import type { ProductItem } from '@/lib/products-store'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
 
-function splitLines(value: string) {
-  return value
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-}
-
 export type TechnicalDetailRow = {
   id: string
   keyText: string
@@ -161,10 +154,6 @@ export function ProductEditorForm({
       <div className="space-y-4">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ek İçerik</h3>
         <div className="grid gap-4 lg:grid-cols-2">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Highlights (satir satir)</label>
-            <textarea value={(selectedProduct.highlights ?? []).join('\n')} onChange={(event) => onPatchProduct({ highlights: splitLines(event.target.value) })} rows={5} className="cms-textarea" placeholder="Her satira bir madde" />
-          </div>
           <div>
             <div className="mb-1 flex items-center justify-between">
               <label className="block text-xs font-medium text-muted-foreground">Galeri Görselleri</label>

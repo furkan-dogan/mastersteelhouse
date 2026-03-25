@@ -9,7 +9,6 @@ import { ProductGallery } from '@/components/product-detail/product-gallery'
 import { ProductSpecsGrid, type ProductSpecItem } from '@/components/product-detail/product-specs-grid'
 import { TechnicalDetailsTable } from '@/components/product-detail/technical-details-table'
 import { FloorPlansSection } from '@/components/product-detail/floor-plans-section'
-import { HighlightsGrid } from '@/components/product-detail/highlights-grid'
 import { QuoteRequestForm } from '@/components/product-detail/quote-request-form'
 import { GalleryLightbox } from '@/components/product-detail/gallery-lightbox'
 
@@ -114,13 +113,6 @@ export function ProductDetailTemplate({ product, category }: Props) {
               onSelectPlan={setSelectedFloorPlan}
               onOpenImage={() => openGallery(currentGalleryIndex)}
             />
-          </div>
-        </section>
-
-        <section className="py-14 md:py-16">
-          <div className={pageContainer}>
-            <h2 className="text-3xl font-bold mb-8">Öne Çıkan Özellikler</h2>
-            <HighlightsGrid items={product.highlights} />
           </div>
         </section>
 
