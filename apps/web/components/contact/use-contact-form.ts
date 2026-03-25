@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import type { ContactFormState, FormErrors, SubmitPopup } from '@/components/contact/types'
+import { pushDataLayerEvent } from '@/lib/tracking'
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mlgwzedw'
 const MIN_SUBMIT_MS = 3000
@@ -58,17 +59,42 @@ export function useContactForm() {
     const nextErrors = validate(formData)
     setErrors(nextErrors)
 
-    if (Object.keys(nextErrors).length > 0) return
+    if (Object.keys(nextErrors).length > 0) {
+      pushDataLayerEvent('contact_form_validation_error', {
+        contact_location: '/iletisim',
+        error_fields: Object.keys(nextErrors).join(','),
+      })
+      return
+    }
 
     if (formData.company.trim()) {
+      pushDataLayerEvent('contact_form_honeypot_blocked', {
+        contact_location: '/iletisim',
+      })
       setResultPopup({ type: 'success', text: 'Mesajınız alındı. En kısa sürede size dönüş yapacağız.' })
       return
     }
 
     if (Date.now() - mountAtRef.current < MIN_SUBMIT_MS) {
+      pushDataLayerEvent('contact_form_submit_blocked', {
+        contact_location: '/iletisim',
+        reason: 'too_fast',
+      })
       setResultPopup({ type: 'error', text: 'Gönderim çok hızlı algılandı. Lütfen birkaç saniye sonra tekrar deneyin.' })
       return
     }
+
+    pushDataLayerEvent('FormGonderButton', {
+      contact_channel: 'form',
+      contact_location: '/iletisim',
+      contact_label: formData.subject.trim() || 'iletisim_formu',
+    })
+    pushDataLayerEvent('contact_form_submit_attempt', {
+      contact_location: '/iletisim',
+      has_email: Boolean(formData.email.trim()),
+      has_phone: Boolean(formData.phone.trim()),
+      has_subject: Boolean(formData.subject.trim()),
+    })
 
     setIsSubmitting(true)
     try {
@@ -95,8 +121,14 @@ export function useContactForm() {
 
       setFormData(initialState)
       setErrors({})
+      pushDataLayerEvent('contact_form_submit_success', {
+        contact_location: '/iletisim',
+      })
       setResultPopup({ type: 'success', text: 'Mesajınız alındı. En kısa sürede size dönüş yapacağız.' })
     } catch {
+      pushDataLayerEvent('contact_form_submit_error', {
+        contact_location: '/iletisim',
+      })
       setResultPopup({ type: 'error', text: 'Gönderim sırasında bir sorun oluştu. Lütfen tekrar deneyin.' })
     } finally {
       setIsSubmitting(false)

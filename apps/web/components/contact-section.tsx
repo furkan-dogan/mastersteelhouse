@@ -45,6 +45,8 @@ export function ContactSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="whatsappButton inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-500"
+              data-contact-location="contact_section_cta"
+              data-contact-label="whatsapp_hizli_iletisim"
             >
               <MessageCircle className="h-4 w-4" />
               WhatsApp'tan Hızlı İletişim

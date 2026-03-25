@@ -26,6 +26,8 @@ export function FooterContactInfo() {
                   key={phone}
                   href={toTelHref(phone)}
                   className="block hover:text-primary-foreground transition-colors"
+                  data-contact-location="footer_contact_info"
+                  data-contact-label={phone}
                 >
                   {phone}
                 </a>
@@ -37,6 +39,8 @@ export function FooterContactInfo() {
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="flex items-center gap-3 text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            data-contact-location="footer_contact_info"
+            data-contact-label={CONTACT_EMAIL}
           >
             <div className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
               <Mail className="w-5 h-5" />

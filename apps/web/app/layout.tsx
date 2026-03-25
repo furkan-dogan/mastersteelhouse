@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
+import { ContactTrackingListener } from '@/components/tracking/contact-tracking-listener'
 import './globals.css'
 
 const inter = Inter({
@@ -113,6 +114,7 @@ export default function RootLayout({
         ) : null}
 
         {children}
+        <ContactTrackingListener />
         <Analytics />
       </body>
     </html>
