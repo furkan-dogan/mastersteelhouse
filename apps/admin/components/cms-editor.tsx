@@ -34,19 +34,124 @@ const DEFAULT_PRODUCT_FEATURES = {
   warranty: '20 Yıl',
 }
 
-function createTechnicalDetailRow(keyText = '', valueText = ''): TechnicalDetailRow {
+const SLUG_CHAR_MAP: Record<string, string> = {
+  ç: 'c',
+  ğ: 'g',
+  ı: 'i',
+  i: 'i',
+  ö: 'o',
+  ş: 's',
+  ü: 'u',
+}
+
+function toProductSlug(value: string) {
+  const normalized = value
+    .trim()
+    .toLocaleLowerCase('tr-TR')
+    .split('')
+    .map((char) => SLUG_CHAR_MAP[char] ?? char)
+    .join('')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+  return normalized || 'urun'
+}
+
+function buildUniqueProductSlug(
+  store: ProductStore,
+  categorySlug: string,
+  baseSlug: string,
+  currentSlug: string
+) {
+  let nextSlug = baseSlug
+  let counter = 2
+
+  while (
+    store.products.some(
+      (item) =>
+        item.categorySlug === categorySlug &&
+        item.slug === nextSlug &&
+        !(item.categorySlug === categorySlug && item.slug === currentSlug)
+    )
+  ) {
+    nextSlug = `${baseSlug}-${counter}`
+    counter += 1
+  }
+
+  return nextSlug
+}
+
+const FIXED_TECHNICAL_DETAIL_KEYS = [
+  'Kat Yüksekliği',
+  'Çatı',
+  'Dış Duvar İskeleti',
+  'İç Duvar İskeleti',
+  'Dış Cephe',
+  'İç Cephe',
+] as const
+
+const FIXED_TECHNICAL_DETAIL_ALIASES: Record<(typeof FIXED_TECHNICAL_DETAIL_KEYS)[number], string[]> = {
+  'Kat Yüksekliği': ['Yükseklik', 'Kat Yuksekligi'],
+  Çatı: ['Cati'],
+  'Dış Duvar İskeleti': ['Dış Duvar', 'Dis Duvar', 'Dis Duvar Iskeleti'],
+  'İç Duvar İskeleti': ['İç Duvar', 'Ic Duvar', 'Ic Duvar Iskeleti'],
+  'Dış Cephe': ['Dis Cephe'],
+  'İç Cephe': ['Ic Cephe'],
+}
+
+function normalizeTechnicalDetailKeyForMatch(value: string) {
+  return value
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
+
+const FIXED_TECHNICAL_DETAIL_INDEX = new Map<string, (typeof FIXED_TECHNICAL_DETAIL_KEYS)[number]>(
+  FIXED_TECHNICAL_DETAIL_KEYS.flatMap((key) => {
+    const aliases = FIXED_TECHNICAL_DETAIL_ALIASES[key] ?? []
+    const variants = [key, ...aliases]
+    return variants.map((variant) => [normalizeTechnicalDetailKeyForMatch(variant), key] as const)
+  })
+)
+
+function resolveFixedTechnicalDetailKey(key: string) {
+  return FIXED_TECHNICAL_DETAIL_INDEX.get(normalizeTechnicalDetailKeyForMatch(key))
+}
+
+function createTechnicalDetailRow(
+  keyText = '',
+  valueText = '',
+  isFixed = false
+): TechnicalDetailRow {
   return {
     id: createEditorRowId('td'),
     keyText,
     valueText,
+    isFixed,
   }
 }
 
 function createTechnicalDetailRowsFromRecord(technicalDetails?: Record<string, string>) {
-  const rows = Object.entries(technicalDetails ?? {}).map(([key, value]) =>
-    createTechnicalDetailRow(key, value)
+  const fixedValues = new Map<(typeof FIXED_TECHNICAL_DETAIL_KEYS)[number], string>()
+  const extraRows: TechnicalDetailRow[] = []
+
+  for (const [key, value] of Object.entries(technicalDetails ?? {})) {
+    const fixedKey = resolveFixedTechnicalDetailKey(key)
+    if (fixedKey && !fixedValues.has(fixedKey)) {
+      fixedValues.set(fixedKey, value)
+      continue
+    }
+    extraRows.push(createTechnicalDetailRow(key, value))
+  }
+
+  const fixedRows = FIXED_TECHNICAL_DETAIL_KEYS.map((key) =>
+    createTechnicalDetailRow(key, fixedValues.get(key) ?? '', true)
   )
-  return rows.length > 0 ? rows : [createTechnicalDetailRow()]
+
+  return [...fixedRows, ...extraRows]
 }
 
 type CmsEditorProps = {
@@ -205,6 +310,19 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
     return store?.categories.find((item) => item.slug === selectedCategorySlug) ?? null
   }, [store, selectedCategorySlug])
 
+  const hasDuplicateProductName = useMemo(() => {
+    if (!selectedProduct) return false
+    const currentName = selectedProduct.name.trim().toLocaleLowerCase('tr-TR')
+    if (!currentName) return false
+
+    return categoryProducts.some(
+      (item) =>
+        item.slug !== selectedProduct.slug &&
+        item.categorySlug === selectedProduct.categorySlug &&
+        item.name.trim().toLocaleLowerCase('tr-TR') === currentName
+    )
+  }, [categoryProducts, selectedProduct])
+
   const categoryFilterOptions = useMemo(() => {
     if (!store) return []
     return store.categories.map((category) => ({ value: category.slug, label: category.title }))
@@ -220,13 +338,29 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
   function patchProduct(update: Partial<ProductItem>) {
     if (!store || !selectedProduct) return
+
+    let nextUpdate = update
+    if (mode === 'default' && typeof update.name === 'string') {
+      const baseSlug = toProductSlug(update.name)
+      const uniqueSlug = buildUniqueProductSlug(
+        store,
+        selectedProduct.categorySlug,
+        baseSlug,
+        selectedProduct.slug
+      )
+      nextUpdate = { ...update, slug: uniqueSlug }
+      if (uniqueSlug !== selectedProductSlug) {
+        setSelectedProductSlug(uniqueSlug)
+      }
+    }
+
     setStore({
       ...store,
       products: store.products.map((item) => {
         if (item.slug !== selectedProduct.slug || item.categorySlug !== selectedProduct.categorySlug) {
           return item
         }
-        return { ...item, ...update }
+        return { ...item, ...nextUpdate }
       }),
     })
   }
@@ -345,6 +479,12 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
   }
 
   function removeTechnicalDetailRow(rowId: string) {
+    const targetRow = technicalDetailRows.find((row) => row.id === rowId)
+    if (targetRow?.isFixed) {
+      updateTechnicalDetailRow(rowId, { valueText: '' })
+      return
+    }
+
     const rows = technicalDetailRows.filter((row) => row.id !== rowId)
     syncTechnicalDetails(rows.length > 0 ? rows : [createTechnicalDetailRow()])
   }
@@ -368,7 +508,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
       patchProduct({
         gallery: nextGallery,
-        image: selectedProduct.image?.trim() ? selectedProduct.image : nextGallery[0] ?? selectedProduct.image,
+        image: nextGallery[0] ?? '',
       })
     } else {
       const current = [...(selectedProduct.floorPlans ?? [])]
@@ -383,8 +523,10 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
   function removeGalleryImage(index: number) {
     if (!selectedProduct) return
+    const nextGallery = (selectedProduct.gallery ?? []).filter((_, itemIndex) => itemIndex !== index)
     patchProduct({
-      gallery: (selectedProduct.gallery ?? []).filter((_, itemIndex) => itemIndex !== index),
+      gallery: nextGallery,
+      image: nextGallery[0] ?? '',
     })
   }
 
@@ -399,7 +541,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
     const [moved] = gallery.splice(index, 1)
     gallery.splice(targetIndex, 0, moved)
-    patchProduct({ gallery })
+    patchProduct({ gallery, image: gallery[0] ?? '' })
   }
 
   function addFloorPlan() {
@@ -531,7 +673,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
         onSave={() => void saveStore()}
         onClose={() => setEditorOpen(false)}
         onPatchProduct={patchProduct}
-        onSetSelectedProductSlug={setSelectedProductSlug}
+        hasDuplicateName={hasDuplicateProductName}
         onOpenCoverPicker={() => openMediaPicker({ type: mode === 'profile' ? 'profileCard' : 'cover' })}
         onOpenSliderImagePicker={() => openMediaPicker({ type: 'profileSlider' })}
         onOpenGalleryPicker={() => openMediaPicker({ type: 'gallery' })}

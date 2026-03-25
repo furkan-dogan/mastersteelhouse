@@ -224,7 +224,7 @@ function isProductStore(value: unknown): value is ProductStore {
 async function readStore(): Promise<ProductStore> {
   return readCmsJson<ProductStore>({
     r2Key: '_cms/products-cms.json',
-    devApiPath: '/api/products',
+    devApiPath: '/api/public/products',
     localFileName: 'products-cms.json',
     validate: isProductStore,
   })

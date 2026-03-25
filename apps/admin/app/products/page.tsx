@@ -13,7 +13,7 @@ export default function ProductsPage() {
         </div>
       }
     >
-      <CmsEditor endpoint="/api/products" mediaEndpoint="/api/media" showCoverField mode="default" />
+      <CmsEditor endpoint="/api/products" mediaEndpoint="/api/media" showCoverField={false} mode="default" />
     </Suspense>
   )
 }

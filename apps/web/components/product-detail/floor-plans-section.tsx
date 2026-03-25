@@ -13,7 +13,7 @@ type FloorPlansSectionProps = {
   selectedIndex: number
   fallbackImage: string
   onSelectPlan: (index: number) => void
-  onOpenImage: () => void
+  onOpenImage: (imageUrl: string) => void
 }
 
 export function FloorPlansSection({
@@ -24,8 +24,10 @@ export function FloorPlansSection({
   onSelectPlan,
   onOpenImage,
 }: FloorPlansSectionProps) {
+  const selectedImage = plans[selectedIndex]?.image ?? fallbackImage
+
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="mx-auto w-full max-w-4xl">
       <div className="flex gap-2 mb-6 justify-center">
         {plans.map((plan, index) => (
           <button
@@ -42,21 +44,20 @@ export function FloorPlansSection({
         ))}
       </div>
 
-      <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-2xl">
-        <div className="relative aspect-[16/10]">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-2xl">
+        <button
+          type="button"
+          onClick={() => onOpenImage(selectedImage)}
+          className="relative block aspect-[16/9] w-full cursor-zoom-in overflow-hidden bg-muted/25"
+          aria-label="Kat planını büyüt"
+        >
           <Image
-            src={plans[selectedIndex]?.image ?? fallbackImage}
+            src={selectedImage}
             alt={`${productName} - ${plans[selectedIndex]?.name ?? 'Kat Planı'}`}
             fill
-            className="object-cover"
+            className="object-contain"
           />
-          <button
-            onClick={onOpenImage}
-            className="absolute top-4 right-4 px-4 py-2 rounded-full bg-accent/90 text-accent-foreground text-sm font-medium hover:scale-105 transition-transform"
-          >
-            Büyüt
-          </button>
-        </div>
+        </button>
       </div>
     </div>
   )

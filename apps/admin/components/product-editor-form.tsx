@@ -9,6 +9,7 @@ export type TechnicalDetailRow = {
   id: string
   keyText: string
   valueText: string
+  isFixed?: boolean
 }
 
 type ProductEditorFormProps = {
@@ -16,8 +17,8 @@ type ProductEditorFormProps = {
 
   selectedProduct: ProductItem
   technicalDetailRows: TechnicalDetailRow[]
+  hasDuplicateName: boolean
   onPatchProduct: (update: Partial<ProductItem>) => void
-  onSetSelectedProductSlug: (slug: string) => void
   onOpenCoverPicker: () => void
   onOpenGalleryPicker: () => void
   onOpenFloorPlanPicker: (index: number) => void
@@ -36,8 +37,8 @@ export function ProductEditorForm({
   showCoverField = true,
   selectedProduct,
   technicalDetailRows,
+  hasDuplicateName,
   onPatchProduct,
-  onSetSelectedProductSlug,
   onOpenCoverPicker,
   onOpenGalleryPicker,
   onOpenFloorPlanPicker,
@@ -59,19 +60,12 @@ export function ProductEditorForm({
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Ürün Adı</label>
             <input value={selectedProduct.name} onChange={(event) => onPatchProduct({ name: event.target.value })} className="cms-input" placeholder="Orn: Atlas Villa" />
+            {hasDuplicateName ? <p className="mt-1 text-xs text-error">Bu isimde başka bir ürün var. Lütfen ürünü ayırt edici bir adla kaydet.</p> : null}
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Slug</label>
-            <input
-              value={selectedProduct.slug}
-              onChange={(event) => {
-                const nextSlug = event.target.value
-                onPatchProduct({ slug: nextSlug })
-                onSetSelectedProductSlug(nextSlug)
-              }}
-              className="cms-input"
-              placeholder="url-yolu"
-            />
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Slug (Otomatik)</label>
+            <div className="cms-input flex items-center bg-muted/40 text-muted-foreground">{selectedProduct.slug}</div>
+            <p className="mt-1 text-xs text-muted-foreground">Ürün adına göre otomatik üretilir. Manuel değiştirilemez.</p>
           </div>
           <div>
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Alan</label>
@@ -152,7 +146,6 @@ export function ProductEditorForm({
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ek İçerik</h3>
         <div className="grid gap-4 lg:grid-cols-2">
           <div>
             <div className="mb-1 flex items-center justify-between">
@@ -162,7 +155,11 @@ export function ProductEditorForm({
               multiple
               helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
               galleryButtonLabel="Medyadan ekle"
-              onUploaded={(urls) => onPatchProduct({ gallery: [...(selectedProduct.gallery ?? []), ...urls] })}
+              onUploaded={(urls) => {
+                const merged = [...(selectedProduct.gallery ?? []), ...urls]
+                const nextGallery = Array.from(new Set(merged)).slice(0, 5)
+                onPatchProduct({ gallery: nextGallery, image: nextGallery[0] ?? '' })
+              }}
               onPickFromMedia={onOpenGalleryPicker}
               onError={onError}
             />
@@ -183,7 +180,7 @@ export function ProductEditorForm({
 
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <label className="block text-xs font-medium text-muted-foreground">Teknik Detaylar (anahtar + deger)</label>
+              <label className="block text-xs font-medium text-muted-foreground">Teknik Detaylar (sabit + ek satır)</label>
               <button onClick={onAddTechnicalDetailRow} className="cms-btn-ghost h-7 px-2 py-1 text-xs">
                 <Plus className="h-3.5 w-3.5" />
                 Satir Ekle
@@ -193,11 +190,28 @@ export function ProductEditorForm({
               {technicalDetailRows.map((row) => (
                 <div key={row.id} className="rounded-lg border p-2">
                   <div className="grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
-                    <input value={row.keyText} onChange={(event) => onUpdateTechnicalDetailRow(row.id, { keyText: event.target.value })} className="cms-input" placeholder="Anahtar (Örn: Kat Yüksekliği)" />
-                    <input value={row.valueText} onChange={(event) => onUpdateTechnicalDetailRow(row.id, { valueText: event.target.value })} className="cms-input" placeholder="Değer (Örn: 2.80m)" />
-                    <button onClick={() => onRemoveTechnicalDetailRow(row.id)} className="cms-btn-ghost h-10 px-2 py-1 text-xs" title="Satırı sil">
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    {row.isFixed ? (
+                      <div className="cms-input flex items-center bg-muted/40 text-foreground/90">{row.keyText}</div>
+                    ) : (
+                      <input
+                        value={row.keyText}
+                        onChange={(event) => onUpdateTechnicalDetailRow(row.id, { keyText: event.target.value })}
+                        className="cms-input"
+                        placeholder="Anahtar (Örn: Taşıyıcı Sistem)"
+                      />
+                    )}
+                    <input
+                      value={row.valueText}
+                      onChange={(event) => onUpdateTechnicalDetailRow(row.id, { valueText: event.target.value })}
+                      className="cms-input"
+                    />
+                    {row.isFixed ? (
+                      <span className="block w-10" aria-hidden />
+                    ) : (
+                      <button onClick={() => onRemoveTechnicalDetailRow(row.id)} className="cms-btn-ghost h-10 px-2 py-1 text-xs" title="Satırı sil">
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -215,7 +229,7 @@ export function ProductEditorForm({
               </div>
               <div className="space-y-2">
                 {(selectedProduct.floorPlans ?? []).map((plan, index) => (
-                  <div key={`${plan.name}-${index}`} className="space-y-2 rounded-lg border p-2">
+                  <div key={`floor-plan-${index}`} className="space-y-2 rounded-lg border p-2">
                     <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                       <input value={plan.name} onChange={(event) => onUpdateFloorPlan(index, { name: event.target.value })} className="cms-input" placeholder="Kat adı" />
                       <button onClick={() => onRemoveFloorPlan(index)} className="cms-btn-ghost h-10 px-2 py-1 text-xs text-error">

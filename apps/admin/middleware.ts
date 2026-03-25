@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  if (pathname === '/api/auth/login') {
+  if (pathname === '/api/auth/login' || pathname.startsWith('/api/public/')) {
     return NextResponse.next()
   }
 

@@ -12,10 +12,10 @@ type ProductsEditorDrawerProps = {
   saving: boolean
   selectedProduct: ProductItem | null
   technicalDetailRows: TechnicalDetailRow[]
+  hasDuplicateName: boolean
   onSave: () => void
   onClose: () => void
   onPatchProduct: (update: Partial<ProductItem>) => void
-  onSetSelectedProductSlug: (slug: string) => void
   onOpenCoverPicker: () => void
   onOpenSliderImagePicker: () => void
   onOpenGalleryPicker: () => void
@@ -39,10 +39,10 @@ export function ProductsEditorDrawer({
   saving,
   selectedProduct,
   technicalDetailRows,
+  hasDuplicateName,
   onSave,
   onClose,
   onPatchProduct,
-  onSetSelectedProductSlug,
   onOpenCoverPicker,
   onOpenSliderImagePicker,
   onOpenGalleryPicker,
@@ -87,8 +87,8 @@ export function ProductsEditorDrawer({
           showCoverField={showCoverField}
           selectedProduct={selectedProduct}
           technicalDetailRows={technicalDetailRows}
+          hasDuplicateName={hasDuplicateName}
           onPatchProduct={onPatchProduct}
-          onSetSelectedProductSlug={onSetSelectedProductSlug}
           onOpenCoverPicker={onOpenCoverPicker}
           onOpenGalleryPicker={onOpenGalleryPicker}
           onOpenFloorPlanPicker={onOpenFloorPlanPicker}

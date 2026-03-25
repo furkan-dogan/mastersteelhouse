@@ -22,7 +22,18 @@ export function ProductGallery({
 }: ProductGalleryProps) {
   return (
     <div>
-      <div className="relative h-[420px] sm:h-[480px] lg:h-[500px] rounded-3xl overflow-hidden group">
+      <div
+        className="relative h-[420px] cursor-zoom-in rounded-3xl overflow-hidden group sm:h-[480px] lg:h-[500px]"
+        onClick={() => onOpen(currentIndex)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            onOpen(currentIndex)
+          }
+        }}
+      >
         <Image
           src={images[currentIndex]}
           alt={`${productName} - Görsel ${currentIndex + 1}`}
@@ -32,14 +43,20 @@ export function ProductGallery({
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
         <button
-          onClick={onPrev}
+          onClick={(event) => {
+            event.stopPropagation()
+            onPrev()
+          }}
           className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-accent/90 text-accent-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg z-10"
           aria-label="Önceki fotoğrafa git"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
-          onClick={onNext}
+          onClick={(event) => {
+            event.stopPropagation()
+            onNext()
+          }}
           className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-accent/90 text-accent-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-lg z-10"
           aria-label="Sonraki fotoğrafa git"
         >
@@ -49,13 +66,6 @@ export function ProductGallery({
         <div className="absolute bottom-6 right-6 px-4 py-2 rounded-full bg-black/70 text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
           {currentIndex + 1} / {images.length}
         </div>
-
-        <button
-          onClick={() => onOpen(currentIndex)}
-          className="absolute bottom-6 left-6 px-4 py-2 rounded-full bg-accent/90 text-accent-foreground text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity hover:scale-105"
-        >
-          Tam Ekran Görüntüle
-        </button>
       </div>
 
       <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 mt-4">

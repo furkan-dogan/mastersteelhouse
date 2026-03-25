@@ -25,6 +25,8 @@ export function ProductDetailTemplate({ product, category }: Props) {
 
   const galleryImages = product.gallery.length > 0 ? product.gallery : [product.image]
   const floorPlans = product.floorPlans
+  const floorPlanImages = floorPlans.map((plan) => plan.image).filter(Boolean)
+  const lightboxImages = Array.from(new Set([...galleryImages, ...floorPlanImages]))
 
   const specs: ProductSpecItem[] = [
     { icon: Bed, label: 'Oda Sayısı', value: product.features.rooms },
@@ -38,11 +40,15 @@ export function ProductDetailTemplate({ product, category }: Props) {
   ]
 
   const openGallery = (index: number) => setSelectedImage(index)
+  const openGalleryByUrl = (imageUrl: string) => {
+    const index = lightboxImages.findIndex((item) => item === imageUrl)
+    setSelectedImage(index >= 0 ? index : 0)
+  }
   const closeGallery = () => setSelectedImage(null)
   const nextImage = () =>
-    setSelectedImage((prev) => (prev === null ? 0 : (prev + 1) % galleryImages.length))
+    setSelectedImage((prev) => (prev === null ? 0 : (prev + 1) % lightboxImages.length))
   const prevImage = () =>
-    setSelectedImage((prev) => (prev === null ? galleryImages.length - 1 : (prev - 1 + galleryImages.length) % galleryImages.length))
+    setSelectedImage((prev) => (prev === null ? lightboxImages.length - 1 : (prev - 1 + lightboxImages.length) % lightboxImages.length))
   const nextGalleryImage = () => setCurrentGalleryIndex((prev) => (prev + 1) % galleryImages.length)
   const prevGalleryImage = () => setCurrentGalleryIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
 
@@ -111,7 +117,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
               selectedIndex={selectedFloorPlan}
               fallbackImage={galleryImages[0]}
               onSelectPlan={setSelectedFloorPlan}
-              onOpenImage={() => openGallery(currentGalleryIndex)}
+              onOpenImage={openGalleryByUrl}
             />
           </div>
         </section>
@@ -127,7 +133,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
           isOpen={selectedImage !== null}
           selectedIndex={selectedImage}
           productName={product.name}
-          images={galleryImages}
+          images={lightboxImages}
           onClose={closeGallery}
           onPrev={prevImage}
           onNext={nextImage}

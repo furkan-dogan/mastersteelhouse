@@ -96,20 +96,24 @@ export async function readCmsJson<T>({
   localFileName,
   validate,
 }: ReadCmsJsonOptions<T>): Promise<T> {
-  const r2Base = resolveR2BaseUrl()
-  if (r2Base) {
-    const r2Value = await fetchJson<unknown>(`${r2Base}/${r2Key}`)
-    if (r2Value && validate(r2Value)) return r2Value
-  }
-
   if (IS_DEV && devApiPath) {
     const devValue = await fetchJson<unknown>(`${WEB_DEV_ADMIN_API_BASE}${devApiPath}`, { forceNoStore: true })
     if (devValue && validate(devValue)) return devValue
   }
 
-  const raw = await fs.readFile(resolveLocalContentPath(localFileName), 'utf8')
-  const parsed = JSON.parse(raw) as unknown
-  if (validate(parsed)) return parsed
+  try {
+    const raw = await fs.readFile(resolveLocalContentPath(localFileName), 'utf8')
+    const parsed = JSON.parse(raw) as unknown
+    if (validate(parsed)) return parsed
+  } catch {
+    // keep going and try R2 fallback
+  }
+
+  const r2Base = resolveR2BaseUrl()
+  if (r2Base) {
+    const r2Value = await fetchJson<unknown>(`${r2Base}/${r2Key}`)
+    if (r2Value && validate(r2Value)) return r2Value
+  }
 
   throw new Error(`Invalid CMS shape in ${localFileName}`)
 }
