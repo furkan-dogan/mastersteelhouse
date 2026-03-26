@@ -23,6 +23,10 @@ function walk(value: unknown, collector: Set<string>) {
   if (typeof value === 'string') {
     const urls = extractMediaUrlsFromString(value)
     for (const url of urls) collector.add(url)
+    // R2/CDN URLs are full https:// strings — collect them directly
+    if (value.startsWith('https://') || value.startsWith('http://')) {
+      collector.add(value)
+    }
     return
   }
 
