@@ -1,8 +1,9 @@
 import { existsSync } from 'fs'
 import { promises as fs } from 'fs'
 import path from 'path'
+import { isR2Configured, readJsonFromR2 } from '@/lib/r2-storage'
 
-const MEDIA_URL_REGEX = /\/uploads\/media\/[^"'\\s?#]+/g
+const MEDIA_URL_REGEX = /\/uploads\/media\/[^"'\s?#]+/g
 
 function resolveContentPath(fileName: string) {
   const candidates = [
@@ -54,11 +55,14 @@ export async function collectUsedMediaUrls(fileNames: string[]) {
   const used = new Set<string>()
 
   for (const fileName of fileNames) {
-    const filePath = resolveContentPath(fileName)
-    if (!filePath) continue
-
     try {
-      await collectFromJsonFile(filePath, used)
+      if (isR2Configured()) {
+        const parsed = await readJsonFromR2<unknown>(`_cms/${fileName}`)
+        if (parsed) walk(parsed, used)
+      } else {
+        const filePath = resolveContentPath(fileName)
+        if (filePath) await collectFromJsonFile(filePath, used)
+      }
     } catch {
       // ignore missing/invalid content files
     }
