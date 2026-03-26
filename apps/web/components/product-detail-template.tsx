@@ -11,6 +11,7 @@ import { TechnicalDetailsTable } from '@/components/product-detail/technical-det
 import { FloorPlansSection } from '@/components/product-detail/floor-plans-section'
 import { QuoteRequestForm } from '@/components/product-detail/quote-request-form'
 import { GalleryLightbox } from '@/components/product-detail/gallery-lightbox'
+import { ResponsibilitiesAccordion } from '@/components/product-detail/responsibilities-accordion'
 
 type Props = {
   product: ProductItem
@@ -119,6 +120,18 @@ export function ProductDetailTemplate({ product, category }: Props) {
               onSelectPlan={setSelectedFloorPlan}
               onOpenImage={openGalleryByUrl}
             />
+          </div>
+        </section>
+
+        <section className="py-14 md:py-16">
+          <div className={pageContainer}>
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold mb-3">Kapsam ve Sorumluluklar</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Teklifimizin neyi kapsadığını ve süreçte karşılıklı sorumlulukları detaylıca inceleyebilirsiniz.
+              </p>
+            </div>
+            <ResponsibilitiesAccordion />
           </div>
         </section>
 
