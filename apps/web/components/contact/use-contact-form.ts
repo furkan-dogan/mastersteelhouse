@@ -101,6 +101,8 @@ export function useContactForm() {
       const payload = {
         name: formData.name.trim(),
         email: formData.email.trim() || undefined,
+        _replyto: formData.email.trim() || formData.phone.trim(),
+        _subject: `İletişim: ${formData.subject.trim()}`,
         phone: formData.phone.trim(),
         subject: formData.subject.trim(),
         message: formData.message.trim(),

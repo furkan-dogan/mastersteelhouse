@@ -137,7 +137,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
         <section className="py-14 md:py-16 bg-muted/30">
           <div className={pageContainer}>
             <h2 className="text-3xl font-bold mb-8">Fiyat Teklifi İsteyin</h2>
-            <QuoteRequestForm />
+            <QuoteRequestForm productName={product.name} />
           </div>
         </section>
 
