@@ -24,7 +24,7 @@ export function ProcessHeroSection({
           </h1>
           <p className="text-lg text-muted-foreground mb-12">{description}</p>
           <div className="relative h-96 rounded-3xl overflow-hidden">
-            <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
+            <Image src={imageSrc} alt={imageAlt} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 896px" className="object-cover" />
           </div>
         </div>
       </div>

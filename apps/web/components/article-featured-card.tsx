@@ -36,7 +36,7 @@ export function ArticleFeaturedCard({
     <Link href={href} className="block mb-12 group">
       <div className="grid md:grid-cols-2 gap-8 p-8 rounded-3xl bg-card border-2 border-accent/20 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500">
         <div className="relative h-80 rounded-2xl overflow-hidden">
-          <Image src={image || '/placeholder.svg'} alt={title} fill className="object-cover" style={imageStyle} />
+          <Image src={image || '/placeholder.svg'} alt={title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" style={imageStyle} />
           <div className="absolute top-4 left-4">
             <span className="px-4 py-2 rounded-full bg-accent text-accent-foreground text-xs font-semibold shadow-lg">
               {category}

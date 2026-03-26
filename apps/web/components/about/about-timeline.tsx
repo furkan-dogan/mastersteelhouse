@@ -31,7 +31,7 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
               <div className={`grid lg:grid-cols-2 gap-8 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
                 <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                   <div className="relative h-80 rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-accent/20 transition-all duration-500">
-                    <Image src={item.image || '/placeholder.svg'} alt={item.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <Image src={item.image || '/placeholder.svg'} alt={item.title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
 
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />

@@ -34,7 +34,7 @@ export function ArticleListCard({
     <Link href={href} className="group">
       <article className="h-full rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 hover:-translate-y-2">
         <div className="relative h-56 overflow-hidden">
-          <Image src={image || '/placeholder.svg'} alt={title} fill className="object-cover" style={imageStyle} />
+          <Image src={image || '/placeholder.svg'} alt={title} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover" style={imageStyle} />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
           <div className="absolute top-4 left-4">
             <span className="px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold shadow-lg">

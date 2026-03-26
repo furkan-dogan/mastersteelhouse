@@ -103,6 +103,7 @@ export function HeroSection() {
                     src={slide.image || '/placeholder.svg'}
                     alt={slide.title.join(' ')}
                     fill
+                    sizes="100vw"
                     className="object-cover"
                     priority={index === 0}
                   />

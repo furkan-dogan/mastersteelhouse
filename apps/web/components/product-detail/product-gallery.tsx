@@ -38,6 +38,7 @@ export function ProductGallery({
           src={images[currentIndex]}
           alt={`${productName} - Görsel ${currentIndex + 1}`}
           fill
+          sizes="(max-width: 1024px) 100vw, 590px"
           className="object-cover transition-transform duration-700"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

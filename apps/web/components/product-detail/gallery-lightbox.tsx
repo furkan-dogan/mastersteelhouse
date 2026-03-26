@@ -61,6 +61,7 @@ export function GalleryLightbox({
           src={images[selectedIndex]}
           alt={`${productName} - Görsel ${selectedIndex + 1}`}
           fill
+          sizes="100vw"
           className="object-contain"
           priority
         />

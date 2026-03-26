@@ -29,7 +29,7 @@ export function AboutMediaPanel({
         </video>
 
         <div className="absolute inset-0 transition-opacity duration-700">
-          <Image src={feature.image || '/placeholder.svg'} alt={feature.title} fill className="object-cover" />
+          <Image src={feature.image || '/placeholder.svg'} alt={feature.title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
         </div>
 
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />

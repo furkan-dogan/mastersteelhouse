@@ -23,7 +23,7 @@ export function MediaBanner({
 }: MediaBannerProps) {
   return (
     <div className={cn('relative overflow-hidden rounded-3xl', heightClassName, className)}>
-      <Image src={src} alt={alt} fill className={cn('object-cover', imageClassName)} />
+      <Image src={src} alt={alt} fill sizes="(max-width: 768px) 100vw, (max-width: 1180px) 100vw, 1180px" className={cn('object-cover', imageClassName)} />
       {overlayClassName ? <div className={cn('absolute inset-0', overlayClassName)} /> : null}
       {children}
     </div>

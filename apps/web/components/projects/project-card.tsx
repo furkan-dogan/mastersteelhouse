@@ -23,6 +23,7 @@ export function ProjectCard({ project, isVisible, isHovered, onHover }: ProjectC
           src={project.image || '/placeholder.svg'}
           alt={project.title}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className={`object-cover transition-all duration-700 ${isHovered ? 'scale-110 rotate-2' : 'scale-100'}`}
         />
 

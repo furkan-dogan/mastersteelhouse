@@ -39,6 +39,7 @@ export function ArticleHero({
           src={image}
           alt={title}
           fill
+          sizes="100vw"
           className="object-cover"
           style={mediaPlacementImageStyle(imagePlacement, imagePosition)}
           priority
