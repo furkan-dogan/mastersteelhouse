@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, Bath, Bed, Car, Home, Maximize2, Timer, ShieldCheck, Zap, BadgeCheck } from 'lucide-react'
+import { ArrowLeft, Bath, Bed, Car, Home, Maximize2, Timer, ShieldCheck, Zap } from 'lucide-react'
 import { useState } from 'react'
 import type { ProductCategory, ProductItem } from '@/lib/product-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
@@ -37,7 +37,6 @@ export function ProductDetailTemplate({ product, category }: Props) {
     { icon: Timer, label: 'Teslim Süresi', value: product.features.deliveryTime },
     { icon: ShieldCheck, label: 'Deprem Dayanımı', value: product.features.earthquakeResistance },
     { icon: Zap, label: 'Enerji Sınıfı', value: product.features.energyClass },
-    { icon: BadgeCheck, label: 'Garanti', value: product.features.warranty },
   ]
 
   const openGallery = (index: number) => setSelectedImage(index)

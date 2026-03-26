@@ -11,7 +11,6 @@ export type ProductFeatures = {
   deliveryTime: string
   earthquakeResistance: string
   energyClass: string
-  warranty: string
 }
 
 export type ProductSpec = {

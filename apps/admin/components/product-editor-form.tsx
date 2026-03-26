@@ -138,10 +138,6 @@ export function ProductEditorForm({
             <label className="mb-1 block text-xs font-medium text-muted-foreground">Enerji Sinifi</label>
             <input value={selectedProduct.features.energyClass ?? ''} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, energyClass: event.target.value } })} className="cms-input" placeholder="A+" />
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Garanti</label>
-            <input value={selectedProduct.features.warranty ?? ''} onChange={(event) => onPatchProduct({ features: { ...selectedProduct.features, warranty: event.target.value } })} className="cms-input" placeholder="20 Yıl" />
-          </div>
         </div>
       </div>
 

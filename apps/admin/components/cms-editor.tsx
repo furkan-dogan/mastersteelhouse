@@ -31,7 +31,6 @@ const DEFAULT_PRODUCT_FEATURES = {
   deliveryTime: '6-8 Hafta',
   earthquakeResistance: 'Yüksek Dayanım',
   energyClass: 'A+',
-  warranty: '20 Yıl',
 }
 
 const SLUG_CHAR_MAP: Record<string, string> = {

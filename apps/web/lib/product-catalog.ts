@@ -10,7 +10,6 @@ export type ProductFeatures = {
   deliveryTime: string
   earthquakeResistance: string
   energyClass: string
-  warranty: string
 }
 
 export type ProductItem = {
@@ -246,7 +245,6 @@ function normalizeProduct(product: ProductStore['products'][number]): ProductIte
       deliveryTime: normalizeTurkishText(product.features?.deliveryTime ?? '6-8 Hafta'),
       earthquakeResistance: normalizeTurkishText(product.features?.earthquakeResistance ?? 'Yüksek Dayanım'),
       energyClass: normalizeTurkishText(product.features?.energyClass ?? 'A+'),
-      warranty: normalizeTurkishText(product.features?.warranty ?? '20 Yıl'),
     },
     technicalDetails: normalizeTechnicalDetails(product.technicalDetails),
     highlights: (product.highlights ?? DEFAULT_HIGHLIGHTS).map((value) => normalizeTurkishText(value)),
