@@ -9,14 +9,15 @@
     "lint": "ESLINT_USE_FLAT_CONFIG=true eslint ."
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.896.0",
+    "browser-image-compression": "^2.0.2",
+    "heic-convert": "^2.1.0",
     "lucide-react": "^0.454.0",
     "next": "16.0.10",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "three": "^0.180.0",
-    "heic-convert": "^2.1.0",
     "sharp": "^0.34.5",
-    "@aws-sdk/client-s3": "^3.896.0"
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",

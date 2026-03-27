@@ -3,6 +3,25 @@
 import { useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { ImageUp } from 'lucide-react'
+import imageCompression from 'browser-image-compression'
+
+const COMPRESS_THRESHOLD_MB = 3
+const COMPRESS_OPTIONS = {
+  maxSizeMB: 3,
+  maxWidthOrHeight: 2400,
+  useWebWorker: true,
+  fileType: 'image/jpeg' as const,
+}
+
+async function compressIfNeeded(file: File): Promise<File> {
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return file
+  if (file.size <= COMPRESS_THRESHOLD_MB * 1024 * 1024) return file
+  try {
+    return await imageCompression(file, COMPRESS_OPTIONS)
+  } catch {
+    return file
+  }
+}
 
 type UploadResponse = {
   items?: Array<{ url: string }>
@@ -37,14 +56,23 @@ export function MediaUploadDropzone({
 
   const [dragActive, setDragActive] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [compressing, setCompressing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   async function uploadFiles(files: FileList | File[]) {
     const list = Array.from(files)
     if (list.length === 0) return
 
+    const hasLargeImage = list.some(
+      (f) => f.type.startsWith('image/') && f.type !== 'image/gif' && f.size > COMPRESS_THRESHOLD_MB * 1024 * 1024
+    )
+
+    if (hasLargeImage) setCompressing(true)
+    const compressed = await Promise.all(list.map(compressIfNeeded))
+    setCompressing(false)
+
     const formData = new FormData()
-    for (const file of list) {
+    for (const file of compressed) {
       formData.append('files', file)
     }
 
@@ -54,9 +82,12 @@ export function MediaUploadDropzone({
         method: 'POST',
         body: formData,
       })
-      const data = (await response.json()) as UploadResponse
+      const text = await response.text()
+      let data: UploadResponse = {}
+      try { data = JSON.parse(text) as UploadResponse } catch { /* non-JSON response */ }
       if (!response.ok) {
-        throw new Error(data.message || 'Dosya yüklenemedi.')
+        const msg = data.message ?? (response.status === 413 ? 'Dosya çok büyük, lütfen daha küçük bir görsel deneyin.' : 'Dosya yüklenemedi.')
+        throw new Error(msg)
       }
       const urls = (data.items ?? []).map((item) => item.url).filter(Boolean)
       if (urls.length > 0) {
@@ -99,7 +130,7 @@ export function MediaUploadDropzone({
           <ImageUp className={`${compact ? 'h-4 w-4' : 'h-6 w-6'} text-muted-foreground`} />
         </button>
         <p className={`${compact ? 'text-xs' : 'text-sm'} font-medium text-foreground`}>
-          {uploading ? 'Yükleniyor...' : 'Tıklayın veya sürükleyip bırakın'}
+          {compressing ? 'Görsel optimize ediliyor...' : uploading ? 'Yükleniyor...' : 'Tıklayın veya sürükleyip bırakın'}
         </p>
         <p className={`${compact ? 'mt-0.5' : 'mt-1'} text-xs text-muted-foreground`}>
           {multiple ? 'Birden fazla görsel yükleyebilirsiniz' : helperText}
