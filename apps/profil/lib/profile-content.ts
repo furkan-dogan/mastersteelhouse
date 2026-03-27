@@ -91,6 +91,8 @@ const LEGACY_BLOG_IMAGE_MAP: Record<string, string> = {
 
 const DEV_IMAGE_PROXY_BASE = (process.env.PROFILE_DEV_IMAGE_PROXY_BASE ?? 'https://profil.mastersteelhouse.com').replace(/\/$/, '')
 const R2_PUBLIC_BASE_URL = (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? '').replace(/\/$/, '')
+const PROFIL_DEV_ADMIN_API_BASE = (process.env.PROFIL_DEV_ADMIN_API_BASE ?? '').trim().replace(/\/$/, '')
+const IS_DEV = process.env.NODE_ENV === 'development'
 
 function isR2DevUrl(url: string) {
   return /^https:\/\/[^/]+\.r2\.dev\//i.test(url)
@@ -130,7 +132,19 @@ function getContentPath(fileName: string) {
   return found
 }
 
-async function readJson<T>(fileName: string): Promise<T> {
+async function readJson<T>(fileName: string, devApiPath?: string): Promise<T> {
+  // Dev ortamında admin API'sinden oku — web uygulamasının cms-fetch.ts yaklaşımıyla aynı
+  if (IS_DEV && devApiPath && PROFIL_DEV_ADMIN_API_BASE) {
+    try {
+      const response = await fetch(`${PROFIL_DEV_ADMIN_API_BASE}${devApiPath}`, { cache: 'no-store' })
+      if (response.ok) {
+        return (await response.json()) as T
+      }
+    } catch {
+      // Admin çalışmıyor olabilir, diğer kaynaklara düş
+    }
+  }
+
   if (R2_PUBLIC_BASE_URL) {
     try {
       const response = await fetch(`${R2_PUBLIC_BASE_URL}/_cms/${fileName}`, { cache: 'no-store' })
@@ -138,7 +152,7 @@ async function readJson<T>(fileName: string): Promise<T> {
         return (await response.json()) as T
       }
     } catch {
-      // ignore R2 network issues and fallback to local content in development
+      // R2 erişim hatası, yerel dosyaya düş
     }
   }
 
@@ -201,7 +215,7 @@ function normalizeProfileBlogImage(image: string | undefined) {
 }
 
 export async function getProfileProducts(): Promise<ProfileProduct[]> {
-  const store = await readJson<ProductsStore>('profile-products-cms.json')
+  const store = await readJson<ProductsStore>('profile-products-cms.json', '/api/public/profile/products')
 
   return store.products.map((product) => ({
     slug: product.slug,
@@ -227,7 +241,7 @@ export async function getProfileProducts(): Promise<ProfileProduct[]> {
 }
 
 export async function getProfileBlogPosts() {
-  const store = await readJson<BlogStore>('profile-blog-cms.json')
+  const store = await readJson<BlogStore>('profile-blog-cms.json', '/api/public/profile/blog')
   return store.posts.map((post) => ({ ...post, image: normalizeProfileBlogImage(post.image) }))
 }
 
@@ -237,7 +251,7 @@ export async function getProfileNewsPosts() {
 }
 
 export async function getProfileFaqs() {
-  const store = await readJson<FaqStore>('profile-faq-cms.json')
+  const store = await readJson<FaqStore>('profile-faq-cms.json', '/api/public/profile/faqs')
   return store.items
 }
 
