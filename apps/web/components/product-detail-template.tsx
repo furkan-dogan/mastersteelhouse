@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, Bath, Bed, Car, Home, Maximize2, Timer, ShieldCheck, Zap } from 'lucide-react'
+import { ArrowLeft, Bath, Bed, Car, Home, Maximize2, Timer, ShieldCheck, Zap, ShieldAlert } from 'lucide-react'
 import { useState } from 'react'
 import type { ProductCategory, ProductItem } from '@/lib/product-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
@@ -76,6 +76,13 @@ export function ProductDetailTemplate({ product, category }: Props) {
               />
 
               <div className="space-y-8">
+                <div className="flex items-start gap-2.5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-400">
+                  <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
+                  <span>
+                    Bu sayfada yer alan tüm ürün görselleri ve içerikler telif hakkı ile korunmaktadır. İzinsiz kopyalanması, çoğaltılması veya kullanılması durumunda yasal işlem başlatılacaktır.
+                  </span>
+                </div>
+
                 <div>
                   <h1 className="text-4xl md:text-5xl font-bold leading-[1.2] py-1 mb-4 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                     {product.name}
