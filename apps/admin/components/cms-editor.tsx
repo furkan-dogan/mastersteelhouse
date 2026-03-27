@@ -353,6 +353,11 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       }
     }
 
+    // Profile mode: keep selectedProductSlug in sync if slug is patched directly
+    if (mode === 'profile' && typeof update.slug === 'string' && update.slug !== selectedProductSlug) {
+      setSelectedProductSlug(update.slug)
+    }
+
     setStore({
       ...store,
       products: store.products.map((item) => {
