@@ -99,6 +99,22 @@ export function ProfileProductEditorForm({
     onPatchProduct({ highlights: advantages.filter((_, i) => i !== index) })
   }
 
+  const SLUG_CHAR_MAP: Record<string, string> = {
+    ç: 'c', ğ: 'g', ı: 'i', i: 'i', ö: 'o', ş: 's', ü: 'u',
+  }
+
+  function toSlug(value: string) {
+    return value
+      .trim()
+      .toLocaleLowerCase('tr-TR')
+      .split('')
+      .map((char) => SLUG_CHAR_MAP[char] ?? char)
+      .join('')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'urun'
+  }
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -115,6 +131,26 @@ export function ProfileProductEditorForm({
               className="cms-input"
               placeholder="Örn: Delikli Alçı Köşe Profili"
             />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              URL Slug <span className="text-muted-foreground/60">(sayfa adresi)</span>
+            </label>
+            <input
+              value={selectedProduct.slug}
+              onChange={(event) => {
+                const raw = event.target.value
+                onPatchProduct({ slug: toSlug(raw) || raw })
+              }}
+              onBlur={(event) => {
+                onPatchProduct({ slug: toSlug(event.target.value) || 'urun' })
+              }}
+              className="cms-input font-mono text-xs"
+              placeholder="Örn: delikli-alci-kose-profili"
+            />
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              /urunler/<span className="text-foreground">{selectedProduct.slug || '...'}</span>
+            </p>
           </div>
         </div>
       </div>
@@ -146,7 +182,7 @@ export function ProfileProductEditorForm({
               <img
                 src={adminPreviewUrl(selectedProduct.cardImage || selectedProduct.image || '')}
                 alt={`${selectedProduct.name} kart görseli`}
-                className="aspect-[4/3] w-full object-contain bg-white p-2"
+                className="aspect-4/3 w-full object-contain bg-white p-2"
               />
             </div>
           </div>

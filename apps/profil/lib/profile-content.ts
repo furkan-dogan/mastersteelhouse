@@ -90,7 +90,7 @@ const LEGACY_BLOG_IMAGE_MAP: Record<string, string> = {
 }
 
 const DEV_IMAGE_PROXY_BASE = (process.env.PROFILE_DEV_IMAGE_PROXY_BASE ?? 'https://profil.mastersteelhouse.com').replace(/\/$/, '')
-const R2_PUBLIC_BASE_URL = (process.env.R2_PUBLIC_BASE_URL ?? '').replace(/\/$/, '')
+const R2_PUBLIC_BASE_URL = (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? '').replace(/\/$/, '')
 
 function isR2DevUrl(url: string) {
   return /^https:\/\/[^/]+\.r2\.dev\//i.test(url)
