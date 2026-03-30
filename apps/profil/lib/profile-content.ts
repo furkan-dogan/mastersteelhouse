@@ -25,6 +25,7 @@ export type ProfileProduct = {
   cardImage: string
   sliderImage: string
   description: string
+  detailContent?: string
   useAreas: string[]
   specs: Array<{ key: string; value: string }>
   dimensions: ProfileProductDimension[]
@@ -72,6 +73,7 @@ type ProductsStore = {
     sliderDescription?: string
     detailTitle?: string
     detailDescription?: string
+    detailContent?: string
     highlights?: string[]
     specs?: ProfileProductSpec[]
     dimensions?: ProfileProductDimension[]
@@ -227,6 +229,7 @@ export async function getProfileProducts(): Promise<ProfileProduct[]> {
     cardImage: normalizeProfileImageUrl(product.cardImage || product.image || product.gallery?.[0] || ''),
     sliderImage: normalizeProfileImageUrl(product.sliderImage || product.image || product.gallery?.[0] || ''),
     description: product.detailDescription || product.description,
+    detailContent: product.detailContent || undefined,
     useAreas: product.highlights?.length ? product.highlights : ['Konut projeleri', 'Ticari projeler', 'Profesyonel uygulama ekipleri'],
     specs:
       product.specs?.map((spec) => ({

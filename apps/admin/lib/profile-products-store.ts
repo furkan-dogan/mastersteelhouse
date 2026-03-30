@@ -45,6 +45,7 @@ export type ProductItem = {
   sliderDescription?: string
   detailTitle?: string
   detailDescription?: string
+  detailContent?: string
   features: ProductFeatures
   specs?: ProductSpec[]
   dimensions?: ProductDimension[]

@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react'
 import type { ProductDimension, ProductItem, ProductSpec } from '@/lib/products-store'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
+import { RichTextEditor } from '@/components/rich-text-editor'
 
 function isVideoAsset(url?: string) {
   if (!url) return false
@@ -338,6 +339,16 @@ export function ProfileProductEditorForm({
         ) : (
           <p className="text-xs text-muted-foreground">Galeri boş.</p>
         )}
+      </div>
+
+      <div className="space-y-4 rounded-xl border border-border p-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Detay Sayfası İçerik Alanı</h3>
+        <p className="text-xs text-muted-foreground">Tablonun üstünde gösterilecek zengin metin. Kalın başlık, madde işareti, paragraf ekleyebilirsin.</p>
+        <RichTextEditor
+          value={selectedProduct.detailContent ?? ''}
+          onChange={(html) => onPatchProduct({ detailContent: html })}
+          placeholder="Ürün açıklaması, kullanım alanları, avantajlar..."
+        />
       </div>
 
       <div className="rounded-xl border border-border p-4">

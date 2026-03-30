@@ -115,6 +115,15 @@ export function ProductDetailTemplate({ product }: { product: ProfileProduct }) 
         </section>
       )}
 
+      {product.detailContent && (
+        <section className="mx-auto max-w-7xl px-6 pb-4 pt-2 lg:px-8">
+          <div
+            className="prose prose-slate max-w-none text-[16px] leading-7 md:text-[17px] md:leading-8 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[#0b2f57] [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-[#0b2f57] [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 [&_strong]:font-semibold [&_strong]:text-[#0f172a] [&_p]:text-slate-800"
+            dangerouslySetInnerHTML={{ __html: product.detailContent }}
+          />
+        </section>
+      )}
+
       <section className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
         <div>
           <div className="grid grid-cols-3 gap-4 px-2 pb-5 pt-1 md:gap-6 md:px-6 md:pb-6">
