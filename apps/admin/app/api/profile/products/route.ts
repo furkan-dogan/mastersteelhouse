@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { readProductStore, writeProductStore, type ProductStore } from '@/lib/profile-products-store'
 import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
+import { revalidateProfilSite } from '@/lib/profil-revalidate'
 
 export async function GET() {
   try {
@@ -22,6 +23,7 @@ export async function PUT(request: Request) {
     }
 
     await writeProductStore(body)
+    await revalidateProfilSite()
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Failed to write profile products store', error)
