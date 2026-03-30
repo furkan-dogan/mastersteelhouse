@@ -53,10 +53,10 @@ export const heroSlides: HeroSlide[] = [
     badge: 'Kalite ve Güvenilirlik',
     title: ['Mükemmel İşçilik', 'En Kaliteli', 'Malzemeler'],
     description:
-      'Her detayda mükemmellik. Galvanizli çelik, sertifikalı malzemeler ve uzman işçilikle 50 yıl garanti veriyoruz.',
+      'Her detayda mükemmellik. Galvanizli çelik, sertifikalı malzemeler, uzman işçilik ve uygun fiyatlarla evinizi güvenli ve lüks bir şekilde inşa ediyoruz.',
     cta: 'Kalitemizi Görün',
     ctaHref: '/kurumsal/belgelerimiz',
-    highlight: '50 Yıl Garanti',
+    highlight: 'Uygun Fiyat, Yüksek Kalite',
     features: ['TSE Belgeli', 'CE Sertifikalı', 'Kalite Kontrol'],
   },
 ]
