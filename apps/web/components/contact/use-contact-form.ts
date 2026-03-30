@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ContactFormState, FormErrors, SubmitPopup } from '@/components/contact/types'
 import { pushDataLayerEvent } from '@/lib/tracking'
 
@@ -41,7 +41,11 @@ export function useContactForm() {
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [resultPopup, setResultPopup] = useState<SubmitPopup>(null)
-  const mountAtRef = useRef<number>(Date.now())
+  const mountAtRef = useRef<number>(0)
+
+  useEffect(() => {
+    mountAtRef.current = Date.now()
+  }, [])
 
   const handleChange = (name: keyof ContactFormState, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
