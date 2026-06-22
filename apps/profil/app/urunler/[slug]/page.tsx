@@ -68,31 +68,9 @@ export default async function ProfilProductDetailPage({ params }: Props) {
     { name: product.name, path: `/urunler/${product.slug}` },
   ])
 
-  const productSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.name,
-    description: product.description,
-    image: (product.gallery.length ? product.gallery : [product.image]).map((img) =>
-      img.startsWith('http') ? img : absoluteProfileUrl(img),
-    ),
-    category: 'Profil Sistemleri',
-    sku: product.slug,
-    brand: {
-      '@type': 'Brand',
-      name: 'Master Steel House',
-    },
-    url: absoluteProfileUrl(`/urunler/${product.slug}`),
-    additionalProperty: product.specs.map((spec) => ({
-      '@type': 'PropertyValue',
-      name: spec.key,
-      value: spec.value,
-    })),
-  }
-
   return (
     <div className="min-h-screen bg-[#f3f4f1] pt-20">
-      <SeoJsonLd data={[breadcrumbSchema, productSchema]} />
+      <SeoJsonLd data={breadcrumbSchema} />
       <SiteHeader />
       <ProductDetailTemplate product={product} />
       <SiteFooter />
