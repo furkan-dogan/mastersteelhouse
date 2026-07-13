@@ -28,6 +28,7 @@ export function CategoryProductsGrid({ categorySlug, products }: CategoryProduct
           image={product.image}
           entered={entered}
           delayMs={Math.min(index * 70, 280)}
+          priority={index < 3}
         />
       ))}
     </div>

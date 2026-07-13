@@ -9,6 +9,7 @@ type ProductCategoryCardProps = {
   image: string
   entered: boolean
   delayMs: number
+  priority?: boolean
 }
 
 export function ProductCategoryCard({
@@ -18,6 +19,7 @@ export function ProductCategoryCard({
   image,
   entered,
   delayMs,
+  priority = false,
 }: ProductCategoryCardProps) {
   return (
     <Link
@@ -27,15 +29,17 @@ export function ProductCategoryCard({
       }`}
       style={{ transitionDelay: entered ? `${delayMs}ms` : '0ms' }}
     >
-      <div className="relative h-80 overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <Image
           src={image || '/placeholder.svg'}
           alt={name}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1180px) 50vw, 590px"
-          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 2.25rem), 377px"
+          quality={82}
+          priority={priority}
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
           <h3 className="text-2xl font-bold mb-2 group-hover:text-accent transition-colors">{name}</h3>

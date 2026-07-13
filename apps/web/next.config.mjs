@@ -45,6 +45,7 @@ const nextConfig = {
     // Keep dev flexible for local proxy/debug, optimize in production.
     unoptimized: isDev,
     formats: ['image/avif', 'image/webp'],
+    qualities: [75, 82, 88, 90],
     remotePatterns: [
       { protocol: 'https', hostname: '**.r2.dev' },
       { protocol: 'https', hostname: '**.r2.cloudflarestorage.com' },
