@@ -51,20 +51,6 @@ type ProductStore = {
   }>
 }
 
-const DEFAULT_GALLERY = [
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80',
-  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80',
-  'https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=1200&q=80',
-  'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80',
-  'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&q=80',
-  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80',
-]
-
-const DEFAULT_FLOOR_PLANS = [
-  { name: 'Zemin Kat', image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80' },
-  { name: '1. Kat', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=80' },
-]
-
 const DEFAULT_TECHNICAL_DETAILS = {
   'Taşıyıcı Sistem': 'Galvanizli hafif çelik konstrüksiyon',
   'Dış Duvar': '14 cm çelik karkas + taş yünü izolasyon',
@@ -230,12 +216,17 @@ async function readStore(): Promise<ProductStore> {
 }
 
 function normalizeProduct(product: ProductStore['products'][number]): ProductItem {
+  const primaryImage = normalizeCmsMediaUrl(
+    product.image || product.cardImage || product.sliderImage || product.gallery?.find(Boolean) || '/placeholder.svg'
+  )
+  const gallerySource = (product.gallery ?? []).filter(Boolean)
+
   return {
     categorySlug: product.categorySlug,
     slug: product.slug,
     name: normalizeTurkishText(product.name),
     area: product.area,
-    image: normalizeCmsMediaUrl(product.image || product.cardImage || product.sliderImage || product.gallery?.[0]),
+    image: primaryImage,
     description: normalizeTurkishText(product.description),
     features: {
       rooms: normalizeTurkishText(product.features?.rooms ?? '2+1'),
@@ -248,12 +239,14 @@ function normalizeProduct(product: ProductStore['products'][number]): ProductIte
     },
     technicalDetails: normalizeTechnicalDetails(product.technicalDetails),
     highlights: (product.highlights ?? DEFAULT_HIGHLIGHTS).map((value) => normalizeTurkishText(value)),
-    gallery: (product.gallery ?? DEFAULT_GALLERY).map((url) => normalizeCmsMediaUrl(url)),
-    floorPlans: (product.floorPlans ?? DEFAULT_FLOOR_PLANS).map((plan) => ({
-      ...plan,
-      name: normalizeTurkishText(plan.name),
-      image: normalizeCmsMediaUrl(plan.image),
-    })),
+    gallery: (gallerySource.length > 0 ? gallerySource : [primaryImage]).map((url) => normalizeCmsMediaUrl(url)),
+    floorPlans: (product.floorPlans ?? [])
+      .filter((plan) => Boolean(plan.image))
+      .map((plan) => ({
+        ...plan,
+        name: normalizeTurkishText(plan.name),
+        image: normalizeCmsMediaUrl(plan.image),
+      })),
   }
 }
 

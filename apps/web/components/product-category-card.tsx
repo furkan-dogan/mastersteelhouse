@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { ResilientImage } from '@/components/resilient-image'
 
 type ProductCategoryCardProps = {
   href: string
@@ -30,7 +30,7 @@ export function ProductCategoryCard({
       style={{ transitionDelay: entered ? `${delayMs}ms` : '0ms' }}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        <Image
+        <ResilientImage
           src={image || '/placeholder.svg'}
           alt={name}
           fill

@@ -1,8 +1,8 @@
 'use client'
 
-import Image from 'next/image'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { ResilientImage } from '@/components/resilient-image'
 
 type GalleryLightboxProps = {
   isOpen: boolean
@@ -105,7 +105,7 @@ export function GalleryLightbox({
       )}
 
       <div className="relative w-full max-w-6xl h-full max-h-[85vh]" onClick={(event) => event.stopPropagation()}>
-        <Image
+        <ResilientImage
           src={images[selectedIndex]}
           alt={`${productName} - Görsel ${selectedIndex + 1}`}
           fill

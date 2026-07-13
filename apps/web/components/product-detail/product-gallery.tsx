@@ -1,7 +1,7 @@
 'use client'
 
-import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ResilientImage } from '@/components/resilient-image'
 
 type ProductGalleryProps = {
   productName: string
@@ -36,7 +36,7 @@ export function ProductGallery({
           }
         }}
       >
-        <Image
+        <ResilientImage
           src={images[currentIndex]}
           alt={`${productName} - Görsel ${currentIndex + 1}`}
           fill
@@ -87,7 +87,7 @@ export function ProductGallery({
             aria-label={`${index + 1}. görseli seç`}
             aria-pressed={currentIndex === index}
           >
-            <Image
+            <ResilientImage
               src={img}
               alt={`${productName} - Görsel ${index + 1}`}
               fill

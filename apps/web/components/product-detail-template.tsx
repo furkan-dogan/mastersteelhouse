@@ -110,25 +110,27 @@ export function ProductDetailTemplate({ product, category }: Props) {
           </div>
         </section>
 
-        <section className="py-14 md:py-16 bg-gradient-to-br from-muted/30 to-background">
-          <div className={pageContainer}>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Kat Planı ve Kroki</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Ürünün detaylı kat planını ve ölçülerini inceleyerek mekanları keşfedin.
-              </p>
-            </div>
+        {floorPlans.length > 0 ? (
+          <section className="py-14 md:py-16 bg-gradient-to-br from-muted/30 to-background">
+            <div className={pageContainer}>
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-4">Kat Planı ve Kroki</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Ürünün detaylı kat planını ve ölçülerini inceleyerek mekanları keşfedin.
+                </p>
+              </div>
 
-            <FloorPlansSection
-              productName={product.name}
-              plans={floorPlans}
-              selectedIndex={selectedFloorPlan}
-              fallbackImage={galleryImages[0]}
-              onSelectPlan={setSelectedFloorPlan}
-              onOpenImage={openGalleryByUrl}
-            />
-          </div>
-        </section>
+              <FloorPlansSection
+                productName={product.name}
+                plans={floorPlans}
+                selectedIndex={selectedFloorPlan}
+                fallbackImage={galleryImages[0]}
+                onSelectPlan={setSelectedFloorPlan}
+                onOpenImage={openGalleryByUrl}
+              />
+            </div>
+          </section>
+        ) : null}
 
         <section className="py-14 md:py-16">
           <div className={pageContainer}>

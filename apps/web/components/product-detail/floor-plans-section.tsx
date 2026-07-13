@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import { ResilientImage } from '@/components/resilient-image'
 
 type FloorPlan = {
   name: string
@@ -51,10 +51,12 @@ export function FloorPlansSection({
           className="relative block aspect-[16/9] w-full cursor-zoom-in overflow-hidden bg-muted/25"
           aria-label="Kat planını büyüt"
         >
-          <Image
+          <ResilientImage
             src={selectedImage}
             alt={`${productName} - ${plans[selectedIndex]?.name ?? 'Kat Planı'}`}
             fill
+            sizes="(max-width: 896px) calc(100vw - 2rem), 896px"
+            quality={90}
             className="object-contain"
           />
         </button>
