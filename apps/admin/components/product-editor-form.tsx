@@ -1,6 +1,7 @@
 'use client'
 
-import { Plus, Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import { AlertTriangle, Plus, Trash2 } from 'lucide-react'
 import type { ProductItem } from '@/lib/products-store'
 import { MediaUploadDropzone } from '@/components/media-upload-dropzone'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
@@ -10,6 +11,46 @@ export type TechnicalDetailRow = {
   keyText: string
   valueText: string
   isFixed?: boolean
+}
+
+type ProductImagePreviewProps = {
+  src: string
+  alt: string
+  className: string
+}
+
+function ProductImagePreview({ src, alt, className }: ProductImagePreviewProps) {
+  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null)
+  const longEdge = dimensions ? Math.max(dimensions.width, dimensions.height) : 0
+  const isLowResolution = longEdge > 0 && longEdge < 1600
+
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={adminPreviewUrl(src)}
+        alt={alt}
+        className={className}
+        onLoad={(event) => {
+          setDimensions({
+            width: event.currentTarget.naturalWidth,
+            height: event.currentTarget.naturalHeight,
+          })
+        }}
+      />
+      {dimensions ? (
+        <span
+          className={`absolute left-2 top-2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-semibold shadow-sm backdrop-blur-sm ${
+            isLowResolution ? 'bg-amber-500/95 text-amber-950' : 'bg-black/65 text-white'
+          }`}
+          title={isLowResolution ? 'Büyük ekran ve yakınlaştırma için en az 1600 px önerilir.' : 'Görsel çözünürlüğü uygun.'}
+        >
+          {isLowResolution ? <AlertTriangle className="h-3 w-3" /> : null}
+          {dimensions.width} × {dimensions.height}
+        </span>
+      ) : null}
+    </>
+  )
 }
 
 type ProductEditorFormProps = {
@@ -91,9 +132,8 @@ export function ProductEditorForm({
               onError={onError}
             />
             {selectedProduct.image ? (
-              <div className="mt-2 overflow-hidden rounded-xl border bg-muted">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={adminPreviewUrl(selectedProduct.image)} alt="Kapak görseli" className="aspect-[4/3] w-full object-cover" />
+              <div className="relative mt-2 overflow-hidden rounded-xl border bg-muted">
+                <ProductImagePreview src={selectedProduct.image} alt="Kapak görseli" className="aspect-[4/3] w-full object-contain" />
               </div>
             ) : (
               <p className="text-xs text-muted-foreground">Kapak görseli seçilmedi.</p>
@@ -154,7 +194,7 @@ export function ProductEditorForm({
               onUploaded={(urls) => {
                 const merged = [...(selectedProduct.gallery ?? []), ...urls]
                 const nextGallery = Array.from(new Set(merged)).slice(0, 5)
-                onPatchProduct({ gallery: nextGallery, image: nextGallery[0] ?? '' })
+                onPatchProduct({ gallery: nextGallery })
               }}
               onPickFromMedia={onOpenGalleryPicker}
               onError={onError}
@@ -163,8 +203,7 @@ export function ProductEditorForm({
               <div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-5 md:grid-cols-6">
                 {(selectedProduct.gallery ?? []).map((img, index) => (
                   <div key={`${img}-${index}`} className="relative aspect-square overflow-hidden rounded-lg border border-border bg-muted/20">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={adminPreviewUrl(img)} alt={`Galeri ${index + 1}`} className="h-full w-full object-cover" />
+                    <ProductImagePreview src={img} alt={`Galeri ${index + 1}`} className="h-full w-full object-cover" />
                     <button onClick={() => onRemoveGalleryImage(index)} className="absolute right-2 top-2 rounded-md bg-black/55 px-2 py-1 text-xs text-white hover:bg-black/70">Sil</button>
                   </div>
                 ))}
@@ -233,9 +272,8 @@ export function ProductEditorForm({
                       </button>
                     </div>
                     {plan.image ? (
-                      <div className="overflow-hidden rounded-lg border bg-muted">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={adminPreviewUrl(plan.image)} alt={plan.name} className="aspect-[16/10] w-full object-cover" />
+                      <div className="relative overflow-hidden rounded-lg border bg-muted">
+                        <ProductImagePreview src={plan.image} alt={plan.name} className="aspect-[16/10] w-full object-contain" />
                       </div>
                     ) : (
                       <p className="text-xs text-muted-foreground">Kat planı görseli seçilmedi.</p>

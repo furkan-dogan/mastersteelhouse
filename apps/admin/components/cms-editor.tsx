@@ -510,10 +510,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       const merged = [...(selectedProduct.gallery ?? []), url]
       const nextGallery = mode === 'profile' ? Array.from(new Set(merged)) : Array.from(new Set(merged)).slice(0, 5)
 
-      patchProduct({
-        gallery: nextGallery,
-        image: nextGallery[0] ?? '',
-      })
+      patchProduct({ gallery: nextGallery })
     } else {
       const current = [...(selectedProduct.floorPlans ?? [])]
       if (!current[mediaTarget.index]) {
@@ -528,10 +525,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
   function removeGalleryImage(index: number) {
     if (!selectedProduct) return
     const nextGallery = (selectedProduct.gallery ?? []).filter((_, itemIndex) => itemIndex !== index)
-    patchProduct({
-      gallery: nextGallery,
-      image: nextGallery[0] ?? '',
-    })
+    patchProduct({ gallery: nextGallery })
   }
 
   function moveGalleryImage(index: number, direction: 'up' | 'down') {
@@ -545,7 +539,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
     const [moved] = gallery.splice(index, 1)
     gallery.splice(targetIndex, 0, moved)
-    patchProduct({ gallery, image: gallery[0] ?? '' })
+    patchProduct({ gallery })
   }
 
   function addFloorPlan() {

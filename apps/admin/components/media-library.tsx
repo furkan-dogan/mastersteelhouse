@@ -253,9 +253,13 @@ export function MediaLibrary({ endpoint = '/api/media' }: MediaLibraryProps) {
                         </span>
                       </div>
                       <button
-                        onClick={() => setConfirmDeleteItem(item)}
-                        disabled={deletingId === item.id}
-                        className="rounded p-1 text-muted-foreground hover:bg-error/10 hover:text-error group-hover:opacity-100"
+                        onClick={() => {
+                          if (!isUsed) setConfirmDeleteItem(item)
+                        }}
+                        disabled={isUsed || deletingId === item.id}
+                        className="rounded p-1 text-muted-foreground hover:bg-error/10 hover:text-error disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-muted-foreground group-hover:opacity-100"
+                        title={isUsed ? 'Kullanımda olan dosya silinemez.' : 'Dosyayı kalıcı olarak sil'}
+                        aria-label={isUsed ? `${item.name} kullanımda, silinemez` : `${item.name} dosyasını sil`}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
