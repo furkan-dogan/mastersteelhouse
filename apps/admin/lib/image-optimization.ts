@@ -12,13 +12,16 @@ type OptimizeParams = {
   extension: string
 }
 
-const IMAGE_MAX_WIDTH = 1920
-const IMAGE_MAX_HEIGHT = 1920
-const IMAGE_QUALITY = 78
+// Product renders are commonly inspected on high-DPI displays and in a
+// full-screen lightbox. Keep a sufficiently large delivery master while still
+// bounding uploads for predictable storage and processing costs.
+const IMAGE_MAX_WIDTH = 3200
+const IMAGE_MAX_HEIGHT = 3200
+const IMAGE_QUALITY = 88
 
 const THUMB_MAX_WIDTH = 560
 const THUMB_MAX_HEIGHT = 560
-const THUMB_QUALITY = 68
+const THUMB_QUALITY = 76
 
 function toUint8Array(input: Buffer | Uint8Array) {
   return input instanceof Uint8Array ? input : new Uint8Array(input)
@@ -34,6 +37,25 @@ export async function optimizeImageForWeb({ source, mimeType, extension }: Optim
     }
   }
 
+  const normalizedMimeType = mimeType.toLowerCase()
+  const normalizedExtension = extension.toLowerCase()
+  const isWebp = normalizedMimeType === 'image/webp' || normalizedExtension === '.webp'
+
+  // Large files compressed in the browser are already high-quality WebP
+  // masters. Passing compliant WebP through avoids a second lossy encode.
+  if (isWebp) {
+    const metadata = await sharp(source, { failOn: 'none' }).metadata()
+    const width = metadata.width ?? 0
+    const height = metadata.height ?? 0
+    if (width > 0 && height > 0 && width <= IMAGE_MAX_WIDTH && height <= IMAGE_MAX_HEIGHT) {
+      return {
+        buffer: toUint8Array(source),
+        mimeType: 'image/webp',
+        extension: '.webp',
+      }
+    }
+  }
+
   const pipeline = sharp(source, { failOn: 'none' }).rotate().resize({
     width: IMAGE_MAX_WIDTH,
     height: IMAGE_MAX_HEIGHT,
@@ -41,12 +63,12 @@ export async function optimizeImageForWeb({ source, mimeType, extension }: Optim
     withoutEnlargement: true,
   })
 
-  const output = await pipeline
-    .webp({
-      quality: IMAGE_QUALITY,
-      effort: 4,
-    })
-    .toBuffer()
+  const isPng = normalizedMimeType === 'image/png' || normalizedExtension === '.png'
+  const output = await pipeline.webp({
+    quality: isPng ? 92 : IMAGE_QUALITY,
+    nearLossless: isPng,
+    effort: 5,
+  }).toBuffer()
 
   return {
     buffer: new Uint8Array(output),

@@ -8,9 +8,10 @@ import imageCompression from 'browser-image-compression'
 const COMPRESS_THRESHOLD_MB = 3
 const COMPRESS_OPTIONS = {
   maxSizeMB: 3,
-  maxWidthOrHeight: 2400,
+  maxWidthOrHeight: 3200,
   useWebWorker: true,
-  fileType: 'image/jpeg' as const,
+  fileType: 'image/webp' as const,
+  initialQuality: 0.9,
 }
 
 async function compressIfNeeded(file: File): Promise<File> {
