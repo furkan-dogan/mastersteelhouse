@@ -72,6 +72,7 @@ export function ProductDetailTemplate({ product, category }: Props) {
                 currentIndex={currentGalleryIndex}
                 onPrev={prevGalleryImage}
                 onNext={nextGalleryImage}
+                onSelect={setCurrentGalleryIndex}
                 onOpen={openGallery}
               />
 
