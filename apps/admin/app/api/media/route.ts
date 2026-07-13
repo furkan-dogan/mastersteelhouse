@@ -198,7 +198,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ message: 'Medya bulunamadı.' }, { status: 404 })
     }
 
-    const usedUrls = await collectUsedMediaUrls(WEB_MEDIA_REFERENCES)
+    const usedUrls = await collectUsedMediaUrls(WEB_MEDIA_REFERENCES, { strict: true })
     if (usedUrls.has(target.url)) {
       return NextResponse.json(
         { message: 'Bu dosya yayınlanmış içerikte kullanılıyor. Önce ilgili içerikten kaldırın.' },

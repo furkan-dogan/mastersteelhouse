@@ -20,6 +20,11 @@ const PROFILE_MEDIA_REFERENCES = [
   'profile-products-cms.json',
   'profile-blog-cms.json',
   'profile-faq-cms.json',
+  'profile-references-cms.json',
+  'profile-videos-cms.json',
+  'profile-catalogs-cms.json',
+  'profile-documents-cms.json',
+  'profile-news-cms.json',
 ]
 
 function getExtension(filename: string, mimeType: string) {
@@ -195,7 +200,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ message: 'Medya bulunamadı.' }, { status: 404 })
     }
 
-    const usedUrls = await collectUsedMediaUrls(PROFILE_MEDIA_REFERENCES)
+    const usedUrls = await collectUsedMediaUrls(PROFILE_MEDIA_REFERENCES, { strict: true })
     if (usedUrls.has(target.url)) {
       return NextResponse.json(
         { message: 'Bu dosya yayınlanmış içerikte kullanılıyor. Önce ilgili içerikten kaldırın.' },

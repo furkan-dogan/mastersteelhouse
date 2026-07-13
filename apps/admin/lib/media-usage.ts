@@ -51,7 +51,14 @@ async function collectFromJsonFile(filePath: string, collector: Set<string>) {
   }
 }
 
-export async function collectUsedMediaUrls(fileNames: string[]) {
+type CollectUsedMediaOptions = {
+  strict?: boolean
+}
+
+export async function collectUsedMediaUrls(
+  fileNames: string[],
+  { strict = false }: CollectUsedMediaOptions = {}
+) {
   const used = new Set<string>()
 
   for (const fileName of fileNames) {
@@ -63,8 +70,11 @@ export async function collectUsedMediaUrls(fileNames: string[]) {
         const filePath = resolveContentPath(fileName)
         if (filePath) await collectFromJsonFile(filePath, used)
       }
-    } catch {
-      // ignore missing/invalid content files
+    } catch (error) {
+      if (strict) {
+        throw new Error(`Medya kullanım bilgisi doğrulanamadı: ${fileName}`, { cause: error })
+      }
+      // Listing can continue when an optional content file is unavailable.
     }
   }
 
