@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { Package, BookOpenText, Image as ImageIcon, BarChart3, Search, RefreshCw } from 'lucide-react'
+import { Package, BookOpenText, Image as ImageIcon, BarChart3, Search, RefreshCw, TriangleAlert } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AdminLayout } from './admin-layout'
@@ -16,6 +16,7 @@ type Kpi = {
   value: number | string
   icon: React.ReactNode
   href?: string
+  unavailable?: boolean
 }
 
 type RecentItem = {
@@ -27,9 +28,19 @@ type RecentItem = {
 
 type StatisticItem = {
   label: string
-  value: number
+  value: number | null
   href: string
   color: string
+}
+
+type ProductsPayload = { products?: unknown[] }
+type BlogPayload = { posts?: { slug: string; title: string; date?: string }[] }
+type MediaPayload = { items?: unknown[] }
+
+async function fetchDashboardResource<T>(url: string): Promise<T> {
+  const response = await fetch(url, { cache: 'no-store' })
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}`.trim())
+  return response.json() as Promise<T>
 }
 
 type DashboardProps = {
@@ -42,6 +53,7 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
   const [kpis, setKpis] = useState<Kpi[]>([])
   const [statistics, setStatistics] = useState<StatisticItem[]>([])
   const [recent, setRecent] = useState<RecentItem[]>([])
+  const [dataErrors, setDataErrors] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('')
 
@@ -52,43 +64,51 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
     setLoading(true)
 
     try {
-      const responses = await Promise.all([
-        fetch(`${endpointBase}/products`, { cache: 'no-store' }),
-        fetch(`${endpointBase}/blog`, { cache: 'no-store' }),
-        fetch(`${endpointBase}/media`, { cache: 'no-store' }),
+      const [productsResult, blogResult, mediaResult] = await Promise.allSettled([
+        fetchDashboardResource<ProductsPayload>(`${endpointBase}/products`),
+        fetchDashboardResource<BlogPayload>(`${endpointBase}/blog`),
+        fetchDashboardResource<MediaPayload>(`${endpointBase}/media`),
       ])
-      const [productsRes, blogRes, mediaRes] = responses
 
-      const products = productsRes.ok ? ((await productsRes.json()) as { products?: unknown[] }) : null
-      const blog = blogRes.ok ? ((await blogRes.json()) as { posts?: { slug: string; title: string; date?: string }[] }) : null
-      const media = mediaRes.ok ? ((await mediaRes.json()) as { items?: unknown[] }) : null
-      const productCount = products?.products?.length ?? 0
-      const blogCount = blog?.posts?.length ?? 0
-      const mediaCount = media?.items?.length ?? 0
+      const products = productsResult.status === 'fulfilled' ? productsResult.value : null
+      const blog = blogResult.status === 'fulfilled' ? blogResult.value : null
+      const media = mediaResult.status === 'fulfilled' ? mediaResult.value : null
+      const productCount = products ? (products.products?.length ?? 0) : null
+      const blogCount = blog ? (blog.posts?.length ?? 0) : null
+      const mediaCount = media ? (media.items?.length ?? 0) : null
+      const nextErrors = [
+        productsResult.status === 'rejected' ? 'Ürün verisi' : null,
+        blogResult.status === 'rejected' ? 'Blog verisi' : null,
+        mediaResult.status === 'rejected' ? 'Medya verisi' : null,
+      ].filter((item): item is string => item !== null)
 
       const nextKpis: Kpi[] = [
         {
           label: 'Toplam Ürün',
-          value: productCount,
+          value: productCount ?? '—',
           icon: <Package className="h-5 w-5" />,
           href: productsHref,
+          unavailable: productCount === null,
         },
         {
           label: 'Blog Yazıları',
-          value: blogCount,
+          value: blogCount ?? '—',
           icon: <BookOpenText className="h-5 w-5" />,
           href: `${hrefBase}/blog`,
+          unavailable: blogCount === null,
         },
       ]
 
       nextKpis.push({
         label: 'Medya Dosyası',
-        value: mediaCount,
+        value: mediaCount ?? '—',
         icon: <ImageIcon className="h-5 w-5" />,
         href: `${hrefBase}/media`,
+        unavailable: mediaCount === null,
       })
 
       setKpis(nextKpis)
+      setDataErrors(nextErrors)
       setStatistics([
         { label: 'Ürünler', value: productCount, href: productsHref, color: '#0872c9' },
         { label: 'Blog yazıları', value: blogCount, href: `${hrefBase}/blog`, color: '#8b5cf6' },
@@ -110,6 +130,8 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
       fallback.push({ label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: `${hrefBase}/media` })
       setKpis(fallback)
       setStatistics([])
+      setRecent([])
+      setDataErrors(['Dashboard verileri'])
     } finally {
       setLoading(false)
     }
@@ -127,8 +149,11 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
       )
     : recent
 
-  const totalContent = statistics.reduce((total, item) => total + item.value, 0)
-  const maxStatistic = Math.max(...statistics.map((item) => item.value), 1)
+  const availableStatistics = statistics.filter(
+    (item): item is StatisticItem & { value: number } => item.value !== null
+  )
+  const totalContent = availableStatistics.reduce((total, item) => total + item.value, 0)
+  const maxStatistic = Math.max(...availableStatistics.map((item) => item.value), 1)
 
   return (
     <AdminLayout
@@ -151,7 +176,13 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
                   </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">{kpi.label}</p>
-                    <p className="text-2xl font-semibold text-foreground">{kpi.value}</p>
+                    {kpi.unavailable ? (
+                      <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-error">
+                        <TriangleAlert className="h-4 w-4" /> Veri alınamadı
+                      </p>
+                    ) : (
+                      <p className="text-2xl font-semibold text-foreground">{kpi.value}</p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -175,6 +206,15 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
               )}
             </CardHeader>
             <CardContent>
+              {!loading && dataErrors.length > 0 && (
+                <div className="mb-5 flex items-start gap-3 rounded-lg border border-error/25 bg-error/10 px-4 py-3 text-sm text-error">
+                  <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
+                  <p>
+                    <span className="font-medium">{dataErrors.join(', ')} alınamadı.</span>{' '}
+                    Gösterilen toplam yalnızca erişilebilen servisleri kapsıyor.
+                  </p>
+                </div>
+              )}
               {loading ? (
                 <div className="space-y-6 py-4" aria-label="İstatistikler yükleniyor">
                   {[0, 1, 2].map((item) => (
@@ -184,21 +224,37 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
                     </div>
                   ))}
                 </div>
-              ) : totalContent === 0 ? (
+              ) : availableStatistics.length === 0 ? (
                 <div className="flex h-56 items-center justify-center rounded-lg border border-dashed border-border bg-muted/20">
-                  <p className="text-sm text-muted-foreground">Gösterilecek içerik verisi bulunamadı</p>
+                  <p className="text-sm text-muted-foreground">
+                    {dataErrors.length > 0 ? 'İstatistik verileri alınamadı' : 'Gösterilecek içerik verisi bulunamadı'}
+                  </p>
                 </div>
               ) : (
                 <div className="grid gap-8 py-2 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
                   <div
                     className="space-y-6"
                     role="img"
-                    aria-label={`Toplam ${totalContent} içerik: ${statistics
+                    aria-label={`Toplam ${totalContent} içerik: ${availableStatistics
                       .map((item) => `${item.label} ${item.value}`)
                       .join(', ')}`}
                   >
                     {statistics.map((item) => {
-                      const share = Math.round((item.value / totalContent) * 100)
+                      if (item.value === null) {
+                        return (
+                          <div key={item.label} className="rounded-md" aria-label={`${item.label} verisi alınamadı`}>
+                            <div className="mb-2 flex items-center justify-between gap-4 text-sm">
+                              <span className="font-medium text-muted-foreground">{item.label}</span>
+                              <span className="flex items-center gap-1.5 text-xs font-medium text-error">
+                                <TriangleAlert className="h-3.5 w-3.5" /> Veri alınamadı
+                              </span>
+                            </div>
+                            <div className="h-3 rounded-full border border-dashed border-error/40 bg-error/5" />
+                          </div>
+                        )
+                      }
+
+                      const share = totalContent > 0 ? Math.round((item.value / totalContent) * 100) : 0
                       const relativeWidth = (item.value / maxStatistic) * 100
 
                       return (
@@ -227,12 +283,14 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
                   </div>
 
                   <div className="rounded-xl border border-border bg-muted/30 p-5 text-center md:text-left">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Toplam içerik</p>
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      {dataErrors.length > 0 ? 'Erişilebilen toplam' : 'Toplam içerik'}
+                    </p>
                     <p className="mt-2 text-4xl font-semibold tabular-nums text-foreground">
                       {totalContent.toLocaleString('tr-TR')}
                     </p>
                     <div className="mt-4 flex flex-wrap justify-center gap-x-3 gap-y-2 md:block md:space-y-2">
-                      {statistics.map((item) => (
+                      {availableStatistics.map((item) => (
                         <div key={item.label} className="flex items-center gap-2 text-xs text-muted-foreground">
                           <span className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
                           <span>{item.label}</span>
@@ -253,6 +311,10 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
               <ul className="space-y-2">
                 {loading ? (
                   <li className="text-sm text-muted-foreground">Yükleniyor...</li>
+                ) : dataErrors.includes('Blog verisi') ? (
+                  <li className="flex items-center gap-2 text-sm text-error">
+                    <TriangleAlert className="h-4 w-4" /> Blog verisi alınamadı
+                  </li>
                 ) : recent.length === 0 ? (
                   <li className="text-sm text-muted-foreground">Henüz içerik yok</li>
                 ) : (
