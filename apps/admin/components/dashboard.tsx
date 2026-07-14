@@ -24,6 +24,8 @@ type RecentItem = {
   title: string
   type: string
   date?: string
+  timestamp: number | null
+  href: string
 }
 
 type StatisticItem = {
@@ -33,9 +35,41 @@ type StatisticItem = {
   color: string
 }
 
-type ProductsPayload = { products?: unknown[] }
+type ProductsPayload = { products?: { slug: string; name: string; categorySlug: string }[] }
 type BlogPayload = { posts?: { slug: string; title: string; date?: string }[] }
-type MediaPayload = { items?: unknown[] }
+type MediaPayload = { items?: { id: string; name: string; createdAt: string }[] }
+
+const TURKISH_MONTHS: Record<string, number> = {
+  ocak: 0,
+  şubat: 1,
+  mart: 2,
+  nisan: 3,
+  mayıs: 4,
+  haziran: 5,
+  temmuz: 6,
+  ağustos: 7,
+  eylül: 8,
+  ekim: 9,
+  kasım: 10,
+  aralık: 11,
+}
+
+function parseContentDate(value?: string) {
+  if (!value) return null
+  const nativeTimestamp = Date.parse(value)
+  if (Number.isFinite(nativeTimestamp)) return nativeTimestamp
+
+  const match = value.trim().toLocaleLowerCase('tr-TR').match(/^(\d{1,2})\s+([^\s]+)\s+(\d{4})$/)
+  if (!match) return null
+  const month = TURKISH_MONTHS[match[2]]
+  if (month === undefined) return null
+  return new Date(Number(match[3]), month, Number(match[1])).getTime()
+}
+
+function formatContentDate(timestamp: number | null, fallback?: string) {
+  if (timestamp === null) return fallback || 'Tarih bilgisi yok'
+  return new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }).format(timestamp)
+}
 
 async function fetchDashboardResource<T>(url: string): Promise<T> {
   const response = await fetch(url, { cache: 'no-store' })
@@ -115,12 +149,46 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
         { label: 'Medya dosyaları', value: mediaCount, href: `${hrefBase}/media`, color: '#10b981' },
       ])
 
-      const items: RecentItem[] = []
-      blog?.posts?.slice(0, 5).forEach((p) => {
-        items.push({ id: `blog-${p.slug}`, title: p.title, type: 'Blog', date: p.date })
-      })
+      const items: RecentItem[] = [
+        ...(products?.products?.slice(0, 3).map((product) => ({
+          id: `product-${product.categorySlug}-${product.slug}`,
+          title: product.name,
+          type: 'Ürün',
+          date: undefined,
+          timestamp: null,
+          href: `${productsHref}?category=${encodeURIComponent(product.categorySlug)}`,
+        })) ?? []),
+        ...(blog?.posts?.slice(0, 3).map((post) => {
+          const timestamp = parseContentDate(post.date)
+          return {
+            id: `blog-${post.slug}`,
+            title: post.title,
+            type: 'Blog',
+            date: formatContentDate(timestamp, post.date),
+            timestamp,
+            href: `${hrefBase}/blog`,
+          }
+        }) ?? []),
+        ...(media?.items?.slice(0, 3).map((mediaItem) => {
+          const timestamp = parseContentDate(mediaItem.createdAt)
+          return {
+            id: `media-${mediaItem.id}`,
+            title: mediaItem.name,
+            type: 'Medya',
+            date: formatContentDate(timestamp),
+            timestamp,
+            href: `${hrefBase}/media`,
+          }
+        }) ?? []),
+      ]
 
-      setRecent(items.slice(0, 8))
+      items.sort((a, b) => {
+        if (a.timestamp === null && b.timestamp === null) return 0
+        if (a.timestamp === null) return 1
+        if (b.timestamp === null) return -1
+        return b.timestamp - a.timestamp
+      })
+      setRecent(items)
     } catch {
       const fallback: Kpi[] = [
         { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: productsHref },
@@ -148,6 +216,10 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
           r.type.toLowerCase().includes(filter.toLowerCase())
       )
     : recent
+
+  const recentHighlights = ['Ürün', 'Blog', 'Medya']
+    .map((type) => recent.find((item) => item.type === type))
+    .filter((item): item is RecentItem => item !== undefined)
 
   const availableStatistics = statistics.filter(
     (item): item is StatisticItem & { value: number } => item.value !== null
@@ -318,12 +390,14 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
                 ) : recent.length === 0 ? (
                   <li className="text-sm text-muted-foreground">Henüz içerik yok</li>
                 ) : (
-                  recent.slice(0, 5).map((item) => (
-                    <li key={item.id} className="flex items-center justify-between gap-2 text-sm">
-                      <span className="truncate text-foreground">{item.title}</span>
+                  recentHighlights.map((item) => (
+                    <li key={item.id}>
+                      <Link href={item.href} className="flex items-center justify-between gap-2 rounded-md py-1 text-sm hover:text-primary">
+                      <span className="truncate">{item.title}</span>
                       <Badge variant="outline" className="shrink-0">
                         {item.type}
                       </Badge>
+                      </Link>
                     </li>
                   ))
                 )}
@@ -359,7 +433,7 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
               data={filteredRecent.map((r) => ({
                 title: r.title,
                 type: <Badge variant="outline">{r.type}</Badge>,
-                date: r.date ?? '-',
+                date: r.date ?? 'Tarih bilgisi yok',
               }))}
               stickyHeader
               emptyMessage="Filtreye uygun içerik bulunamadı"
@@ -367,7 +441,7 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
                 <TableRowAction
                   onClick={() => {
                     const item = filteredRecent[index]
-                    if (item?.type === 'Blog') router.push(`${hrefBase}/blog`)
+                    if (item) router.push(item.href)
                   }}
                 >
                   Görüntüle
