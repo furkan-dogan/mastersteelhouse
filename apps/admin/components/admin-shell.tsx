@@ -25,7 +25,6 @@ import {
 type AdminShellProps = {
   children: React.ReactNode
   basePath?: string
-  productsEndpoint?: string
   brandSubtitle?: string
 }
 
@@ -47,6 +46,7 @@ export function AdminShell({
     media: true,
   })
   const [profileOpen, setProfileOpen] = useState(false)
+  const [adminUsername, setAdminUsername] = useState<string | null>(null)
   const [isDark, setIsDark] = useState(() => {
     if (typeof document === 'undefined') return false
     return document.documentElement.getAttribute('data-theme') === 'dark'
@@ -92,6 +92,26 @@ export function AdminShell({
     const handler = () => setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')
     window.addEventListener('theme-change', handler)
     return () => window.removeEventListener('theme-change', handler)
+  }, [])
+
+  useEffect(() => {
+    let active = true
+
+    void fetch('/api/auth/session', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) return null
+        return response.json() as Promise<{ username?: string }>
+      })
+      .then((session) => {
+        if (active) setAdminUsername(session?.username ?? null)
+      })
+      .catch(() => {
+        if (active) setAdminUsername(null)
+      })
+
+    return () => {
+      active = false
+    }
   }, [])
 
   function toggleTheme() {
@@ -248,8 +268,8 @@ export function AdminShell({
                   <div className="fixed inset-0 z-40" aria-hidden onClick={() => setProfileOpen(false)} />
                   <div className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-card py-1 shadow-lg">
                     <div className="border-b border-border px-3 py-2">
-                      <p className="text-sm font-medium text-foreground">Admin</p>
-                      <p className="text-xs text-muted-foreground">admin@mastersteelhouse.com</p>
+                      <p className="text-sm font-medium text-foreground">Yönetici hesabı</p>
+                      <p className="truncate text-xs text-muted-foreground">{adminUsername ?? 'Kimlik bilgisi alınamadı'}</p>
                     </div>
                     <button
                       type="button"

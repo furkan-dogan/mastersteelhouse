@@ -73,3 +73,14 @@ export async function verifyAdminSessionToken(token?: string | null) {
   const expected = await signValue(expiresAtRaw)
   return timingSafeEqual(signature, expected)
 }
+
+export async function getAdminSessionIdentity(token?: string | null) {
+  if (!(await verifyAdminSessionToken(token))) return null
+
+  try {
+    const { username } = getCredentialConfig()
+    return { username }
+  } catch {
+    return null
+  }
+}

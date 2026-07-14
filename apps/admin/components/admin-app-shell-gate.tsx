@@ -18,7 +18,7 @@ export function AdminAppShellGate({ children }: AdminAppShellGateProps) {
 
   if (pathname.startsWith('/profil-cms')) {
     return (
-      <AdminShell basePath="/profil-cms" productsEndpoint="/api/profile/products" brandSubtitle="Profil CMS Panel">
+      <AdminShell basePath="/profil-cms" brandSubtitle="Profil CMS Panel">
         {children}
       </AdminShell>
     )
