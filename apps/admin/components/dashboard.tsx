@@ -25,6 +25,13 @@ type RecentItem = {
   date?: string
 }
 
+type StatisticItem = {
+  label: string
+  value: number
+  href: string
+  color: string
+}
+
 type DashboardProps = {
   endpointBase?: string
   hrefBase?: string
@@ -33,13 +40,17 @@ type DashboardProps = {
 export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardProps) {
   const router = useRouter()
   const [kpis, setKpis] = useState<Kpi[]>([])
+  const [statistics, setStatistics] = useState<StatisticItem[]>([])
   const [recent, setRecent] = useState<RecentItem[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('')
 
   const isProfileCms = hrefBase === '/profil-cms'
+  const productsHref = isProfileCms ? '/profil-cms' : '/products'
 
   const load = useCallback(async () => {
+    setLoading(true)
+
     try {
       const responses = await Promise.all([
         fetch(`${endpointBase}/products`, { cache: 'no-store' }),
@@ -51,17 +62,20 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
       const products = productsRes.ok ? ((await productsRes.json()) as { products?: unknown[] }) : null
       const blog = blogRes.ok ? ((await blogRes.json()) as { posts?: { slug: string; title: string; date?: string }[] }) : null
       const media = mediaRes.ok ? ((await mediaRes.json()) as { items?: unknown[] }) : null
+      const productCount = products?.products?.length ?? 0
+      const blogCount = blog?.posts?.length ?? 0
+      const mediaCount = media?.items?.length ?? 0
 
       const nextKpis: Kpi[] = [
         {
           label: 'Toplam Ürün',
-          value: products?.products?.length ?? 0,
+          value: productCount,
           icon: <Package className="h-5 w-5" />,
-          href: `${hrefBase}/`,
+          href: productsHref,
         },
         {
           label: 'Blog Yazıları',
-          value: blog?.posts?.length ?? 0,
+          value: blogCount,
           icon: <BookOpenText className="h-5 w-5" />,
           href: `${hrefBase}/blog`,
         },
@@ -69,12 +83,17 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
 
       nextKpis.push({
         label: 'Medya Dosyası',
-        value: media?.items?.length ?? 0,
+        value: mediaCount,
         icon: <ImageIcon className="h-5 w-5" />,
         href: `${hrefBase}/media`,
       })
 
       setKpis(nextKpis)
+      setStatistics([
+        { label: 'Ürünler', value: productCount, href: productsHref, color: '#0872c9' },
+        { label: 'Blog yazıları', value: blogCount, href: `${hrefBase}/blog`, color: '#8b5cf6' },
+        { label: 'Medya dosyaları', value: mediaCount, href: `${hrefBase}/media`, color: '#10b981' },
+      ])
 
       const items: RecentItem[] = []
       blog?.posts?.slice(0, 5).forEach((p) => {
@@ -84,16 +103,17 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
       setRecent(items.slice(0, 8))
     } catch {
       const fallback: Kpi[] = [
-        { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: `${hrefBase}/` },
+        { label: 'Ürünler', value: '-', icon: <Package className="h-5 w-5" />, href: productsHref },
         { label: 'Blog', value: '-', icon: <BookOpenText className="h-5 w-5" />, href: `${hrefBase}/blog` },
       ]
 
       fallback.push({ label: 'Medya', value: '-', icon: <ImageIcon className="h-5 w-5" />, href: `${hrefBase}/media` })
       setKpis(fallback)
+      setStatistics([])
     } finally {
       setLoading(false)
     }
-  }, [endpointBase, hrefBase, isProfileCms])
+  }, [endpointBase, hrefBase, productsHref])
 
   useEffect(() => {
     void load()
@@ -106,6 +126,9 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
           r.type.toLowerCase().includes(filter.toLowerCase())
       )
     : recent
+
+  const totalContent = statistics.reduce((total, item) => total + item.value, 0)
+  const maxStatistic = Math.max(...statistics.map((item) => item.value), 1)
 
   return (
     <AdminLayout
@@ -138,15 +161,87 @@ export function Dashboard({ endpointBase = '/api', hrefBase = '' }: DashboardPro
 
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />}>
-                İstatistik Özeti
-              </CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between gap-4">
+              <div>
+                <CardTitle icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />}>
+                  İstatistik Özeti
+                </CardTitle>
+                <p className="mt-1 text-sm text-muted-foreground">Yayındaki içeriklerin güncel dağılımı</p>
+              </div>
+              {!loading && totalContent > 0 && (
+                <Badge variant="outline" className="shrink-0">
+                  {totalContent.toLocaleString('tr-TR')} kayıt
+                </Badge>
+              )}
             </CardHeader>
             <CardContent>
-              <div className="flex h-64 items-center justify-center rounded-lg border border-dashed border-border bg-muted/30">
-                <p className="text-sm text-muted-foreground">Chart alanı (placeholder)</p>
-              </div>
+              {loading ? (
+                <div className="space-y-6 py-4" aria-label="İstatistikler yükleniyor">
+                  {[0, 1, 2].map((item) => (
+                    <div key={item} className="space-y-2">
+                      <div className="h-4 w-32 animate-pulse rounded bg-muted" />
+                      <div className="h-3 animate-pulse rounded-full bg-muted" />
+                    </div>
+                  ))}
+                </div>
+              ) : totalContent === 0 ? (
+                <div className="flex h-56 items-center justify-center rounded-lg border border-dashed border-border bg-muted/20">
+                  <p className="text-sm text-muted-foreground">Gösterilecek içerik verisi bulunamadı</p>
+                </div>
+              ) : (
+                <div className="grid gap-8 py-2 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
+                  <div
+                    className="space-y-6"
+                    role="img"
+                    aria-label={`Toplam ${totalContent} içerik: ${statistics
+                      .map((item) => `${item.label} ${item.value}`)
+                      .join(', ')}`}
+                  >
+                    {statistics.map((item) => {
+                      const share = Math.round((item.value / totalContent) * 100)
+                      const relativeWidth = (item.value / maxStatistic) * 100
+
+                      return (
+                        <Link key={item.label} href={item.href} className="group block rounded-md focus:outline-none focus:ring-2 focus:ring-primary/40">
+                          <div className="mb-2 flex items-center justify-between gap-4 text-sm">
+                            <span className="font-medium text-foreground transition-colors group-hover:text-primary">
+                              {item.label}
+                            </span>
+                            <span className="tabular-nums text-muted-foreground">
+                              <strong className="font-semibold text-foreground">{item.value.toLocaleString('tr-TR')}</strong>
+                              {' · '}{share}%
+                            </span>
+                          </div>
+                          <div className="h-3 overflow-hidden rounded-full bg-muted">
+                            <div
+                              className="h-full rounded-full transition-[width,filter] duration-500 group-hover:brightness-110"
+                              style={{
+                                width: item.value > 0 ? `${Math.max(relativeWidth, 2)}%` : '0%',
+                                backgroundColor: item.color,
+                              }}
+                            />
+                          </div>
+                        </Link>
+                      )
+                    })}
+                  </div>
+
+                  <div className="rounded-xl border border-border bg-muted/30 p-5 text-center md:text-left">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Toplam içerik</p>
+                    <p className="mt-2 text-4xl font-semibold tabular-nums text-foreground">
+                      {totalContent.toLocaleString('tr-TR')}
+                    </p>
+                    <div className="mt-4 flex flex-wrap justify-center gap-x-3 gap-y-2 md:block md:space-y-2">
+                      {statistics.map((item) => (
+                        <div key={item.label} className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+                          <span>{item.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
