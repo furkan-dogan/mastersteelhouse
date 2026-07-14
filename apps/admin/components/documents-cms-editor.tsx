@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AdminLayout } from '@/components/admin-layout'
 import { MediaPickerModal } from '@/components/media-picker-modal'
 import { createEditorRowId } from '@/lib/editor-utils'
@@ -74,11 +74,7 @@ export function DocumentsCmsEditor({ endpoint = '/api/documents', mediaEndpoint 
 
   const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
-  useEffect(() => {
-    void loadStore()
-  }, [])
-
-  async function loadStore() {
+  const loadStore = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -92,7 +88,11 @@ export function DocumentsCmsEditor({ endpoint = '/api/documents', mediaEndpoint 
     } finally {
       setLoading(false)
     }
-  }
+  }, [endpoint])
+
+  useEffect(() => {
+    void loadStore()
+  }, [loadStore])
 
   function patchStore(update: Partial<DocumentsStore>) {
     setStore((prev) => ({ ...prev, ...update }))

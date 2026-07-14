@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AdminLayout } from '@/components/admin-layout'
 import type { ReferenceItem, ReferenceStore } from '@/lib/references-store'
 import { MediaPickerModal } from '@/components/media-picker-modal'
@@ -42,10 +42,6 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [editorOpen, setEditorOpen] = useState(false)
 
-  useEffect(() => {
-    void loadStore()
-  }, [])
-
   const selectedItem = useMemo(() => {
     return store?.items.find((item) => item.id === selectedId) ?? null
   }, [store, selectedId])
@@ -71,7 +67,7 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
 
   const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
-  async function loadStore() {
+  const loadStore = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -87,7 +83,11 @@ export function ReferencesCmsEditor({ endpoint = '/api/references', mediaEndpoin
     } finally {
       setLoading(false)
     }
-  }
+  }, [endpoint])
+
+  useEffect(() => {
+    void loadStore()
+  }, [loadStore])
 
   function patchItem(update: Partial<ReferenceItem>) {
     if (!store || !selectedItem) return

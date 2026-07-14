@@ -41,6 +41,7 @@ export function ReferencesEditorDrawer({
       onClose={onClose}
     >
       <ReferencesEditorForm
+        key={selectedItem.id}
         selectedItem={selectedItem}
         onPatchItem={onPatchItem}
         onOpenMediaPicker={onOpenMediaPicker}

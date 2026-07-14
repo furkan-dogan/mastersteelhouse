@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FileVideo } from 'lucide-react'
 import { AdminLayout } from '@/components/admin-layout'
 import { CmsErrorState, CmsLoadingState } from '@/components/cms-screen-state'
@@ -70,11 +70,7 @@ export function VideosCmsEditor({ endpoint = '/api/videos' }: VideosCmsEditorPro
 
   const { page, totalPages, pagedItems, setPage, resetPage, pageSize } = usePagination(filteredItems, 10)
 
-  useEffect(() => {
-    void loadStore()
-  }, [])
-
-  async function loadStore() {
+  const loadStore = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -98,7 +94,11 @@ export function VideosCmsEditor({ endpoint = '/api/videos' }: VideosCmsEditorPro
     } finally {
       setLoading(false)
     }
-  }
+  }, [endpoint])
+
+  useEffect(() => {
+    void loadStore()
+  }, [loadStore])
 
   function patchItem(update: Partial<VideoItem>) {
     if (!selectedItem) return

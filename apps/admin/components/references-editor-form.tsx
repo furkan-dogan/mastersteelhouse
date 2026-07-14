@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { X } from 'lucide-react'
 import type { ReferenceItem } from '@/lib/references-store'
 import { adminPreviewUrl } from '@/lib/media-preview-url'
@@ -28,10 +28,6 @@ export function ReferencesEditorForm({
   simplified = false,
 }: ReferencesEditorFormProps) {
   const [categoryInput, setCategoryInput] = useState('')
-
-  useEffect(() => {
-    setCategoryInput('')
-  }, [selectedItem.id])
 
   function addCategory(rawValue: string) {
     const value = normalizeCategory(rawValue.replace(/,+$/, ''))
