@@ -160,7 +160,8 @@ export function ProfileProductEditorForm({
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Anasayfa Kart Görseli</h3>
         <MediaUploadDropzone
           multiple={false}
-          helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
+          minimumLongEdge={1600}
+          helperText="JPG, PNG, WEBP, HEIC (uzun kenar en az 1600 px, ideal 2400–3200 px)"
           galleryButtonLabel="Medyadan seç"
           onUploaded={(urls) => {
             if (!urls[0]) return
@@ -217,6 +218,7 @@ export function ProfileProductEditorForm({
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Slider Görseli</label>
           <MediaUploadDropzone
             multiple={false}
+            minimumLongEdge={1600}
             helperText="PNG, JPG, GIF, WEBP, HEIC, MP4, WEBM, MOV (maks. 20MB görsel / 200MB video)"
             galleryButtonLabel="Medyadan seç"
             accept="image/*,video/mp4,video/webm,video/quicktime,.heic,.heif,.mov"
@@ -299,7 +301,8 @@ export function ProfileProductEditorForm({
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Foto Galeri</h3>
         <MediaUploadDropzone
           multiple
-          helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
+          minimumLongEdge={1600}
+          helperText="JPG, PNG, WEBP, HEIC (uzun kenar en az 1600 px, ideal 2400–3200 px)"
           galleryButtonLabel="Medyadan ekle"
           onUploaded={(urls) => {
             const merged = [...(selectedProduct.gallery ?? []), ...urls]

@@ -4,6 +4,8 @@ export type OptimizedImageResult = {
   buffer: Uint8Array
   mimeType: string
   extension: string
+  width: number
+  height: number
 }
 
 type OptimizeParams = {
@@ -27,13 +29,20 @@ function toUint8Array(input: Buffer | Uint8Array) {
   return input instanceof Uint8Array ? input : new Uint8Array(input)
 }
 
+export function meetsMinimumLongEdge(width: number, height: number, minimumLongEdge: number) {
+  return minimumLongEdge <= 0 || Math.max(width, height) >= minimumLongEdge
+}
+
 export async function optimizeImageForWeb({ source, mimeType, extension }: OptimizeParams): Promise<OptimizedImageResult> {
   const isGif = mimeType === 'image/gif' || extension.toLowerCase() === '.gif'
   if (isGif) {
+    const metadata = await sharp(source, { failOn: 'none', animated: true }).metadata()
     return {
       buffer: toUint8Array(source),
       mimeType,
       extension,
+      width: metadata.width ?? 0,
+      height: metadata.height ?? 0,
     }
   }
 
@@ -52,6 +61,8 @@ export async function optimizeImageForWeb({ source, mimeType, extension }: Optim
         buffer: toUint8Array(source),
         mimeType: 'image/webp',
         extension: '.webp',
+        width,
+        height,
       }
     }
   }
@@ -69,11 +80,14 @@ export async function optimizeImageForWeb({ source, mimeType, extension }: Optim
     nearLossless: isPng,
     effort: 5,
   }).toBuffer()
+  const metadata = await sharp(output, { failOn: 'none' }).metadata()
 
   return {
     buffer: new Uint8Array(output),
     mimeType: 'image/webp',
     extension: '.webp',
+    width: metadata.width ?? 0,
+    height: metadata.height ?? 0,
   }
 }
 
@@ -92,10 +106,13 @@ export async function generateThumbnailForImage(source: Buffer | Uint8Array): Pr
       effort: 4,
     })
     .toBuffer()
+  const metadata = await sharp(output, { failOn: 'none' }).metadata()
 
   return {
     buffer: new Uint8Array(output),
     mimeType: 'image/webp',
     extension: '.webp',
+    width: metadata.width ?? 0,
+    height: metadata.height ?? 0,
   }
 }

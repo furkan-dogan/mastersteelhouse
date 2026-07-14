@@ -13,6 +13,7 @@ type Props = {
   onSelect: (url: string) => void
   acceptTypes?: MediaItem['type'][]
   endpoint?: string
+  minimumLongEdge?: number
 }
 
 export function MediaPickerModal({
@@ -22,6 +23,7 @@ export function MediaPickerModal({
   onSelect,
   acceptTypes,
   endpoint,
+  minimumLongEdge,
 }: Props) {
   const pathname = usePathname()
   const resolvedEndpoint = endpoint ?? (pathname.startsWith('/profil-cms') ? '/api/profile/media' : '/api/media')
@@ -89,11 +91,16 @@ export function MediaPickerModal({
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((item) => {
                 const src = adminPreviewUrl(item.thumbnailUrl || item.url)
+                const hasKnownDimensions = Boolean(item.width && item.height)
+                const meetsMinimum = item.type !== 'image' || !minimumLongEdge || (
+                  hasKnownDimensions && Math.max(item.width ?? 0, item.height ?? 0) >= minimumLongEdge
+                )
                 return (
                   <button
                     key={item.id}
                     onClick={() => onSelect(item.url)}
-                    className="overflow-hidden rounded-lg border text-left transition-colors hover:border-primary"
+                    disabled={!meetsMinimum}
+                    className="overflow-hidden rounded-lg border text-left transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-55"
                   >
                     <div className="relative h-36 bg-muted">
                       {item.type === 'image' ? (
@@ -121,6 +128,14 @@ export function MediaPickerModal({
                         <span>{item.type === 'image' ? 'Görsel' : item.type === 'document' ? 'PDF' : 'Video'}</span>
                       </div>
                       <p className="line-clamp-2 text-sm font-medium">{item.name}</p>
+                      {item.type === 'image' && hasKnownDimensions ? (
+                        <p className={`text-xs ${meetsMinimum ? 'text-muted-foreground' : 'font-medium text-error'}`}>
+                          {item.width}×{item.height} px
+                          {!meetsMinimum ? ` · En az ${minimumLongEdge} px gerekli` : ''}
+                        </p>
+                      ) : minimumLongEdge && item.type === 'image' ? (
+                        <p className="text-xs font-medium text-error">Ölçüsü bilinmeyen eski dosya seçilemez</p>
+                      ) : null}
                     </div>
                   </button>
                 )

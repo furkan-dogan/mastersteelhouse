@@ -508,7 +508,7 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
       patchProduct({ image: url })
     } else if (mediaTarget.type === 'gallery') {
       const merged = [...(selectedProduct.gallery ?? []), url]
-      const nextGallery = mode === 'profile' ? Array.from(new Set(merged)) : Array.from(new Set(merged)).slice(0, 5)
+      const nextGallery = mode === 'profile' ? Array.from(new Set(merged)) : Array.from(new Set(merged)).slice(-5)
 
       patchProduct({ gallery: nextGallery })
     } else {
@@ -693,6 +693,8 @@ export function CmsEditor({ endpoint = '/api/products', mediaEndpoint = '/api/me
 
       <MediaPickerModal
         endpoint={mediaEndpoint}
+        acceptTypes={mediaTarget.type === 'profileSlider' ? ['image', 'video'] : ['image']}
+        minimumLongEdge={mediaTarget.type === 'floorPlan' ? undefined : 1600}
         open={showMediaPicker}
         title={
           mediaTarget.type === 'cover'

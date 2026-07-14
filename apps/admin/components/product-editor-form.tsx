@@ -115,7 +115,7 @@ export function ProductEditorForm({
           {showCoverField ? (
           <div>
             <div className="mb-1 flex items-center justify-between">
-              <label className="block text-xs font-medium text-muted-foreground">Kapak Görseli</label>
+              <label className="block text-xs font-medium text-muted-foreground">Ürün Kartı / Kapak Görseli</label>
               {selectedProduct.image && (
                 <button onClick={() => onPatchProduct({ image: '' })} className="cms-btn-ghost h-7 px-2 py-1 text-xs text-error">
                   Kaldır
@@ -123,6 +123,8 @@ export function ProductEditorForm({
               )}
             </div>
             <MediaUploadDropzone
+              minimumLongEdge={1600}
+              helperText="Yüksek kaliteli JPG, PNG veya WebP (uzun kenar en az 1600 px, ideal 2400–3200 px)"
               onUploaded={(urls) => {
                 const nextUrl = urls[0]
                 if (!nextUrl) return
@@ -189,11 +191,12 @@ export function ProductEditorForm({
             </div>
             <MediaUploadDropzone
               multiple
-              helperText="PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)"
+              minimumLongEdge={1600}
+              helperText="JPG, PNG, WEBP, HEIC (uzun kenar en az 1600 px, ideal 2400–3200 px)"
               galleryButtonLabel="Medyadan ekle"
               onUploaded={(urls) => {
                 const merged = [...(selectedProduct.gallery ?? []), ...urls]
-                const nextGallery = Array.from(new Set(merged)).slice(0, 5)
+                const nextGallery = Array.from(new Set(merged)).slice(-5)
                 onPatchProduct({ gallery: nextGallery })
               }}
               onPickFromMedia={onOpenGalleryPicker}

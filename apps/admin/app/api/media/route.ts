@@ -11,7 +11,7 @@ import {
 } from '@/lib/media-store'
 import { convertHeicToJpeg, isHeicLikeFile } from '@/lib/heic-conversion'
 import { collectUsedMediaUrls } from '@/lib/media-usage'
-import { generateThumbnailForImage, optimizeImageForWeb } from '@/lib/image-optimization'
+import { generateThumbnailForImage, meetsMinimumLongEdge, optimizeImageForWeb } from '@/lib/image-optimization'
 import { assertR2ConfiguredForProduction, deleteFromR2PublicUrl, uploadToR2 } from '@/lib/r2-storage'
 
 export const runtime = 'nodejs'
@@ -66,6 +66,7 @@ export async function POST(request: Request) {
     const formData = await request.formData()
     const entries = formData.getAll('files')
     const files = entries.filter((entry): entry is File => entry instanceof File)
+    const minimumLongEdge = Math.max(0, Number.parseInt(String(formData.get('minimumLongEdge') ?? '0'), 10) || 0)
 
     if (files.length === 0) {
       return NextResponse.json({ message: 'Yüklenecek dosya bulunamadı.' }, { status: 400 })
@@ -96,6 +97,8 @@ export async function POST(request: Request) {
       let extension = getExtension(file.name, file.type)
       const sourceBytes: Uint8Array = new Uint8Array(await file.arrayBuffer())
       let outputBytes: Uint8Array = sourceBytes
+      let imageWidth: number | undefined
+      let imageHeight: number | undefined
 
       if (mediaType === 'image' && isHeicLikeFile(file.name, file.type)) {
         try {
@@ -121,6 +124,16 @@ export async function POST(request: Request) {
           outputBytes = optimized.buffer
           mimeType = optimized.mimeType
           extension = optimized.extension
+          imageWidth = optimized.width
+          imageHeight = optimized.height
+          if (!meetsMinimumLongEdge(optimized.width, optimized.height, minimumLongEdge)) {
+            return NextResponse.json(
+              {
+                message: `${file.name} çözünürlüğü ${optimized.width}×${optimized.height} px. Ürün fotoğrafları için uzun kenar en az ${minimumLongEdge} px olmalıdır.`,
+              },
+              { status: 400 }
+            )
+          }
         } catch (error) {
           console.error('Failed to optimize image', error)
           return NextResponse.json(
@@ -166,6 +179,8 @@ export async function POST(request: Request) {
         size: outputBytes.byteLength,
         url: uploaded.url,
         thumbnailUrl,
+        width: imageWidth,
+        height: imageHeight,
         createdAt: new Date().toISOString(),
       }
       newItems.push(item)

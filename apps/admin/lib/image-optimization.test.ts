@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import sharp from 'sharp'
-import { generateThumbnailForImage, optimizeImageForWeb } from './image-optimization.ts'
+import { generateThumbnailForImage, meetsMinimumLongEdge, optimizeImageForWeb } from './image-optimization.ts'
 
 async function createImage(
   width: number,
@@ -32,6 +32,8 @@ test('keeps a compliant WebP master byte-for-byte to avoid a second lossy encode
 
   assert.equal(result.mimeType, 'image/webp')
   assert.equal(result.extension, '.webp')
+  assert.equal(result.width, 2400)
+  assert.equal(result.height, 1600)
   assert.deepEqual(Buffer.from(result.buffer), source)
 })
 
@@ -47,6 +49,8 @@ test('limits an oversized photo master to a 3200 px long edge without changing i
   assert.equal(result.mimeType, 'image/webp')
   assert.equal(metadata.width, 3200)
   assert.equal(metadata.height, 2000)
+  assert.equal(result.width, 3200)
+  assert.equal(result.height, 2000)
 })
 
 test('does not enlarge an existing 1024 px product image', async () => {
@@ -85,4 +89,10 @@ test('creates a bounded square media-library thumbnail', async () => {
   assert.equal(metadata.width, 560)
   assert.equal(metadata.height, 560)
   assert.equal(metadata.format, 'webp')
+})
+
+test('rejects undersized product photos using their long edge', () => {
+  assert.equal(meetsMinimumLongEdge(1200, 800, 1600), false)
+  assert.equal(meetsMinimumLongEdge(1600, 900, 1600), true)
+  assert.equal(meetsMinimumLongEdge(1200, 2400, 1600), true)
 })

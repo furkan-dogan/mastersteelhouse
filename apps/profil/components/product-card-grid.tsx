@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
 
@@ -23,7 +24,13 @@ export function ProductCardGrid({ products }: ProductCardGridProps) {
             <article className="group h-full overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:border-[#eab308]/50 hover:shadow-lg hover:shadow-[#eab308]/10">
               <Link href={`/urunler/${product.slug}`} aria-label={`${product.name} ürün detayına git`}>
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img src={product.cardImage || product.image} alt={product.name} className="h-full w-full bg-slate-50 p-2 object-contain transition duration-300" />
+                  <Image
+                    src={product.cardImage || product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 767px) calc(100vw - 3rem), (max-width: 1023px) 50vw, 33vw"
+                    className="bg-slate-50 p-2 object-contain transition duration-300"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-white/85 via-transparent to-transparent" />
                   <span className="absolute left-4 top-4 rounded-lg bg-[#eab308] px-3 py-1 text-xs font-semibold text-black">{product.shortName}</span>
                 </div>

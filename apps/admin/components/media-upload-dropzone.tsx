@@ -36,6 +36,7 @@ type Props = {
   helperText?: string
   galleryButtonLabel?: string
   accept?: string
+  minimumLongEdge?: number
   onUploaded: (urls: string[]) => void
   onPickFromMedia: () => void
   onError?: (message: string) => void
@@ -47,6 +48,7 @@ export function MediaUploadDropzone({
   helperText = 'PNG, JPG, GIF, WEBP, HEIC (maks. 20MB)',
   galleryButtonLabel = 'Galeriden seç',
   accept = 'image/*,.heic,.heif',
+  minimumLongEdge,
   onUploaded,
   onPickFromMedia,
   onError,
@@ -73,6 +75,7 @@ export function MediaUploadDropzone({
     setCompressing(false)
 
     const formData = new FormData()
+    if (minimumLongEdge) formData.set('minimumLongEdge', String(minimumLongEdge))
     for (const file of compressed) {
       formData.append('files', file)
     }
