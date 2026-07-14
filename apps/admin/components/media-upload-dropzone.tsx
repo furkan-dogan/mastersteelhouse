@@ -27,6 +27,12 @@ async function compressIfNeeded(file: File): Promise<File> {
 type UploadResponse = {
   items?: Array<{ url: string }>
   message?: string
+  code?: string
+}
+
+type PendingLowResolutionUpload = {
+  files: File[]
+  message: string
 }
 
 type Props = {
@@ -60,7 +66,33 @@ export function MediaUploadDropzone({
   const [dragActive, setDragActive] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [compressing, setCompressing] = useState(false)
+  const [pendingLowResolution, setPendingLowResolution] = useState<PendingLowResolutionUpload | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  async function postFiles(files: File[], allowLowResolution = false) {
+    const formData = new FormData()
+    if (minimumLongEdge) formData.set('minimumLongEdge', String(minimumLongEdge))
+    if (allowLowResolution) formData.set('allowLowResolution', 'true')
+    for (const file of files) formData.append('files', file)
+
+    const response = await fetch(resolvedEndpoint, { method: 'POST', body: formData })
+    const text = await response.text()
+    let data: UploadResponse = {}
+    try { data = JSON.parse(text) as UploadResponse } catch { /* non-JSON response */ }
+
+    if (!response.ok) {
+      if (response.status === 409 && data.code === 'LOW_RESOLUTION') {
+        return { urls: [] as string[], lowResolutionMessage: data.message ?? 'Görsel çözünürlüğü önerilen değerin altında.' }
+      }
+      const message = data.message ?? (response.status === 413 ? 'Dosya çok büyük, lütfen daha küçük bir görsel deneyin.' : 'Dosya yüklenemedi.')
+      throw new Error(message)
+    }
+
+    return {
+      urls: (data.items ?? []).map((item) => item.url).filter(Boolean),
+      lowResolutionMessage: null,
+    }
+  }
 
   async function uploadFiles(files: FileList | File[]) {
     const list = Array.from(files)
@@ -74,29 +106,41 @@ export function MediaUploadDropzone({
     const compressed = await Promise.all(list.map(compressIfNeeded))
     setCompressing(false)
 
-    const formData = new FormData()
-    if (minimumLongEdge) formData.set('minimumLongEdge', String(minimumLongEdge))
-    for (const file of compressed) {
-      formData.append('files', file)
-    }
-
     try {
       setUploading(true)
-      const response = await fetch(resolvedEndpoint, {
-        method: 'POST',
-        body: formData,
-      })
-      const text = await response.text()
-      let data: UploadResponse = {}
-      try { data = JSON.parse(text) as UploadResponse } catch { /* non-JSON response */ }
-      if (!response.ok) {
-        const msg = data.message ?? (response.status === 413 ? 'Dosya çok büyük, lütfen daha küçük bir görsel deneyin.' : 'Dosya yüklenemedi.')
-        throw new Error(msg)
+      setPendingLowResolution(null)
+      const urls: string[] = []
+
+      for (let index = 0; index < compressed.length; index += 1) {
+        const result = await postFiles([compressed[index]])
+        if (result.lowResolutionMessage) {
+          setPendingLowResolution({
+            files: compressed.slice(index),
+            message: result.lowResolutionMessage,
+          })
+          break
+        }
+        urls.push(...result.urls)
       }
-      const urls = (data.items ?? []).map((item) => item.url).filter(Boolean)
+
       if (urls.length > 0) {
         onUploaded(urls)
       }
+    } catch (error) {
+      onError?.(error instanceof Error ? error.message : 'Dosya yüklenemedi.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  async function approveLowResolutionUpload() {
+    if (!pendingLowResolution) return
+
+    try {
+      setUploading(true)
+      const result = await postFiles(pendingLowResolution.files, true)
+      if (result.urls.length > 0) onUploaded(result.urls)
+      setPendingLowResolution(null)
     } catch (error) {
       onError?.(error instanceof Error ? error.message : 'Dosya yüklenemedi.')
     } finally {
@@ -141,6 +185,22 @@ export function MediaUploadDropzone({
         </p>
         {multiple && !compact && <p className="text-xs text-muted-foreground">{helperText}</p>}
       </div>
+
+      {pendingLowResolution && (
+        <div className="rounded-lg border border-warning/40 bg-warning/10 p-3 text-left">
+          <p className="text-sm font-medium text-foreground">Düşük çözünürlük uyarısı</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{pendingLowResolution.message}</p>
+          <p className="mt-1 text-xs text-muted-foreground">Kaynak görsel büyütülmeden, mevcut kalitesi korunarak yüklenebilir.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" onClick={() => void approveLowResolutionUpload()} disabled={uploading} className="cms-btn-primary h-8 px-3 py-1 text-xs disabled:opacity-60">
+              Yine de yükle
+            </button>
+            <button type="button" onClick={() => setPendingLowResolution(null)} disabled={uploading} className="cms-btn-secondary h-8 px-3 py-1 text-xs disabled:opacity-60">
+              Farklı görsel seç
+            </button>
+          </div>
+        </div>
+      )}
 
       <input
         ref={fileInputRef}

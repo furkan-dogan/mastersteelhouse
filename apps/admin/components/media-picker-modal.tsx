@@ -31,6 +31,7 @@ export function MediaPickerModal({
   const [items, setItems] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(false)
   const [query, setQuery] = useState('')
+  const [pendingSelection, setPendingSelection] = useState<MediaItem | null>(null)
 
   useEffect(() => {
     if (!open) return
@@ -63,12 +64,17 @@ export function MediaPickerModal({
 
   if (!open) return null
 
+  function closeModal() {
+    setPendingSelection(null)
+    onClose()
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={closeModal}>
       <div className="cms-card w-full max-w-5xl overflow-hidden" onClick={(event) => event.stopPropagation()}>
         <div className="flex items-center justify-between border-b px-4 py-3">
           <h3 className="text-sm font-semibold">{title}</h3>
-          <button onClick={onClose} className="cms-btn-ghost h-8 px-2 py-1 text-xs">
+          <button onClick={closeModal} className="cms-btn-ghost h-8 px-2 py-1 text-xs">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -83,6 +89,32 @@ export function MediaPickerModal({
         </div>
 
         <div className="cms-scroll max-h-[65vh] overflow-y-auto p-4">
+          {pendingSelection && (
+            <div className="mb-4 rounded-lg border border-warning/40 bg-warning/10 p-3">
+              <p className="text-sm font-medium text-foreground">Görsel kalite uyarısı</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                {pendingSelection.width && pendingSelection.height
+                  ? `${pendingSelection.name} ${pendingSelection.width}×${pendingSelection.height} px. Büyük ekranlarda daha az net görünebilir.`
+                  : `${pendingSelection.name} eski bir dosya olduğu için piksel ölçüsü doğrulanamıyor.`}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">Dosya kendi doğal çözünürlüğüyle kullanılacak, yapay olarak büyütülmeyecek.</p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSelect(pendingSelection.url)
+                    setPendingSelection(null)
+                  }}
+                  className="cms-btn-primary h-8 px-3 py-1 text-xs"
+                >
+                  Yine de kullan
+                </button>
+                <button type="button" onClick={() => setPendingSelection(null)} className="cms-btn-secondary h-8 px-3 py-1 text-xs">
+                  Başka görsel seç
+                </button>
+              </div>
+            </div>
+          )}
           {loading ? (
             <p className="text-sm text-muted-foreground">Medya listesi yükleniyor...</p>
           ) : filtered.length === 0 ? (
@@ -98,9 +130,11 @@ export function MediaPickerModal({
                 return (
                   <button
                     key={item.id}
-                    onClick={() => onSelect(item.url)}
-                    disabled={!meetsMinimum}
-                    className="overflow-hidden rounded-lg border text-left transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-55"
+                    onClick={() => {
+                      if (meetsMinimum) onSelect(item.url)
+                      else setPendingSelection(item)
+                    }}
+                    className={`overflow-hidden rounded-lg border text-left transition-colors hover:border-primary ${!meetsMinimum ? 'border-warning/40' : ''}`}
                   >
                     <div className="relative h-36 bg-muted">
                       {item.type === 'image' ? (
@@ -131,10 +165,10 @@ export function MediaPickerModal({
                       {item.type === 'image' && hasKnownDimensions ? (
                         <p className={`text-xs ${meetsMinimum ? 'text-muted-foreground' : 'font-medium text-error'}`}>
                           {item.width}×{item.height} px
-                          {!meetsMinimum ? ` · En az ${minimumLongEdge} px gerekli` : ''}
+                          {!meetsMinimum ? ` · Önerilen en az ${minimumLongEdge} px` : ''}
                         </p>
                       ) : minimumLongEdge && item.type === 'image' ? (
-                        <p className="text-xs font-medium text-error">Ölçüsü bilinmeyen eski dosya seçilemez</p>
+                        <p className="text-xs font-medium text-warning">Ölçüsü bilinmeyen eski dosya · Onay gerekli</p>
                       ) : null}
                     </div>
                   </button>

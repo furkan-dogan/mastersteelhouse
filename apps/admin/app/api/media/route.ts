@@ -67,6 +67,7 @@ export async function POST(request: Request) {
     const entries = formData.getAll('files')
     const files = entries.filter((entry): entry is File => entry instanceof File)
     const minimumLongEdge = Math.max(0, Number.parseInt(String(formData.get('minimumLongEdge') ?? '0'), 10) || 0)
+    const allowLowResolution = formData.get('allowLowResolution') === 'true'
 
     if (files.length === 0) {
       return NextResponse.json({ message: 'Yüklenecek dosya bulunamadı.' }, { status: 400 })
@@ -126,12 +127,16 @@ export async function POST(request: Request) {
           extension = optimized.extension
           imageWidth = optimized.width
           imageHeight = optimized.height
-          if (!meetsMinimumLongEdge(optimized.width, optimized.height, minimumLongEdge)) {
+          if (!allowLowResolution && !meetsMinimumLongEdge(optimized.width, optimized.height, minimumLongEdge)) {
             return NextResponse.json(
               {
-                message: `${file.name} çözünürlüğü ${optimized.width}×${optimized.height} px. Ürün fotoğrafları için uzun kenar en az ${minimumLongEdge} px olmalıdır.`,
+                code: 'LOW_RESOLUTION',
+                message: `${file.name} çözünürlüğü ${optimized.width}×${optimized.height} px. Büyük ekranlarda daha az net görünebilir.`,
+                width: optimized.width,
+                height: optimized.height,
+                recommendedLongEdge: minimumLongEdge,
               },
-              { status: 400 }
+              { status: 409 }
             )
           }
         } catch (error) {
