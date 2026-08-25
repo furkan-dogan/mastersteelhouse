@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
 import { getAllProductPaths, getCategoryBySlug, getProduct } from '@/lib/product-catalog'
+import { SeoJsonLd } from '@/components/seo-json-ld'
 import { buildPageMetadata, trimForMeta } from '@/lib/seo'
+import { buildBreadcrumbList, buildProductSchema } from '@/lib/structured-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,5 +51,25 @@ export default async function ProductDetailPage({
     notFound()
   }
 
-  return <ProductDetailTemplate category={categoryData} product={product} />
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: categoryData.title, path: `/urunler/${categoryData.slug}` },
+    { name: product.name, path: `/urunler/${categoryData.slug}/${product.slug}` },
+  ])
+
+  const productSchema = buildProductSchema({
+    name: product.name,
+    description: product.description,
+    image: product.image,
+    url: `/urunler/${categoryData.slug}/${product.slug}`,
+    category: categoryData.title,
+  })
+
+  return (
+    <>
+      <SeoJsonLd data={breadcrumbSchema} />
+      <SeoJsonLd data={productSchema} />
+      <ProductDetailTemplate category={categoryData} product={product} />
+    </>
+  )
 }

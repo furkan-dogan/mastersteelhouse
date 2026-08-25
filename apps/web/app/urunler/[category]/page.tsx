@@ -4,7 +4,9 @@ import { getCategoryBySlug, getProductsByCategory } from '@/lib/product-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
 import { SectionIntro } from '@/components/section-intro'
 import { CategoryProductsGrid } from '@/components/category-products-grid'
+import { SeoJsonLd } from '@/components/seo-json-ld'
 import { buildPageMetadata, trimForMeta } from '@/lib/seo'
+import { buildBreadcrumbList } from '@/lib/structured-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -44,8 +46,14 @@ export default async function CategoryPage({
     notFound()
   }
 
+  const breadcrumbSchema = buildBreadcrumbList([
+    { name: 'Anasayfa', path: '/' },
+    { name: categoryData.title, path: `/urunler/${categoryData.slug}` },
+  ])
+
   return (
     <SitePageShell>
+      <SeoJsonLd data={breadcrumbSchema} />
       <main className="min-h-screen bg-background">
         <section className="page-top-offset pb-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
           <div className="container mx-auto px-4">

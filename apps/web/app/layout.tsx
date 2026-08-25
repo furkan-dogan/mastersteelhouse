@@ -4,6 +4,8 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { ContactTrackingListener } from '@/components/tracking/contact-tracking-listener'
+import { SeoJsonLd } from '@/components/seo-json-ld'
+import { buildOrganizationSchema, buildWebsiteSchema } from '@/lib/structured-data'
 import './globals.css'
 
 const inter = Inter({
@@ -89,9 +91,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const organizationSchema = buildOrganizationSchema()
+  const websiteSchema = buildWebsiteSchema()
+
   return (
     <html lang="tr" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`} suppressHydrationWarning>
+        <SeoJsonLd data={organizationSchema} />
+        <SeoJsonLd data={websiteSchema} />
+
         {GTM_ID ? (
           <noscript>
             <iframe
