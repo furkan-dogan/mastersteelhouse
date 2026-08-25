@@ -32,10 +32,10 @@ export function ContactSection() {
             <MessageCircle className="w-4 h-4" />
             <span>İletişim</span>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
             Projeniz İçin{' '}
             <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">Hemen Başlayalım</span>
-          </h2>
+          </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-balance">
             Ücretsiz keşif ve teklif almak için formu doldurun, uzman ekibimiz 24 saat içinde size dönüş yapsın.
           </p>
