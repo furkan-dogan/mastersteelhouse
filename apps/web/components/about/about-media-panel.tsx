@@ -38,7 +38,13 @@ export function AboutMediaPanel({
           <div className="grid grid-cols-2 gap-4">
             {stats.slice(0, 2).map((stat, index) => (
               <div key={stat.label} className="text-center transition-all duration-700">
-                <div className="text-3xl md:text-4xl font-bold text-accent mb-1 font-mono">{countedStats.includes(index) ? stat.value : '0'}</div>
+                <div
+                  className={`text-3xl md:text-4xl font-bold text-accent mb-1 font-mono transition-all duration-500 ${
+                    countedStats.includes(index) ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                  }`}
+                >
+                  {stat.value}
+                </div>
                 <div className="text-xs text-muted-foreground">{stat.label}</div>
               </div>
             ))}
