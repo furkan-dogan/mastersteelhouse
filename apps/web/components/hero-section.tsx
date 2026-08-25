@@ -89,6 +89,7 @@ export function HeroSection() {
       <div className="relative h-full">
         {slides.map((slide, index) => {
           const isActive = index === currentSlide
+          const HeadingTag = isActive ? 'h1' : 'div'
 
           return (
             <div
@@ -137,7 +138,7 @@ export function HeroSection() {
               <div className="relative z-20 flex min-h-full items-center">
                 <div className="hero-content container mx-auto px-4 md:pl-28 lg:pl-32">
                   <div className="max-w-4xl">
-                    <h1 className="hero-title font-bold">
+                    <HeadingTag className="hero-title font-bold" aria-hidden={!isActive}>
                       {slide.title.map((line, i) => (
                         <div
                           key={i}
@@ -156,7 +157,7 @@ export function HeroSection() {
                           </span>
                         </div>
                       ))}
-                    </h1>
+                    </HeadingTag>
 
                     <p
                       className={`hero-description max-w-2xl leading-relaxed text-white/90 transition-all duration-700 ${
