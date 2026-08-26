@@ -1,7 +1,42 @@
 /** @type {import('next').NextConfig} */
 const isDev = process.env.NODE_ENV === 'development'
 
+// YouTube embeds (/medya/videolar) request fullscreen via the iframe's own
+// `allowFullScreen` attribute; the HTTP Permissions-Policy must explicitly
+// allow that origin or the browser blocks fullscreen even though the iframe
+// itself permits it.
+const PERMISSIONS_POLICY = [
+  'camera=()',
+  'microphone=()',
+  'geolocation=()',
+  'payment=()',
+  'usb=()',
+  'magnetometer=()',
+  'gyroscope=()',
+  'accelerometer=()',
+  'clipboard-read=()',
+  'clipboard-write=()',
+  'fullscreen=(self "https://www.youtube.com")',
+  'autoplay=(self)',
+].join(', ')
+
+const BASELINE_SECURITY_HEADERS = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy', value: PERMISSIONS_POLICY },
+]
+
 const nextConfig = {
+  poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: BASELINE_SECURITY_HEADERS,
+      },
+    ]
+  },
   async redirects() {
     return [
       // Legacy top-level pages
