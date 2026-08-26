@@ -18,15 +18,49 @@ const PERMISSIONS_POLICY = [
   'autoplay=(self)',
 ].join(', ')
 
+// GA/gtag bootstrap script hash (apps/profil/app/layout.tsx). Verified against
+// the exact byte content Next.js's <Script strategy="afterInteractive"> sets on
+// the script node it creates client-side (extracted from the built RSC
+// payload). Next's own inline hydration-data scripts (`self.__next_f.push(...)`)
+// are per-request/per-build and cannot be hashed the same way; script-src keeps
+// 'unsafe-inline' as an observation-only fallback for that gap.
+const GA_HASH = "'sha256-VskQHfw580Gz5zy1YllyPqsnnqZOtQep5ORIxSi00+8='"
+
+const CSP_REPORT_ONLY = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  `script-src 'self' 'unsafe-inline' ${GA_HASH}`,
+  `script-src-elem 'self' 'unsafe-inline' ${GA_HASH}`,
+  "style-src 'self' 'unsafe-inline'",
+  "style-src-elem 'self' 'unsafe-inline'",
+  `img-src 'self' https://${configuredHost}`,
+  "font-src 'self'",
+  "connect-src 'self' https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com",
+  "media-src 'self'",
+  "frame-src 'self'",
+  "worker-src 'self'",
+  "manifest-src 'self'",
+  'upgrade-insecure-requests',
+].join('; ')
+
 const BASELINE_SECURITY_HEADERS = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: PERMISSIONS_POLICY },
+  { key: 'Content-Security-Policy-Report-Only', value: CSP_REPORT_ONLY },
 ]
 
 const nextConfig = {
   poweredByHeader: false,
+  experimental: {
+    sri: {
+      algorithm: 'sha256',
+    },
+  },
   async headers() {
     return [
       {

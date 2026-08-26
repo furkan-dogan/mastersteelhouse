@@ -20,15 +20,51 @@ const PERMISSIONS_POLICY = [
   'autoplay=(self)',
 ].join(', ')
 
+// Custom inline bootstrap script hash (GTM init, apps/web/app/layout.tsx). Verified
+// against the exact byte content Next.js's <Script strategy="afterInteractive">
+// sets on the script node it creates client-side (extracted from the built RSC
+// payload, not the raw JSX source). Next's own inline hydration-data scripts
+// (`self.__next_f.push(...)`) are per-request/per-build and cannot be hashed the
+// same way; script-src therefore keeps 'unsafe-inline' as an observation-only
+// fallback so Report-Only reporting reflects that real, framework-caused gap
+// instead of silently matching nothing (see CSP Report-Only result doc).
+const GTM_HASH = "'sha256-6FD+GAybPX9UhpsERWwRJFn3U39RZLLaLtCYz8iU3CM='"
+
+const CSP_REPORT_ONLY = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  `script-src 'self' 'unsafe-inline' ${GTM_HASH}`,
+  `script-src-elem 'self' 'unsafe-inline' ${GTM_HASH}`,
+  "style-src 'self' 'unsafe-inline'",
+  "style-src-elem 'self' 'unsafe-inline'",
+  "img-src 'self' https://pub-d48ad607846349fc992b42968ced0d17.r2.dev",
+  "font-src 'self'",
+  "connect-src 'self' https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com",
+  "media-src 'self' https://cdn.coverr.co",
+  "frame-src 'self' https://www.youtube.com https://www.google.com https://www.googletagmanager.com",
+  "worker-src 'self'",
+  "manifest-src 'self'",
+  'upgrade-insecure-requests',
+].join('; ')
+
 const BASELINE_SECURITY_HEADERS = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: PERMISSIONS_POLICY },
+  { key: 'Content-Security-Policy-Report-Only', value: CSP_REPORT_ONLY },
 ]
 
 const nextConfig = {
   poweredByHeader: false,
+  experimental: {
+    sri: {
+      algorithm: 'sha256',
+    },
+  },
   async headers() {
     return [
       {
