@@ -17,6 +17,10 @@ export function HeroSection() {
   const [direction, setDirection] = useState<'next' | 'prev'>('next')
   const [progress, setProgress] = useState(0)
   const [isPastHero, setIsPastHero] = useState(false)
+  // Only the first slide loads immediately; later slides mount their image
+  // once the carousel actually reaches them, so the browser isn't asked to
+  // fetch all N hero images on initial load.
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set([0]))
 
   const nextSlide = useCallback(() => {
     if (isAnimating) return
@@ -84,6 +88,10 @@ export function HeroSection() {
     }
   }, [])
 
+  useEffect(() => {
+    setLoadedSlides((prev) => (prev.has(currentSlide) ? prev : new Set(prev).add(currentSlide)))
+  }, [currentSlide])
+
   return (
     <section ref={heroRef} className="hero-shell relative overflow-hidden bg-black">
       <div className="relative h-full">
@@ -100,14 +108,16 @@ export function HeroSection() {
             >
               <div className="absolute inset-0 overflow-hidden">
                 <div className={`absolute inset-0 transition-all duration-[8000ms] ease-out ${isActive ? 'scale-110' : 'scale-100'}`}>
-                  <Image
-                    src={slide.image || '/placeholder.svg'}
-                    alt={slide.title.join(' ')}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                    priority={index === 0}
-                  />
+                  {loadedSlides.has(index) ? (
+                    <Image
+                      src={slide.image || '/placeholder.svg'}
+                      alt={slide.title.join(' ')}
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                  ) : null}
                 </div>
 
                 <div
