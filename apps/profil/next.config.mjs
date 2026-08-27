@@ -18,22 +18,24 @@ const PERMISSIONS_POLICY = [
   'autoplay=(self)',
 ].join(', ')
 
-// GA/gtag bootstrap script hash (apps/profil/app/layout.tsx). Verified against
-// the exact byte content Next.js's <Script strategy="afterInteractive"> sets on
-// the script node it creates client-side (extracted from the built RSC
-// payload). Next's own inline hydration-data scripts (`self.__next_f.push(...)`)
-// are per-request/per-build and cannot be hashed the same way; script-src keeps
-// 'unsafe-inline' as an observation-only fallback for that gap.
-const GA_HASH = "'sha256-VskQHfw580Gz5zy1YllyPqsnnqZOtQep5ORIxSi00+8='"
-
-const CSP_REPORT_ONLY = [
+// GA/gtag's inline bootstrap (apps/profil/app/layout.tsx) and Next's own
+// inline RSC/hydration-runtime scripts (`self.__next_f.push(...)`) can't be
+// pinned with a CSP hash: the hydration payload is unique per request/build,
+// and adding a hash-source to script-src makes CSP2+ browsers ignore
+// 'unsafe-inline' entirely, which would then block that framework-generated
+// inline script on every route. Nonces are the standard fix but require
+// per-request dynamic rendering, which this app's static/ISR architecture
+// avoids. 'unsafe-inline' is therefore the deliberate, load-bearing
+// script-src policy here, not a leftover fallback; see CSP Enforcement
+// result doc for the full trade-off.
+const CSP = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  `script-src 'self' 'unsafe-inline' ${GA_HASH} https://www.googletagmanager.com`,
-  `script-src-elem 'self' 'unsafe-inline' ${GA_HASH} https://www.googletagmanager.com`,
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+  "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
   "style-src-elem 'self' 'unsafe-inline'",
   `img-src 'self' https://${configuredHost}`,
@@ -51,7 +53,7 @@ const BASELINE_SECURITY_HEADERS = [
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: PERMISSIONS_POLICY },
-  { key: 'Content-Security-Policy-Report-Only', value: CSP_REPORT_ONLY },
+  { key: 'Content-Security-Policy', value: CSP },
 ]
 
 const nextConfig = {
