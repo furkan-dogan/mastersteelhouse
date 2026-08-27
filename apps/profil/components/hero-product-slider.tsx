@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { ProfileProduct } from '@/lib/profile-content'
@@ -27,7 +28,14 @@ export function HeroProductSlider({ products }: HeroProductSliderProps) {
   return (
     <section className="relative overflow-hidden border-b border-slate-200 bg-[#f3f4f1]">
       <div className="absolute inset-0">
-        <img src={active.image} alt={active.name} className="h-full w-full object-cover opacity-20" />
+        <Image
+          src={active.image}
+          alt={active.name}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-20"
+        />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(245,158,11,0.2),transparent_45%),linear-gradient(120deg,rgba(243,244,241,0.95),rgba(243,244,241,0.82))]" />
       </div>
 
