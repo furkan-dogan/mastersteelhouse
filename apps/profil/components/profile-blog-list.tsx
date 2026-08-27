@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { Calendar, User, ArrowRight, Clock } from 'lucide-react'
 import type { ProfileBlogPost } from '@/lib/profile-content'
@@ -51,7 +52,13 @@ export function ProfileBlogList({ posts }: ProfileBlogListProps) {
               >
                 <Link href={`/medya/blog/${post.slug}`} aria-label={`${post.title} yazısını aç`}>
                   <div className="relative h-56 overflow-hidden">
-                    <img src={post.image} alt={`${post.title} kapak görseli`} className="h-full w-full object-cover" />
+                    <Image
+                      src={post.image}
+                      alt={`${post.title} kapak görseli`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
 
                     <div className="absolute left-4 top-4">

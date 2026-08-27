@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 
@@ -57,7 +58,7 @@ export function InfoPageTemplate({
             </div>
 
             <div className="relative mt-12 h-[300px] overflow-hidden rounded-3xl border border-slate-200 shadow-sm md:h-[430px]">
-              <img src={heroImage} alt={heroImageAlt} className="h-full w-full object-cover" />
+              <Image src={heroImage} alt={heroImageAlt} fill sizes="(max-width: 768px) 100vw, 900px" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/45 via-transparent to-transparent" />
             </div>
           </div>
