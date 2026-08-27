@@ -85,16 +85,26 @@ type BlogStore = { posts: ProfileBlogPost[] }
 type NewsStore = { posts: ProfileNewsPost[] }
 type FaqStore = { items: ProfileFaqItem[] }
 
+// These three legacy filenames used to be remapped to /uploads/media/... R2
+// uploads, but those uploads no longer exist (verified 404 in production).
+// The original filenames are still present and serving correctly as static
+// assets in apps/profil/public/, so they now map to themselves instead.
 const LEGACY_BLOG_IMAGE_MAP: Record<string, string> = {
-  '/profil-alcikose.jpg': '/uploads/media/img-2821-1772097200995-322d0a.jpg',
-  '/profil-kabasiva.jpg': '/uploads/media/img-2823-1772096428209-911296.jpg',
-  '/profil-tavan-uc.jpg': '/uploads/media/img-2818-1772096687379-f7260c.jpg',
+  '/profil-alcikose.jpg': '/profil-alcikose.jpg',
+  '/profil-kabasiva.jpg': '/profil-kabasiva.jpg',
+  '/profil-tavan-uc.jpg': '/profil-tavan-uc.jpg',
 }
 
 const DEV_IMAGE_PROXY_BASE = (process.env.PROFILE_DEV_IMAGE_PROXY_BASE ?? 'https://profil.mastersteelhouse.com').replace(/\/$/, '')
 const R2_PUBLIC_BASE_URL = (process.env.R2_PUBLIC_BASE_URL ?? process.env.NEXT_PUBLIC_R2_PUBLIC_BASE_URL ?? '').replace(/\/$/, '')
 const PROFIL_DEV_ADMIN_API_BASE = (process.env.PROFIL_DEV_ADMIN_API_BASE ?? '').trim().replace(/\/$/, '')
 const IS_DEV = process.env.NODE_ENV === 'development'
+const CMS_REVALIDATE_SECONDS = Number.parseInt(process.env.CMS_REVALIDATE_SECONDS ?? '120', 10)
+// Public CMS reads are cached and revalidated on a fixed interval, with admin
+// writes triggering an immediate revalidation via /api/revalidate. Set
+// CMS_FORCE_NO_STORE=true as an emergency escape hatch if caching is ever
+// suspected of serving stale content.
+const CMS_FORCE_NO_STORE = (process.env.CMS_FORCE_NO_STORE ?? 'false').trim().toLowerCase() === 'true'
 
 function isR2DevUrl(url: string) {
   return /^https:\/\/[^/]+\.r2\.dev\//i.test(url)
@@ -149,7 +159,11 @@ async function readJson<T>(fileName: string, devApiPath?: string): Promise<T> {
 
   if (R2_PUBLIC_BASE_URL) {
     try {
-      const response = await fetch(`${R2_PUBLIC_BASE_URL}/_cms/${fileName}`, { cache: 'no-store' })
+      const shouldBypassCache = IS_DEV || CMS_FORCE_NO_STORE
+      const response = await fetch(`${R2_PUBLIC_BASE_URL}/_cms/${fileName}`, {
+        cache: shouldBypassCache ? 'no-store' : 'force-cache',
+        next: !shouldBypassCache ? { revalidate: CMS_REVALIDATE_SECONDS } : undefined,
+      })
       if (response.ok) {
         return (await response.json()) as T
       }

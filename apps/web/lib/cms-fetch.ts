@@ -16,7 +16,13 @@ const WEB_DEV_MEDIA_PROXY_BASE = (process.env.WEB_DEV_MEDIA_PROXY_BASE ?? WEB_DE
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 const CMS_REVALIDATE_SECONDS = Number.parseInt(process.env.CMS_REVALIDATE_SECONDS ?? '120', 10)
-const CMS_FORCE_NO_STORE = (process.env.CMS_FORCE_NO_STORE ?? 'true').trim().toLowerCase() !== 'false'
+// Public CMS reads are cached and revalidated on a fixed interval, with admin
+// writes triggering an immediate revalidation (see /api/revalidate and
+// apps/admin/lib/web-revalidate.ts) so freshness is not solely time-based.
+// Set CMS_FORCE_NO_STORE=true as an emergency escape hatch if caching is ever
+// suspected of serving stale content and the write-triggered revalidation
+// path needs to be bypassed.
+const CMS_FORCE_NO_STORE = (process.env.CMS_FORCE_NO_STORE ?? 'false').trim().toLowerCase() === 'true'
 
 function resolveLocalContentPath(fileName: string) {
   const candidates = [
