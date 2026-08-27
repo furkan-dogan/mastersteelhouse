@@ -12,6 +12,9 @@ type ProfileBlogListProps = {
 
 export function ProfileBlogList({ posts }: ProfileBlogListProps) {
   const [selectedCategory, setSelectedCategory] = useState('Tümü')
+  // Some CMS records reference an uploaded image that no longer exists in
+  // storage; fall back to the site logo rather than showing a broken image.
+  const [brokenImageSlugs, setBrokenImageSlugs] = useState<Set<string>>(new Set())
 
   const categories = useMemo(() => ['Tümü', ...Array.from(new Set(posts.map((post) => post.category)))], [posts])
 
@@ -53,11 +56,12 @@ export function ProfileBlogList({ posts }: ProfileBlogListProps) {
                 <Link href={`/medya/blog/${post.slug}`} aria-label={`${post.title} yazısını aç`}>
                   <div className="relative h-56 overflow-hidden">
                     <Image
-                      src={post.image}
+                      src={brokenImageSlugs.has(post.slug) ? '/logoprofil.png' : post.image}
                       alt={`${post.title} kapak görseli`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover"
+                      className={brokenImageSlugs.has(post.slug) ? 'object-contain p-8' : 'object-cover'}
+                      onError={() => setBrokenImageSlugs((prev) => new Set(prev).add(post.slug))}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent" />
 
