@@ -6,8 +6,6 @@ import { SeoJsonLd } from '@/components/seo-json-ld'
 import { buildPageMetadata, trimForMeta } from '@/lib/seo'
 import { buildBreadcrumbList, buildProductSchema } from '@/lib/structured-data'
 
-export const dynamic = 'force-dynamic'
-
 export async function generateStaticParams() {
   return await getAllProductPaths()
 }

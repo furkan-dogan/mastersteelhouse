@@ -8,8 +8,6 @@ import { SeoJsonLd } from '@/components/seo-json-ld'
 import { buildPageMetadata, trimForMeta } from '@/lib/seo'
 import { buildBreadcrumbList } from '@/lib/structured-data'
 
-export const dynamic = 'force-dynamic'
-
 export async function generateMetadata({
   params,
 }: {

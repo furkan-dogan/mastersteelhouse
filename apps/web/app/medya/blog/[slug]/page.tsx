@@ -5,8 +5,6 @@ import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/blog-catalog'
 import { ArticleDetailPage } from '@/components/article-detail/article-detail-page'
 import { buildArticleMetadata, trimForMeta } from '@/lib/seo'
 
-export const dynamic = 'force-dynamic'
-
 type Props = {
   params: Promise<{ slug: string }>
 }

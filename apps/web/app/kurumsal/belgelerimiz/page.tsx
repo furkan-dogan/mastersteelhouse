@@ -12,8 +12,6 @@ export const metadata = buildPageMetadata({
   path: '/kurumsal/belgelerimiz',
 })
 
-export const dynamic = 'force-dynamic'
-
 function isPdfUrl(url: string) {
   const value = url.split('?')[0].toLowerCase()
   return value.endsWith('.pdf')
