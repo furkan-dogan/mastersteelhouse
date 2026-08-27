@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { X } from 'lucide-react'
 import type { ProductFlowItem } from '@/lib/site-navigation'
 
@@ -30,9 +31,14 @@ export function ProductsOverlay({ isOpen, items, onClose }: ProductsOverlayProps
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div className="absolute left-0 md:left-12 -translate-x-full md:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-100 scale-50">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-accent/30">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={product.image || '/placeholder.svg'} alt={product.title} className="w-full h-full object-cover" />
+                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-accent/30">
+                  <Image
+                    src={product.image || '/placeholder.svg'}
+                    alt={product.title}
+                    fill
+                    sizes="160px"
+                    className="object-cover"
+                  />
                 </div>
               </div>
 
@@ -41,9 +47,14 @@ export function ProductsOverlay({ isOpen, items, onClose }: ProductsOverlayProps
               </h3>
 
               <div className="absolute right-0 md:right-12 translate-x-full md:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out group-hover:scale-100 scale-50">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-accent/30">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={product.image || '/placeholder.svg'} alt={product.title} className="w-full h-full object-cover" />
+                <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-accent/30">
+                  <Image
+                    src={product.image || '/placeholder.svg'}
+                    alt={product.title}
+                    fill
+                    sizes="160px"
+                    className="object-cover"
+                  />
                 </div>
               </div>
 

@@ -1,4 +1,5 @@
 import { ExternalLink, CheckCircle, FileText, Download } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getDocumentsContent } from '@/lib/documents-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
@@ -49,8 +50,13 @@ export default async function BelgelerPage() {
                           className="h-full w-full"
                         />
                       ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={doc.pdfUrl} alt={`${doc.title} görsel`} className="h-full w-full object-cover" />
+                        <Image
+                          src={doc.pdfUrl}
+                          alt={`${doc.title} görsel`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover"
+                        />
                       )
                     ) : (
                       <div className="flex h-full items-center justify-center">
