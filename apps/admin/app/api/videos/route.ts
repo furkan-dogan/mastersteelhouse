@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { readVideosStore, writeVideosStore, type VideosStore } from '@/lib/videos-store'
 import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
+import { revalidateWebSite } from '@/lib/web-revalidate'
 
 export const runtime = 'nodejs'
 
@@ -19,6 +20,7 @@ export async function PUT(request: Request) {
     assertR2ConfiguredForProduction()
     const body = (await request.json()) as VideosStore
     await writeVideosStore(body)
+    await revalidateWebSite()
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Failed to write videos store', error)

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { readProductStore, writeProductStore, type ProductStore } from '@/lib/products-store'
 import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
+import { revalidateWebSite } from '@/lib/web-revalidate'
 
 export async function GET() {
   try {
@@ -24,6 +25,7 @@ export async function PUT(request: Request) {
     }
 
     await writeProductStore(body)
+    await revalidateWebSite()
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Failed to write products store', error)
@@ -34,6 +36,7 @@ export async function PUT(request: Request) {
       try {
         const latest = await readProductStore()
         if (JSON.stringify(latest) === JSON.stringify(body)) {
+          await revalidateWebSite()
           return NextResponse.json({ ok: true, recovered: true })
         }
       } catch (recoveryError) {

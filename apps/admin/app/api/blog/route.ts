@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { readBlogStore, writeBlogStore, type BlogStore } from '@/lib/blog-store'
 import { assertR2ConfiguredForProduction } from '@/lib/r2-storage'
+import { revalidateWebSite } from '@/lib/web-revalidate'
 
 export async function GET() {
   try {
@@ -20,6 +21,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: 'Gecersiz veri formati.' }, { status: 400 })
     }
     await writeBlogStore(body)
+    await revalidateWebSite()
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Failed to write blog store', error)
