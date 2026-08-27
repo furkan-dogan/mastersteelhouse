@@ -24,9 +24,19 @@ export function AboutMediaPanel({
   return (
     <div className={`lg:sticky lg:top-24 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
       <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-        <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline>
-          <source src="https://cdn.coverr.co/videos/coverr-steel-construction-site-9893/1080p.mp4" type="video/mp4" />
-        </video>
+        {isVisible ? (
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source src="https://cdn.coverr.co/videos/coverr-steel-construction-site-9893/1080p.mp4" type="video/mp4" />
+          </video>
+        ) : null}
 
         <div className="absolute inset-0 transition-opacity duration-700">
           <Image src={feature.image || '/placeholder.svg'} alt={feature.title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
