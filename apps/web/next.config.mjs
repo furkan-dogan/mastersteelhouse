@@ -47,6 +47,7 @@ const CSP = [
   "worker-src 'self'",
   "manifest-src 'self'",
   'upgrade-insecure-requests',
+  'report-uri /api/csp-report',
 ].join('; ')
 
 const BASELINE_SECURITY_HEADERS = [
