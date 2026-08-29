@@ -45,8 +45,11 @@ const CSP = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self' https://www.facebook.com",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net",
-  "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net",
+  // 'unsafe-eval' is added only in dev: Turbopack's RSC/HMR client calls eval()
+  // for debugging (stack reconstruction across module boundaries) and React
+  // itself never uses eval() in production, so this never reaches prod builds.
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net`,
+  `script-src-elem 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net`,
   "style-src 'self' 'unsafe-inline'",
   "style-src-elem 'self' 'unsafe-inline'",
   "img-src 'self' data: https://pub-d48ad607846349fc992b42968ced0d17.r2.dev https://www.google.com https://www.google.com.tr https://googleads.g.doubleclick.net https://www.facebook.com",
