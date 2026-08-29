@@ -162,9 +162,7 @@ export function HeroSection() {
                         >
                           <span
                             className={`block transition-all duration-700 ${
-                              i === 2
-                                ? 'bg-gradient-to-r from-accent via-accent/80 to-accent/60 bg-clip-text text-transparent font-mono'
-                                : 'text-white'
+                              i === 2 ? 'text-accent' : 'text-white'
                             } ${isActive ? 'translate-y-0' : direction === 'next' ? 'translate-y-full' : '-translate-y-full'}`}
                             style={{ transitionDelay: isActive ? `${300 + i * 150}ms` : '0ms' }}
                           >
@@ -196,9 +194,10 @@ export function HeroSection() {
                       {slide.features.map((feature, i) => (
                         <span
                           key={feature}
-                          className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm text-white font-medium hover:bg-white/20 transition-all cursor-default"
+                          className="flex items-center gap-2 text-sm font-medium text-white/85"
                           style={{ transitionDelay: isActive ? `${950 + i * 100}ms` : '0ms' }}
                         >
+                          {i > 0 ? <span className="h-1 w-1 rounded-full bg-white/30" aria-hidden="true" /> : null}
                           {feature}
                         </span>
                       ))}
@@ -213,7 +212,7 @@ export function HeroSection() {
                       <Button
                         asChild
                         size="lg"
-                        className="bg-accent hover:bg-accent/90 text-accent-foreground group h-14 px-8 text-base shadow-2xl shadow-accent/50 hover:shadow-accent/70 transition-all hover:scale-105"
+                        className="bg-accent hover:bg-accent/90 text-accent-foreground group h-14 px-8 text-base transition-colors duration-300"
                       >
                         <Link href={slide.ctaHref} className="flex items-center justify-center gap-2">
                           {slide.cta}
@@ -224,10 +223,10 @@ export function HeroSection() {
                         asChild
                         size="lg"
                         variant="outline"
-                        className="group h-14 border-2 border-white/55 bg-white/10 px-8 text-base !text-white shadow-lg shadow-black/35 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.03] hover:border-accent hover:!bg-accent hover:!text-primary hover:shadow-xl hover:shadow-accent/45"
+                        className="group h-14 border border-white/40 bg-transparent px-8 text-base !text-white transition-colors duration-300 hover:border-white hover:!bg-white/10"
                       >
                         <Link href="/kurumsal/hakkimizda" className="flex items-center justify-center gap-2">
-                          <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                          <Play className="w-5 h-5" />
                           Daha Fazla Bilgi
                         </Link>
                       </Button>

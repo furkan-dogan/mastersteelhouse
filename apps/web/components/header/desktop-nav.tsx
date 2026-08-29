@@ -4,7 +4,7 @@ import type { NavLinkItem } from '@/lib/site-navigation'
 import type { DropdownKey, NavGroup } from '@/components/header/types'
 
 const desktopDropdownPanelClass =
-  'absolute top-full left-0 mt-1 bg-background/98 backdrop-blur-2xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200'
+  'absolute top-full left-0 mt-2 bg-background border border-border/60 rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150'
 
 const desktopDropdownLinkClass =
   'flex items-center px-4 py-2.5 text-sm text-foreground/80 hover:text-accent rounded-xl hover:bg-accent/10 transition-all duration-200'
@@ -48,12 +48,12 @@ export function DesktopNav({
 }: DesktopNavProps) {
   return (
     <nav className="hidden lg:flex items-center gap-2">
-      <div className="flex items-center gap-1 p-1.5 rounded-full bg-muted/50 border border-border/50 backdrop-blur-xl">
+      <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-muted/40 p-1">
         <div className="relative group/nav" onMouseEnter={() => onMouseEnter('kurumsal')} onMouseLeave={onMouseLeave}>
           <button
-            className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 flex items-center gap-1.5 ${
+            className={`relative px-5 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1.5 ${
               activeDropdown === 'kurumsal'
-                ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/30'
+                ? 'bg-accent text-accent-foreground'
                 : 'text-foreground/70 hover:text-foreground hover:bg-background/80'
             }`}
           >
@@ -70,9 +70,9 @@ export function DesktopNav({
         <div className="relative group/nav" onMouseEnter={() => onMouseEnter('urunler')} onMouseLeave={onMouseLeave}>
           <button
             onClick={onToggleProductsOverlay}
-            className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 flex items-center gap-1.5 ${
+            className={`relative px-5 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1.5 ${
               activeDropdown === 'urunler' || isProductsMenuOpen
-                ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/30'
+                ? 'bg-accent text-accent-foreground'
                 : 'text-foreground/70 hover:text-foreground hover:bg-background/80'
             }`}
           >
@@ -116,7 +116,7 @@ export function DesktopNav({
             target={item.newTab ? '_blank' : undefined}
             rel={item.newTab ? 'noopener noreferrer' : undefined}
             prefetch={item.newTab ? false : undefined}
-            className="relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-background/80"
+            className="relative px-5 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-foreground/70 hover:text-foreground hover:bg-background/80"
           >
             <span>{item.label}</span>
           </Link>
@@ -124,9 +124,9 @@ export function DesktopNav({
 
         <div className="relative group/nav" onMouseEnter={() => onMouseEnter('medya')} onMouseLeave={onMouseLeave}>
           <button
-            className={`relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 flex items-center gap-1.5 ${
+            className={`relative px-5 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1.5 ${
               activeDropdown === 'medya'
-                ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/30'
+                ? 'bg-accent text-accent-foreground'
                 : 'text-foreground/70 hover:text-foreground hover:bg-background/80'
             }`}
           >
