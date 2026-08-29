@@ -30,7 +30,7 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
             >
               <div className={`grid lg:grid-cols-2 gap-8 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
                 <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-                  <div className="relative h-80 rounded-xl overflow-hidden border border-border/60">
+                  <div className="relative h-80 rounded-xl overflow-hidden border border-border shadow-sm">
                     <Image src={item.image || '/placeholder.svg'} alt={item.title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/10 to-transparent" />
                   </div>
@@ -56,7 +56,7 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
       </div>
 
       <div className="mt-20 text-center">
-        <div className="inline-flex flex-col items-center gap-4 rounded-xl border border-border/60 p-8">
+        <div className="inline-flex flex-col items-center gap-4 rounded-xl border border-border p-8">
           <p className="text-lg font-semibold text-foreground">Projeniz için detaylı bilgi almak ister misiniz?</p>
           <Link
             href="/iletisim"

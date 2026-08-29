@@ -18,7 +18,7 @@ type AboutFeatureListProps = {
 export function AboutFeatureList({ isVisible, features, activeFeature, onHoverFeature }: AboutFeatureListProps) {
   return (
     <div className={`transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-      <div className="divide-y divide-border/60 border-t border-border/60">
+      <div className="space-y-3">
         {features.map((feature, index) => {
           const Icon = featureIconMap[feature.icon]
           const isHovered = activeFeature === index
@@ -27,19 +27,17 @@ export function AboutFeatureList({ isVisible, features, activeFeature, onHoverFe
             <div
               key={feature.title}
               onMouseEnter={() => onHoverFeature(index)}
-              className="flex items-start gap-5 py-6"
+              className={`flex items-start gap-5 rounded-lg border bg-card p-5 transition-colors duration-300 ${
+                isHovered ? 'border-accent/60' : 'border-border'
+              }`}
             >
-              <div
-                className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-md border transition-colors duration-300 ${
-                  isHovered ? 'border-accent/50 text-accent' : 'border-border/60 text-muted-foreground'
-                }`}
-              >
+              <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-md border border-accent/25 bg-accent/10 text-accent">
                 <Icon className="h-5 w-5" />
               </div>
 
               <div className="flex-1">
                 <div className="mb-1 flex items-baseline gap-3">
-                  <span className="text-xs font-medium text-muted-foreground/60">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="text-xs font-semibold text-accent/80">{String(index + 1).padStart(2, '0')}</span>
                   <h3 className={`text-xl font-semibold transition-colors duration-300 ${isHovered ? 'text-accent' : 'text-foreground'}`}>
                     {feature.title}
                   </h3>

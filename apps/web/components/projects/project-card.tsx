@@ -12,7 +12,7 @@ type ProjectCardProps = {
 export function ProjectCard({ project, isVisible, isHovered, onHover }: ProjectCardProps) {
   return (
     <div
-      className={`group relative overflow-hidden rounded-xl border border-border/60 transition-all duration-500 ${
+      className={`group relative overflow-hidden rounded-xl border border-border shadow-sm transition-all duration-500 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
       } ${isHovered ? 'shadow-lg' : ''}`}
       onMouseEnter={() => onHover(true)}

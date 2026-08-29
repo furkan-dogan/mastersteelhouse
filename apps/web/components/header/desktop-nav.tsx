@@ -4,7 +4,7 @@ import type { NavLinkItem } from '@/lib/site-navigation'
 import type { DropdownKey, NavGroup } from '@/components/header/types'
 
 const desktopDropdownPanelClass =
-  'absolute top-full left-0 mt-2 bg-background border border-border/60 rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150'
+  'absolute top-full left-0 mt-2 bg-background border border-border rounded-lg shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150'
 
 const desktopDropdownLinkClass =
   'flex items-center px-4 py-2.5 text-sm text-foreground/80 hover:text-accent rounded-xl hover:bg-accent/10 transition-all duration-200'
@@ -48,7 +48,7 @@ export function DesktopNav({
 }: DesktopNavProps) {
   return (
     <nav className="hidden lg:flex items-center gap-2">
-      <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-muted/40 p-1">
+      <div className="flex items-center gap-1 rounded-xl border border-border bg-background/90 p-1 shadow-sm backdrop-blur-sm">
         <div className="relative group/nav" onMouseEnter={() => onMouseEnter('kurumsal')} onMouseLeave={onMouseLeave}>
           <button
             className={`relative px-5 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center gap-1.5 ${
