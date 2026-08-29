@@ -24,7 +24,7 @@ export default function TasarimSureci() {
             <div className="max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-6">
                 Tasarım{' '}
-                <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">
+                <span className="text-accent">
                   Süreci
                 </span>
               </h1>

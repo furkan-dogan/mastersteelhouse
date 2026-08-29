@@ -19,7 +19,7 @@ export default async function Videolar() {
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <h1 className="text-4xl md:text-5xl font-bold text-center mb-16">
-                <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">
+                <span className="text-accent">
                   {content.hero.title}
                 </span>
               </h1>

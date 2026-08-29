@@ -20,7 +20,7 @@ export function ProcessHeroSection({
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">{title}</span>
+            <span className="text-accent">{title}</span>
           </h1>
           <p className="text-lg text-muted-foreground mb-12">{description}</p>
           <div className="relative h-96 rounded-3xl overflow-hidden">

@@ -38,7 +38,7 @@ export function MediaFeatureSection({
           <div className={reverse ? 'order-2 lg:order-2' : 'order-2 lg:order-1'}>
             <h1 className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
               {title}{' '}
-              <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">{accent}</span>
+              <span className="text-accent">{accent}</span>
             </h1>
             <p className="mb-8 text-lg leading-relaxed text-muted-foreground md:text-xl">{description}</p>
 
