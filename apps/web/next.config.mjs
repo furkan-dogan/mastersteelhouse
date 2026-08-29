@@ -29,19 +29,24 @@ const PERMISSIONS_POLICY = [
 // rendering, which this app's static/ISR architecture avoids. 'unsafe-inline'
 // is therefore the deliberate, load-bearing script-src policy here, not a
 // leftover fallback; see CSP Enforcement result doc for the full trade-off.
+//
+// The GTM container itself (configured remotely in Google Tag Manager, not in
+// this repo) runs Google Ads conversion/remarketing tags and a Facebook Pixel
+// in addition to plain GA — found via a production console-error audit that
+// showed live CSP violations for these hosts, not from reading the container.
 const CSP = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
-  "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com",
+  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net",
+  "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline'",
   "style-src-elem 'self' 'unsafe-inline'",
-  "img-src 'self' https://pub-d48ad607846349fc992b42968ced0d17.r2.dev",
+  "img-src 'self' https://pub-d48ad607846349fc992b42968ced0d17.r2.dev https://www.google.com https://googleads.g.doubleclick.net",
   "font-src 'self'",
-  "connect-src 'self' https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com",
+  "connect-src 'self' https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://ad.doubleclick.net https://stats.g.doubleclick.net https://www.google.com",
   "media-src 'self' https://cdn.coverr.co",
   "frame-src 'self' https://www.youtube.com https://www.google.com https://www.googletagmanager.com",
   "worker-src 'self'",

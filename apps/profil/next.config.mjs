@@ -41,7 +41,10 @@ const CSP = [
   `img-src 'self' https://${configuredHost}`,
   "font-src 'self'",
   "connect-src 'self' https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com",
-  "media-src 'self'",
+  // process-timeline.tsx uses a Wikimedia Commons stock video for the
+  // "Üretim" step; found via a production console-error audit showing a
+  // live CSP violation for this exact host.
+  "media-src 'self' https://upload.wikimedia.org",
   "frame-src 'self'",
   "worker-src 'self'",
   "manifest-src 'self'",
