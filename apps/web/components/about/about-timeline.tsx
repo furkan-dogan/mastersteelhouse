@@ -12,7 +12,7 @@ export function AboutTimeline({ isVisible, items }: AboutTimelineProps) {
     <div className="mt-32">
       <div className="text-center mb-20">
         <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-          Fikir'den Teslim'e <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">5 Adım</span>
+          Fikir&apos;den Teslim&apos;e <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">5 Adım</span>
         </h3>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Projelerinizi profesyonel bir süreç yönetimiyle, en yüksek kalite standartlarında hayata geçiriyoruz

@@ -184,7 +184,7 @@ export function QuoteRequestForm({ productName }: Props) {
             className="mt-1 h-4 w-4 rounded border-border"
           />
           <span>
-            <strong className="text-foreground">KVKK ve Gizlilik Metni</strong>'ni okudum, anladım ve kabul ediyorum.
+            <strong className="text-foreground">KVKK ve Gizlilik Metni</strong>&apos;ni okudum, anladım ve kabul ediyorum.
           </span>
         </label>
         {errors.kvkk ? <p className="mt-1 text-xs text-red-600">{errors.kvkk}</p> : null}

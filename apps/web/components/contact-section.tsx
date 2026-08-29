@@ -49,7 +49,7 @@ export function ContactSection() {
               data-contact-label="whatsapp_hizli_iletisim"
             >
               <MessageCircle className="h-4 w-4" />
-              WhatsApp'tan Hızlı İletişim
+              WhatsApp&apos;tan Hızlı İletişim
             </a>
           </div>
         </div>

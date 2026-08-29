@@ -44,7 +44,7 @@ const sections: Section[] = [
   },
 ]
 
-function AccordionItem({ section, index }: { section: Section; index: number }) {
+function AccordionItem({ section }: { section: Section }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -82,7 +82,7 @@ export function ResponsibilitiesAccordion() {
   return (
     <div className="space-y-3">
       {sections.map((section, i) => (
-        <AccordionItem key={i} section={section} index={i} />
+        <AccordionItem key={i} section={section} />
       ))}
     </div>
   )

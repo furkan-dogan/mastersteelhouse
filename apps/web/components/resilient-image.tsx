@@ -9,6 +9,7 @@ type ResilientImageProps = ImageProps & {
 
 export function ResilientImage({
   src,
+  alt,
   fallbackSrc = '/placeholder.svg',
   onError,
   ...props
@@ -19,6 +20,7 @@ export function ResilientImage({
   return (
     <Image
       {...props}
+      alt={alt}
       src={currentSrc}
       onError={(event) => {
         if (currentSrc !== fallbackSrc) setFailedSrc(src)

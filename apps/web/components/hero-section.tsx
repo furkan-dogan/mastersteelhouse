@@ -22,29 +22,38 @@ export function HeroSection() {
   // fetch all N hero images on initial load.
   const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set([0]))
 
+  const markSlideLoaded = (index: number) => {
+    setLoadedSlides((prev) => (prev.has(index) ? prev : new Set(prev).add(index)))
+  }
+
   const nextSlide = useCallback(() => {
     if (isAnimating) return
+    const next = (currentSlide + 1) % slides.length
     setIsAnimating(true)
     setDirection('next')
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
+    setCurrentSlide(next)
+    markSlideLoaded(next)
     setProgress(0)
     setTimeout(() => setIsAnimating(false), 1000)
-  }, [isAnimating])
+  }, [isAnimating, currentSlide])
 
   const prevSlide = useCallback(() => {
     if (isAnimating) return
+    const next = (currentSlide - 1 + slides.length) % slides.length
     setIsAnimating(true)
     setDirection('prev')
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+    setCurrentSlide(next)
+    markSlideLoaded(next)
     setProgress(0)
     setTimeout(() => setIsAnimating(false), 1000)
-  }, [isAnimating])
+  }, [isAnimating, currentSlide])
 
   const goToSlide = (index: number) => {
     if (isAnimating || index === currentSlide) return
     setIsAnimating(true)
     setDirection(index > currentSlide ? 'next' : 'prev')
     setCurrentSlide(index)
+    markSlideLoaded(index)
     setProgress(0)
     setTimeout(() => setIsAnimating(false), 1000)
   }
@@ -87,10 +96,6 @@ export function HeroSection() {
       window.removeEventListener('resize', handleWindowScroll)
     }
   }, [])
-
-  useEffect(() => {
-    setLoadedSlides((prev) => (prev.has(currentSlide) ? prev : new Set(prev).add(currentSlide)))
-  }, [currentSlide])
 
   return (
     <section ref={heroRef} className="hero-shell relative overflow-hidden bg-black">
