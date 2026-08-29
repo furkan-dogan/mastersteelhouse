@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ProfilePageShell } from '@/components/profile-page-shell'
@@ -76,8 +77,8 @@ export default async function ProfileBlogDetailPage({ params }: Props) {
         <Link href="/medya/blog" className="text-sm font-medium text-[#b88700] hover:underline">Bloga Dön</Link>
         <h1 className="mt-4 text-4xl font-bold leading-tight text-slate-900 md:text-5xl">{post.title}</h1>
         <p className="mt-4 text-lg leading-relaxed text-slate-600">{post.excerpt}</p>
-        <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
-          <img src={post.image} alt={`${post.title} görseli`} className="h-full w-full object-cover" />
+        <div className="relative mt-8 h-72 overflow-hidden rounded-2xl border border-slate-200 bg-white md:h-96">
+          <Image src={post.image} alt={`${post.title} görseli`} fill sizes="(max-width: 1024px) 100vw, 900px" className="object-cover" />
         </div>
         <div className="mt-8 space-y-5 text-base leading-8 text-slate-700">
           <p>

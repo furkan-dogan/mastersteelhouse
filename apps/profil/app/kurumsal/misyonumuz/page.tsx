@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Target, Sparkles, Award } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SectionIntro } from '@/components/section-intro'
@@ -46,7 +47,7 @@ export default function MisyonumuzPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-20 grid items-center gap-12 lg:grid-cols-2">
             <div className="relative h-[500px] overflow-hidden rounded-3xl border border-slate-200">
-              <img src="/profil-alcikose.jpg" alt="Misyon odaklı profil uygulaması" className="h-full w-full object-cover" />
+              <Image src="/profil-alcikose.jpg" alt="Misyon odaklı profil uygulaması" fill sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/45 to-transparent" />
             </div>
 

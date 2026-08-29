@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Award, Users, Zap, Target } from 'lucide-react'
 import { ProfilePageShell } from '@/components/profile-page-shell'
 import { SectionIntro } from '@/components/section-intro'
@@ -47,7 +48,7 @@ export default function HakkimizdaPage() {
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="relative h-[500px] overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
-            <img src="/profil-kabasiva.jpg" alt="Profil üretim süreci görseli" className="h-full w-full object-cover" />
+            <Image src="/profil-kabasiva.jpg" alt="Profil üretim süreci görseli" fill sizes="(max-width: 1024px) 100vw, 1200px" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/45 via-transparent to-transparent" />
           </div>
         </div>
@@ -80,18 +81,18 @@ export default function HakkimizdaPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200">
-                    <img src="/profil-alcikose.jpg" alt="Profil sistemleri uygulama görseli" className="h-full w-full object-cover" />
+                    <Image src="/profil-alcikose.jpg" alt="Profil sistemleri uygulama görseli" fill sizes="(max-width: 1024px) 50vw, 400px" className="object-cover" />
                   </div>
                   <div className="relative h-64 overflow-hidden rounded-2xl border border-slate-200">
-                    <img src="/profil-tavan-uc.jpg" alt="Profil sistemleri uygulama görseli" className="h-full w-full object-cover" />
+                    <Image src="/profil-tavan-uc.jpg" alt="Profil sistemleri uygulama görseli" fill sizes="(max-width: 1024px) 50vw, 400px" className="object-cover" />
                   </div>
                 </div>
                 <div className="space-y-4 pt-8">
                   <div className="relative h-64 overflow-hidden rounded-2xl border border-slate-200">
-                    <img src="/profil-kabasiva.jpg" alt="Profil sistemleri uygulama görseli" className="h-full w-full object-cover" />
+                    <Image src="/profil-kabasiva.jpg" alt="Profil sistemleri uygulama görseli" fill sizes="(max-width: 1024px) 50vw, 400px" className="object-cover" />
                   </div>
                   <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200">
-                    <img src="/profil-alcikose.jpg" alt="Profil sistemleri uygulama görseli" className="h-full w-full object-cover" />
+                    <Image src="/profil-alcikose.jpg" alt="Profil sistemleri uygulama görseli" fill sizes="(max-width: 1024px) 50vw, 400px" className="object-cover" />
                   </div>
                 </div>
               </div>
