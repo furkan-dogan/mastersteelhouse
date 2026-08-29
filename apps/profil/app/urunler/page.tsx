@@ -43,7 +43,7 @@ export default async function ProfilProductsPage() {
     <div className="min-h-screen bg-[#f3f4f1] pt-20">
       <SeoJsonLd data={[breadcrumbSchema, listSchema]} />
       <SiteHeader />
-      <main>
+      <main id="main-content" tabIndex={-1} className="outline-none">
         <ProductCardGrid products={products} />
       </main>
       <SiteFooter />

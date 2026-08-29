@@ -72,7 +72,9 @@ export default async function ProfilProductDetailPage({ params }: Props) {
     <div className="min-h-screen bg-[#f3f4f1] pt-20">
       <SeoJsonLd data={breadcrumbSchema} />
       <SiteHeader />
-      <ProductDetailTemplate product={product} />
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        <ProductDetailTemplate product={product} />
+      </main>
       <SiteFooter />
     </div>
   )

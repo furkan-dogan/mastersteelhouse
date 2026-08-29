@@ -135,6 +135,12 @@ export function AdminShell({
 
   return (
     <div className="flex min-h-screen bg-background">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+      >
+        İçeriğe geç
+      </a>
       <aside
         className={`flex flex-col border-r border-sidebar-border bg-sidebar transition-all duration-200 ease-in-out ${
           sidebarCollapsed ? 'w-[72px]' : 'w-64'
@@ -289,7 +295,7 @@ export function AdminShell({
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-6">
+        <main id="main-content" tabIndex={-1} className="flex-1 overflow-auto p-6 outline-none">
           <div className="mx-auto max-w-[1600px]">{children}</div>
         </main>
       </div>

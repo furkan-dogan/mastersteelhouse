@@ -10,7 +10,9 @@ export function SitePageShell({ children }: SitePageShellProps) {
   return (
     <>
       <Header />
-      {children}
+      <div id="main-content" tabIndex={-1} className="outline-none">
+        {children}
+      </div>
       <Footer />
     </>
   )

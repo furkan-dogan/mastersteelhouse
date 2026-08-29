@@ -13,7 +13,7 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[#f3f4f1] pt-20">
       <SiteHeader />
-      <main className="mx-auto max-w-4xl px-6 py-12 lg:px-8">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-4xl px-6 py-12 outline-none lg:px-8">
         <h1 className="text-3xl font-bold text-slate-900">Gizlilik Politikası</h1>
         <div className="mt-6 space-y-5 text-sm leading-7 text-slate-700">
           <p>

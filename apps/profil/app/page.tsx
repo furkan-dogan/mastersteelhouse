@@ -51,13 +51,15 @@ export default async function ProfilHomePage() {
     <div className="min-h-screen bg-[#f3f4f1]">
       <SeoJsonLd data={[websiteSchema, breadcrumbSchema, itemListSchema]} />
       <SiteHeader />
-      <HeroSlider products={products} />
-      <ProductsSlider products={products} />
-      <ProcessTimeline />
-      <HomeSeoContent />
-      <FAQSection faqs={faqs} limit={4} showMoreButton />
-      <InstagramFollowSection />
-      <CtaSection />
+      <div id="main-content" tabIndex={-1} className="outline-none">
+        <HeroSlider products={products} />
+        <ProductsSlider products={products} />
+        <ProcessTimeline />
+        <HomeSeoContent />
+        <FAQSection faqs={faqs} limit={4} showMoreButton />
+        <InstagramFollowSection />
+        <CtaSection />
+      </div>
       <SiteFooter />
     </div>
   )
