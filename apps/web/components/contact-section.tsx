@@ -28,11 +28,11 @@ export function ContactSection() {
         <div className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium border border-accent/20 mb-6">
-            <MessageCircle className="w-4 h-4" />
-            <span>İletişim</span>
+          <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-accent mb-6">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+            İletişim
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground mb-6 text-balance">
             Projeniz İçin{' '}
             <span className="text-accent">Hemen Başlayalım</span>
           </h1>
@@ -59,25 +59,20 @@ export function ContactSection() {
         <div className={`max-w-4xl mx-auto transition-all duration-1000 delay-500 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <div className="relative overflow-hidden rounded-3xl bg-card border-2 border-border p-8 md:p-12 shadow-2xl">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-accent/10 to-transparent rounded-full blur-3xl" />
-
-            <div className="relative z-10">
-              <div className="mb-8">
-                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">Ücretsiz Teklif Alın</h3>
-                <p className="text-muted-foreground">Formu doldurun, size özel çözümler sunalım</p>
-              </div>
-
-              <ContactForm
-                formData={formData}
-                errors={errors}
-                isSubmitting={isSubmitting}
-                onChange={handleChange}
-                onKvkkChange={handleKvkkChange}
-                onSubmit={submit}
-              />
+          <div className="rounded-xl border border-border/60 bg-card p-8 md:p-12">
+            <div className="mb-8">
+              <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground mb-3">Ücretsiz Teklif Alın</h3>
+              <p className="text-muted-foreground">Formu doldurun, size özel çözümler sunalım</p>
             </div>
+
+            <ContactForm
+              formData={formData}
+              errors={errors}
+              isSubmitting={isSubmitting}
+              onChange={handleChange}
+              onKvkkChange={handleKvkkChange}
+              onSubmit={submit}
+            />
           </div>
         </div>
 

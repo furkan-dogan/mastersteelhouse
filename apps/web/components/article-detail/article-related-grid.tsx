@@ -33,7 +33,7 @@ export function ArticleRelatedGrid({
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className={compact ? 'mb-12' : 'text-center mb-12'}>
-            <h2 className="text-3xl font-bold mb-4">{title}</h2>
+            <h2 className="text-3xl font-semibold tracking-tight mb-4">{title}</h2>
             {description ? <p className="text-muted-foreground text-lg">{description}</p> : null}
           </div>
 
@@ -63,7 +63,8 @@ export function ArticleRelatedGrid({
                     ) : (
                       <div className="flex items-center gap-3 mb-3">
                         {item.category ? (
-                          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-accent/10 text-accent">
+                          <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.1em] text-accent">
+                            <span className="h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
                             {item.category}
                           </span>
                         ) : null}
@@ -71,7 +72,7 @@ export function ArticleRelatedGrid({
                       </div>
                     )}
                     <h3
-                      className={`font-bold group-hover:text-accent transition-colors ${
+                      className={`font-semibold tracking-tight group-hover:text-accent transition-colors ${
                         compact ? 'text-lg' : 'text-xl line-clamp-2'
                       }`}
                     >

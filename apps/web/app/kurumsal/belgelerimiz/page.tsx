@@ -36,7 +36,7 @@ export default async function BelgelerPage() {
               {content.items.map((doc, index) => (
                 <article
                   key={doc.id}
-                  className="group overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10"
+                  className="group overflow-hidden rounded-xl border border-border/60 bg-card transition-colors duration-300 hover:border-accent/40"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="relative aspect-[210/297] border-b bg-muted/30">
@@ -64,7 +64,7 @@ export default async function BelgelerPage() {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="mb-4 text-xl font-bold transition-colors group-hover:text-accent">{doc.title}</h3>
+                    <h3 className="mb-4 text-xl font-semibold tracking-tight transition-colors group-hover:text-accent">{doc.title}</h3>
                     <p className="mb-5 text-sm leading-relaxed text-muted-foreground">{doc.description}</p>
                     {doc.pdfUrl ? (
                       <div className="flex flex-wrap gap-2">
@@ -95,8 +95,8 @@ export default async function BelgelerPage() {
             </div>
 
             <div className="mx-auto max-w-4xl">
-              <div className="rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/5 to-accent/10 p-8 md:p-12">
-                <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">Belge ve Sertifikalarımızın Anlamı</h2>
+              <div className="rounded-xl border border-border/60 bg-muted/30 p-8 md:p-12">
+                <h2 className="mb-8 text-center text-2xl font-semibold tracking-tight md:text-3xl">Belge ve Sertifikalarımızın Anlamı</h2>
                 <div className="grid gap-4 md:grid-cols-2">
                   {content.features.map((feature, index) => (
                     <div key={`${feature}-${index}`} className="flex items-start gap-3">

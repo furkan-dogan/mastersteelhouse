@@ -48,7 +48,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
             value={formData.name}
             onChange={(event) => onChange('name', event.target.value)}
             placeholder="Adınız ve soyadınız"
-            className={`h-12 border-2 focus:border-accent transition-all duration-300 group-hover:border-accent/50 ${errors.name ? 'border-red-400' : ''}`}
+            className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.name ? 'border-red-400' : ''}`}
           />
           {errors.name ? <p className="text-xs text-red-600">{errors.name}</p> : null}
         </div>
@@ -64,7 +64,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
             value={formData.phone}
             onChange={(event) => onChange('phone', event.target.value)}
             placeholder="0500 000 00 00"
-            className={`h-12 border-2 focus:border-accent transition-all duration-300 group-hover:border-accent/50 ${errors.phone ? 'border-red-400' : ''}`}
+            className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.phone ? 'border-red-400' : ''}`}
           />
           {errors.phone ? <p className="text-xs text-red-600">{errors.phone}</p> : null}
         </div>
@@ -82,7 +82,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
           value={formData.email}
           onChange={(event) => onChange('email', event.target.value)}
           placeholder="ornek@email.com"
-          className={`h-12 border-2 focus:border-accent transition-all duration-300 group-hover:border-accent/50 ${errors.email ? 'border-red-400' : ''}`}
+          className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.email ? 'border-red-400' : ''}`}
         />
         {errors.email ? <p className="text-xs text-red-600">{errors.email}</p> : null}
       </div>
@@ -98,7 +98,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
           value={formData.subject}
           onChange={(event) => onChange('subject', event.target.value)}
           placeholder="Örn: Çelik Villa Teklifi"
-          className={`h-12 border-2 focus:border-accent transition-all duration-300 group-hover:border-accent/50 ${errors.subject ? 'border-red-400' : ''}`}
+          className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.subject ? 'border-red-400' : ''}`}
         />
         {errors.subject ? <p className="text-xs text-red-600">{errors.subject}</p> : null}
       </div>
@@ -115,7 +115,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
           onChange={(event) => onChange('message', event.target.value)}
           placeholder="Proje detaylarınızı ve ihtiyaçlarınızı belirtin..."
           rows={6}
-          className={`resize-none border-2 focus:border-accent transition-all duration-300 group-hover:border-accent/50 ${errors.message ? 'border-red-400' : ''}`}
+          className={`resize-none border border-border/60 focus:border-accent transition-colors duration-300 ${errors.message ? 'border-red-400' : ''}`}
         />
         {errors.message ? <p className="text-xs text-red-600">{errors.message}</p> : null}
       </div>
@@ -149,13 +149,12 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
         type="submit"
         size="lg"
         disabled={isSubmitting}
-        className="w-full h-14 text-lg bg-gradient-to-r from-accent to-accent/80 hover:shadow-xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105 group relative overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full h-14 text-lg bg-accent hover:bg-accent/90 transition-colors duration-300 group disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        <span className="relative z-10 flex items-center gap-2">
+        <span className="flex items-center gap-2">
           {isSubmitting ? 'Gönderiliyor...' : 'Gönder'}
           <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </span>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
       </Button>
     </form>
   )

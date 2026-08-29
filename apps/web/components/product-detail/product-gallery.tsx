@@ -25,7 +25,7 @@ export function ProductGallery({
   return (
     <div>
       <div
-        className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-3xl border border-border bg-muted/30"
+        className="group relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-xl border border-border/60 bg-muted/30"
         onClick={() => onOpen(currentIndex)}
         role="button"
         tabIndex={0}
