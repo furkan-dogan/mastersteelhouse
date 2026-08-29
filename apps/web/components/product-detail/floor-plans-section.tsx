@@ -7,6 +7,14 @@ type FloorPlan = {
   image: string
 }
 
+// A handful of CMS records still carry the untouched default label from the
+// floor-plan editor. Showing it verbatim reads as unfinished content, so
+// display a neutral generic name instead — this only changes the label, not
+// the underlying data or which plan it points to.
+function displayPlanName(name: string) {
+  return name.trim().toLowerCase() === 'yeni kat' ? 'Kat Planı' : name
+}
+
 type FloorPlansSectionProps = {
   productName: string
   plans: FloorPlan[]
@@ -33,18 +41,18 @@ export function FloorPlansSection({
           <button
             key={plan.name}
             onClick={() => onSelectPlan(index)}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+            className={`px-5 py-2.5 rounded-md text-sm font-medium transition-colors duration-200 ${
               selectedIndex === index
-                ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/30'
-                : 'bg-card border border-border hover:border-accent text-muted-foreground hover:text-foreground'
+                ? 'bg-accent text-accent-foreground'
+                : 'border border-border/60 text-muted-foreground hover:text-foreground'
             }`}
           >
-            {plan.name}
+            {displayPlanName(plan.name)}
           </button>
         ))}
       </div>
 
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-2xl">
+      <div className="relative overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm">
         <button
           type="button"
           onClick={() => onOpenImage(selectedImage)}
@@ -53,7 +61,7 @@ export function FloorPlansSection({
         >
           <ResilientImage
             src={selectedImage}
-            alt={`${productName} - ${plans[selectedIndex]?.name ?? 'Kat Planı'}`}
+            alt={`${productName} - ${displayPlanName(plans[selectedIndex]?.name ?? 'Kat Planı')}`}
             fill
             sizes="(max-width: 896px) calc(100vw - 2rem), 896px"
             quality={90}

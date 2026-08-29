@@ -46,7 +46,7 @@ export function FooterCompanyInfo() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`relative w-11 h-11 rounded-xl bg-primary-foreground/10 flex items-center justify-center transition-all duration-300 ${social.hoverColorClass} hover:scale-110 hover:shadow-lg group`}
+                className={`relative w-10 h-10 rounded-md border border-primary-foreground/15 flex items-center justify-center transition-colors duration-200 ${social.hoverColorClass} group`}
                 aria-label={social.label}
                 onMouseEnter={() => setHoveredSocial(social.label)}
                 onMouseLeave={() => setHoveredSocial(null)}
