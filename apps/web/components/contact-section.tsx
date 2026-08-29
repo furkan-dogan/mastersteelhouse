@@ -59,7 +59,7 @@ export function ContactSection() {
         <div className={`max-w-4xl mx-auto transition-all duration-1000 delay-500 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <div className="rounded-xl border border-border/60 bg-card p-8 md:p-12">
+          <div className="rounded-xl border border-border bg-card p-8 md:p-12">
             <div className="mb-8">
               <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground mb-3">Ücretsiz Teklif Alın</h3>
               <p className="text-muted-foreground">Formu doldurun, size özel çözümler sunalım</p>

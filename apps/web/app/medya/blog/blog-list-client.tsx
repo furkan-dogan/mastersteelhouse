@@ -35,7 +35,7 @@ export function BlogListClient({ posts }: Props) {
                 className={`px-6 py-2.5 rounded-md font-medium transition-colors duration-200 ${
                   selectedCategory === category
                     ? 'bg-accent text-accent-foreground'
-                    : 'border border-border/60 text-muted-foreground hover:border-accent/40 hover:text-foreground'
+                    : 'border border-border text-muted-foreground hover:border-accent/60 hover:text-foreground'
                 }`}
               >
                 {category}

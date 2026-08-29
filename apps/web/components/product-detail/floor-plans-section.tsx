@@ -44,7 +44,7 @@ export function FloorPlansSection({
             className={`px-5 py-2.5 rounded-md text-sm font-medium transition-colors duration-200 ${
               selectedIndex === index
                 ? 'bg-accent text-accent-foreground'
-                : 'border border-border/60 text-muted-foreground hover:text-foreground'
+                : 'border border-border text-muted-foreground hover:text-foreground'
             }`}
           >
             {displayPlanName(plan.name)}
@@ -52,7 +52,7 @@ export function FloorPlansSection({
         ))}
       </div>
 
-      <div className="relative overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <button
           type="button"
           onClick={() => onOpenImage(selectedImage)}

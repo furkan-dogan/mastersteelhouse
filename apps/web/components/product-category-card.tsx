@@ -24,7 +24,7 @@ export function ProductCategoryCard({
   return (
     <Link
       href={href}
-      className={`group relative rounded-xl overflow-hidden bg-card border border-border/60 hover:border-accent/40 transition-[transform,box-shadow,border-color,opacity] duration-300 ease-out hover:shadow-lg ${
+      className={`group relative rounded-xl overflow-hidden bg-card border border-border shadow-sm hover:border-accent/60 transition-[transform,box-shadow,border-color,opacity] duration-300 ease-out hover:shadow-lg ${
         entered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       }`}
       style={{ transitionDelay: entered ? `${delayMs}ms` : '0ms' }}

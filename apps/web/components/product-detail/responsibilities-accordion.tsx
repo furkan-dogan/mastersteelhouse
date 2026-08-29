@@ -48,7 +48,7 @@ function AccordionItem({ section }: { section: Section }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="border border-border/60 rounded-xl overflow-hidden">
+    <div className="border border-border rounded-xl overflow-hidden">
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-background hover:bg-muted/40 transition-colors"
@@ -64,7 +64,7 @@ function AccordionItem({ section }: { section: Section }) {
         className={`grid transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">
-          <ol className="px-6 py-5 space-y-3 border-t border-border/60 bg-muted/20">
+          <ol className="px-6 py-5 space-y-3 border-t border-border bg-muted/20">
             {section.items.map((item, i) => (
               <li key={i} className="flex gap-3 text-sm text-muted-foreground leading-relaxed">
                 <span className="text-accent font-bold shrink-0 w-5 text-right">{i + 1}.</span>

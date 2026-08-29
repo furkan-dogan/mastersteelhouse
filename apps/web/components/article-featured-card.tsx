@@ -34,7 +34,7 @@ export function ArticleFeaturedCard({
 }: ArticleFeaturedCardProps) {
   return (
     <Link href={href} className="block mb-12 group">
-      <div className="grid md:grid-cols-2 gap-8 p-8 rounded-xl border border-border/60 hover:border-accent/40 transition-colors duration-300">
+      <div className="grid md:grid-cols-2 gap-8 p-8 rounded-xl border border-border hover:border-accent/60 transition-colors duration-300">
         <div className="relative h-80 rounded-lg overflow-hidden">
           <Image src={image || '/placeholder.svg'} alt={title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" style={imageStyle} />
           <div className="absolute left-4 top-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.12em] text-white/90">

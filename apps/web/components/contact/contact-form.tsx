@@ -48,7 +48,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
             value={formData.name}
             onChange={(event) => onChange('name', event.target.value)}
             placeholder="Adınız ve soyadınız"
-            className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.name ? 'border-red-400' : ''}`}
+            className={`h-12 border border-border focus:border-accent transition-colors duration-300 ${errors.name ? 'border-red-400' : ''}`}
           />
           {errors.name ? <p className="text-xs text-red-600">{errors.name}</p> : null}
         </div>
@@ -64,7 +64,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
             value={formData.phone}
             onChange={(event) => onChange('phone', event.target.value)}
             placeholder="0500 000 00 00"
-            className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.phone ? 'border-red-400' : ''}`}
+            className={`h-12 border border-border focus:border-accent transition-colors duration-300 ${errors.phone ? 'border-red-400' : ''}`}
           />
           {errors.phone ? <p className="text-xs text-red-600">{errors.phone}</p> : null}
         </div>
@@ -82,7 +82,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
           value={formData.email}
           onChange={(event) => onChange('email', event.target.value)}
           placeholder="ornek@email.com"
-          className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.email ? 'border-red-400' : ''}`}
+          className={`h-12 border border-border focus:border-accent transition-colors duration-300 ${errors.email ? 'border-red-400' : ''}`}
         />
         {errors.email ? <p className="text-xs text-red-600">{errors.email}</p> : null}
       </div>
@@ -98,7 +98,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
           value={formData.subject}
           onChange={(event) => onChange('subject', event.target.value)}
           placeholder="Örn: Çelik Villa Teklifi"
-          className={`h-12 border border-border/60 focus:border-accent transition-colors duration-300 ${errors.subject ? 'border-red-400' : ''}`}
+          className={`h-12 border border-border focus:border-accent transition-colors duration-300 ${errors.subject ? 'border-red-400' : ''}`}
         />
         {errors.subject ? <p className="text-xs text-red-600">{errors.subject}</p> : null}
       </div>
@@ -115,7 +115,7 @@ export function ContactForm({ formData, errors, isSubmitting, onChange, onKvkkCh
           onChange={(event) => onChange('message', event.target.value)}
           placeholder="Proje detaylarınızı ve ihtiyaçlarınızı belirtin..."
           rows={6}
-          className={`resize-none border border-border/60 focus:border-accent transition-colors duration-300 ${errors.message ? 'border-red-400' : ''}`}
+          className={`resize-none border border-border focus:border-accent transition-colors duration-300 ${errors.message ? 'border-red-400' : ''}`}
         />
         {errors.message ? <p className="text-xs text-red-600">{errors.message}</p> : null}
       </div>

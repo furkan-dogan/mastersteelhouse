@@ -30,7 +30,7 @@ export function SocialStrip({ isPastHero }: SocialStripProps) {
             <div
               className={`flex h-10 w-10 items-center justify-center rounded-md border transition-colors duration-200 ${
                 isPastHero
-                  ? 'border-border/60 bg-background text-foreground/60 hover:border-border'
+                  ? 'border-border bg-background text-foreground/60 hover:border-border'
                   : 'border-white/25 bg-white/5 text-white/70 hover:border-white/40'
               }`}
             >

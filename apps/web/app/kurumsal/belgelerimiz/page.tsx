@@ -36,7 +36,7 @@ export default async function BelgelerPage() {
               {content.items.map((doc, index) => (
                 <article
                   key={doc.id}
-                  className="group overflow-hidden rounded-xl border border-border/60 bg-card transition-colors duration-300 hover:border-accent/40"
+                  className="group overflow-hidden rounded-xl border border-border bg-card transition-colors duration-300 hover:border-accent/60"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="relative aspect-[210/297] border-b bg-muted/30">
@@ -95,7 +95,7 @@ export default async function BelgelerPage() {
             </div>
 
             <div className="mx-auto max-w-4xl">
-              <div className="rounded-xl border border-border/60 bg-muted/30 p-8 md:p-12">
+              <div className="rounded-xl border border-border bg-muted/30 p-8 md:p-12">
                 <h2 className="mb-8 text-center text-2xl font-semibold tracking-tight md:text-3xl">Belge ve Sertifikalarımızın Anlamı</h2>
                 <div className="grid gap-4 md:grid-cols-2">
                   {content.features.map((feature, index) => (

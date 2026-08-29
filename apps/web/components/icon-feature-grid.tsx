@@ -34,13 +34,13 @@ export function IconFeatureGrid({
           <div
             key={item.title}
             className={cn(
-              'rounded-xl border border-border/60 bg-card p-8 transition-colors duration-300 hover:border-accent/40 group',
+              'rounded-xl border border-border bg-card p-8 transition-colors duration-300 hover:border-accent/60 group',
               cardClassName
             )}
           >
             <div
               className={cn(
-                'mb-6 flex h-14 w-14 items-center justify-center rounded-md border border-border/60',
+                'mb-6 flex h-14 w-14 items-center justify-center rounded-md border border-border',
                 iconWrapClassName
               )}
             >

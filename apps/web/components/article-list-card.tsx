@@ -32,7 +32,7 @@ export function ArticleListCard({
 }: ArticleListCardProps) {
   return (
     <Link href={href} className="group">
-      <article className="h-full rounded-xl overflow-hidden border border-border/60 hover:border-accent/40 transition-colors duration-300">
+      <article className="h-full rounded-xl overflow-hidden border border-border hover:border-accent/60 transition-colors duration-300">
         <div className="relative h-56 overflow-hidden">
           <Image
             src={image || '/placeholder.svg'}

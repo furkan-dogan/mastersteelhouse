@@ -56,7 +56,7 @@ export function FAQSection() {
           <Accordion
             type="single"
             collapsible
-            className="divide-y divide-border/60 border-t border-b border-border/60"
+            className="divide-y divide-border border-t border-b border-border"
             value={openItem}
             onValueChange={setOpenItem}
           >

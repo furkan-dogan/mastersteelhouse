@@ -47,7 +47,7 @@ export function ReferencesClient({ references }: Props) {
                 className={`px-5 py-2.5 rounded-md text-sm font-medium transition-colors duration-200 ${
                   selectedCategory === category
                     ? 'bg-primary text-primary-foreground'
-                    : 'border border-border/60 text-foreground hover:border-accent/50 hover:text-accent'
+                    : 'border border-border text-foreground hover:border-accent/50 hover:text-accent'
                 }`}
               >
                 {category}
@@ -64,7 +64,7 @@ export function ReferencesClient({ references }: Props) {
           {filteredReferences.map((reference, index) => (
             <div
               key={reference.id}
-              className="group relative overflow-hidden rounded-xl border border-border/60 hover:border-accent/40 transition-colors duration-300"
+              className="group relative overflow-hidden rounded-xl border border-border hover:border-accent/60 transition-colors duration-300"
               style={{
                 animation: 'fadeIn 0.5s ease-out',
                 animationDelay: `${index * 0.1}s`,

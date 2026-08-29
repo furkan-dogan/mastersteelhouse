@@ -156,7 +156,7 @@ export function QuoteRequestForm({ productName }: Props) {
         <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Doğrulama kodu</label>
         <div className="grid gap-3 sm:grid-cols-[120px_1fr] sm:items-start">
           <div
-            className="flex h-14 items-center justify-center rounded-lg border border-border/60 bg-muted/40 text-lg font-semibold tracking-[0.12em] tabular-nums text-foreground select-none"
+            className="flex h-14 items-center justify-center rounded-lg border border-border bg-muted/40 text-lg font-semibold tracking-[0.12em] tabular-nums text-foreground select-none"
             aria-label="Güvenlik kodu"
           >
             {captchaCode}
