@@ -22,17 +22,15 @@ export function ProjectsSection() {
   }, [isVisible])
 
   return (
-    <section id="projects" ref={ref} className="py-24 bg-gradient-to-br from-muted/30 via-muted/10 to-background relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-      </div>
-
+    <section id="projects" ref={ref} className="py-24 bg-background relative">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-            Başarıyla Tamamladığımız{' '}
-            <span className="bg-gradient-to-r from-accent to-accent/60 bg-clip-text text-transparent">Projeler</span>
+          <div className="mb-4 flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-accent">
+            <span className="h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
+            Referanslarımız
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground mb-6 text-balance">
+            Başarıyla Tamamladığımız <span className="text-accent">Projeler</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-balance">
             Yüzlerce projeyi başarıyla tamamladık ve müşteri memnuniyetini en üst düzeyde tutuyoruz.
@@ -55,7 +53,7 @@ export function ProjectsSection() {
           <p className="text-lg text-muted-foreground mb-6">Daha fazla proje görmek ister misiniz?</p>
           <Link
             href="/referanslar"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-accent to-accent/80 text-accent-foreground font-semibold hover:shadow-xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-medium text-primary-foreground transition-colors duration-300 hover:bg-primary/90"
           >
             Portföyümüzü İnceleyin
             <ArrowUpRight className="w-5 h-5" />
