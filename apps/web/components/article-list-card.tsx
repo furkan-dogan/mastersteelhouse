@@ -32,14 +32,20 @@ export function ArticleListCard({
 }: ArticleListCardProps) {
   return (
     <Link href={href} className="group">
-      <article className="h-full rounded-2xl overflow-hidden bg-card border border-border hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 hover:-translate-y-2">
+      <article className="h-full rounded-xl overflow-hidden border border-border/60 hover:border-accent/40 transition-colors duration-300">
         <div className="relative h-56 overflow-hidden">
-          <Image src={image || '/placeholder.svg'} alt={title} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover" style={imageStyle} />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
-          <div className="absolute top-4 left-4">
-            <span className="px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold shadow-lg">
-              {category}
-            </span>
+          <Image
+            src={image || '/placeholder.svg'}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            style={imageStyle}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
+          <div className="absolute left-4 top-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.12em] text-white/90">
+            <span className="h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
+            {category}
           </div>
         </div>
 
@@ -56,11 +62,11 @@ export function ArticleListCard({
             })}
           </div>
 
-          <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-accent transition-colors">{title}</h3>
+          <h3 className="text-xl font-semibold tracking-tight mb-3 line-clamp-2 group-hover:text-accent transition-colors">{title}</h3>
 
           <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{excerpt}</p>
 
-          <div className="flex items-center gap-2 text-accent font-semibold text-sm group-hover:gap-3 transition-all">
+          <div className="flex items-center gap-2 text-accent font-medium text-sm group-hover:gap-3 transition-all">
             {ctaLabel}
             <ArrowRight className="w-4 h-4" />
           </div>

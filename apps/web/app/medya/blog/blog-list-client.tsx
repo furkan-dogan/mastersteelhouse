@@ -32,10 +32,10 @@ export function BlogListClient({ posts }: Props) {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                className={`px-6 py-2.5 rounded-md font-medium transition-colors duration-200 ${
                   selectedCategory === category
-                    ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/30 scale-105'
-                    : 'bg-card border border-border text-muted-foreground hover:border-accent/50 hover:text-foreground'
+                    ? 'bg-accent text-accent-foreground'
+                    : 'border border-border/60 text-muted-foreground hover:border-accent/40 hover:text-foreground'
                 }`}
               >
                 {category}

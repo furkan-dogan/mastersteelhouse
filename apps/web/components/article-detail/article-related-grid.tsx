@@ -40,13 +40,7 @@ export function ArticleRelatedGrid({
           <div className={`grid md:grid-cols-3 ${compact ? 'gap-6' : 'gap-8'}`}>
             {items.map((item) => (
               <Link key={item.slug} href={`${hrefPrefix}/${item.slug}`} className="group">
-                <div
-                  className={`bg-card overflow-hidden border border-border hover:border-accent transition-all ${
-                    compact
-                      ? 'rounded-2xl hover:shadow-xl hover:shadow-accent/10'
-                      : 'rounded-3xl duration-500 hover:shadow-2xl hover:shadow-accent/20 hover:-translate-y-2'
-                  }`}
-                >
+                <div className="rounded-xl overflow-hidden border border-border/60 hover:border-accent/40 transition-colors duration-300">
                   <div className={`relative ${compact ? 'h-48' : 'h-56'} overflow-hidden`}>
                     <Image
                       src={item.image}
