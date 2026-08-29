@@ -44,10 +44,10 @@ export function ReferencesClient({ references }: Props) {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-md text-sm font-medium transition-colors duration-200 ${
                   selectedCategory === category
-                    ? 'bg-primary text-primary-foreground shadow-lg scale-105'
-                    : 'bg-card border border-border text-foreground hover:border-accent hover:text-accent hover:scale-105'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'border border-border/60 text-foreground hover:border-accent/50 hover:text-accent'
                 }`}
               >
                 {category}
@@ -64,7 +64,7 @@ export function ReferencesClient({ references }: Props) {
           {filteredReferences.map((reference, index) => (
             <div
               key={reference.id}
-              className="group relative overflow-hidden rounded-2xl bg-card border border-border hover:border-accent/50 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/20"
+              className="group relative overflow-hidden rounded-xl border border-border/60 hover:border-accent/40 transition-colors duration-300"
               style={{
                 animation: 'fadeIn 0.5s ease-out',
                 animationDelay: `${index * 0.1}s`,
@@ -76,29 +76,19 @@ export function ReferencesClient({ references }: Props) {
                   src={reference.image || '/placeholder.svg'}
                   alt={reference.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
 
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 rounded-full bg-accent/90 backdrop-blur-sm text-accent-foreground text-xs font-semibold">
-                    {reference.categories[0]}
-                  </span>
+                <div className="absolute left-4 top-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.12em] text-white/90">
+                  <span className="h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
+                  {reference.categories[0]}
+                  {reference.area ? <span className="text-white/60">· {reference.area}</span> : null}
                 </div>
 
-                {reference.area && (
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1.5 rounded-full bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-semibold">
-                      {reference.area}
-                    </span>
-                  </div>
-                )}
-
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">
-                    {reference.title}
-                  </h3>
-                  <p className="text-sm text-white/80">{reference.location}</p>
+                  <h3 className="text-xl font-semibold tracking-tight text-white mb-1.5">{reference.title}</h3>
+                  <p className="text-sm text-white/75">{reference.location}</p>
                 </div>
               </div>
             </div>
