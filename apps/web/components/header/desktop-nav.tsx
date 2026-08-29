@@ -115,6 +115,7 @@ export function DesktopNav({
             onClick={onCloseDropdown}
             target={item.newTab ? '_blank' : undefined}
             rel={item.newTab ? 'noopener noreferrer' : undefined}
+            prefetch={item.newTab ? false : undefined}
             className="relative px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 text-foreground/70 hover:text-foreground hover:bg-background/80"
           >
             <span>{item.label}</span>
