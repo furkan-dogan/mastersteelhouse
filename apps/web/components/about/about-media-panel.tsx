@@ -22,8 +22,8 @@ export function AboutMediaPanel({
   const feature = features[displayedFeatureIndex]
 
   return (
-    <div className={`lg:sticky lg:top-24 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
-      <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+    <div className={`lg:sticky lg:top-24 transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+      <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-lg">
         {isVisible ? (
           <video
             ref={videoRef}
@@ -44,13 +44,13 @@ export function AboutMediaPanel({
 
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
 
-        <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-background/95 backdrop-blur-xl border border-border shadow-2xl">
+        <div className="absolute bottom-8 left-8 right-8 rounded-xl border border-border bg-background/95 p-6 shadow-lg">
           <div className="grid grid-cols-2 gap-4">
             {stats.slice(0, 2).map((stat, index) => (
-              <div key={stat.label} className="text-center transition-all duration-700">
+              <div key={stat.label} className="text-center">
                 <div
-                  className={`text-3xl md:text-4xl font-bold text-accent mb-1 font-mono transition-all duration-500 ${
-                    countedStats.includes(index) ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                  className={`mb-1 text-3xl font-semibold text-accent transition-opacity duration-500 md:text-4xl ${
+                    countedStats.includes(index) ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
                   {stat.value}
@@ -61,8 +61,6 @@ export function AboutMediaPanel({
           </div>
         </div>
       </div>
-
-      <div className="absolute -bottom-4 -left-4 w-32 h-32 border-4 border-accent/20 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }} />
     </div>
   )
 }
