@@ -1,12 +1,17 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getCategoryBySlug, getProductsByCategory } from '@/lib/product-catalog'
+import { getCategories, getCategoryBySlug, getProductsByCategory } from '@/lib/product-catalog'
 import { SitePageShell } from '@/components/site-page-shell'
 import { SectionIntro } from '@/components/section-intro'
 import { CategoryProductsGrid } from '@/components/category-products-grid'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { buildPageMetadata, trimForMeta } from '@/lib/seo'
 import { buildBreadcrumbList } from '@/lib/structured-data'
+
+export async function generateStaticParams() {
+  const categories = await getCategories()
+  return categories.map((category) => ({ category: category.slug }))
+}
 
 export async function generateMetadata({
   params,

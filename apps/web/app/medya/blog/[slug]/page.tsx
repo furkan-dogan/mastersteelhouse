@@ -1,12 +1,17 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Calendar, User, Clock } from 'lucide-react'
-import { getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/blog-catalog'
+import { getBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '@/lib/blog-catalog'
 import { ArticleDetailPage } from '@/components/article-detail/article-detail-page'
 import { buildArticleMetadata, trimForMeta } from '@/lib/seo'
 
 type Props = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateStaticParams() {
+  const posts = await getBlogPosts()
+  return posts.map((post) => ({ slug: post.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
