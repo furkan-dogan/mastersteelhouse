@@ -46,7 +46,7 @@ export default function KataloglarPage() {
                         className="inline-flex items-center gap-2 rounded-lg bg-[#eab308]/15 px-4 py-2 text-[#9a7000] transition hover:bg-[#eab308] hover:text-black"
                       >
                         <Eye className="h-4 w-4" />
-                        <span>PDF'i Göster</span>
+                        <span>PDF&apos;i Göster</span>
                       </a>
                       <a
                         href={catalog.pdfUrl}

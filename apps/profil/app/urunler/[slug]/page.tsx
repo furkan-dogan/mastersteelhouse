@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { SeoJsonLd } from '@/components/seo-json-ld'
 import { ProductDetailTemplate } from '@/components/product-detail-template'
 import { getProfileProducts } from '@/lib/profile-content'
-import { absoluteProfileUrl, buildProfileMetadata, trimForMeta } from '@/lib/seo'
+import { buildProfileMetadata, trimForMeta } from '@/lib/seo'
 import { buildBreadcrumbList } from '@/lib/structured-data'
 
 type Props = {
