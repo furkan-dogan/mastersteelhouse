@@ -77,8 +77,8 @@ export function ProductDetailTemplate({ product, category }: Props) {
               />
 
               <div className="space-y-8">
-                <div className="flex items-start gap-2.5 rounded-lg border border-border/60 bg-muted/40 px-4 py-3 text-xs text-muted-foreground">
-                  <Info className="mt-0.5 h-4 w-4 shrink-0" />
+                <div className="flex items-start gap-2.5 rounded-lg border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-foreground">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                   <span>
                     Bu sayfada yer alan tüm ürün görselleri ve içerikler telif hakkı ile korunmaktadır. İzinsiz kopyalanması, çoğaltılması veya kullanılması durumunda yasal işlem başlatılacaktır.
                   </span>
