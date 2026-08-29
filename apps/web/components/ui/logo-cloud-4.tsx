@@ -21,39 +21,34 @@ export function LogoCloud({ logos, className, ...props }: LogoCloudProps) {
 
   return (
     <div
-      className={`relative mx-auto w-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-r from-muted/70 via-background to-muted/70 py-4 ${className ?? ''}`}
+      className={`relative mx-auto w-full overflow-hidden border-y border-border/60 py-8 ${className ?? ''}`}
       {...props}
     >
       <InfiniteSlider
-        gap={20}
+        gap={56}
         reverse
         duration={36}
         durationOnHover={120}
         className="marquee-mask px-5 md:px-7"
       >
         {logos.map((logo, index) => (
-          <article
+          <div
             key={`logo-${logo.alt}-${index}`}
-            className="pointer-events-none select-none flex min-h-[70px] items-center gap-3 rounded-xl border border-border/65 bg-card/90 px-4 py-3 shadow-sm md:min-h-[76px] md:gap-4 md:px-5"
+            className="pointer-events-none relative h-8 w-24 shrink-0 select-none opacity-50 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 md:h-9 md:w-28"
           >
-            <div className="relative h-9 w-14 shrink-0 overflow-hidden rounded-md bg-muted/50 md:h-10 md:w-16">
-              <Image
-                src={logo.src || '/placeholder.svg'}
-                alt={logo.alt}
-                fill
-                sizes="64px"
-                className="object-contain p-1.5"
-              />
-            </div>
-            <p className="line-clamp-1 text-sm font-semibold text-foreground md:text-base">
-              {logo.label || logo.alt}
-            </p>
-          </article>
+            <Image
+              src={logo.src || '/placeholder.svg'}
+              alt={logo.alt}
+              fill
+              sizes="112px"
+              className="object-contain"
+            />
+          </div>
         ))}
       </InfiniteSlider>
 
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-muted/95 via-muted/65 to-transparent md:w-32" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-muted/95 via-muted/65 to-transparent md:w-32" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent md:w-32" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent md:w-32" />
 
       <ProgressiveBlur
         blurIntensity={1.2}
