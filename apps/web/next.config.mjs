@@ -34,6 +34,11 @@ const PERMISSIONS_POLICY = [
 // this repo) runs Google Ads conversion/remarketing tags and a Facebook Pixel
 // in addition to plain GA — found via a production console-error audit that
 // showed live CSP violations for these hosts, not from reading the container.
+// img-src's `data:` covers a small inline base64 fallback pixel one of those
+// tags renders. Google's audience-list pixel calls a country-TLD domain
+// (`www.google.com.tr` observed for this run) that varies by visitor locale;
+// only the one actually observed is allowlisted — watch /api/csp-report for
+// other ccTLD variants rather than guessing the full set up front.
 const CSP = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -44,7 +49,7 @@ const CSP = [
   "script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://googleads.g.doubleclick.net https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline'",
   "style-src-elem 'self' 'unsafe-inline'",
-  "img-src 'self' https://pub-d48ad607846349fc992b42968ced0d17.r2.dev https://www.google.com https://googleads.g.doubleclick.net",
+  "img-src 'self' data: https://pub-d48ad607846349fc992b42968ced0d17.r2.dev https://www.google.com https://www.google.com.tr https://googleads.g.doubleclick.net https://www.facebook.com",
   "font-src 'self'",
   "connect-src 'self' https://formspree.io https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://ad.doubleclick.net https://stats.g.doubleclick.net https://www.google.com",
   "media-src 'self' https://cdn.coverr.co",
